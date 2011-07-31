@@ -1,7 +1,9 @@
 PATH
   remote: .
   specs:
-    chefspec (0.0.1)
+    chefspec (0.0.2)
+      chef (= 0.9.12)
+      rspec (>= 2.6.0)
 
 GEM
   remote: http://rubygems.org/
@@ -15,20 +17,20 @@ GEM
     bcat (0.6.1)
       rack (~> 1.0)
     builder (2.1.2)
-    bunny (0.6.0)
+    bunny (0.7.4)
     chef (0.9.12)
       bunny (>= 0.6.0)
       erubis
       extlib
       highline
-      json (>= 1.4.4, <= 1.4.6)
+      json (<= 1.4.6, >= 1.4.4)
       mixlib-authentication (>= 1.1.0)
       mixlib-cli (>= 1.1.0)
       mixlib-config (>= 1.1.2)
       mixlib-log (>= 1.2.0)
       moneta
       ohai (>= 0.5.7)
-      rest-client (>= 1.0.4, < 1.7.0)
+      rest-client (< 1.7.0, >= 1.0.4)
       uuidtools
     childprocess (0.1.9)
       ffi (~> 1.0.6)
@@ -44,7 +46,7 @@ GEM
     ffi (1.0.9)
     gherkin (2.4.5)
       json (>= 1.4.6)
-    highline (1.6.1)
+    highline (1.6.2)
     i18n (0.5.0)
     json (1.4.6)
     mime-types (1.16)
@@ -54,7 +56,7 @@ GEM
     mixlib-config (1.1.2)
     mixlib-log (1.3.0)
     moneta (0.6.0)
-    ohai (0.6.2)
+    ohai (0.6.4)
       mixlib-cli
       mixlib-config
       mixlib-log
@@ -63,7 +65,7 @@ GEM
     rack (1.3.1)
     rake (0.8.7)
     rdiscount (1.6.8)
-    rest-client (1.6.1)
+    rest-client (1.6.3)
       mime-types (>= 1.16)
     rspec (2.6.0)
       rspec-core (~> 2.6.0)
@@ -84,7 +86,6 @@ PLATFORMS
 
 DEPENDENCIES
   aruba (>= 0.4.3)
-  chef (= 0.9.12)
   chefspec!
   cucumber (>= 1.0.1)
   i18n (>= 0.5.0)

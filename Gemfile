@@ -1,6 +1,5 @@
 source "http://rubygems.org"
 gemspec
-gem "chef", "0.9.12"
 
 group :test do
   gem "aruba", '>= 0.4.3'
