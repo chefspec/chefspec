@@ -1,0 +1,6 @@
+.idea
+.yardoc
+*.gem
+*.html
+doc
+tmp
