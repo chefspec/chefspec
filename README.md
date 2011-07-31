@@ -146,6 +146,12 @@ There are further examples of using ChefSpec in the `features` directory.
     $ bundle install
     $ rake
 
+# Continuous Integration
+[Chefspec on Travis CI](http://travis-ci.org/acrmp/chefspec)
+
+![Built on Travis](https://secure.travis-ci.org/acrmp/chefspec.png?branch=master)
+
+
 # License
 MIT - see the accompanying LICENSE file for details.
 
