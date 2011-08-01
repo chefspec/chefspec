@@ -41,17 +41,12 @@ module ChefSpec
       @node = @client.build_node
     end
 
-    # Infer the default cookbook path from the location of the calling spec.
-    #
-    # @return [String] The path to the cookbooks directory
-    def default_cookbook_path
-      File.join(caller(2).first.split(':').slice(0..-3).to_s, "..", "..", "..")
-    end
-
     # Run the specified recipes, but without actually converging the node.
     #
     # @param [array] recipe_names The names of the recipes to execute
     def converge(*recipe_names)
+      raise ArgumentError, 'At least one run list item must be provided' if recipe_names.empty?
+
       recipe_names.each do |recipe_name|
         @client.node.run_list << recipe_name
       end
@@ -80,6 +75,13 @@ module ChefSpec
     end
 
     private
+
+    # Infer the default cookbook path from the location of the calling spec.
+    #
+    # @return [String] The path to the cookbooks directory
+    def default_cookbook_path
+      File.join(caller(2).first.split(':').slice(0..-3).to_s, "..", "..", "..")
+    end
 
     # Find the resource with the declared type and name
     #
