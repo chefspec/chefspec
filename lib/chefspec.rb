@@ -1,4 +1,5 @@
 require 'chef'
+require 'rspec'
 require 'chefspec/chef_runner'
 require 'chefspec/matchers/execute'
 require 'chefspec/matchers/file'

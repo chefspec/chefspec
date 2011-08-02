@@ -2,5 +2,6 @@
 .yardoc
 *.gem
 *.html
+coverage
 doc
 tmp
