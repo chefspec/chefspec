@@ -1,7 +1,7 @@
 # Ruby stdlib Hash class
 class Hash
 
-  # Monkey-patch to stdlib Hash to give us auto-vivifying hashes like Chef.
+  # Monkey-patch to stdlib Hash to give us Mash style lookup
   # @param [Symbol] method_id The method name
   def method_missing(method_id)
     key = method_id.id2name

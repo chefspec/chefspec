@@ -18,7 +18,7 @@ namespace :spec do
   RSpec::Core::RakeTask.new('rcov') do |t|
     t.pattern = 'spec/**/*_spec.rb'
     t.rcov = true
-    t.rcov_opts = ['--exclude', 'gems', '--exclude', 'spec/*']
+    t.rcov_opts = ['--exclude', 'gems', '--exclude', 'spec/*', '--exclude', 'spec_helper']
   end
 end
 

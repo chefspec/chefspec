@@ -3,7 +3,7 @@
 # @param [String] resource A Chef Resource
 # @return [String] The resource type
 def resource_type(resource)
-  resource.class.name.split("::").last.downcase
+  resource.resource_name.to_s
 end
 
 # Define simple RSpec matchers for the product of resource types and actions

@@ -13,7 +13,7 @@ module ChefSpec
     @step_into = []
     @resources = []
 
-    attr_reader :resources
+    attr_accessor :resources
     attr_reader :node
 
     # Instantiate a new runner to run examples with.
@@ -21,6 +21,7 @@ module ChefSpec
     # @param [string] cookbook_path The path to the chef cookbook(s) to be tested
     def initialize(cookbook_path=default_cookbook_path)
       the_runner = self
+      @resources = []
 
       Chef::Resource.class_eval do
         alias :old_run_action :run_action
@@ -45,8 +46,6 @@ module ChefSpec
     #
     # @param [array] recipe_names The names of the recipes to execute
     def converge(*recipe_names)
-      raise ArgumentError, 'At least one run list item must be provided' if recipe_names.empty?
-
       recipe_names.each do |recipe_name|
         @client.node.run_list << recipe_name
       end

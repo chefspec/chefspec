@@ -7,10 +7,8 @@ module ChefSpec
 
     RSpec::Matchers.define :be_owned_by do |user, group|
       match do |file|
-        file.owner == user and file.group == group
+        file.nil? ? false : file.owner == user and file.group == group
       end
     end
   end
 end
-
-
