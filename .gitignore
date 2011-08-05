@@ -2,6 +2,7 @@
 .yardoc
 *.gem
 *.html
+*.rbc
 coverage
 doc
 tmp
