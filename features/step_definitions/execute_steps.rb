@@ -16,7 +16,7 @@ Given /^the recipe has a spec example that expects the command to be executed$/ 
     """
       require "chefspec"
 
-      describe "sample_recipe::default" do
+      describe "example::default" do
 
         before(:all) do
           @chef_run = ChefSpec::ChefRunner.new

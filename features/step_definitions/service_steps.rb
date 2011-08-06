@@ -160,18 +160,18 @@ Given /^the recipe has a spec example that expects the service to be reloaded/ d
 end
 
 Then /^the service will not have been started$/ do
-
+  # service start would fail
 end
 
 Then /^the service will not have been stopped$/ do
-
+  # service stop would fail
 end
 
 Then /^the service will not have been restarted$/ do
-
+  # service restart would fail
 end
 
 Then /^the service will not have been reloaded$/ do
-
+  # service reload would fail
 end
 

@@ -60,7 +60,7 @@ Given /^the recipe has a spec example that expects the package to be installed$/
     """
       require "chefspec"
 
-      describe "sample_recipe::default" do
+      describe "example::default" do
 
         before(:all) do
           @chef_run = ChefSpec::ChefRunner.new
@@ -81,7 +81,7 @@ Given /^the recipe has a spec example that expects the package to be upgraded/ d
     """
       require "chefspec"
 
-      describe "sample_recipe::default" do
+      describe "example::default" do
 
         before(:all) do
           @chef_run = ChefSpec::ChefRunner.new
@@ -102,7 +102,7 @@ Given /^the recipe has a spec example that expects the package to be removed$/ d
     """
       require "chefspec"
 
-      describe "sample_recipe::default" do
+      describe "example::default" do
 
         before(:all) do
           @chef_run = ChefSpec::ChefRunner.new
@@ -123,7 +123,7 @@ Given /^the recipe has a spec example that expects the package to be purged/ do
     """
       require "chefspec"
 
-      describe "sample_recipe::default" do
+      describe "example::default" do
 
         before(:all) do
           @chef_run = ChefSpec::ChefRunner.new
@@ -144,7 +144,7 @@ Given /^the recipe has a spec example that expects the package to be installed a
     """
       require "chefspec"
 
-      describe "sample_recipe::default" do
+      describe "example::default" do
 
         before(:all) do
           @chef_run = ChefSpec::ChefRunner.new
@@ -160,18 +160,18 @@ Given /^the recipe has a spec example that expects the package to be installed a
 end
 
 Then /^the package will not have been installed$/ do
-
+  # package installation would fail
 end
 
 Then /^the package will not have been upgraded$/ do
-
+  # package upgrade would fail
 end
 
 Then /^the package will not have been removed$/ do
-
+  # package removal would fail
 end
 
 Then /^the package will not have been purged$/ do
-
+  # package purge would fail
 end
 

@@ -58,7 +58,12 @@ Given /^a Chef cookbook with a recipe that sets file ownership$/ do
         group "group"
       end
     """
+    And a file named "hello-world.txt" with:
+    """
+    Hello world!
+    """
   }
+  @original_stat = owner_and_group 'hello-world.txt'
 end
 
 Given /^a Chef cookbook with a recipe that sets directory ownership/ do
@@ -70,7 +75,9 @@ Given /^a Chef cookbook with a recipe that sets directory ownership/ do
         group "group"
       end
     """
+    And a directory named "foo"
   }
+  @original_stat = owner_and_group 'foo'
 end
 
 Given /^the recipe has a spec example that expects the file to be declared$/ do
@@ -79,7 +86,7 @@ Given /^the recipe has a spec example that expects the file to be declared$/ do
     """
       require "chefspec"
 
-      describe "sample_recipe::default" do
+      describe "example::default" do
         before(:all) do
           @chef_run = ChefSpec::ChefRunner.new
           @chef_run.converge "example::default"
@@ -99,7 +106,7 @@ Given /^the recipe has a spec example that expects the file to be deleted$/ do
     """
       require "chefspec"
 
-      describe "sample_recipe::default" do
+      describe "example::default" do
 
         before(:all) do
           @chef_run = ChefSpec::ChefRunner.new
@@ -120,7 +127,7 @@ Given /^the recipe has a spec example that expects the directory to be created/ 
     """
       require "chefspec"
 
-      describe "sample_recipe::default" do
+      describe "example::default" do
 
         before(:all) do
           @chef_run = ChefSpec::ChefRunner.new
@@ -141,7 +148,7 @@ Given /^the recipe has a spec example that expects the directory to be deleted/ 
     """
       require "chefspec"
 
-      describe "sample_recipe::default" do
+      describe "example::default" do
 
         before(:all) do
           @chef_run = ChefSpec::ChefRunner.new
@@ -162,7 +169,7 @@ Given /^the recipe has a spec example that expects the file to be set to be owne
     """
       require "chefspec"
 
-      describe "sample_recipe::default" do
+      describe "example::default" do
 
         before(:all) do
           @chef_run = ChefSpec::ChefRunner.new
@@ -183,7 +190,7 @@ Given /^the recipe has a spec example that expects the directory to be set to be
     """
       require "chefspec"
 
-      describe "sample_recipe::default" do
+      describe "example::default" do
 
         before(:all) do
           @chef_run = ChefSpec::ChefRunner.new
@@ -215,9 +222,14 @@ Then /^the directory will not have been deleted$/ do
 end
 
 Then /^the file will not have had its ownership changed$/ do
-
+  @original_stat.should eql(owner_and_group 'hello-world.txt')
 end
 
 Then /^the directory will not have had its ownership changed$/ do
+  @original_stat.should eql(owner_and_group 'foo')
+end
 
+def owner_and_group(path)
+  stat = File.stat(File.join(current_dir, path))
+  {:gid => stat.gid, :uid => stat.uid}
 end
