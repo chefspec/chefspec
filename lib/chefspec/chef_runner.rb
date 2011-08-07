@@ -26,11 +26,19 @@ module ChefSpec
       Chef::Resource.class_eval do
         alias :old_run_action :run_action
 
-        @@runner = the_runner
+        if self.class.method_defined?(:class_variable_set)
+          class_variable_set :@@runner, the_runner
+        else
+          @@runner = the_runner
+        end
 
         def run_action(action)
           Chef::Log.info("Processing #{self} action #{action} (#{defined_at})") if self.respond_to? :defined_at
-          @@runner.resources << self
+          if self.class.method_defined?(:class_variable_get)
+            self.class_variable_get(:@@runner).resources << self
+          else
+            @@runner.resources << self
+          end
         end
       end
 
@@ -91,7 +99,7 @@ module ChefSpec
     #
     # @return [String] The path to the cookbooks directory
     def default_cookbook_path
-      Pathname.new(File.join(caller(2).first.split(':').slice(0..-3).to_s, "..", "..", "..")).cleanpath
+      Pathname.new(File.join(caller(2).first.split(':').slice(0..-3).first, "..", "..", "..")).cleanpath
     end
 
     # Find the resource with the declared type and name
