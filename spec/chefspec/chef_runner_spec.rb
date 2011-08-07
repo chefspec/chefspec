@@ -29,11 +29,9 @@ module ChefSpec
       end
     end
     describe "#converge" do
-      it "should allow a converge with an empty run_list" do
-        expect { ChefSpec::ChefRunner.new.converge }.to_not raise_error
-      end
       it "should rethrow the exception if a cookbook cannot be found" do
-        expect { ChefSpec::ChefRunner.new().converge('non_existent::default') }.to raise_error
+        expect { ChefSpec::ChefRunner.new.converge('non_existent::default') }.to raise_error
+            (Chef::Exceptions::CookbookNotFound)
       end
     end
     describe "#node" do

@@ -29,13 +29,14 @@ module ChefSpec
         @@runner = the_runner
 
         def run_action(action)
+          Chef::Log.info("Processing #{self} action #{action} (#{defined_at})") if self.respond_to? :defined_at
           @@runner.resources << self
         end
       end
 
       Chef::Config[:solo] = true
       Chef::Config[:cookbook_path] = cookbook_path
-      Chef::Log.verbose = true
+      Chef::Log.verbose = true if Chef::Log.respond_to?(:verbose)
       Chef::Log.level(:debug)
       @client = Chef::Client.new
       @client.run_ohai
@@ -47,12 +48,23 @@ module ChefSpec
     # @param [array] recipe_names The names of the recipes to execute
     def converge(*recipe_names)
       recipe_names.each do |recipe_name|
-        @client.node.run_list << recipe_name
+        @node.run_list << recipe_name
+      end
+
+      @client.instance_eval do
+        if defined?(@expanded_run_list_with_versions) # 0.10.x
+          @run_list_expansion = @node.expand!('disk')
+          @expanded_run_list_with_versions = @run_list_expansion.recipes.with_version_constraints_strings
+        end
       end
 
       @resources = []
-      run_context = Chef::RunContext.new(@client.node, Chef::CookbookCollection.new(Chef::CookbookLoader.new))
 
+      if @client.respond_to?(:setup_run_context) # 0.10.x
+        run_context = @client.setup_run_context
+      else
+        run_context = Chef::RunContext.new(@client.node, Chef::CookbookCollection.new(Chef::CookbookLoader.new)) # 0.9.x
+      end
       runner = Chef::Runner.new(run_context)
       runner.converge
     end
@@ -79,7 +91,7 @@ module ChefSpec
     #
     # @return [String] The path to the cookbooks directory
     def default_cookbook_path
-      File.join(caller(2).first.split(':').slice(0..-3).to_s, "..", "..", "..")
+      Pathname.new(File.join(caller(2).first.split(':').slice(0..-3).to_s, "..", "..", "..")).cleanpath
     end
 
     # Find the resource with the declared type and name
