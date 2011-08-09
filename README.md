@@ -7,7 +7,7 @@ to write specs that make assertions about the created resources given the combin
 attributes that you provide.
 
 # Compatibility
-**This is alpha-quality at the moment**. The API is likely to change substantially. ChefSpec currently works only with Chef 0.9.12 and has been tested on Ruby 1.8.7. It may make your machine burst into flames or install OS X Lion.
+**This is alpha-quality at the moment**. The API is likely to change substantially. ChefSpec is currently tested with Chef 0.9.12 and 0.10.2 on MRI 1.8.7 and 1.9.2. It may make your machine burst into flames or install OS X Lion.
 
 # Quick Start
 Given an existing cookbook directory structure, create a new `spec` directory within it to hold your specs.
