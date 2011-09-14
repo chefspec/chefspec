@@ -1,7 +1,7 @@
 Given /^a Chef cookbook with a recipe that logs a node attribute$/ do
   steps %q{
     Given a file named "cookbooks/example/recipes/default.rb" with:
-    """
+    """ruby
       log "The value of node.foo is: #{node.foo}"
     """
   }
@@ -10,7 +10,7 @@ end
 Given /^the recipe has a spec example that sets a node attribute$/ do
   steps %q{
     Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """
+    """ruby
       require "chefspec"
 
       describe "example::default" do
@@ -30,7 +30,7 @@ Given /^the recipe has a spec example that overrides the operating system to '([
   @operating_system = operating_system
   steps %Q{
     Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """
+    """ruby
       require "chefspec"
 
       describe "example::default" do

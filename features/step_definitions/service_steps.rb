@@ -1,7 +1,7 @@
 Given /^a Chef cookbook with a recipe that starts a service$/ do
   steps %q{
     Given a file named "cookbooks/example/recipes/default.rb" with:
-    """
+    """ruby
       service "food" do
         action :start
       end
@@ -12,7 +12,7 @@ end
 Given /^a Chef cookbook with a recipe that starts a service and enables it to start on boot$/ do
   steps %q{
     Given a file named "cookbooks/example/recipes/default.rb" with:
-    """
+    """ruby
       service "food" do
         action [:enable, :start]
       end
@@ -23,7 +23,7 @@ end
 Given /^a Chef cookbook with a recipe that stops a service$/ do
   steps %q{
     Given a file named "cookbooks/example/recipes/default.rb" with:
-    """
+    """ruby
       service "food" do
         action :stop
       end
@@ -34,7 +34,7 @@ end
 Given /^a Chef cookbook with a recipe that restarts a service$/ do
   steps %q{
     Given a file named "cookbooks/example/recipes/default.rb" with:
-    """
+    """ruby
       service "food" do
         action :restart
       end
@@ -45,7 +45,7 @@ end
 Given /^a Chef cookbook with a recipe that signals a service to reload$/ do
   steps %q{
     Given a file named "cookbooks/example/recipes/default.rb" with:
-    """
+    """ruby
       service "food" do
         action :reload
       end
@@ -56,7 +56,7 @@ end
 Given /^the recipe has a spec example that expects the service to be started$/ do
   steps %q{
     Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """
+    """ruby
       require "chefspec"
 
       describe "example::default" do
@@ -77,7 +77,7 @@ end
 Given /^the recipe has a spec example that expects the service to be started and enabled$/ do
   steps %q{
     Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """
+    """ruby
       require "chefspec"
 
       describe "example::default" do
@@ -99,7 +99,7 @@ end
 Given /^the recipe has a spec example that expects the service to be stopped$/ do
   steps %q{
     Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """
+    """ruby
       require "chefspec"
 
       describe "example::default" do
@@ -120,7 +120,7 @@ end
 Given /^the recipe has a spec example that expects the service to be restarted/ do
   steps %q{
     Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """
+    """ruby
       require "chefspec"
 
       describe "example::default" do
@@ -141,7 +141,7 @@ end
 Given /^the recipe has a spec example that expects the service to be reloaded/ do
   steps %q{
     Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """
+    """ruby
       require "chefspec"
 
       describe "example::default" do

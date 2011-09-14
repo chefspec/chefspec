@@ -1,7 +1,7 @@
 Given /^a Chef cookbook with a recipe that declares an execute resource$/ do
   steps %q{
     Given a file named "cookbooks/example/recipes/default.rb" with:
-    """
+    """ruby
       execute "print_hello_world" do
         command "echo Hello World!"
         action :run
@@ -13,7 +13,7 @@ end
 Given /^the recipe has a spec example that expects the command to be executed$/ do
   steps %q{
     Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """
+    """ruby
       require "chefspec"
 
       describe "example::default" do
@@ -34,7 +34,7 @@ end
 Given /^a Chef cookbook with a recipe that has conditional execution based on operating system$/ do
   steps %q{
     Given a file named "cookbooks/example/recipes/default.rb" with:
-    """
+    """ruby
       case node.platform
         when "leprechaun", "sprite", "balloon"
           log("I am running on the #{node.platform} platform.")
