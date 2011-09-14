@@ -33,9 +33,3 @@ Feature: Write examples for packages
     And the recipe has a spec example that expects the package to be purged
     When the recipe example is successfully run
     Then the package will not have been purged
-
-  Scenario: Execute resource
-    Given a Chef cookbook with a recipe that declares an execute resource
-    And the recipe has a spec example that expects the command to be executed
-    When the recipe example is successfully run
-    Then the command will not have been executed

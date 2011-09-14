@@ -14,15 +14,12 @@ Given /^the recipe has a spec example that sets a node attribute$/ do
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-        end
+        let(:chef_run) { ChefSpec::ChefRunner.new }
 
         it "should log the node foo" do
-          @chef_run.node.foo = 'bar'
-          @chef_run.converge "example::default"
-          @chef_run.should log "The value of node.foo is: bar"
+          chef_run.node.foo = 'bar'
+          chef_run.converge "example::default"
+          chef_run.should log "The value of node.foo is: bar"
         end
       end
     """
@@ -37,15 +34,12 @@ Given /^the recipe has a spec example that overrides the operating system to '([
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-        end
+        let(:chef_run) { ChefSpec::ChefRunner.new }
 
         it "should log the node platform" do
-          @chef_run.node.automatic_attrs['platform'] = '#{operating_system}'
-          @chef_run.converge "example::default"
-          @chef_run.should log "I am running on the #{operating_system} platform."
+          chef_run.node.automatic_attrs['platform'] = '#{operating_system}'
+          chef_run.converge "example::default"
+          chef_run.should log "I am running on the #{operating_system} platform."
         end
       end
     """

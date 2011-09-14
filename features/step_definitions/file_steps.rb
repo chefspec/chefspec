@@ -228,8 +228,3 @@ end
 Then /^the directory will not have had its ownership changed$/ do
   @original_stat.should eql(owner_and_group 'foo')
 end
-
-def owner_and_group(path)
-  stat = File.stat(File.join(current_dir, path))
-  {:gid => stat.gid, :uid => stat.uid}
-end
