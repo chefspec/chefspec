@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'chefspec'
 
 # If an RSpec Matcher is defined
