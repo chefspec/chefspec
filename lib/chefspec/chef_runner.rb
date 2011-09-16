@@ -18,8 +18,13 @@ module ChefSpec
 
     # Instantiate a new runner to run examples with.
     #
-    # @param [string] cookbook_path The path to the chef cookbook(s) to be tested
-    def initialize(cookbook_path=default_cookbook_path)
+    # @param [Hash] options The options for the new runner
+    # @option options [String] :cookbook_path The path to the chef cookbook(s) to be tested.
+    # @option options [Symbol] :log_level The log level to use (default is :warn)
+    def initialize(options={})
+      defaults = {:cookbook_path => default_cookbook_path, :log_level => :warn}
+      options = defaults.merge(options)
+
       the_runner = self
       @resources = []
 
@@ -43,11 +48,11 @@ module ChefSpec
       end
 
       Chef::Config[:solo] = true
-      Chef::Config[:cookbook_path] = cookbook_path
+      Chef::Config[:cookbook_path] = options[:cookbook_path]
       Chef::Log.verbose = true if Chef::Log.respond_to?(:verbose)
-      Chef::Log.level(:debug)
+      Chef::Log.level(options[:log_level])
       @client = Chef::Client.new
-      @client.run_ohai
+      fake_ohai(@client.ohai)
       @node = @client.build_node
     end
 
@@ -67,7 +72,6 @@ module ChefSpec
       end
 
       @resources = []
-
       if @client.respond_to?(:setup_run_context) # 0.10.x
         run_context = @client.setup_run_context
       else
@@ -94,6 +98,19 @@ module ChefSpec
     end
 
     private
+
+    # Populate basic OHAI attributes required to get recipes working. This is a minimal set - if your recipe example
+    # does conditional execution based on these values or additional attributes you can set these via
+    # node.automatic_attrs.
+    #
+    # @param [Ohai::System] ohai The ohai instance to set fake attributes on
+    def fake_ohai(ohai)
+      {:os => 'chefspec', :os_version => ChefSpec::VERSION, :fqdn => 'chefspec.local', :domain => 'local',
+       :ipaddress => '127.0.0.1', :hostname => 'chefspec',
+       :kernel => Mash.new({:machine => 'i386'})}.each_pair do |attribute,value|
+        ohai[attribute] = value
+      end
+    end
 
     # Infer the default cookbook path from the location of the calling spec.
     #

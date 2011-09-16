@@ -10,7 +10,7 @@ end
 
 group :development do
   gem 'guard', '>= 0.7.0'
-  gem 'guard-cucumber'
+  gem 'guard-cucumber', '>= 0.6.3'
   gem 'guard-rspec', '>= 0.4.5'
   gem "rake", '>= 0.8.7'
   gem "yard", '>= 0.7.2'

@@ -144,7 +144,7 @@ There are further examples of using ChefSpec in the `features` directory.
 # Building
 
     $ bundle install
-    $ rake
+    $ bundle exec rake
 
 # Continuous Integration
 [Chefspec on Travis CI](http://travis-ci.org/acrmp/chefspec)

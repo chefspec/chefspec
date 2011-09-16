@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module ChefSpec
-  module Matchers
+  module MonkeyPatches
     describe :Hash do
       describe "#has_key?" do
         it "should allow a hash key to be referenced like a method" do

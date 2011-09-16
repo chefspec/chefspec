@@ -13,8 +13,15 @@ module ChefSpec
         Chef::Config[:cookbook_path].should_not be_nil
       end
       it "should set the chef cookbook path to any provided value" do
-        ChefSpec::ChefRunner.new '/tmp/foo'
+        ChefSpec::ChefRunner.new(:cookbook_path => '/tmp/foo')
         Chef::Config[:cookbook_path].should eql '/tmp/foo'
+      end
+      it "should default the log_level to warn" do
+        Chef::Log.level.should eql :warn
+      end
+      it "should set the log_level to any provided value" do
+        ChefSpec::ChefRunner.new(:log_level => :info)
+        Chef::Log.level.should eql :info
       end
       it "should alias the real resource actions" do
         ChefSpec::ChefRunner.new
@@ -26,6 +33,16 @@ module ChefSpec
         file.run_action(:create)
         runner.resources.size.should == 1
         runner.resources.first.should equal(file)
+      end
+      context "default ohai attributes" do
+        let(:node){ChefSpec::ChefRunner.new.node}
+        specify{node.os.should == 'chefspec'}
+        specify{node.os_version.should == ChefSpec::VERSION}
+        specify{node.fqdn.should == 'chefspec.local'}
+        specify{node.domain.should == 'local'}
+        specify{node.ipaddress.should == '127.0.0.1'}
+        specify{node.hostname.should == 'chefspec'}
+        specify{node.kernel.machine.should == 'i386'}
       end
     end
     describe "#converge" do
