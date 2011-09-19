@@ -34,6 +34,10 @@ module ChefSpec
         runner.resources.size.should == 1
         runner.resources.first.should equal(file)
       end
+      it "should accept a block to set node attributes" do
+        runner = ChefSpec::ChefRunner.new() {|node| node[:foo] = 'baz'}
+        runner.node.foo.should == 'baz'
+      end
       context "default ohai attributes" do
         let(:node){ChefSpec::ChefRunner.new.node}
         specify{node.os.should == 'chefspec'}

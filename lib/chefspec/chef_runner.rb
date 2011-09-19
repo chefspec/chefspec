@@ -21,6 +21,7 @@ module ChefSpec
     # @param [Hash] options The options for the new runner
     # @option options [String] :cookbook_path The path to the chef cookbook(s) to be tested.
     # @option options [Symbol] :log_level The log level to use (default is :warn)
+    # @yield [node] Configuration block for Chef::Node
     def initialize(options={})
       defaults = {:cookbook_path => default_cookbook_path, :log_level => :warn}
       options = defaults.merge(options)
@@ -54,6 +55,9 @@ module ChefSpec
       @client = Chef::Client.new
       fake_ohai(@client.ohai)
       @node = @client.build_node
+      if block_given?
+        yield @node
+      end
     end
 
     # Run the specified recipes, but without actually converging the node.

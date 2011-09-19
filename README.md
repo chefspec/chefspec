@@ -39,7 +39,7 @@ This is a recipe that installs the foo package, and the matching example that ex
 
 ## Setting node attributes
 
-ChefSpec lets you override node attributes (including [OHAI](http://wiki.opscode.com/display/chef/Ohai) attributes) as
+ChefSpec lets you set node attributes (including [OHAI](http://wiki.opscode.com/display/chef/Ohai) attributes) as
 you'd expect:
 
     it "should log the node platform" do
@@ -47,6 +47,13 @@ you'd expect:
       @chef_run.node.foo = "bar"
       @chef_run.converge "example::default"
       @chef_run.should log "The value of node.foo is: bar"
+    end
+
+You can also pass a block to set the node attributes:
+
+    runner = ChefSpec::ChefRunner.new() do |node|
+      node[:my_attribute] = 'bar'
+      node[:my_other_attribute] = 'bar2'
     end
 
 # Matchers
