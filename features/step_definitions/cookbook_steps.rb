@@ -14,7 +14,7 @@ Given /^the recipe has a spec example that sets a node attribute$/ do
       require "chefspec"
 
       describe "example::default" do
-        let(:chef_run) { ChefSpec::ChefRunner.new(:log_level => :info) }
+        let(:chef_run) { ChefSpec::ChefRunner.new(:log_level => :debug) }
 
         it "should log the node foo" do
           chef_run.node.foo = 'bar'
@@ -34,7 +34,7 @@ Given /^the recipe has a spec example that overrides the operating system to '([
       require "chefspec"
 
       describe "example::default" do
-        let(:chef_run) { ChefSpec::ChefRunner.new(:log_level => :info) }
+        let(:chef_run) { ChefSpec::ChefRunner.new(:log_level => :debug) }
 
         it "should log the node platform" do
           chef_run.node.automatic_attrs['platform'] = '#{operating_system}'

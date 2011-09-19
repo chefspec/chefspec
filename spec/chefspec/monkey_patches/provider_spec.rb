@@ -21,7 +21,7 @@ module ChefSpec
     end
     describe "#build_from_file" do
       it "should wrap the existing chef build_from_file method" do
-        Chef::Provider.methods.should include :old_build_from_file
+        Chef::Provider.methods.map{|method| method.to_sym}.should include :old_build_from_file
       end
     end
   end
