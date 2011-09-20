@@ -83,6 +83,7 @@ module ChefSpec
       end
       runner = Chef::Runner.new(run_context)
       runner.converge
+      self
     end
 
     # Find any directory declared with the given path

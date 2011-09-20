@@ -54,6 +54,9 @@ module ChefSpec
         expect { ChefSpec::ChefRunner.new.converge('non_existent::default') }.to raise_error
             (Chef::Exceptions::CookbookNotFound)
       end
+      it "should return a reference to the runner" do
+        ChefSpec::ChefRunner.new.converge.respond_to?(:resources).should be_true
+      end
     end
     describe "#node" do
       it "should allow attributes to be set on the node" do
