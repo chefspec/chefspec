@@ -16,6 +16,11 @@ module ChefSpec
         ChefSpec::ChefRunner.new(:cookbook_path => '/tmp/foo')
         Chef::Config[:cookbook_path].should eql '/tmp/foo'
       end
+      it "should support the chef cookbook path being passed as a string for backwards compatibility" do
+        Chef::Config[:cookbook_path] = nil
+        ChefSpec::ChefRunner.new('/tmp/bar')
+        Chef::Config[:cookbook_path].should eql '/tmp/bar'
+      end
       it "should default the log_level to warn" do
         Chef::Log.level.should eql :warn
       end
