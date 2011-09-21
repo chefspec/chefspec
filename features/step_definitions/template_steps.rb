@@ -20,14 +20,9 @@ Given /^the recipe has a spec example that expects the template to be rendered$/
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should create a file with the node platform" do
-          @chef_run.should create_file("platform.txt")
+          chef_run.should create_file 'platform.txt'
         end
       end
     """

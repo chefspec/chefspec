@@ -17,14 +17,9 @@ Given /^the recipe has a spec example that expects the command to be executed$/ 
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should print hello world" do
-          @chef_run.should execute_command "echo Hello World!"
+          chef_run.should execute_command 'echo Hello World!'
         end
       end
     """

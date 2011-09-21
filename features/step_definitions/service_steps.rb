@@ -60,14 +60,9 @@ Given /^the recipe has a spec example that expects the service to be started$/ d
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should ensure the food service is started" do
-          @chef_run.should start_service "food"
+          chef_run.should start_service 'food'
         end
       end
     """
@@ -81,15 +76,10 @@ Given /^the recipe has a spec example that expects the service to be started and
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should ensure the food service is started and enabled" do
-          @chef_run.should start_service "food"
-          @chef_run.should set_service_to_start_on_boot "food"
+          chef_run.should start_service 'food'
+          chef_run.should set_service_to_start_on_boot 'food'
         end
       end
     """
@@ -103,14 +93,9 @@ Given /^the recipe has a spec example that expects the service to be stopped$/ d
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should ensure the food service is stopped" do
-          @chef_run.should stop_service "food"
+          chef_run.should stop_service 'food'
         end
       end
     """
@@ -124,14 +109,9 @@ Given /^the recipe has a spec example that expects the service to be restarted/ 
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should ensure the food service is restarted" do
-          @chef_run.should restart_service "food"
+          chef_run.should restart_service 'food'
         end
       end
     """
@@ -145,14 +125,9 @@ Given /^the recipe has a spec example that expects the service to be reloaded/ d
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should ensure the food service is reloaded" do
-          @chef_run.should reload_service "food"
+          chef_run.should reload_service 'food'
         end
       end
     """

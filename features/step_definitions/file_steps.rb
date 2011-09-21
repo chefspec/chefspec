@@ -87,13 +87,9 @@ Given /^the recipe has a spec example that expects the file to be declared$/ do
       require "chefspec"
 
       describe "example::default" do
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should create hello-world.txt" do
-          @chef_run.should create_file "hello-world.txt"
+          chef_run.should create_file 'hello-world.txt'
         end
       end
     """
@@ -107,14 +103,9 @@ Given /^the recipe has a spec example that expects the file to be deleted$/ do
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should delete hello-world.txt" do
-          @chef_run.should delete_file "hello-world.txt"
+          chef_run.should delete_file 'hello-world.txt'
         end
       end
     """
@@ -128,14 +119,9 @@ Given /^the recipe has a spec example that expects the directory to be created/ 
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should create the directory" do
-          @chef_run.should create_directory "foo"
+          chef_run.should create_directory 'foo'
         end
       end
     """
@@ -149,14 +135,9 @@ Given /^the recipe has a spec example that expects the directory to be deleted/ 
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should delete the directory" do
-          @chef_run.should delete_directory "foo"
+          chef_run.should delete_directory 'foo'
         end
       end
     """
@@ -170,14 +151,9 @@ Given /^the recipe has a spec example that expects the file to be set to be owne
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should set file ownership" do
-          @chef_run.file("hello-world.txt").should be_owned_by("user", "group")
+          chef_run.file('hello-world.txt').should be_owned_by('user', 'group')
         end
       end
     """
@@ -191,14 +167,9 @@ Given /^the recipe has a spec example that expects the directory to be set to be
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should set directory ownership" do
-          @chef_run.directory("foo").should be_owned_by("user", "group")
+          chef_run.directory('foo').should be_owned_by('user', 'group')
         end
       end
     """

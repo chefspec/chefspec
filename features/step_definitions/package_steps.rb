@@ -61,14 +61,9 @@ Given /^the recipe has a spec example that expects the package to be installed$/
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should install package_does_not_exist" do
-          @chef_run.should install_package "package_does_not_exist"
+          chef_run.should install_package 'package_does_not_exist'
         end
       end
     """
@@ -82,14 +77,9 @@ Given /^the recipe has a spec example that expects the package to be upgraded/ d
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should upgrade package_does_not_exist" do
-          @chef_run.should upgrade_package "package_does_not_exist"
+          chef_run.should upgrade_package 'package_does_not_exist'
         end
       end
     """
@@ -103,14 +93,9 @@ Given /^the recipe has a spec example that expects the package to be removed$/ d
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should remove package_does_not_exist" do
-          @chef_run.should remove_package "package_does_not_exist"
+          chef_run.should remove_package 'package_does_not_exist'
         end
       end
     """
@@ -124,14 +109,9 @@ Given /^the recipe has a spec example that expects the package to be purged/ do
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should purge package_does_not_exist" do
-          @chef_run.should purge_package "package_does_not_exist"
+          chef_run.should purge_package 'package_does_not_exist'
         end
       end
     """
@@ -145,14 +125,9 @@ Given /^the recipe has a spec example that expects the package to be installed a
       require "chefspec"
 
       describe "example::default" do
-
-        before(:all) do
-          @chef_run = ChefSpec::ChefRunner.new
-          @chef_run.converge "example::default"
-        end
-
+        let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should install package_does_not_exist at a specific version" do
-          @chef_run.should install_package_at_version "package_does_not_exist", "1.2.3"
+          chef_run.should install_package_at_version 'package_does_not_exist', '1.2.3'
         end
       end
     """
