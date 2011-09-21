@@ -159,5 +159,8 @@ There are further examples of using ChefSpec in the `features` directory.
 # License
 MIT - see the accompanying LICENSE file for details.
 
+# Changelog
+To see what has changed in recent versions see the [CHANGELOG](https://github.com/acrmp/chefspec/blob/master/CHANGELOG.md)
+
 # Contributing
 Additional matchers and bugfixes are welcome! Please fork and submit a pull request on an individual branch per change.
