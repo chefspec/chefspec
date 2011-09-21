@@ -89,5 +89,27 @@ module ChefSpec
         runner.directory('/tmp').should be
       end
     end
+    describe "#to_s" do
+      let(:chef_run) { ChefSpec::ChefRunner.new(:dry_run => true) }
+      it "should override the default string representation to something readable" do
+        chef_run.converge('apache2::default').to_s.should == 'chef_run: recipe[apache2::default]'
+      end
+      it "should be ok when a convergence has not yet taken place" do
+        chef_run.to_s.should == 'chef_run'
+      end
+      it "should not include node attributes" do
+        chef_run.node.foo = 'bar'
+        chef_run.node.automatic_attrs[:platform] = 'solaris'
+        chef_run.converge('apache2::default').to_s.should == 'chef_run: recipe[apache2::default]'
+      end
+      it "should include the entire run_list" do
+        chef_run.converge('apache2::default', 'apache2::mod_ssl').to_s
+          .should == 'chef_run: recipe[apache2::default], recipe[apache2::mod_ssl]'
+      end
+      it "should have the run_list only for the last convergence" do
+        ['mysql::client', 'mysql::server'].each {|recipe| chef_run.converge recipe}
+        chef_run.to_s.should == 'chef_run: recipe[mysql::server]'
+      end
+    end
   end
 end

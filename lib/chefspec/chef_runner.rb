@@ -23,11 +23,12 @@ module ChefSpec
     # @option options [Symbol] :log_level The log level to use (default is :warn)
     # @yield [node] Configuration block for Chef::Node
     def initialize(options={})
-      defaults = {:cookbook_path => default_cookbook_path, :log_level => :warn}
+      defaults = {:cookbook_path => default_cookbook_path, :log_level => :warn, :dry_run => false}
       options = defaults.merge(options)
 
       the_runner = self
       @resources = []
+      @do_dry_run = options[:dry_run]
 
       Chef::Resource.class_eval do
         alias :old_run_action :run_action
@@ -63,10 +64,13 @@ module ChefSpec
     # Run the specified recipes, but without actually converging the node.
     #
     # @param [array] recipe_names The names of the recipes to execute
+    # @return ChefSpec::ChefRunner The runner itself
     def converge(*recipe_names)
+      @node.run_list.reset!
       recipe_names.each do |recipe_name|
         @node.run_list << recipe_name
       end
+      return self if @do_dry_run
 
       @client.instance_eval do
         if defined?(@expanded_run_list_with_versions) # 0.10.x
@@ -100,6 +104,14 @@ module ChefSpec
     # @return [Chef::Resource::Directory] The matching file, or Nil
     def file(path)
       find_resource('file', path)
+    end
+
+    # This runner as a string.
+    #
+    # @return [String] Currently includes the run_list. Format of the string may change between versions of this gem.
+    def to_s
+      return "chef_run: #{@node.run_list.to_s}" unless @node.run_list.empty?
+      'chef_run'
     end
 
     private
