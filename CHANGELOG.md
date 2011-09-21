@@ -1,3 +1,8 @@
+## 0.2.1 (September 21, 2011)
+Bugfixes:
+
+  - Fixed typo in 0.2.0 botched release. Pro-tip: run your tests.
+
 ## 0.2.0 (September 21, 2011)
 
 Features:

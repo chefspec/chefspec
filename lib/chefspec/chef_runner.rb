@@ -24,7 +24,7 @@ module ChefSpec
     # @yield [node] Configuration block for Chef::Node
     def initialize(options={})
       defaults = {:cookbook_path => default_cookbook_path, :log_level => :warn, :dry_run => false}
-      options = {:cookbook_path => options} unless options.respond_to(:to_hash) # backwards-compatibility
+      options = {:cookbook_path => options} unless options.respond_to?(:to_hash) # backwards-compatibility
       options = defaults.merge(options)
 
       the_runner = self

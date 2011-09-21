@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    chefspec (0.2.0)
+    chefspec (0.2.1)
       chef (>= 0.9.12, ~> 0.10)
       rspec (>= 2.6.0)
 
