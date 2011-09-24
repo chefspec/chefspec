@@ -1,10 +1,12 @@
-Given /^a Chef cookbook with a recipe that declares a file resource$/ do
-  steps %q{
+Given /^a Chef cookbook with a recipe that declares a file resource( and sets the contents)?$/ do |sets_contents|
+  file_contents = sets_contents.nil? ? '' : 'content "hello world!"'
+  steps %Q{
     Given a file named "cookbooks/example/recipes/default.rb" with:
     """ruby
       file "hello-world.txt" do
         content "hello world"
         action :create
+        #{file_contents}
       end
     """
   }
@@ -90,6 +92,22 @@ Given /^the recipe has a spec example that expects the file to be declared$/ do
         let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should create hello-world.txt" do
           chef_run.should create_file 'hello-world.txt'
+        end
+      end
+    """
+  }
+end
+
+Given /^the recipe has a spec example of the file contents$/ do
+  steps %q{
+    Given a file named "cookbooks/example/spec/default_spec.rb" with:
+    """ruby
+      require "chefspec"
+
+      describe "example::default" do
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
+        it "should create hello-world.txt" do
+          chef_run.should create_file_with_content 'hello-world.txt', 'hello world!'
         end
       end
     """

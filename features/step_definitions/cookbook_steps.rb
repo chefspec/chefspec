@@ -51,6 +51,16 @@ When /^the recipe example is successfully run$/ do
   }
 end
 
+When /^the recipe example is unsuccessfully run$/ do
+  steps %q{
+    When I run `rspec cookbooks/example/spec/`
+    Then it should fail with:
+  """
+  No such file or directory
+  """
+  }
+end
+
 Then /^the recipe will see the node attribute set in the spec example$/ do
   Then %q{the stdout should contain "Processing log[The value of node.foo is: bar]"}
 end

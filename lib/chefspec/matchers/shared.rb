@@ -31,3 +31,23 @@ def define_resource_matchers(actions, resource_types, name_attribute)
     end
   end
 end
+
+# Render a template.
+#
+# @param [Chef::Resource::Template] template The template to render
+# @param [Chef::Node] node The node which may be required to render the template
+# @return [String] The result result of rendering the template
+def render(template, node)
+  # Duplicates functionality in the Chef Template provider
+  context = {}; context.merge!(template.variables)
+  context[:node] = node
+  Erubis::Eruby.new(IO.read(template_path(template))).evaluate(context)
+end
+
+# Given a template, return the path on disk.
+#
+# @param [Chef::Resource::Template] template The template
+# @return [String] The path on disk
+def template_path(template)
+  File.join("cookbooks/#{template.cookbook || template.cookbook_name}/templates/default", template.source)
+end

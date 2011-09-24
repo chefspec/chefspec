@@ -3,6 +3,7 @@ PATH
   specs:
     chefspec (0.2.1)
       chef (>= 0.9.12, ~> 0.10)
+      erubis
       rspec (>= 2.6.0)
 
 GEM

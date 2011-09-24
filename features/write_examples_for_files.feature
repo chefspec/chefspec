@@ -10,6 +10,12 @@ Feature: Write examples for files
     When the recipe example is successfully run
     Then the file will not have been created
 
+  Scenario: File resource content
+    Given a Chef cookbook with a recipe that declares a file resource and sets the contents
+    And the recipe has a spec example of the file contents
+    When the recipe example is successfully run
+    Then the file will not have been created
+
   Scenario: Delete a file
     Given a Chef cookbook with a recipe that deletes a file
     And the recipe has a spec example that expects the file to be deleted

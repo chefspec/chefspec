@@ -13,5 +13,6 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.files = Dir['lib/**/*.rb']
   s.add_dependency('chef', chef_version)
+  s.add_dependency('erubis', '>= 0')
   s.add_dependency('rspec', '>= 2.6.0')
 end
