@@ -2,7 +2,7 @@
 class Chef
   class Provider
     class << self
-      alias :old_build_from_file :build_from_file
+      alias_method :old_build_from_file, :build_from_file
 
       def build_from_file(cookbook_name, filename, run_context)
         remove_existing_lwrp(convert_to_class_name(filename_to_qualified_string(cookbook_name, filename)))
