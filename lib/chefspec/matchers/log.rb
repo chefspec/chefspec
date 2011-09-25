@@ -1,6 +1,7 @@
 require 'chefspec/matchers/shared'
 
 module ChefSpec
+  # RSpec Matchers
   module Matchers
     RSpec::Matchers.define :log do |message|
       match do |chef_run|
