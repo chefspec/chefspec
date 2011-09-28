@@ -36,7 +36,7 @@ if Chef.const_defined? :Knife
             raise ArgumentError, "Default cookbook_path is not specified in the knife.rb config file, and a value to -o is not provided. Nowhere to write the new cookbook to."
           end
 
-          create_spec(Array(config[:cookbook_path]).first, @name_args.first)
+          create_specs(Array(config[:cookbook_path]).first, @name_args.first)
         end
 
         private
@@ -48,30 +48,52 @@ if Chef.const_defined? :Knife
           Chef::Config[:cookbook_path].nil? || Chef::Config[:cookbook_path].empty?
         end
 
-        # Create a placeholder spec for the new cookbook.
+        # Create placeholder specs for the cookbook.
         #
-        # @param [String] dir The directory to create the cookbook in
-        # @param [String] cookbook_name The name of the cookbook
-        def create_spec(dir, cookbook_name)
-          spec_dir = "#{File.join(dir, cookbook_name, 'spec')}"
+        # @param [String] dir The directory to create the specs in
+        # @param [String] cookbook The name of the cookbook
+        # @param [String] recipe The name of the recipe to create a spec for
+        def create_specs(dir, cookbook)
+          spec_dir = "#{File.join(dir, cookbook, 'spec')}"
           FileUtils.mkdir_p spec_dir
-          msg("** Creating spec for cookbook: #{cookbook_name}")
-          unless File.exists?(File.join(spec_dir, "default_spec.rb"))
-            open(File.join(spec_dir, "default_spec.rb"), "w") do |file|
-              file.puts spec_file_content(cookbook_name)
+          msg("** Creating specs for cookbook: #{cookbook}")
+          existing_recipes(dir, cookbook).each do |recipe|
+            create_spec(spec_dir, cookbook, recipe)
+          end
+        end
+
+        # The list of recipes for a cookbook
+        #
+        # @param [String] dir The directory
+        # @param [String] cookbook The name of the cookbook
+        # @return [Array] The list of recipes for the cookbook
+        def existing_recipes(dir, cookbook)
+          Dir[File.join(dir, cookbook, 'recipes/*.rb')].map{|recipe| File.basename recipe, '.rb'}
+        end
+
+        # Create a placeholder spec for the cookbook.
+        #
+        # @param [String] spec_dir The directory to create the specs in
+        # @param [String] cookbook The name of the cookbook
+        # @param [String] recipe The name of the recipe to create a spec for
+        def create_spec(spec_dir, cookbook, recipe)
+          unless File.exists?(File.join(spec_dir, "#{recipe}_spec.rb"))
+            open(File.join(spec_dir, "#{recipe}_spec.rb"), "w") do |file|
+              file.puts spec_file_content(cookbook, recipe)
             end
           end
         end
 
         # Generate the content for the placeholder spec file.
         #
-        # @param [String] cookbook_name The name of the cookbook
-        def spec_file_content(cookbook_name)
+        # @param [String] cookbook The name of the cookbook
+        # @param [String] recipe The name of the recipe
+        def spec_file_content(cookbook, recipe)
           return <<-EOH
 require 'chefspec'
 
-describe '#{cookbook_name}::default' do
-  let (:chef_run) { ChefSpec::ChefRunner.new.converge '#{cookbook_name}::default' }
+describe '#{cookbook}::#{recipe}' do
+  let (:chef_run) { ChefSpec::ChefRunner.new.converge '#{cookbook}::#{recipe}' }
   it 'should do something' do
     pending 'Your recipe examples go here.'
   end

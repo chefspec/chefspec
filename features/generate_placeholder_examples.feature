@@ -23,3 +23,15 @@ Feature: Generate placeholder examples
      Then a placeholder example will be generated to describe the generated default recipe
       And the example when run will be pending
 
+  Scenario: Attempt generation for a cookbook with existing examples
+    Given a workstation with a Chef admin client
+      And an existing cookbook with an example
+     When I issue the command to generate placeholder examples
+     Then the existing example will not be overwritten
+
+  Scenario: Generate examples for existing cookbook
+    Given a workstation with a Chef admin client
+      And an existing cookbook with three recipes but no examples
+     When I issue the command to generate placeholder examples
+     Then a placeholder example will be generated for each recipe
+
