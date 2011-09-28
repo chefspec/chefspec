@@ -30,7 +30,7 @@ Given /^an existing cookbook with an example$/ do
   }
 end
 
-Given /^an existing cookbook with three recipes but no examples$/ do
+Given /^an existing cookbook with four recipes but no examples$/ do
   ['default', 'chicken_tikka_masala', 'fish_and_chips', 'yorkshire_pudding'].each do |recipe|
     steps %Q{
       Given a file named "cookbooks/my_existing_cookbook/recipes/#{recipe}.rb" with:

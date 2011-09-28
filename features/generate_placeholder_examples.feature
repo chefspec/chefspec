@@ -31,7 +31,7 @@ Feature: Generate placeholder examples
 
   Scenario: Generate examples for existing cookbook
     Given a workstation with a Chef admin client
-      And an existing cookbook with three recipes but no examples
+      And an existing cookbook with four recipes but no examples
      When I issue the command to generate placeholder examples
      Then a placeholder example will be generated for each recipe
 
