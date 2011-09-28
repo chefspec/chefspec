@@ -1,3 +1,4 @@
+@requires_chef_10
 Feature: Generate placeholder examples
 
   In order to encourage cookbooks to have examples
