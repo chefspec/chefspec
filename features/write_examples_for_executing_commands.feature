@@ -1,8 +1,6 @@
 Feature: Write examples for executing commands
 
-  In order to receive fast feedback when developing recipes
-  As a developer
-  I want to be able to test execute resources without actually converging a node
+      chef_run.should execute_command "whoami"
 
   Scenario: Execute resource
     Given a Chef cookbook with a recipe that declares an execute resource

@@ -59,11 +59,11 @@ Then /^a command will exist to specify that a placeholder example should be gene
   }
 end
 
-When /^I issue the command to create a new cookbook( specifying that an example should be generated)?$/ do |do_generate|
-  steps %Q{
-    When I successfully run `knife cookbook create -o . my_new_cookbook`
+When /^I issue the commands? to create a new cookbook( specifying that an example should be generated)?:$/ do |do_generate,command|
+  command.split("\n").each do |cmd|
+    run_simple(unescape(cmd))
+  end
     #{'When I successfully run `knife cookbook create_specs -o . my_new_cookbook`' unless do_generate.nil?}
-  }
 end
 
 When /^I issue the command to generate placeholder examples$/ do

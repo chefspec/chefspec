@@ -1,8 +1,8 @@
 Feature: Write examples for templates
 
-  In order to receive fast feedback when developing recipes
-  As a developer
-  I want to be able to test template resources without actually converging a node
+  Very handy for verifying that the result of rendering a template to generate a config file is what you expect:
+
+      chef_run.should create_file_with_content('/etc/foo', expected_content)
 
   Scenario: Template resource
     Given a Chef cookbook with a recipe that declares a template resource

@@ -1,8 +1,19 @@
 Feature: Write examples for services
 
-  In order to receive fast feedback when developing recipes
-  As a developer
-  I want to be able to test service resources without actually converging a node
+  Services may be created by OS packages, but this matcher only knows about services declared explicitly within your
+  Chef recipe.
+
+  Express an expectation that a service will be started:
+
+      chef_run.should start_service 'food'
+
+  Will it come up if we bounce the box?
+
+      chef_run.should set_service_to_start_on_boot 'food'
+
+  Many daemons need a prompt to reload their config and you should check for this:
+
+      chef_run.should reload_service 'food'
 
   Scenario: Start a service
     Given a Chef cookbook with a recipe that starts a service

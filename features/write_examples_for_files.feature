@@ -1,8 +1,16 @@
 Feature: Write examples for files
 
-  In order to receive fast feedback when developing recipes
-  As a developer
-  I want to be able to test file resources without actually converging a node
+  ChefSpec lets you express expectations about files and directories created by your recipes. This won't work for files
+  or directories that are not explicitly declared in the recipe, for example directories created by the installation of
+  a new package.
+
+  Check that a directory has been created:
+
+      chef_run.should create_directory '/var/lib/foo'
+
+  Check that a file has the correct ownership:
+
+      chef_run.file('/var/log/bar.log').should be_owned_by('user', 'group')
 
   Scenario: File resource
     Given a Chef cookbook with a recipe that declares a file resource

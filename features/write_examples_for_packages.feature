@@ -1,8 +1,8 @@
 Feature: Write examples for packages
 
-  In order to receive fast feedback when developing recipes
-  As a developer
-  I want to be able to test package resources without actually converging a node
+  Express an expectation that a package will be installed:
+
+      chef_run.should install_package 'foo'
 
   Scenario: Package resource
     Given a Chef cookbook with a recipe that declares a package resource
