@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    chefspec (0.2.1)
+    chefspec (0.3.0)
       chef (>= 0.9.12, ~> 0.10)
       erubis
       rspec (>= 2.6.0)
@@ -18,7 +18,7 @@ GEM
     bcat (0.6.2)
       rack (~> 1.0)
     builder (3.0.0)
-    bunny (0.7.5)
+    bunny (0.7.6)
     chef (0.10.4)
       bunny (>= 0.6.0)
       erubis

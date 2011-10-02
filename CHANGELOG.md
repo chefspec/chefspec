@@ -1,3 +1,9 @@
+## 0.3.0 (October 2, 2011)
+Features:
+
+  - [Added new matcher](https://www.relishapp.com/acrmp/chefspec/docs/write-examples-for-templates) `create_file_with_content` for verifying Chef `template` resource generated content.
+  - [Knife plugin](https://www.relishapp.com/acrmp/chefspec/docs/generate-placeholder-examples) added to generate placeholder examples.
+
 ## 0.2.1 (September 21, 2011)
 Bugfixes:
 
