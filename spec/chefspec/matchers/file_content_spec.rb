@@ -37,6 +37,10 @@ module ChefSpec
           matcher.matches?({:resources => [{:resource_name => 'file', :name => '/etc/config_file',
                                             :content => 'platform: chefspec', :action => [:create]}]}).should be true
         end
+        it "should match a file resource with the right path and content somewhere in the file" do
+          matcher.matches?({:resources => [{:resource_name => 'file', :name => '/etc/config_file',
+                                            :content => "fqdn: chefspec.local\nplatform: chefspec\nhostname: chefspec", :action => [:create]}]}).should be true
+        end
         it "should match a file resource create_if_missing with the right content and path" do
           matcher.matches?({:resources => [{:resource_name => 'file', :name => '/etc/config_file',
                                             :content => 'platform: chefspec',

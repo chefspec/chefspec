@@ -13,7 +13,7 @@ module ChefSpec
                   content == @actual_content
                 when 'file'
                   @actual_content = resource.content
-                  content == @actual_content
+                  @actual_content.to_s.include? content
               end
             end
           end
