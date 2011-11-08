@@ -10,7 +10,7 @@ module ChefSpec
               case resource_type(resource)
                 when 'template'
                   @actual_content = render(resource, chef_run.node)
-                  content == @actual_content
+                  @actual_content.to_s.include? content
                 when 'file'
                   @actual_content = resource.content
                   @actual_content.to_s.include? content
