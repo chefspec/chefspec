@@ -70,11 +70,23 @@ module ChefSpec
         runner.node.foo.should eq 'bar'
       end
     end
+    describe "#template" do
+      it "should not return a resource when the file has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.template('/tmp/foo.txt').should_not be
+      end
+      it "should return a resource when the file has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'template', :name => '/tmp/foo.txt'}]
+        runner.template('/tmp/foo.txt').should be
+      end
+    end
     describe "#file" do
       it "should not return a resource when the file has not been declared" do
         runner = ChefSpec::ChefRunner.new
         runner.resources = []
-        runner.directory('/tmp/foo.txt').should_not be
+        runner.file('/tmp/foo.txt').should_not be
       end
       it "should return a resource when the file has been declared" do
         runner = ChefSpec::ChefRunner.new

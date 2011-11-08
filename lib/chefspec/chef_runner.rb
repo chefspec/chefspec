@@ -107,6 +107,14 @@ module ChefSpec
       find_resource('file', path)
     end
 
+    # Find any template declared with the given path
+    #
+    # @param [String] path The template path
+    # @return [Chef::Resource::Directory] The matching template, or Nil
+    def template(path)
+      find_resource('template', path)
+    end
+
     # This runner as a string.
     #
     # @return [String] Currently includes the run_list. Format of the string may change between versions of this gem.

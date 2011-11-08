@@ -8,7 +8,7 @@ module ChefSpec
     RSpec::Matchers.define :install_package_at_version do |package_name, version|
       match do |chef_run|
        chef_run.resources.any? do |resource|
-          resource_type(resource) == 'package' and resource.package_name == package_name and resource.action.include? :install and resource.version == version
+          resource_type(resource) == 'package' and resource.package_name == package_name and resource.action.to_s.include? 'install' and resource.version == version
         end
       end
     end

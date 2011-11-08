@@ -13,13 +13,13 @@ module ChefSpec
             :source => 'config.conf.erb'}]}).should be false
         end
         it "should not match if is a different package and an unspecified version" do
-          matcher.matches?({:resources => [{:resource_name => 'package', :package_name => 'bar', :version => nil, :action => [:install]}]}).should be false
+          matcher.matches?({:resources => [{:resource_name => 'package', :package_name => 'bar', :version => nil, :action => :install}]}).should be false
         end
         it "should not match if it is the same package and version but a different action" do
-          matcher.matches?({:resources => [{:resource_name => 'package', :package_name => 'foo', :version => '1.2.3', :action => [:upgrade]}]}).should be false
+          matcher.matches?({:resources => [{:resource_name => 'package', :package_name => 'foo', :version => '1.2.3', :action => :upgrade}]}).should be false
         end
         it "should match if is the same package, the correct version and the install action" do
-          matcher.matches?({:resources => [{:resource_name => 'package', :package_name => 'foo', :version => '1.2.3', :action => [:install]}]}).should be true
+          matcher.matches?({:resources => [{:resource_name => 'package', :package_name => 'foo', :version => '1.2.3', :action => :install}]}).should be true
         end
       end
     end
