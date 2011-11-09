@@ -9,6 +9,15 @@ Given /^a Chef cookbook with a recipe that declares a package resource$/ do
   }
 end
 
+Given /^a Chef cookbook with a recipe that declares a package resource with no action specified$/ do
+  steps %q{
+    Given a file named "cookbooks/example/recipes/default.rb" with:
+    """ruby
+      package "package_does_not_exist"
+    """
+  }
+end
+
 Given /^a Chef cookbook with a recipe that declares a package resource at a fixed version$/ do
   steps %q{
     Given a file named "cookbooks/example/recipes/default.rb" with:
@@ -16,6 +25,17 @@ Given /^a Chef cookbook with a recipe that declares a package resource at a fixe
       package "package_does_not_exist" do
         version "1.2.3"
         action :install
+      end
+    """
+  }
+end
+
+Given /^a Chef cookbook with a recipe that declares a package resource at a fixed version with no action specified$/ do
+  steps %q{
+    Given a file named "cookbooks/example/recipes/default.rb" with:
+    """ruby
+      package "package_does_not_exist" do
+        version "1.2.3"
       end
     """
   }
