@@ -34,16 +34,16 @@ module ChefSpec
       Chef::Resource.class_eval do
         alias :old_run_action :run_action
 
-        if self.class.method_defined?(:class_variable_set)
-          class_variable_set :@@runner, the_runner
+        if self.class.methods.include?(:class_variable_set)
+          self.class_variable_set :@@runner, the_runner
         else
           @@runner = the_runner
         end
 
         def run_action(action)
           Chef::Log.info("Processing #{self} action #{action} (#{defined_at})") if self.respond_to? :defined_at
-          if self.class.method_defined?(:class_variable_get)
-            self.class_variable_get(:@@runner).resources << self
+          if self.class.methods.include?(:class_variable_get)
+            self.class.class_variable_get(:@@runner).resources << self
           else
             @@runner.resources << self
           end

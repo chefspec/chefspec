@@ -12,7 +12,7 @@ attributes that you provide.
 
 # Compatibility
 **This is alpha-quality at the moment**. The API is likely to change substantially. ChefSpec is currently tested with
-Chef 0.9.18, 0.10.2 and 0.10.4 on MRI 1.8.7 and 1.9.2.
+Chef 0.9.18, 0.10.2 and 0.10.4 on MRI 1.8.7, 1.9.2 and 1.9.3.
 
 # Building
 

@@ -1,6 +1,7 @@
 rvm:
   - 1.8.7
   - 1.9.2
+  - 1.9.3
 env:
   - CHEF_VERSION=0.9.18
   - CHEF_VERSION=0.10.2
