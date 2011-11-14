@@ -1,4 +1,19 @@
+## 0.4.0 (November 14, 2011)
+
+Features:
+
+  - Ruby 1.9.3 is now supported.
+  - The `create_file_with_content` matcher now matches on partial content (#13). This is an API behaviour change but
+  sufficiently minor and unlikely to break existing specs that I'm not bumping the major version. Thanks Chris Griego
+  and Morgan Nelson from getaroom.
+
+Bugfixes:
+
+  - Fixed a bug in the `install_package_at_version` matcher where it would error if the package action was not
+  explicitly specified (#13). Thanks Chris Griego and Morgan Nelson from getaroom.
+
 ## 0.3.0 (October 2, 2011)
+
 Features:
 
   - [Added new matcher](https://www.relishapp.com/acrmp/chefspec/docs/write-examples-for-templates) `create_file_with_content` for verifying Chef `template` resource generated content.
