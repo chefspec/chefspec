@@ -6,7 +6,7 @@ module ChefSpec
       match do |chef_run|
         chef_run.resources.any? do |resource|
           if resource.name == path
-            if resource.action.include?(:create) || resource.action.include?(:create_if_missing)
+            if (Array(resource.action) & [:create, :create_if_missing]).any?
               case resource_type(resource)
                 when 'template'
                   @actual_content = render(resource, chef_run.node)
