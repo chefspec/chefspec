@@ -6,13 +6,18 @@ module ChefSpec
       match do |chef_run|
         chef_run.resources.any? do |resource|
           if resource.name == path
-            if (Array(resource.action) & [:create, :create_if_missing]).any?
+            if (Array(resource.action).map { |action| action.to_sym } & [:create, :create_if_missing]).any?
               case resource_type(resource)
                 when 'template'
                   @actual_content = render(resource, chef_run.node)
                   @actual_content.to_s.include? content
                 when 'file'
                   @actual_content = resource.content
+                  @actual_content.to_s.include? content
+                when 'cookbook_file'
+                  cookbook_name = resource.cookbook || resource.cookbook_name
+                  cookbook = chef_run.node.cookbook_collection[cookbook_name]
+                  @actual_content = File.read(cookbook.preferred_filename_on_disk_location(chef_run.node, :files, resource.source, resource.path))
                   @actual_content.to_s.include? content
               end
             end

@@ -51,6 +51,7 @@ module ChefSpec
       end
 
       Chef::Config[:solo] = true
+      Chef::Config[:cache_type] = "Memory"
       Chef::Config[:cookbook_path] = options[:cookbook_path]
       Chef::Log.verbose = true if Chef::Log.respond_to?(:verbose)
       Chef::Log.level(options[:log_level])
@@ -97,6 +98,14 @@ module ChefSpec
     # @return [Chef::Resource::Directory] The matching directory, or Nil
     def directory(path)
       find_resource('directory', path)
+    end
+
+    # Find any cookbook_file declared with the given path
+    #
+    # @param [String] path The cookbook_file path
+    # @return [Chef::Resource::Directory] The matching cookbook_file, or Nil
+    def cookbook_file(path)
+      find_resource('cookbook_file', path)
     end
 
     # Find any file declared with the given path

@@ -98,7 +98,7 @@ Given /^the recipe has a spec example that expects the file to be declared$/ do
   }
 end
 
-Given /^the recipe has a spec example of the file contents$/ do
+Given /^the recipe has a spec example of the(?: cookbook)? file contents$/ do
   steps %q{
     Given a file named "cookbooks/example/spec/default_spec.rb" with:
     """ruby
