@@ -54,6 +54,7 @@ module ChefSpec
       Chef::Config[:cache_type] = "Memory"
       Chef::Cookbook::FileVendor.on_create { |manifest| Chef::Cookbook::FileSystemFileVendor.new(manifest) }
       Chef::Config[:cookbook_path] = options[:cookbook_path]
+      Chef::Config[:client_key] = nil
       Chef::Log.verbose = true if Chef::Log.respond_to?(:verbose)
       Chef::Log.level(options[:log_level])
       @client = Chef::Client.new
