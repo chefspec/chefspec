@@ -4,5 +4,5 @@ rvm:
   - 1.9.3
 env:
   - CHEF_VERSION=0.9.18
-  - CHEF_VERSION=0.10.2
   - CHEF_VERSION=0.10.4
+  - CHEF_VERSION=0.10.8
