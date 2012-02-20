@@ -1,3 +1,16 @@
+## 0.5.0 (February 20, 2012)
+
+Features:
+
+  - Thanks to Chris Griego and Morgan Nelson for these improvements:
+      - Support both arrays and raw symbols for actions in the file content matcher (#14).
+      - Add support for cookbook_file resources (#14).
+  - Support added for `gem_package` resources. Thanks to Jim Hopp from Lookout (#16).
+
+Bugfixes:
+
+  - Set the client_key to nil so that Chef::Search::Query.new doesn't raise (#14). Thanks Chris Griego and Morgan Nelson.
+
 ## 0.4.0 (November 14, 2011)
 
 Features:
