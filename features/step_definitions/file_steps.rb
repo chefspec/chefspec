@@ -195,19 +195,19 @@ Given /^the recipe has a spec example that expects the directory to be set to be
 end
 
 Then /^the file will not have been created$/ do
-  Then %q{the file "hello-world.txt" should not exist}
+  step %q{the file "hello-world.txt" should not exist}
 end
 
 Then /^the file will not have been deleted/ do
-  Then %q{a file named "hello-world.txt" should exist}
+  step %q{a file named "hello-world.txt" should exist}
 end
 
 Then /^the directory will not have been created$/ do
-  Then %q{a directory named "foo" should not exist}
+  step %q{a directory named "foo" should not exist}
 end
 
 Then /^the directory will not have been deleted$/ do
-  Then %q{a directory named "foo" should exist}
+  step %q{a directory named "foo" should exist}
 end
 
 Then /^the file will not have had its ownership changed$/ do

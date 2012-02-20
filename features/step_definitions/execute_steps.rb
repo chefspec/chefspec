@@ -41,5 +41,5 @@ Given /^a Chef cookbook with a recipe that has conditional execution based on op
 end
 
 Then /^the command will not have been executed$/ do
-  Then %q{the stdout should not contain "Hello World!"}
+  step %q{the stdout should not contain "Hello World!"}
 end

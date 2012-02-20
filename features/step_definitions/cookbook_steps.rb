@@ -62,9 +62,9 @@ When /^the recipe example is unsuccessfully run$/ do
 end
 
 Then /^the recipe will see the node attribute set in the spec example$/ do
-  Then %q{the stdout should contain "Processing log[The value of node.foo is: bar]"}
+  step %q{the stdout should contain "Processing log[The value of node.foo is: bar]"}
 end
 
 Then /^the resources declared for the operating system will be available within the example$/ do
-  Then %Q{the stdout should contain "Processing log[I am running on the #{@operating_system} platform.]"}
+  step %Q{the stdout should contain "Processing log[I am running on the #{@operating_system} platform.]"}
 end
