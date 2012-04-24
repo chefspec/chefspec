@@ -46,6 +46,7 @@ module ChefSpec
       context "default ohai attributes" do
         let(:node){ChefSpec::ChefRunner.new.node}
         specify{node.os.should == 'chefspec'}
+        specify{node.languages['ruby'].should == "/usr/somewhere"}
         specify{node.os_version.should == ChefSpec::VERSION}
         specify{node.fqdn.should == 'chefspec.local'}
         specify{node.domain.should == 'local'}

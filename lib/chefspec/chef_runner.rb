@@ -143,7 +143,7 @@ module ChefSpec
     # @param [Ohai::System] ohai The ohai instance to set fake attributes on
     def fake_ohai(ohai)
       {:os => 'chefspec', :os_version => ChefSpec::VERSION, :fqdn => 'chefspec.local', :domain => 'local',
-       :ipaddress => '127.0.0.1', :hostname => 'chefspec',
+       :ipaddress => '127.0.0.1', :hostname => 'chefspec', :languages => Mash.new({"ruby" => "/usr/somewhere"}),
        :kernel => Mash.new({:machine => 'i386'})}.each_pair do |attribute,value|
         ohai[attribute] = value
       end
