@@ -119,6 +119,18 @@ module ChefSpec
         runner.directory('/tmp').should be
       end
     end
+    describe "#link" do
+      it "should not return a resource when the link has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.link('/tmp').should_not be
+      end
+      it "should return a resource when the link has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'link', :name => '/tmp'}]
+        runner.link('/tmp').should be
+      end
+    end
     describe "#to_s" do
       let(:chef_run) { ChefSpec::ChefRunner.new(:dry_run => true) }
       it "should override the default string representation to something readable" do
