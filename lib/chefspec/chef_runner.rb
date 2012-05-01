@@ -126,6 +126,14 @@ module ChefSpec
       find_resource('template', path)
     end
 
+    # Find any link declared with the given target_file
+    #
+    # @param [String] target_file The link's target_file
+    # @return [Chef::Resource::Directory] The matching link, or Nil
+    def link(target_file)
+      find_resource('link', target_file)
+    end
+
     # This runner as a string.
     #
     # @return [String] Currently includes the run_list. Format of the string may change between versions of this gem.
