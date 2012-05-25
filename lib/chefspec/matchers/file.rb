@@ -4,6 +4,7 @@ module ChefSpec
   module Matchers
 
     define_resource_matchers([:create, :delete], [:file, :directory, :cookbook_file], :path)
+    define_resource_matchers([:create], [:remote_file], :path)
 
     RSpec::Matchers.define :be_owned_by do |user, group|
       match do |file|
