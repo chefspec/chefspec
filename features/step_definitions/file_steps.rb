@@ -51,6 +51,17 @@ Given /^a Chef cookbook with a recipe that deletes a directory$/ do
   }
 end
 
+Given /^a Chef cookbook with a recipe that creates a remote file$/ do
+  steps %q{
+    Given a file named "cookbooks/example/recipes/default.rb" with:
+    """ruby
+      remote_file "hello-world.txt" do
+        action :create
+      end
+    """
+  }
+end
+
 Given /^a Chef cookbook with a recipe that sets file ownership$/ do
   steps %q{
     Given a file named "cookbooks/example/recipes/default.rb" with:
@@ -156,6 +167,22 @@ Given /^the recipe has a spec example that expects the directory to be deleted/ 
         let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should delete the directory" do
           chef_run.should delete_directory 'foo'
+        end
+      end
+    """
+  }
+end
+
+Given /^the recipe has a spec example that expects the remote file to be created/ do
+  steps %q{
+    Given a file named "cookbooks/example/spec/default_spec.rb" with:
+    """ruby
+      require "chefspec"
+
+      describe "example::default" do
+        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
+        it "should create the remote file" do
+          chef_run.should create_remote_file 'hello-world.txt'
         end
       end
     """
