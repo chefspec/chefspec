@@ -41,12 +41,12 @@ Feature: Write examples for files
     And the recipe has a spec example that expects the directory to be deleted
     When the recipe example is successfully run
     Then the directory will not have been deleted
-    
+
   Scenario: Create a remote file
     Given a Chef cookbook with a recipe that creates a remote file
     And the recipe has a spec example that expects the remote file to be created
     When the recipe example is successfully run
-    Then the directory will not have been created
+    Then the file will not have been created
 
   Scenario: Check file ownership
     Given a Chef cookbook with a recipe that sets file ownership
