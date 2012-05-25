@@ -55,7 +55,7 @@ Given /^a Chef cookbook with a recipe that creates a remote file$/ do
   steps %q{
     Given a file named "cookbooks/example/recipes/default.rb" with:
     """ruby
-      remote_file "foo" do
+      remote_file "hello-world.txt" do
         action :create
       end
     """
@@ -182,7 +182,7 @@ Given /^the recipe has a spec example that expects the remote file to be created
       describe "example::default" do
         let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
         it "should create the remote file" do
-          chef_run.should create_remote_file 'foo'
+          chef_run.should create_remote_file 'hello-world.txt'
         end
       end
     """
