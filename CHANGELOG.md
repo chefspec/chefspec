@@ -1,3 +1,15 @@
+## 0.6.0 (May 31, 2012)
+
+Features:
+
+  - Service matchers extended to add support for the `:nothing` and `:enabled`
+    actions. Thanks to Steve Lum (#20).
+  - Added mock value for `node['languages']` to prevent failure when loading
+    cookbooks that expect this attribute to have been populated by OHAI. Thanks
+    to Jim Hopp (#23).
+  - Matchers added for the `link` resource. Thanks to James Burgess (#25).
+  - Matchers added for the `remote_file` resource. Thanks to Matt Pruitt (#26).
+
 ## 0.5.0 (February 20, 2012)
 
 Features:
