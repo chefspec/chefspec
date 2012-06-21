@@ -1,3 +1,13 @@
+## 0.6.1 (June 21, 2012)
+
+Features:
+
+  - With the
+    [release of Chef 10.12.0](http://www.opscode.com/blog/2012/06/19/chef-10-12-0-released/)
+    the Chef versioning scheme has changed to make use of the major version
+    field. The constraint on chef is now optimistic. Thanks to Robert J. Berger
+    of Runa.com for flagging this issue (#28).
+
 ## 0.6.0 (May 31, 2012)
 
 Features:
