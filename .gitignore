@@ -3,6 +3,7 @@
 *.gem
 *.html
 *.rbc
+*.swp
 coverage
 doc
 tmp

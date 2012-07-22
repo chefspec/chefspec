@@ -1,172 +1,63 @@
-Given /^a Chef cookbook with a recipe that declares a package resource$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      package "package_does_not_exist" do
-        action :install
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that declares a package resource' do
+  recipe_installs_package
 end
 
-Given /^a Chef cookbook with a recipe that declares a package resource with no action specified$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      package "package_does_not_exist"
-    """
-  }
+Given 'a Chef cookbook with a recipe that declares a package resource with no action specified' do
+  recipe_installs_package_with_no_action
 end
 
-Given /^a Chef cookbook with a recipe that declares a package resource at a fixed version$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      package "package_does_not_exist" do
-        version "1.2.3"
-        action :install
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that declares a package resource at a fixed version' do
+  recipe_installs_specific_package_version
 end
 
-Given /^a Chef cookbook with a recipe that declares a package resource at a fixed version with no action specified$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      package "package_does_not_exist" do
-        version "1.2.3"
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that declares a package resource at a fixed version with no action specified' do
+  recipe_installs_specific_package_version_with_no_action
 end
 
-Given /^a Chef cookbook with a recipe that upgrades a package$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      package "package_does_not_exist" do
-        action :upgrade
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that upgrades a package' do
+  recipe_upgrades_package
 end
 
-Given /^a Chef cookbook with a recipe that removes a package$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      package "package_does_not_exist" do
-        action :remove
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that removes a package' do
+  recipe_removes_package
 end
 
-Given /^a Chef cookbook with a recipe that purges a package$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      package "package_does_not_exist" do
-        action :purge
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that purges a package' do
+  recipe_purges_package
 end
 
-Given /^the recipe has a spec example that expects the package to be installed$/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should install package_does_not_exist" do
-          chef_run.should install_package 'package_does_not_exist'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the package to be installed' do
+  spec_expects_package_action(:install)
 end
 
-Given /^the recipe has a spec example that expects the package to be upgraded/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should upgrade package_does_not_exist" do
-          chef_run.should upgrade_package 'package_does_not_exist'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the package to be upgraded' do
+  spec_expects_package_action(:upgrade)
 end
 
-Given /^the recipe has a spec example that expects the package to be removed$/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should remove package_does_not_exist" do
-          chef_run.should remove_package 'package_does_not_exist'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the package to be removed' do
+  spec_expects_package_action(:remove)
 end
 
-Given /^the recipe has a spec example that expects the package to be purged/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should purge package_does_not_exist" do
-          chef_run.should purge_package 'package_does_not_exist'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the package to be purged' do
+  spec_expects_package_action(:purge)
 end
 
-Given /^the recipe has a spec example that expects the package to be installed at that version$/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should install package_does_not_exist at a specific version" do
-          chef_run.should install_package_at_version 'package_does_not_exist', '1.2.3'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the package to be installed at that version' do
+  spec_expects_package_at_specific_version
 end
 
-Then /^the package will not have been installed$/ do
+Then 'the package will not have been installed' do
   # package installation would fail
 end
 
-Then /^the package will not have been upgraded$/ do
+Then 'the package will not have been upgraded' do
   # package upgrade would fail
 end
 
-Then /^the package will not have been removed$/ do
+Then 'the package will not have been removed' do
   # package removal would fail
 end
 
-Then /^the package will not have been purged$/ do
+Then 'the package will not have been purged' do
   # package purge would fail
 end
-

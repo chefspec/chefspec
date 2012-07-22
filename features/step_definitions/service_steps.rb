@@ -1,137 +1,41 @@
-Given /^a Chef cookbook with a recipe that starts a service$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      service "food" do
-        action :start
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that starts a service' do
+  recipe_starts_service
 end
 
-Given /^a Chef cookbook with a recipe that starts a service and enables it to start on boot$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      service "food" do
-        action [:enable, :start]
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that starts a service and enables it to start on boot' do
+  recipe_starts_and_enables_service
 end
 
-Given /^a Chef cookbook with a recipe that stops a service$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      service "food" do
-        action :stop
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that stops a service' do
+  recipe_stops_service
 end
 
-Given /^a Chef cookbook with a recipe that restarts a service$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      service "food" do
-        action :restart
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that restarts a service' do
+  recipe_restarts_service
 end
 
-Given /^a Chef cookbook with a recipe that signals a service to reload$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      service "food" do
-        action :reload
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that signals a service to reload' do
+  recipe_reloads_service
 end
 
-Given /^the recipe has a spec example that expects the service to be started$/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should ensure the food service is started" do
-          chef_run.should start_service 'food'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the service to be started' do
+  spec_expects_service_action(:start)
 end
 
-Given /^the recipe has a spec example that expects the service to be started and enabled$/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should ensure the food service is started and enabled" do
-          chef_run.should start_service 'food'
-          chef_run.should set_service_to_start_on_boot 'food'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the service to be started and enabled' do
+  spec_expects_service_to_be_started_and_enabled
 end
 
-Given /^the recipe has a spec example that expects the service to be stopped$/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should ensure the food service is stopped" do
-          chef_run.should stop_service 'food'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the service to be stopped' do
+  spec_expects_service_action(:stop)
 end
 
-Given /^the recipe has a spec example that expects the service to be restarted/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should ensure the food service is restarted" do
-          chef_run.should restart_service 'food'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the service to be restarted' do
+  spec_expects_service_action(:restart)
 end
 
-Given /^the recipe has a spec example that expects the service to be reloaded/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should ensure the food service is reloaded" do
-          chef_run.should reload_service 'food'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the service to be reloaded' do
+  spec_expects_service_action(:reload)
 end
 
 Then /^the service will not have been started$/ do
@@ -149,4 +53,3 @@ end
 Then /^the service will not have been reloaded$/ do
   # service reload would fail
 end
-

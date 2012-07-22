@@ -1,246 +1,87 @@
 Given /^a Chef cookbook with a recipe that declares a file resource( and sets the contents)?$/ do |sets_contents|
-  file_contents = sets_contents.nil? ? '' : 'content "hello world!"'
-  steps %Q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      file "hello-world.txt" do
-        content "hello world"
-        action :create
-        #{file_contents}
-      end
-    """
-  }
+  if sets_contents
+    recipe_with_file 'hello world'
+  else
+    recipe_with_file
+  end
 end
 
-Given /^a Chef cookbook with a recipe that deletes a file/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      file "hello-world.txt" do
-        content "hello world"
-        action :delete
-      end
-    """
-      And a file named "hello-world.txt" with:
-      """
-      Hello world!
-      """
-  }
+Given 'a Chef cookbook with a recipe that deletes a file' do
+  recipe_deletes_file
 end
 
-Given /^a Chef cookbook with a recipe that creates a directory$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      directory "foo" do
-        action :create
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that creates a directory' do
+  recipe_creates_directory
 end
 
-Given /^a Chef cookbook with a recipe that deletes a directory$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """
-      directory "foo" do
-        action :delete
-      end
-    """
-    And a directory named "foo"
-  }
+Given 'a Chef cookbook with a recipe that deletes a directory' do
+  recipe_deletes_directory
 end
 
-Given /^a Chef cookbook with a recipe that creates a remote file$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      remote_file "hello-world.txt" do
-        action :create
-      end
-    """
-  }
+Given 'a Chef cookbook with a recipe that creates a remote file' do
+  recipe_with_remote_file
 end
 
-Given /^a Chef cookbook with a recipe that sets file ownership$/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      file "hello-world.txt" do
-        owner "user"
-        group "group"
-      end
-    """
-    And a file named "hello-world.txt" with:
-    """
-    Hello world!
-    """
-  }
-  @original_stat = owner_and_group 'hello-world.txt'
+Given 'a Chef cookbook with a recipe that sets file ownership' do
+  recipe_sets_file_ownership('file')
 end
 
-Given /^a Chef cookbook with a recipe that sets directory ownership/ do
-  steps %q{
-    Given a file named "cookbooks/example/recipes/default.rb" with:
-    """ruby
-      directory "foo" do
-        owner "user"
-        group "group"
-      end
-    """
-    And a directory named "foo"
-  }
-  @original_stat = owner_and_group 'foo'
+Given 'a Chef cookbook with a recipe that sets directory ownership' do
+  recipe_sets_directory_ownership
 end
 
-Given /^the recipe has a spec example that expects the file to be declared$/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should create hello-world.txt" do
-          chef_run.should create_file 'hello-world.txt'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the file to be declared' do
+  spec_expects_file(:file)
 end
 
 Given /^the recipe has a spec example of the(?: cookbook)? file contents$/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should create hello-world.txt" do
-          chef_run.should create_file_with_content 'hello-world.txt', 'hello world!'
-        end
-      end
-    """
-  }
+  spec_expects_file_with_content
 end
 
-Given /^the recipe has a spec example that expects the file to be deleted$/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should delete hello-world.txt" do
-          chef_run.should delete_file 'hello-world.txt'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the file to be deleted' do
+  spec_expects_file_to_be_deleted
 end
 
-Given /^the recipe has a spec example that expects the directory to be created/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should create the directory" do
-          chef_run.should create_directory 'foo'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the directory to be created' do
+  spec_expects_directory
 end
 
-Given /^the recipe has a spec example that expects the directory to be deleted/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should delete the directory" do
-          chef_run.should delete_directory 'foo'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the directory to be deleted' do
+  spec_expects_directory_to_be_deleted
 end
 
-Given /^the recipe has a spec example that expects the remote file to be created/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should create the remote file" do
-          chef_run.should create_remote_file 'hello-world.txt'
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the remote file to be created' do
+  spec_expects_file(:remote_file)
 end
 
-Given /^the recipe has a spec example that expects the file to be set to be owned by a specific user$/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should set file ownership" do
-          chef_run.file('hello-world.txt').should be_owned_by('user', 'group')
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the file to be set to be owned by a specific user' do
+  spec_expects_file_with_ownership(:file)
 end
 
-Given /^the recipe has a spec example that expects the directory to be set to be owned by a specific user$/ do
-  steps %q{
-    Given a file named "cookbooks/example/spec/default_spec.rb" with:
-    """ruby
-      require "chefspec"
-
-      describe "example::default" do
-        let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
-        it "should set directory ownership" do
-          chef_run.directory('foo').should be_owned_by('user', 'group')
-        end
-      end
-    """
-  }
+Given 'the recipe has a spec example that expects the directory to be set to be owned by a specific user' do
+  spec_expects_directory_with_ownership
 end
 
-Then /^the file will not have been created$/ do
-  step %q{the file "hello-world.txt" should not exist}
+Then 'the file will not have been created' do
+  check_file_presence(['hello-world.txt'], false)
 end
 
-Then /^the file will not have been deleted/ do
-  step %q{a file named "hello-world.txt" should exist}
+Then 'the file will not have been deleted' do
+  check_file_presence(['hello-world.txt'], true)
 end
 
-Then /^the directory will not have been created$/ do
-  step %q{a directory named "foo" should not exist}
+Then 'the directory will not have been created' do
+  check_directory_presence(['foo'], false)
 end
 
-Then /^the directory will not have been deleted$/ do
-  step %q{a directory named "foo" should exist}
+Then 'the directory will not have been deleted' do
+  check_directory_presence(['foo'], true)
 end
 
-Then /^the file will not have had its ownership changed$/ do
+Then 'the file will not have had its ownership changed' do
   @original_stat.should eql(owner_and_group 'hello-world.txt')
 end
 
-Then /^the directory will not have had its ownership changed$/ do
+Then 'the directory will not have had its ownership changed' do
   @original_stat.should eql(owner_and_group 'foo')
 end
