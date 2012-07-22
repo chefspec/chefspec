@@ -51,7 +51,6 @@ module ChefSpec
       remove_file_id_conversion
 
       ::MiniTest::Chef::Assertions.class_eval do
-        @@chef_run = chef_run
 
         def assert_includes_content(file, content)
           assert file_includes_content?(file, content),
@@ -82,14 +81,6 @@ module ChefSpec
         end
 
         private
-
-        def resources
-          @@chef_run.resources
-        end
-
-        def run_context
-          @@chef_run.run_context
-        end
 
         def same_resource_type?(expected_resource, actual_resource)
           case actual_resource.resource_name.to_s
@@ -171,9 +162,9 @@ module ChefSpec
       end
     end
 
-    def self.share_node_object(node, spec_mod)
-      spec_mod.send(:define_method, :node) do
-        node
+    def self.share_object(spec_mod, name, obj)
+      spec_mod.send(:define_method, name) do
+        obj
       end
     end
 
@@ -186,7 +177,9 @@ module ChefSpec
         :cookbook_path => default_cookbook_path).converge recipe_for_module(spec_mod)
       override_minitest_resources(chef_run.run_context, spec_mod)
       override_minitest_assertions(chef_run)
-      share_node_object(chef_run.node, spec_mod)
+      share_object(spec_mod, :node, chef_run.node)
+      share_object(spec_mod, :resources, chef_run.resources)
+      share_object(spec_mod, :run_context, chef_run.run_context)
     end
 
     def self.recipe_for_module(mod)
