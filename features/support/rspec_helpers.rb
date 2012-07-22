@@ -199,7 +199,7 @@ module ChefSpec
         describe "example::default" do
           let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
           it "should install gem_package_does_not_exist at a specific version" do
-            chef_run.should install_gem_package_at_version 'package_does_not_exist', '1.2.3'
+            chef_run.should install_gem_package_at_version 'gem_package_does_not_exist', '1.2.3'
           end
         end
       }
@@ -297,5 +297,3 @@ module ChefSpec
 
   end
 end
-
-World(ChefSpec::RSpecHelpers)

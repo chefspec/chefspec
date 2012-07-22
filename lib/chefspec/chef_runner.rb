@@ -14,6 +14,7 @@ module ChefSpec
     @resources = []
 
     attr_accessor :resources
+    attr_reader :run_context
     attr_reader :node
 
     # Instantiate a new runner to run examples with.
@@ -85,11 +86,11 @@ module ChefSpec
 
       @resources = []
       if @client.respond_to?(:setup_run_context) # 0.10.x
-        run_context = @client.setup_run_context
+        @run_context = @client.setup_run_context
       else
-        run_context = Chef::RunContext.new(@client.node, Chef::CookbookCollection.new(Chef::CookbookLoader.new)) # 0.9.x
+        @run_context = Chef::RunContext.new(@client.node, Chef::CookbookCollection.new(Chef::CookbookLoader.new)) # 0.9.x
       end
-      runner = Chef::Runner.new(run_context)
+      runner = Chef::Runner.new(@run_context)
       runner.converge
       self
     end

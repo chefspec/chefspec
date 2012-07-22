@@ -1,3 +1,4 @@
+@not_implemented_minitest
 Feature: Write examples for executing commands
 
       chef_run.should execute_command "whoami"

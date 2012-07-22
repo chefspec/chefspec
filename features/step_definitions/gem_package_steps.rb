@@ -6,7 +6,7 @@ Given 'a Chef cookbook with a recipe that declares a gem package resource with n
   recipe_with_gem_no_action
 end
 
-Given 'a Chef cookbook with a recipe that declares a gem_package resource at a fixed version' do
+Given 'a Chef cookbook with a recipe that declares a gem package resource at a fixed version' do
   recipe_installs_specific_gem_version
 end
 

@@ -28,6 +28,7 @@ Feature: Write examples for packages
     When the recipe example is successfully run
     Then the package will not have been installed
 
+  @not_implemented_minitest
   Scenario: Upgrade a package
     Given a Chef cookbook with a recipe that upgrades a package
     And the recipe has a spec example that expects the package to be upgraded

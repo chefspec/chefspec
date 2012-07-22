@@ -1,3 +1,4 @@
+@not_implemented_minitest
 Feature: Set node attributes
 
   Chef recipes often need to behave differently depending on the attributes of the node they are executing on:
