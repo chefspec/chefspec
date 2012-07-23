@@ -172,9 +172,10 @@ attributes. Using this approach you pass a block when creating the runner.
 
 ## Ohai Attributes
 
-When you converge a node using Chef a large number of attributes are populated
-by Chef which runs [Ohai](http://wiki.opscode.com/display/chef/Ohai) to discover
-information about the node it is running on.
+When you converge a node using Chef a large number of attributes are
+pre-populated by Chef which runs
+[Ohai](http://wiki.opscode.com/display/chef/Ohai) to discover information about
+the node it is running on.
 
 You can use these attributes within your cookbooks - the most common usage is
 to declare different resources based on the node platform (operating system)
@@ -254,7 +255,7 @@ the node will be converged against.
 ## Files
 
 A basic form of assertion is to check that a file is created by a cookbook
-recipe. Note that this won't work for work for files or directories that are not
+recipe. Note that this won't work for files or directories that are not
 explicitly declared as resources in the recipe. For example directories created
 by the installation of a new package are not known to ChefSpec, it is only
 aware of resources that are defined within your cookbooks.
