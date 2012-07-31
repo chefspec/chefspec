@@ -135,6 +135,14 @@ module ChefSpec
       find_resource('link', target_file)
     end
 
+    # Find a crontab entry declared with the given name
+    #
+    # @param  [String] name of a crontab
+    # @return [Chef::Resource::Cron] The matching cron resource, or Nil
+    def cron(name)
+      find_resource('cron', name)
+    end
+
     # This runner as a string.
     #
     # @return [String] Currently includes the run_list. Format of the string may change between versions of this gem.
