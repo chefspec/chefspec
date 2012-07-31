@@ -131,6 +131,18 @@ module ChefSpec
         runner.link('/tmp').should be
       end
     end
+    describe "#cron" do
+      it "should not return a resource when the cron has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.cron('daily_job').should_not be
+      end
+      it "should return a resource when the cron has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'cron', :name => 'daily_job'}]
+        runner.cron('daily_job').should be
+      end
+    end
     describe "#to_s" do
       let(:chef_run) { ChefSpec::ChefRunner.new(:dry_run => true) }
       it "should override the default string representation to something readable" do
