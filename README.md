@@ -1,4 +1,4 @@
-![Built on Travis](https://secure.travis-ci.org/acrmp/chefspec.png?branch=master)](http://travis-ci.org/acrmp/chefspec)
+![Built on Travis](https://secure.travis-ci.org/acrmp/chefspec.png?branch=master)
 
 # Introduction
 
