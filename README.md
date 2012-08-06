@@ -1,4 +1,4 @@
-![Built on Travis](https://secure.travis-ci.org/acrmp/chefspec.png?branch=master)
+![Built on Travis](https://secure.travis-ci.org/acrmp/chefspec.png?branch=master)](http://travis-ci.org/acrmp/chefspec)
 
 # Introduction
 
@@ -205,10 +205,9 @@ readability of your examples.
 [Fauxhai](https://github.com/customink/fauxhai) from Seth Vargo is a promising
 solution to this problem because it enables you to re-use sanitized Ohai
 attribute profiles by name, rather than being required to provide each attribute
-individually.
-
-Fauxhai is currently only available in alpha but is still definitely worth
-checking out.
+individually. For more on Fauxhai
+[check out this blog post](http://technology.customink.com/blog/2012/08/03/testing-chef-cookbooks/)
+from CustomInk.
 
 ## Search Results
 
