@@ -44,10 +44,19 @@ module ChefSpec
         def run_action(action)
           Chef::Log.info("Processing #{self} action #{action} (#{defined_at})") if self.respond_to? :defined_at
 
-          # Utilize Chef::Resource.should_skip? to take not_if and only_if into account
-          if self.should_skip?
-            Chef::Log.info("Skipping #{self} action #{action}")
-            return
+          # Utilize Chef::Resource.should_skip? to take not_if and only_if into account (Chef >= 0.10)
+          if self.methods.include?(:should_skip?)
+            if self.should_skip?
+              Chef::Log.info("Skipping #{self} action #{action}")
+              return
+            end
+          else # Chef ~0.9
+            if self.only_if
+              return unless Chef::Mixin::Command.only_if(self.only_if,self.only_if_args)
+            end
+            if self.not_if
+              return unless Chef::Mixin::Command.not_if(self.not_if,self.not_if_args)
+            end
           end
 
           if self.class.methods.include?(:class_variable_get)

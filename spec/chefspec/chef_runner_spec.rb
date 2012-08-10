@@ -60,25 +60,21 @@ module ChefSpec
           @resource = Chef::Resource::File.new "file"
         end
         it "should not capture a resource when not_if is true" do
-          @resource.not_if.clear
           @resource.not_if { true }
           @resource.run_action(:create)
           @runner.resources.size.should == 0
         end
         it "should capture a resource when not_if is false" do
-          @resource.not_if.clear
           @resource.not_if { false }
           @resource.run_action(:create)
           @runner.resources.size.should == 1
         end
         it "should capture a resource when only_if is true" do
-          @resource.only_if.clear
           @resource.only_if { true }
           @resource.run_action(:create)
           @runner.resources.size.should == 1
         end
         it "should not capture a resource when only_if is false" do
-          @resource.only_if.clear
           @resource.only_if { false }
           @resource.run_action(:create)
           @runner.resources.size.should == 0
