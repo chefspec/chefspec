@@ -43,6 +43,13 @@ module ChefSpec
 
         def run_action(action)
           Chef::Log.info("Processing #{self} action #{action} (#{defined_at})") if self.respond_to? :defined_at
+
+          # Utilize Chef::Resource.should_skip? to take not_if and only_if into account
+          if self.should_skip?
+            Chef::Log.info("Skipping #{self} action #{action}")
+            return
+          end
+
           if self.class.methods.include?(:class_variable_get)
             self.class.class_variable_get(:@@runner).resources << self
           else
