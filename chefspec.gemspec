@@ -15,5 +15,5 @@ Gem::Specification.new do |s|
   s.add_dependency('chef', chef_version)
   s.add_dependency('erubis', '>= 0')
   s.add_dependency('minitest-chef-handler', '~> 0.6.0')
-  s.add_dependency('rspec', '~> 2.10.0')
+  s.add_dependency('rspec', '~> 2.11.0')
 end
