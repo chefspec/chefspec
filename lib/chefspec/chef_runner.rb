@@ -170,7 +170,7 @@ module ChefSpec
     #
     # @return [String] The path to the cookbooks directory
     def default_cookbook_path
-      Pathname.new(File.join(caller(2).first.split(':').slice(0..-3).first, "..", "..", "..")).cleanpath
+      Pathname.new(File.join(caller(2).first.split(':').slice(0..-3).join(':'), '..', '..', '..')).cleanpath
     end
 
     # Find the resource with the declared type and name
