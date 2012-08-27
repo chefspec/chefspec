@@ -412,6 +412,27 @@ Assert that a daemon would be reloaded:
 chef_run.should reload_service 'food'
 ```
 
+# Varying the cookbook path
+
+By default chefspec will infer the `cookbook_path` from the location of the
+spec. However if you want to use a different path you can pass it in as an
+argument to the `ChefRunner` constructor like so:
+
+```ruby
+ 1 require 'chefspec'
+ 2
+ 3 describe 'foo::default' do
+ 4   let (:chef_run) {
+ 5     runner = ChefSpec::ChefRunner.new({:cookbook_path => '/some/path'})
+ 6     runner.converge 'foo::default'
+ 7     runner
+ 8   }
+ 9   it 'installs the foo package' do
+10     chef_run.should install_package 'foo'
+11   end
+12 end
+```
+
 # Building
 
     $ bundle install
