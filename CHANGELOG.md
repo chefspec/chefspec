@@ -1,3 +1,19 @@
+## 0.7.0 (August 27, 2012)
+
+Features:
+
+  - Cron resource support added (#33). Thanks Alexander Tamoykin.
+  - RSpec dependency
+    [bumped to 2.11](https://github.com/rspec/rspec-core/blob/b8197262d143294bf849ab58d1586d24537965ab/Changelog.md)
+    which has
+    [named subject](http://blog.davidchelimsky.net/2012/05/13/spec-smell-explicit-use-of-subject/)
+    support (#37). Thanks Doug Ireton.
+
+Bugfixes:
+
+  - Correctly infer the default `cookbook_path` on Windows (#38). Thanks Torben
+    Knerr.
+
 ## 0.6.1 (June 21, 2012)
 
 Features:
