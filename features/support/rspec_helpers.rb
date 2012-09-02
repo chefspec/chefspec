@@ -295,5 +295,19 @@ module ChefSpec
       }
     end
 
+    def spec_expects_lwrp_to_greet
+      write_file 'cookbooks/example/spec/default_spec.rb', %q{
+        require "chefspec"
+
+        describe "example::default" do
+          let(:chef_run) do
+            ChefSpec::ChefRunner.new(:step_into => ['example']).converge 'example::default'
+          end
+          it "should greet" do
+            chef_run.should execute_command "echo Hello Foobar!"
+          end
+        end
+      }
+    end
   end
 end
