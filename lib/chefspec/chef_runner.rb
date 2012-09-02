@@ -10,10 +10,10 @@ module ChefSpec
   # The main entry point for running recipes within RSpec.
   class ChefRunner
 
-    @step_into = []
     @resources = []
 
     attr_accessor :resources
+    attr_reader :step_into
     attr_reader :run_context
     attr_reader :node
 
@@ -24,12 +24,13 @@ module ChefSpec
     # @option options [Symbol] :log_level The log level to use (default is :warn)
     # @yield [node] Configuration block for Chef::Node
     def initialize(options={})
-      defaults = {:cookbook_path => default_cookbook_path, :log_level => :warn, :dry_run => false}
+      defaults = {:cookbook_path => default_cookbook_path, :log_level => :warn, :dry_run => false, :step_into => []}
       options = {:cookbook_path => options} unless options.respond_to?(:to_hash) # backwards-compatibility
       options = defaults.merge(options)
 
       the_runner = self
       @resources = []
+      @step_into = options[:step_into]
       @do_dry_run = options[:dry_run]
 
       Chef::Resource.class_eval do
@@ -42,12 +43,18 @@ module ChefSpec
         end
 
         def run_action(action)
-          Chef::Log.info("Processing #{self} action #{action} (#{defined_at})") if self.respond_to? :defined_at
-          if self.class.methods.include?(:class_variable_get)
-            self.class.class_variable_get(:@@runner).resources << self
+          runner = if self.class.methods.include?(:class_variable_get)
+            self.class.class_variable_get(:@@runner)
           else
-            @@runner.resources << self
+            @@runner
           end
+
+          if runner.step_into.include?(self.resource_name.to_s)
+            self.old_run_action(action)
+          end
+
+          Chef::Log.info("Processing #{self} action #{action} (#{defined_at})") if self.respond_to? :defined_at
+          runner.resources << self
         end
       end
 

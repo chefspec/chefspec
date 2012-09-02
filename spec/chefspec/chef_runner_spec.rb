@@ -39,6 +39,12 @@ module ChefSpec
         runner.resources.size.should == 1
         runner.resources.first.should equal(file)
       end
+      it "should execute the real action if resource is in the step_into list" do
+        runner = ChefSpec::ChefRunner.new(:step_into => ['file'])
+        file = Chef::Resource::File.new '/tmp/foo.txt'
+        file.should_receive(:old_run_action).with(:create)
+        file.run_action(:create)
+      end
       it "should accept a block to set node attributes" do
         runner = ChefSpec::ChefRunner.new() {|node| node[:foo] = 'baz'}
         runner.node.foo.should == 'baz'
