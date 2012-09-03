@@ -433,6 +433,25 @@ argument to the `ChefRunner` constructor like so:
 12 end
 ```
 
+# Writing examples for LWRP's
+
+By default chefspec will override all resources to take no action. In order to allow
+your LWRP to be run, you have to explicitly tell `ChefRunner` to step into it:
+
+```ruby
+ 1 require 'chefspec'
+ 2
+ 3 describe 'foo::default' do
+ 4   let(:chef_run) {
+ 5     runner = ChefSpec::ChefRunner.new(:step_into => ['my_lwrp'])
+ 6     runner.convert 'foo::default'
+ 7   }
+ 8   it 'installs the foo package through my_lwrp' do
+ 9     chef_run.should install_package 'foo'
+10   end
+11 end
+```
+
 # Building
 
     $ bundle install
