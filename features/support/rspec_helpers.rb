@@ -306,6 +306,9 @@ module ChefSpec
           it "should greet" do
             chef_run.should execute_command "echo Hello Foobar!"
           end
+          it "should not say hello world" do
+            chef_run.should_not execute_command "echo Hello World!"
+          end
         end
       }
     end

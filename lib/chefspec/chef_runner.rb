@@ -34,7 +34,7 @@ module ChefSpec
       @do_dry_run = options[:dry_run]
 
       Chef::Resource.class_eval do
-        alias :old_run_action :run_action
+        alias :old_run_action :run_action unless method_defined?(:old_run_action)
 
         if self.class.methods.include?(:class_variable_set)
           self.class_variable_set :@@runner, the_runner
