@@ -54,6 +54,7 @@ module ChefSpec
         file.only_if { only_if_action.call }
         not_if_action.should_receive(:call).never
         only_if_action.should_receive(:call).never
+        Chef::Platform.stub(:provider_for_resource) { stub.as_null_object }
         file.run_action(:create)
       end
       it "should accept a block to set node attributes" do
