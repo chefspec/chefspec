@@ -11,9 +11,10 @@ class Chef
       # @param [String] filename File to load as a LWRP
       # @param [Chef::RunContext] run_context Context of a Chef Run
       # @return [Chef::Provider] the created provider
-      def build_from_file(cookbook_name, filename, run_context)
+      def build_from_file(*args)
+        cookbook_name, filename = args[0,2]
         remove_existing_lwrp(convert_to_class_name(filename_to_qualified_string(cookbook_name, filename)))
-        old_build_from_file(cookbook_name, filename, run_context)
+        old_build_from_file(*args)
       end
 
       # Remove any existing Chef provider or resource with the specified name.
