@@ -31,6 +31,26 @@ module ChefSpec
       end
     end
 
+    def cookbook_with_lwrp
+      write_file 'cookbooks/example/resources/default.rb', %Q{
+        actions :greet
+        attribute :name, :kind_of => String, :name_attribute => true
+      }
+      write_file 'cookbooks/example/providers/default.rb', %q{
+        action :greet do
+          execute "hello" do
+            command "echo Hello #{new_resource.name}!"
+            action :run
+          end
+        end
+      }
+      write_file 'cookbooks/example/recipes/default.rb', %Q{
+        example "Foobar" do
+          action :greet
+        end
+      }
+    end
+
     def ensure_knife_is_present
       run_simple 'knife -v'
       assert_success(true)

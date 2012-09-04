@@ -39,6 +39,24 @@ module ChefSpec
         runner.resources.size.should == 1
         runner.resources.first.should equal(file)
       end
+      it "should execute the real action if resource is in the step_into list" do
+        runner = ChefSpec::ChefRunner.new(:step_into => ['file'])
+        file = Chef::Resource::File.new '/tmp/foo.txt'
+        file.should_receive(:old_run_action).with(:create)
+        file.run_action(:create)
+      end
+      it "should not execute not_if/only_if guards" do
+        runner = ChefSpec::ChefRunner.new(:step_into => ['file'])
+        not_if_action = double()
+        only_if_action = double()
+        file = Chef::Resource::File.new '/tmp/foo.txt'
+        file.not_if { not_if_action.call }
+        file.only_if { only_if_action.call }
+        not_if_action.should_receive(:call).never
+        only_if_action.should_receive(:call).never
+        Chef::Platform.stub(:provider_for_resource) { stub.as_null_object }
+        file.run_action(:create)
+      end
       it "should accept a block to set node attributes" do
         runner = ChefSpec::ChefRunner.new() {|node| node[:foo] = 'baz'}
         runner.node.foo.should == 'baz'
