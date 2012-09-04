@@ -45,6 +45,17 @@ module ChefSpec
         file.should_receive(:old_run_action).with(:create)
         file.run_action(:create)
       end
+      it "should not execute not_if/only_if guards" do
+        runner = ChefSpec::ChefRunner.new(:step_into => ['file'])
+        not_if_action = double()
+        only_if_action = double()
+        file = Chef::Resource::File.new '/tmp/foo.txt'
+        file.not_if { not_if_action.call }
+        file.only_if { only_if_action.call }
+        not_if_action.should_receive(:call).never
+        only_if_action.should_receive(:call).never
+        file.run_action(:create)
+      end
       it "should accept a block to set node attributes" do
         runner = ChefSpec::ChefRunner.new() {|node| node[:foo] = 'baz'}
         runner.node.foo.should == 'baz'
