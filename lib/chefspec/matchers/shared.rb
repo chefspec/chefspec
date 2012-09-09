@@ -41,13 +41,15 @@ def render(template, node)
   # Duplicates functionality in the Chef Template provider
   context = {}; context.merge!(template.variables)
   context[:node] = node
-  Erubis::Eruby.new(IO.read(template_path(template))).evaluate(context)
+  Erubis::Eruby.new(IO.read(template_path(template, node))).evaluate(context)
 end
 
 # Given a template, return the path on disk.
 #
 # @param [Chef::Resource::Template] template The template
 # @return [String] The path on disk
-def template_path(template)
-  File.join("cookbooks/#{template.cookbook || template.cookbook_name}/templates/default", template.source)
+def template_path(template, node)
+  cookbook_name = template.cookbook || template.cookbook_name
+  cookbook = node.cookbook_collection[cookbook_name]
+  cookbook.preferred_filename_on_disk_location(node, :templates, template.source, template.path)
 end
