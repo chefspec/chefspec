@@ -42,7 +42,8 @@ module ChefSpec
           @@runner = the_runner
         end
 
-        def run_action(action)
+        def run_action(*args)
+          action = args.first
           runner = if self.class.methods.include?(:class_variable_get)
             self.class.class_variable_get(:@@runner)
           else
@@ -74,6 +75,7 @@ module ChefSpec
       Chef::Log.level(options[:log_level])
       @client = Chef::Client.new
       fake_ohai(@client.ohai)
+      @client.load_node if @client.respond_to?(:load_node) # chef >= 10.14.0
       @node = @client.build_node
       if block_given?
         yield @node

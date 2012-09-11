@@ -46,6 +46,7 @@ module ChefSpec
         file.run_action(:create)
       end
       it "should not execute not_if/only_if guards" do
+        Chef::Platform.stub(:provider_for_resource) { stub.as_null_object }
         runner = ChefSpec::ChefRunner.new(:step_into => ['file'])
         not_if_action = double()
         only_if_action = double()
@@ -54,7 +55,7 @@ module ChefSpec
         file.only_if { only_if_action.call }
         not_if_action.should_receive(:call).never
         only_if_action.should_receive(:call).never
-        Chef::Platform.stub(:provider_for_resource) { stub.as_null_object }
+        file.stub(:run_context) { stub.as_null_object }
         file.run_action(:create)
       end
       it "should accept a block to set node attributes" do
