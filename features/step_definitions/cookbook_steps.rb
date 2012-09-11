@@ -15,7 +15,7 @@ When 'the recipe example is successfully run' do
 end
 
 When 'the recipe example is unsuccessfully run' do
-  run_examples_unsuccessfully('No such file or directory')
+  run_examples_unsuccessfully('FileNotFound')
 end
 
 Then 'the recipe will see the node attribute set in the spec example' do

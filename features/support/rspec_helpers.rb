@@ -22,7 +22,7 @@ module ChefSpec
     def run_examples_unsuccessfully(failure_message)
       run_simple 'rspec cookbooks/example/spec/', false
       assert_success(false)
-      assert_partial_output 'No such file or directory', all_output
+      assert_partial_output failure_message, all_output
     end
 
     def spec_already_exists

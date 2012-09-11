@@ -3,17 +3,17 @@ require 'spec_helper'
 module ChefSpec
   module Matchers
     describe "#template_path" do
-      context "local to this cookbook" do
-        let(:template) {{:source => 'foo.erb', :cookbook_name => 'example', :cookbook => nil}}
-        it "should determine the correct path" do
-          template_path(template).should == 'cookbooks/example/templates/default/foo.erb'
-        end
-      end
-      context "from another cookbook" do
-        let(:template) {{:source => 'foo.erb', :cookbook_name => 'example', :cookbook => 'another'}}
-        it "should determine the correct path" do
-          template_path(template).should == 'cookbooks/another/templates/default/foo.erb'
-        end
+      let(:template) { stub(:source => 'foo.erb', :cookbook_name => 'example', :cookbook => nil, :path => nil) }
+      let(:cookbook) { Chef::CookbookVersion.new('example') }
+      let(:node) { stub(:platform => 'chefspec', :cookbook_collection => { 'example' => cookbook }) }
+      let(:source_path) { 'cookbooks/example/templates/default/foo.erb' }
+
+      it "should determine the correct path" do
+        cookbook.should_receive(:preferred_filename_on_disk_location).
+          with(node, :templates, template.source, template.path).
+          and_return(source_path)
+
+        template_path(template, node).should == source_path
       end
     end
     describe :create_file_with_content do
