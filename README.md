@@ -444,7 +444,7 @@ your LWRP to be run, you have to explicitly tell `ChefRunner` to step into it:
  3 describe 'foo::default' do
  4   let(:chef_run) {
  5     runner = ChefSpec::ChefRunner.new(:step_into => ['my_lwrp'])
- 6     runner.convert 'foo::default'
+ 6     runner.converge 'foo::default'
  7   }
  8   it 'installs the foo package through my_lwrp' do
  9     chef_run.should install_package 'foo'
