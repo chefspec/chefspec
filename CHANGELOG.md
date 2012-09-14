@@ -1,3 +1,18 @@
+## 0.8.0 (September 14, 2012)
+
+Features:
+
+  - LWRP support added (#40). You can now make assertions about the resources
+    created by a provider by telling chefspec to [step into a provider
+    implementation](https://github.com/acrmp/chefspec/tree/v0.8.0#writing-examples-for-lwrps).
+    Thanks to Augusto Becciu for implementing this feature.
+  - Updated for compatibility with Chef 10.14. Thanks Augusto Becciu.
+
+Bugfixes:
+
+  - Template paths are no longer hard-coded to live under `default` (#32).
+    Thanks Augusto Becciu.
+
 ## 0.7.0 (August 27, 2012)
 
 Features:
