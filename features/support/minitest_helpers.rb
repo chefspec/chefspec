@@ -144,6 +144,18 @@ module ChefSpec
       }
     end
 
+    def spec_expects_user_action(action)
+      state = case action
+        when :create then 'must'
+        else fail "Unrecognised action: #{action}"
+      end
+      generate_spec %Q{
+        it "#{action.to_s} the user foo" do
+          user('foo').#{state}_exist
+        end
+      }
+    end
+
     private
 
     def generate_spec(example)
@@ -161,19 +173,6 @@ module ChefSpec
           include ChefSpec::MiniTest
 
           #{example}
-        end
-      }
-    end
-
-    def spec_expects_user_action(action)
-      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
-        require "chefspec"
-
-        describe "example::default" do
-          let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
-          it "should #{action.to_s} the user foo" do
-            chef_run.should #{action.to_s}_user 'foo'
-          end
         end
       }
     end

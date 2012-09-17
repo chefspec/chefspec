@@ -122,6 +122,7 @@ module ChefSpec
         override_assertion :installed, :package_name, [:remove, :purge]
         override_assertion :enabled, :enabled, [:disable]
         override_assertion :running, :running, [:stop]
+        override_assertion :user_exists, :username, [:remove]
 
         def file_resources
           resources.select{|r| r.resource_name.to_s.end_with?('file')} +
