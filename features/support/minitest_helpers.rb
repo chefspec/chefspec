@@ -165,5 +165,18 @@ module ChefSpec
       }
     end
 
+    def spec_expects_user_action(action)
+      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
+        require "chefspec"
+
+        describe "example::default" do
+          let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+          it "should #{action.to_s} the user foo" do
+            chef_run.should #{action.to_s}_user 'foo'
+          end
+        end
+      }
+    end
+
   end
 end

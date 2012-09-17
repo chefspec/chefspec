@@ -11,6 +11,7 @@ if defined?(RSpec)
   require 'chefspec/matchers/service'
   require 'chefspec/matchers/shared'
   require 'chefspec/matchers/file_content'
+  require 'chefspec/matchers/user'
 end
 require 'chefspec/minitest'
 require 'chefspec/monkey_patches/hash'

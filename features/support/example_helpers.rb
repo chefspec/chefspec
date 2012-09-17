@@ -331,6 +331,13 @@ module ChefSpec
         end
       }
     end
+    def recipe_create_user
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        user "foo" do
+          action :create
+        end
+      }
+    end
 
   end
 end
