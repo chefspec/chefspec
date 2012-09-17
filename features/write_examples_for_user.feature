@@ -6,9 +6,14 @@ Feature: Write examples for cookbook users
 
       chef_run.should create_user 'foo'
 
-  Scenario: Create an user
-    Given a Chef cookbook with a recipe that creates an user resource
-    And the recipe has a spec example that expects the user to be declared
+  Scenario: Create a user
+    Given a Chef cookbook with a recipe that creates a user resource
+    And the recipe has a spec example that expects the user to be created
     When the recipe example is successfully run
     Then the user will not have been created
 
+  Scenario: Remove a user
+    Given a Chef cookbook with a recipe that removes a user resource
+    And the recipe has a spec example that expects the user to be removed
+    When the recipe example is successfully run
+    Then the user will not have been created

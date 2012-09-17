@@ -312,6 +312,7 @@ module ChefSpec
         end
       }
     end
+
     def spec_expects_user_action(action)
       write_file 'cookbooks/example/spec/default_spec.rb', %Q{
         require "chefspec"
@@ -324,5 +325,6 @@ module ChefSpec
         end
       }
     end
+
   end
 end

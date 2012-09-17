@@ -147,6 +147,7 @@ module ChefSpec
     def spec_expects_user_action(action)
       state = case action
         when :create then 'must'
+        when :remove then 'wont'
         else fail "Unrecognised action: #{action}"
       end
       generate_spec %Q{
