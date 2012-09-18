@@ -10,7 +10,7 @@ module ChefSpec
 
       it "should determine the correct path" do
         cookbook.should_receive(:preferred_filename_on_disk_location).
-          with(node, :templates, template.source, template.path).
+          with(node, :templates, template.source).
           and_return(source_path)
 
         template_path(template, node).should == source_path
