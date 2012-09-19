@@ -10,6 +10,7 @@ if defined?(RSpec)
   require 'chefspec/matchers/package'
   require 'chefspec/matchers/service'
   require 'chefspec/matchers/shared'
+  require 'chefspec/matchers/notifications'
   require 'chefspec/matchers/file_content'
   require 'chefspec/matchers/user'
 end
