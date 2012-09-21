@@ -348,6 +348,24 @@ module ChefSpec
       }
     end
 
+    def recipe_with_template_notifying_service 
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        template "/etc/foo" do
+          notifies :restart ,"service[bar]"
+        end
+        service "bar" do
+          action :start
+        end
+      }
+    end
+    def recipe_includes_another_recipe
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        include_recipe 'example::foo'
+      }
+      write_file 'cookbooks/example/recipes/foo.rb', %q{
+      }
+    end
+
   end
 end
 World(ChefSpec::ExampleHelpers)
