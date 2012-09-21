@@ -348,7 +348,7 @@ module ChefSpec
       }
     end
 
-    def recipe_with_template_notifying_service 
+    def recipe_with_template_notifying_service
       write_file 'cookbooks/example/recipes/default.rb', %q{
         template "/etc/foo" do
           notifies :restart ,"service[bar]"
