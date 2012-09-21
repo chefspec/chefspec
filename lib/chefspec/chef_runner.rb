@@ -159,6 +159,10 @@ module ChefSpec
       find_resource('cron', name)
     end
 
+    def env(name)
+      find_resource('env', name)
+    end
+
     # This runner as a string.
     #
     # @return [String] Currently includes the run_list. Format of the string may change between versions of this gem.

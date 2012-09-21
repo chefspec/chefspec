@@ -13,6 +13,7 @@ if defined?(RSpec)
   require 'chefspec/matchers/notifications'
   require 'chefspec/matchers/file_content'
   require 'chefspec/matchers/user'
+  require 'chefspec/matchers/env'
   require 'chefspec/matchers/include_recipe'
 end
 require 'chefspec/minitest'
