@@ -163,6 +163,82 @@ module ChefSpec
       find_resource('env', name)
     end
 
+    def user(name)
+      find_resource('user', name)
+    end
+
+    def execute(name)
+      find_resource('execute', name)
+    end
+
+    def package(name)
+      find_resource('package', name)
+    end
+
+    def service(name)
+      find_resource('service', name)
+    end
+
+    def log(name)
+      find_resource('log', name)
+    end
+
+    def route(name)
+      find_resource('route', name)
+    end
+
+    def ruby_block(name)
+      find_resource('ruby_block', name)
+    end
+
+    def git(name)
+      find_resource('git', name)
+    end
+
+    def subversion(name)
+      find_resource('subversion', name)
+    end
+
+    def group(name)
+      find_resource('group', name)
+    end
+
+    def mount(name)
+      find_resource('mount', name)
+    end
+
+    def ohai(name)
+      find_resource('ohai', name)
+    end
+
+    def ifconfig(name)
+      find_resource('ifconfig', name)
+    end
+
+    def deploy(name)
+      find_resource('deploy', name)
+    end
+
+    def http_request(name)
+      find_resource('http_request', name)
+    end
+
+    def script(name)
+      find_resource('script', name)
+    end
+
+    def powershell(name)
+      find_resource('powershell', name)
+    end
+
+    def remote_directory(name)
+      find_resource('remote_directory', name)
+    end
+
+    def remote_file(name)
+      find_resource('remote_file', name)
+    end
+
     # This runner as a string.
     #
     # @return [String] Currently includes the run_list. Format of the string may change between versions of this gem.
