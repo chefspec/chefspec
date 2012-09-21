@@ -4,7 +4,7 @@ module ChefSpec
   module Matchers
     RSpec::Matchers.define :include_recipe do |expected_recipe| 
       match do |chef_run|
-        actual_recipes = chef_run.node.run_state.recipes
+        actual_recipes = chef_run.node.run_state[:seen_recipes]
         actual_recipes.include?(expected_recipe)
       end
 

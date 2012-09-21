@@ -358,6 +358,13 @@ module ChefSpec
         end
       }
     end
+    def recipe_includes_another_recipe
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        include_recipe 'example::foo'
+      }
+      write_file 'cookbooks/example/recipes/foo.rb', %q{
+      }
+    end
 
   end
 end

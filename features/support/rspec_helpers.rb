@@ -339,5 +339,17 @@ module ChefSpec
       }
     end
 
+    def spec_expects_include_recipe
+      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
+        require "chefspec"
+
+        describe "example::default" do
+          let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+          it "template include another recipe it depends on" do
+            chef_run.should include_recipe 'example::foo'
+          end
+        end
+      }
+    end
   end
 end
