@@ -351,5 +351,17 @@ module ChefSpec
         end
       }
     end
+    def spec_expects_env_action(action)
+      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
+        require "chefspec"
+
+        describe "example::default" do
+          let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+          it "should #{action.to_s} environment variable 'java_home'" do
+            chef_run.should #{action.to_s}_env 'java_home'
+          end
+        end
+      }
+    end
   end
 end
