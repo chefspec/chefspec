@@ -1,4 +1,4 @@
-require 'spec_helper' 
+require 'spec_helper'
 
 module ChefSpec
   module Matchers
@@ -10,7 +10,7 @@ module ChefSpec
       it "should define a include_recipe matcher" do
         matcher_defined?(:include_recipe).should be_true
       end
-      
+
       it "should match when the target recipe has been included" do
         matcher.matches?({:node=>{:run_state=>{:seen_recipes=>['foo::bar']}}}).
           should be_true
@@ -20,7 +20,7 @@ module ChefSpec
         matcher.matches?({:node=>{:run_state=>{:seen_recipes=>['foo::baz']}}}).
           should be_false
       end
-      
+
     end
   end
 end
