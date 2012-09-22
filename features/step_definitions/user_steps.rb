@@ -12,3 +12,7 @@ end
 
 Then 'the user will not have been created' do
 end
+
+Given /^the recipe has a spec example the access the user resorce using the convenience method$/ do
+  spec_uses_user_convenience_method
+end

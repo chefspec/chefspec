@@ -366,6 +366,14 @@ module ChefSpec
       }
     end
 
+    def recipe_creates_env_with_action(action)
+      write_file 'cookbooks/example/recipes/default.rb', %Q{
+        env "java_home" do
+          value "/foo/bar/jdk"
+          action :#{action.to_sym}
+        end
+      }
+    end
   end
 end
 World(ChefSpec::ExampleHelpers)

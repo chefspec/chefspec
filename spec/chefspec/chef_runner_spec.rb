@@ -162,6 +162,246 @@ module ChefSpec
         runner.cron('daily_job').should be
       end
     end
+    describe "#env" do
+      it "should not return a resource when no env resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.env('java_home').should_not be
+      end
+      it "should return a resource when the env resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'env', :name => 'java_home'}]
+        runner.env('java_home').should be
+      end
+    end
+    describe "#user" do
+      it "should not return a resource when no user resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.user('foo').should_not be
+      end
+      it "should return a resource when the user resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'user', :name => 'foo'}]
+        runner.user('foo').should be
+      end
+    end
+    describe "#execute" do
+      it "should not return a resource when no execute resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.execute('foo').should_not be
+      end
+      it "should return a resource when the execute resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'execute', :name => 'do_something'}]
+        runner.execute('do_something').should be
+      end
+    end
+    describe "#package" do
+      it "should not return a resource when no package resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.package('foo').should_not be
+      end
+      it "should return a resource when the package resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'package', :name => 'foo'}]
+        runner.package('foo').should be
+      end
+    end
+    describe "#service" do
+      it "should not return a resource when no service resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.service('foo').should_not be
+      end
+      it "should return a resource when the service resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'service', :name => 'foo'}]
+        runner.service('foo').should be
+      end
+    end
+    describe "#log" do
+      it "should not return a resource when no log resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.log('foo').should_not be
+      end
+      it "should return a resource when the log resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'log', :name => 'foo'}]
+        runner.log('foo').should be
+      end
+    end
+    describe "#route" do
+      it "should not return a resource when no route resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.route('foo').should_not be
+      end
+      it "should return a resource when the route resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'route', :name => 'foo'}]
+        runner.route('foo').should be
+      end
+    end
+    describe "#ruby_block" do
+      it "should not return a resource when no ruby block resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.ruby_block('foo').should_not be
+      end
+      it "should return a resource when the ruby block resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'ruby_block', :name => 'foo'}]
+        runner.ruby_block('foo').should be
+      end
+    end
+    describe "#git" do
+      it "should not return a resource when no git resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.git('foo').should_not be
+      end
+      it "should return a resource when the git resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'git', :name => 'foo'}]
+        runner.git('foo').should be
+      end
+    end
+    describe "#subversion" do
+      it "should not return a resource when no subversion resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.subversion('foo').should_not be
+      end
+      it "should return a resource when the subversion resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'subversion', :name => 'foo'}]
+        runner.subversion('foo').should be
+      end
+    end
+    describe "#group" do
+      it "should not return a resource when no group resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.group('foo').should_not be
+      end
+      it "should return a resource when the group resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'group', :name => 'foo'}]
+        runner.group('foo').should be
+      end
+    end
+    describe "#mount" do
+      it "should not return a resource when no mount resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.mount('foo').should_not be
+      end
+      it "should return a resource when the group resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'mount', :name => 'foo'}]
+        runner.mount('foo').should be
+      end
+    end
+    describe "#ohai" do
+      it "should not return a resource when no ohai resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.ohai('foo').should_not be
+      end
+      it "should return a resource when the ohai resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'ohai', :name => 'foo'}]
+        runner.ohai('foo').should be
+      end
+    end
+    describe "#ifconfig" do
+      it "should not return a resource when no ifconfig resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.ifconfig('eth0').should_not be
+      end
+      it "should return a resource when the ifconfig resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'ifconfig', :name => 'eth0'}]
+        runner.ifconfig('eth0').should be
+      end
+    end
+    describe "#deploy" do
+      it "should not return a resource when no deploy resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.deploy('deploy').should_not be
+      end
+      it "should return a resource when the deploy resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'deploy', :name => 'foo'}]
+        runner.deploy('foo').should be
+      end
+    end
+    describe "#http_request" do
+      it "should not return a resource when no http request resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.http_request('foo').should_not be
+      end
+      it "should return a resource when the deploy resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'http_request', :name => 'foo'}]
+        runner.http_request('foo').should be
+      end
+    end
+    describe "#script" do
+      it "should not return a resource when no script resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.script('foo').should_not be
+      end
+      it "should return a resource when the script resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'script', :name => 'foo'}]
+        runner.script('foo').should be
+      end
+    end
+    describe "#powershell" do
+      it "should not return a resource when no powershell resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.powershell('foo').should_not be
+      end
+      it "should return a resource when the script resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'powershell', :name => 'foo'}]
+        runner.powershell('foo').should be
+      end
+    end
+    describe "#remote_directory" do
+      it "should not return a resource when no remote directory resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.remote_directory('foo').should_not be
+      end
+      it "should return a resource when the remote directory resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'remote_directory', :name => 'foo'}]
+        runner.remote_directory('foo').should be
+      end
+    end
+    describe "#remote_file" do
+      it "should not return a resource when no remote file resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.remote_file('foo').should_not be
+      end
+      it "should return a resource when the remote file resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'remote_file', :name => 'foo'}]
+        runner.remote_file('foo').should be
+      end
+    end
     describe "#to_s" do
       let(:chef_run) { ChefSpec::ChefRunner.new(:dry_run => true) }
       it "should override the default string representation to something readable" do
