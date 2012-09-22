@@ -326,6 +326,20 @@ module ChefSpec
       }
     end
 
+    def spec_uses_user_convenience_method 
+      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
+        require "chefspec"
+
+        describe "example::default" do
+          let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+          it "should uses the user convenience method" do
+            chef_run.user('foo').should_not be_nil
+          end
+        end
+      }
+    end
+
+
     def spec_expects_template_notifies_service 
       write_file 'cookbooks/example/spec/default_spec.rb', %Q{
         require "chefspec"
