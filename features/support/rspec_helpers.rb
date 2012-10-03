@@ -184,7 +184,7 @@ module ChefSpec
         require "chefspec"
 
         describe "example::default" do
-          let (:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+          let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
           it "should #{action.to_s} package_does_not_exist" do
             chef_run.should #{action.to_s}_gem_package 'gem_package_does_not_exist'
           end
@@ -197,7 +197,7 @@ module ChefSpec
         require "chefspec"
 
         describe "example::default" do
-          let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
+          let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
           it "should install gem_package_does_not_exist at a specific version" do
             chef_run.should install_gem_package_at_version 'gem_package_does_not_exist', '1.2.3'
           end
@@ -210,7 +210,7 @@ module ChefSpec
         require "chefspec"
 
         describe "example::default" do
-          let (:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+          let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
           it "should #{action.to_s} package_does_not_exist" do
             chef_run.should #{action.to_s}_package 'package_does_not_exist'
           end
@@ -223,7 +223,7 @@ module ChefSpec
         require "chefspec"
 
         describe "example::default" do
-          let (:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
+          let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
           it "should install package_does_not_exist at a specific version" do
             chef_run.should install_package_at_version 'package_does_not_exist', '1.2.3'
           end
