@@ -35,7 +35,7 @@ package would be installed.
 1  require "chefspec"
 2
 3  describe "example::default" do
-4    let (:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+4    let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
 5    it "should install foo" do
 6      chef_run.should install_package 'foo'
 7    end
@@ -87,7 +87,7 @@ If you look at the generated example you'll see that on line 6 there is a
 1  require 'chefspec'
 2
 3  describe 'my_new_cookbook::default' do
-4    let (:chef_run) { ChefSpec::ChefRunner.new.converge 'my_new_cookbook::default' }
+4    let(:chef_run) { ChefSpec::ChefRunner.new.converge 'my_new_cookbook::default' }
 5    it 'should do something' do
 6      pending 'Your recipe examples go here.'
 7    end
@@ -422,7 +422,7 @@ argument to the `ChefRunner` constructor like so:
  1 require 'chefspec'
  2
  3 describe 'foo::default' do
- 4   let (:chef_run) {
+ 4   let(:chef_run) {
  5     runner = ChefSpec::ChefRunner.new({:cookbook_path => '/some/path'})
  6     runner.converge 'foo::default'
  7     runner
