@@ -17,6 +17,14 @@ module ChefSpec
           matcher.matches?(fake_resource).should be_false
         end
 
+        context "name regex" do
+          let(:matcher){notify "service[nginx[v1.2.3]]" ,:restart}
+          it 'should allow brackets in the name' do
+            fake_resource = fake_resource_with_notification('nginx[v1.2.3]','service','restart')
+            matcher.matches?(fake_resource).should be_true
+          end
+        end
+
         def fake_resource_with_notification(name,type,action)
           notified_resource = double('notified-resource')
           notified_resource.stub(:resource_name).and_return(type)
