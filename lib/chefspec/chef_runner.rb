@@ -111,132 +111,16 @@ module ChefSpec
       self
     end
 
-    # Find any directory declared with the given path
-    #
-    # @param [String] path The directory path
-    # @return [Chef::Resource::Directory] The matching directory, or Nil
-    def directory(path)
-      find_resource('directory', path)
-    end
-
-    # Find any cookbook_file declared with the given path
-    #
-    # @param [String] path The cookbook_file path
-    # @return [Chef::Resource::Directory] The matching cookbook_file, or Nil
-    def cookbook_file(path)
-      find_resource('cookbook_file', path)
-    end
-
-    # Find any file declared with the given path
-    #
-    # @param [String] path The file path
-    # @return [Chef::Resource::Directory] The matching file, or Nil
-    def file(path)
-      find_resource('file', path)
-    end
-
-    # Find any template declared with the given path
-    #
-    # @param [String] path The template path
-    # @return [Chef::Resource::Directory] The matching template, or Nil
-    def template(path)
-      find_resource('template', path)
-    end
-
-    # Find any link declared with the given target_file
-    #
-    # @param [String] target_file The link's target_file
-    # @return [Chef::Resource::Directory] The matching link, or Nil
-    def link(target_file)
-      find_resource('link', target_file)
-    end
-
-    # Find a crontab entry declared with the given name
-    #
-    # @param  [String] name of a crontab
-    # @return [Chef::Resource::Cron] The matching cron resource, or Nil
-    def cron(name)
-      find_resource('cron', name)
-    end
-
-    def env(name)
-      find_resource('env', name)
-    end
-
-    def user(name)
-      find_resource('user', name)
-    end
-
-    def execute(name)
-      find_resource('execute', name)
-    end
-
-    def package(name)
-      find_resource('package', name)
-    end
-
-    def service(name)
-      find_resource('service', name)
-    end
-
-    def log(name)
-      find_resource('log', name)
-    end
-
-    def route(name)
-      find_resource('route', name)
-    end
-
-    def ruby_block(name)
-      find_resource('ruby_block', name)
-    end
-
-    def git(name)
-      find_resource('git', name)
-    end
-
-    def subversion(name)
-      find_resource('subversion', name)
-    end
-
-    def group(name)
-      find_resource('group', name)
-    end
-
-    def mount(name)
-      find_resource('mount', name)
-    end
-
-    def ohai(name)
-      find_resource('ohai', name)
-    end
-
-    def ifconfig(name)
-      find_resource('ifconfig', name)
-    end
-
-    def deploy(name)
-      find_resource('deploy', name)
-    end
-
-    def http_request(name)
-      find_resource('http_request', name)
-    end
-
-    def script(name)
-      find_resource('script', name)
-    end
-
-    def powershell(name)
-      find_resource('powershell', name)
-    end
-
-    def remote_directory(name)
-      find_resource('remote_directory', name)
-    end
-
-    def remote_file(name)
-      find_resource('remote_file', name)
+    %w(directory cookbook_file file template link cron env user execute package service log route ruby_block git subversion group mount ohai ifconfig deploy http_request script powershell remote_directory remote_file).each do |type|
+      # Find a resource entry declared with the given name
+      #
+      # @param  [String] name of a resource
+      # @return [Chef::Resource] The matching resource, or Nil
+      class_eval <<-RUBY, __FILE__, __LINE__ + 1
+        def #{type}(name)                           # def cron(name)
+          find_resource('#{type}', name)            #   find_resource('cron', name)
+        end                                         # end
+      RUBY
     end
 
     # This runner as a string.
@@ -258,8 +142,8 @@ module ChefSpec
       {:os => 'chefspec', :os_version => ChefSpec::VERSION, :fqdn => 'chefspec.local', :domain => 'local',
        :ipaddress => '127.0.0.1', :hostname => 'chefspec', :languages => Mash.new({"ruby" => "/usr/somewhere"}),
        :kernel => Mash.new({:machine => 'i386'})}.each_pair do |attribute,value|
-        ohai[attribute] = value
-      end
+         ohai[attribute] = value
+       end
     end
 
     # Infer the default cookbook path from the location of the calling spec.
