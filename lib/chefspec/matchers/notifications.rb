@@ -6,7 +6,7 @@ module ChefSpec
 
     RSpec::Matchers.define :notify do |expected_resource,expected_resource_action|
 
-      expected_resource.match(/^(.*)\[(.*)\]$/)
+      expected_resource.match(/^([^\[]*)\[(.*)\]$/)
       expected_resource_name = $2
       expected_resource_type = $1
       match do |actual_resource|
