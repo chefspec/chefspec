@@ -111,12 +111,13 @@ module ChefSpec
       self
     end
 
-    %w(directory cookbook_file file template link cron env user execute package service log route ruby_block git subversion group mount ohai ifconfig deploy http_request script powershell remote_directory remote_file).each do |type|
-      # Find a resource entry declared with the given name
-      #
-      # @param  [String] name of a resource
-      # @return [Chef::Resource] The matching resource, or Nil
-      class_eval <<-RUBY, __FILE__, __LINE__ + 1
+    FILE_RESOURCES    = %w(directory cookbook_file file template link remote_directory remote_file)
+    PACKAGE_RESOURCES = %w(package apt_package dpkg_package easy_install_package freebsd_package macports_package portage_package rpm_package chef_gem solaris_package yum_package zypper_package)
+    SCRIPT_RESOURCES  = %w(script powershell bash csh perl python ruby)
+    MISC_RESOURCES    = %w(cron env user execute service log route ruby_block git subversion group mount ohai ifconfig deploy http_request)
+
+    (FILE_RESOURCES + PACKAGE_RESOURCES + SCRIPT_RESOURCES + MISC_RESOURCES).sort.uniq.each do |type|
+     class_eval <<-RUBY, __FILE__, __LINE__ + 1
         def #{type}(name)                           # def cron(name)
           find_resource('#{type}', name)            #   find_resource('cron', name)
         end                                         # end
