@@ -117,11 +117,9 @@ module ChefSpec
     MISC_RESOURCES    = %w(cron env user execute service log route ruby_block git subversion group mount ohai ifconfig deploy http_request)
 
     (FILE_RESOURCES + PACKAGE_RESOURCES + SCRIPT_RESOURCES + MISC_RESOURCES).sort.uniq.each do |type|
-     class_eval <<-RUBY, __FILE__, __LINE__ + 1
-        def #{type}(name)                           # def cron(name)
-          find_resource('#{type}', name)            #   find_resource('cron', name)
-        end                                         # end
-      RUBY
+      define_method(type) do |name|
+        find_resource(type, name)
+      end
     end
 
     # This runner as a string.
