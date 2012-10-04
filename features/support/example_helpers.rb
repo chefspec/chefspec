@@ -413,6 +413,18 @@ module ChefSpec
         end
       }
     end
+
+    def recipe_with_template_notifying_service_having_braces_in_name
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        template "/etc/foo" do
+          notifies :restart ,"service[bar[v1.1]]"
+        end
+        service "bar[v1.1]" do
+          action :start
+        end
+      }
+    end
+
     def recipe_includes_another_recipe
       write_file 'cookbooks/example/recipes/default.rb', %q{
         include_recipe 'example::foo'

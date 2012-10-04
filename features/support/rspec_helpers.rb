@@ -392,6 +392,19 @@ module ChefSpec
       }
     end
 
+    def spec_expects_template_notifies_service_having_braces_in_its_name
+      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
+        require "chefspec"
+
+        describe "example::default" do
+          let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+          it "template 'foo' should notify resource 'bar'" do
+            chef_run.template('/etc/foo').should notify('service[bar[v1.1]]',:restart)
+          end
+        end
+      }
+    end
+
     def spec_expects_include_recipe
       write_file 'cookbooks/example/spec/default_spec.rb', %Q{
         require "chefspec"
