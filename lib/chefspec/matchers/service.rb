@@ -12,5 +12,14 @@ module ChefSpec
         end
       end
     end
+
+    RSpec::Matchers.define :set_service_to_not_start_on_boot do |service|
+      match do |chef_run|
+        chef_run.resources.any? do |resource|
+          resource_type(resource) == 'service' and resource.service_name == service and resource.action.include? :disable
+        end
+      end
+    end
+
   end
 end
