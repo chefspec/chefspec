@@ -10,15 +10,18 @@ module ChefSpec
               case resource_type(resource)
                 when 'template'
                   @actual_content = render(resource, chef_run.node)
-                  @actual_content.to_s.include? content
                 when 'file'
                   @actual_content = resource.content
-                  @actual_content.to_s.include? content
                 when 'cookbook_file'
                   cookbook_name = resource.cookbook || resource.cookbook_name
                   cookbook = chef_run.node.cookbook_collection[cookbook_name]
                   @actual_content = File.read(cookbook.preferred_filename_on_disk_location(chef_run.node, :files, resource.source, resource.path))
-                  @actual_content.to_s.include? content
+              end
+
+              if content.is_a?(Regexp)
+                @actual_content.to_s =~ content
+              else
+                @actual_content.to_s.include? content
               end
             end
           end
