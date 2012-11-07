@@ -295,7 +295,7 @@ Assert that a file would have the correct ownership:
 chef_run.file('/var/log/bar.log').should be_owned_by('user', 'group')
 ```
 
-Assert that a file would have the expected content:
+Assert that a file would have the expected content (matches on partial content):
 
 ```ruby
 chef_run.should create_file_with_content 'hello-world.txt', 'hello world'
