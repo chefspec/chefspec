@@ -60,7 +60,7 @@ module ChefSpec
         file.run_action(:create)
       end
       it "should accept a block to set node attributes" do
-        runner = ChefSpec::ChefRunner.new() {|node| node[:foo] = 'baz'}
+        runner = ChefSpec::ChefRunner.new() {|node| node.set[:foo] = 'baz'}
         runner.node.foo.should == 'baz'
       end
       context "default ohai attributes" do
@@ -87,7 +87,7 @@ module ChefSpec
     describe "#node" do
       it "should allow attributes to be set on the node" do
         runner = ChefSpec::ChefRunner.new
-        runner.node.foo = 'bar'
+        runner.node.set[:foo] = 'bar'
         runner.node.foo.should eq 'bar'
       end
     end
@@ -412,7 +412,7 @@ module ChefSpec
         chef_run.to_s.should == 'chef_run'
       end
       it "should not include node attributes" do
-        chef_run.node.foo = 'bar'
+        chef_run.node.set[:foo] = 'bar'
         chef_run.node.automatic_attrs[:platform] = 'solaris'
         chef_run.converge('apache2::default').to_s.should == 'chef_run: recipe[apache2::default]'
       end
