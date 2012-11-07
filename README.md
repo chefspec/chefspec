@@ -301,6 +301,12 @@ Assert that a file would have the expected content:
 chef_run.should create_file_with_content 'hello-world.txt', 'hello world'
 ```
 
+Assert that a remote file would be created:
+
+```ruby
+chef_run.should create_remote_file '/tmp/foo.tar.gz'
+```
+
 ## Packages
 
 Note that only packages explicitly declared in the cookbook will be matched by
