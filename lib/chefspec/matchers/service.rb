@@ -3,7 +3,7 @@ require 'chefspec/matchers/shared'
 module ChefSpec
   module Matchers
 
-    define_resource_matchers([:start, :stop, :restart, :reload, :nothing, :enable], [:service], :service_name)
+    define_resource_matchers([:start, :stop, :restart, :reload, :nothing, :enable, :disable], [:service], :service_name)
 
     RSpec::Matchers.define :set_service_to_start_on_boot do |service|
       match do |chef_run|
