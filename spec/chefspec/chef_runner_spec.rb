@@ -25,6 +25,7 @@ module ChefSpec
         Chef::Log.level.should eql :warn
       end
       it "should set the log_level to any provided value" do
+        Chef::Log.stub(:info)
         ChefSpec::ChefRunner.new(:log_level => :info)
         Chef::Log.level.should eql :info
       end
@@ -103,12 +104,12 @@ module ChefSpec
       end
     end
     describe "#template" do
-      it "should not return a resource when the file has not been declared" do
+      it "should not return a resource when the template has not been declared" do
         runner = ChefSpec::ChefRunner.new
         runner.resources = []
         runner.template('/tmp/foo.txt').should_not be
       end
-      it "should return a resource when the file has been declared" do
+      it "should return a resource when the template has been declared" do
         runner = ChefSpec::ChefRunner.new
         runner.resources = [{:resource_name => 'template', :name => '/tmp/foo.txt'}]
         runner.template('/tmp/foo.txt').should be
@@ -300,7 +301,7 @@ module ChefSpec
         runner.resources = []
         runner.mount('foo').should_not be
       end
-      it "should return a resource when the group resource has been declared" do
+      it "should return a resource when the mount resource has been declared" do
         runner = ChefSpec::ChefRunner.new
         runner.resources = [{:resource_name => 'mount', :name => 'foo'}]
         runner.mount('foo').should be
@@ -343,12 +344,12 @@ module ChefSpec
       end
     end
     describe "#http_request" do
-      it "should not return a resource when no http request resource has not been declared" do
+      it "should not return a resource when no http_request resource has not been declared" do
         runner = ChefSpec::ChefRunner.new
         runner.resources = []
         runner.http_request('foo').should_not be
       end
-      it "should return a resource when the deploy resource has been declared" do
+      it "should return a resource when the http_request resource has been declared" do
         runner = ChefSpec::ChefRunner.new
         runner.resources = [{:resource_name => 'http_request', :name => 'foo'}]
         runner.http_request('foo').should be
@@ -372,7 +373,7 @@ module ChefSpec
         runner.resources = []
         runner.powershell('foo').should_not be
       end
-      it "should return a resource when the script resource has been declared" do
+      it "should return a resource when the powershell resource has been declared" do
         runner = ChefSpec::ChefRunner.new
         runner.resources = [{:resource_name => 'powershell', :name => 'foo'}]
         runner.powershell('foo').should be
