@@ -1,3 +1,4 @@
+@chefgem
 Feature: Write examples for chef gem packages
 
   Express an expectation that a chef gem package will be installed:
