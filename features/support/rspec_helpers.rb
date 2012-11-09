@@ -205,6 +205,32 @@ module ChefSpec
       }
     end
 
+    def spec_expects_chef_gem_action(action)
+      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
+        require "chefspec"
+
+        describe "example::default" do
+          let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+          it "should #{action.to_s} package_does_not_exist" do
+            chef_run.should #{action.to_s}_chef_gem 'chef_gem_does_not_exist'
+          end
+        end
+      }
+    end
+
+    def spec_expects_chef_gem_at_specific_version
+      write_file 'cookbooks/example/spec/default_spec.rb', %q{
+        require "chefspec"
+
+        describe "example::default" do
+          let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
+          it "should install chef_gem_does_not_exist at a specific version" do
+            chef_run.should install_chef_gem_at_version 'chef_gem_does_not_exist', '1.2.3'
+          end
+        end
+      }
+    end
+
     def spec_expects_package_action(action)
       write_file 'cookbooks/example/spec/default_spec.rb', %Q{
         require "chefspec"

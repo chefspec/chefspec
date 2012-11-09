@@ -349,6 +349,10 @@ All of the assertions above are also valid for use with RubyGems:
 chef_run.should install_gem_package 'foo'
 ```
 
+```ruby
+chef_run.should install_chef_gem_package 'chef-foo'
+```
+
 ## Execute
 
 If you make use of the `execute` resource within your cookbook recipes it is

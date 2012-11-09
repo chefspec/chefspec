@@ -101,6 +101,26 @@ module ChefSpec
       }
     end
 
+    def spec_expects_chef_gem_action(action)
+      assertion = case action
+        when :remove, :purge then 'wont_be_installed'
+        else 'must_be_installed'
+      end
+      generate_spec %Q{
+        it "#{action}s the chef gem" do
+          chef_gem("chef_gem_does_not_exist").#{assertion}
+        end
+      }
+    end
+
+    def spec_expects_chef_gem_at_specific_version
+      generate_spec %q{
+        it "installs the chef gem at a specific version" do
+          chef_gem("chef_gem_does_not_exist").must_be_installed.with(:version, '1.2.3')
+        end
+      }
+    end
+
     def spec_expects_package_action(action)
       assertion = case action
         when :remove, :purge then 'wont_be_installed'
