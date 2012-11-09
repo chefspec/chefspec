@@ -104,6 +104,14 @@ module ChefSpec
       }
     end
 
+    def recipe_installs_chef_gem
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        chef_gem "chef_gem_does_not_exist" do
+          action :install
+        end
+      }
+    end
+
     def recipe_installs_package
       write_file 'cookbooks/example/recipes/default.rb', %q{
         package "package_does_not_exist" do
@@ -127,6 +135,15 @@ module ChefSpec
       }
     end
 
+    def recipe_installs_specific_chef_gem_version
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        chef_gem "chef_gem_does_not_exist" do
+          version "1.2.3"
+          action :install
+        end
+      }
+    end
+
     def recipe_installs_specific_package_version
       write_file "cookbooks/example/recipes/default.rb", %q{
         package "package_does_not_exist" do
@@ -139,6 +156,14 @@ module ChefSpec
     def recipe_installs_specific_gem_version_with_no_action
       write_file 'cookbooks/example/recipes/default.rb', %q{
         gem_package "gem_package_does_not_exist" do
+          version "1.2.3"
+        end
+      }
+    end
+
+    def recipe_installs_specific_chef_gem_version_with_no_action
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        chef_gem "chef_gem_does_not_exist" do
           version "1.2.3"
         end
       }
@@ -161,6 +186,14 @@ module ChefSpec
     def recipe_purges_gem
       write_file 'cookbooks/example/recipes/default.rb', %q{
         gem_package "gem_package_does_not_exist" do
+          action :purge
+        end
+      }
+    end
+
+    def recipe_purges_chef_gem
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        chef_gem "chef_gem_does_not_exist" do
           action :purge
         end
       }
@@ -194,6 +227,14 @@ module ChefSpec
     def recipe_removes_gem
       write_file 'cookbooks/example/recipes/default.rb', %q{
         gem_package "gem_package_does_not_exist" do
+          action :remove
+        end
+      }
+    end
+
+    def recipe_removes_chef_gem
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        chef_gem "chef_gem_does_not_exist" do
           action :remove
         end
       }
@@ -304,6 +345,14 @@ module ChefSpec
       }
     end
 
+    def recipe_upgrades_chef_gem
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        chef_gem "chef_gem_does_not_exist" do
+          action :upgrade
+        end
+      }
+    end
+
     def recipe_with_cookbook_file
       write_file 'cookbooks/example/files/default/hello-world.txt', 'hello world!'
       write_file 'cookbooks/example/recipes/default.rb', 'cookbook_file "hello-world.txt"'
@@ -321,6 +370,12 @@ module ChefSpec
     def recipe_with_gem_no_action
       write_file 'cookbooks/example/recipes/default.rb', %q{
         gem_package "gem_package_does_not_exist"
+      }
+    end
+
+    def recipe_with_chef_gem_no_action
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        chef_gem "chef_gem_does_not_exist"
       }
     end
 
