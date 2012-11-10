@@ -422,6 +422,14 @@ Assert that a daemon would be reloaded:
 chef_run.should reload_service 'food'
 ```
 
+## Recipes
+
+Assert that a recipe would be included:
+
+```ruby
+chef_run.should include_recipe 'foo::bar'
+```
+
 # Varying the cookbook path
 
 By default chefspec will infer the `cookbook_path` from the location of the
