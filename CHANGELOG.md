@@ -1,3 +1,36 @@
+## 0.9.0 (November 10, 2012)
+
+Features:
+
+  - Support added for the `user` resource (#6). Thanks Ranjib Dey.
+  - Support for making assertions about notifications added (#49). Thanks to
+    Ranjib Dey.
+  - New `include_recipe` matcher added (#50). Thanks Ranjib Dey.
+  - Support added for the Windows `env` resource (#51). Thanks Ranjib Dey.
+  - Convenience methods for common resources added to `ChefRunner` (#51).
+    Thanks Ranjib Dey.
+  - Further resource convenience methods added (#60). Thanks to Ketan
+    Padegaonkar.
+  - Support for the `:disable` action added to the service resource (#67).
+    Thanks to Chris Lundquist.
+  - Add a matcher to assert that a service is not running on boot (#58). Thanks
+    to Ketan Padegaonkar.
+  - Support added for the `chef_gem` resource (#74). Thanks to Jim Hopp.
+
+Bugfixes:
+
+  - Avoid failure if template path is not writable (#48). Thanks to Augusto
+    Becciu and Jim Hopp.
+  - Style fix for the README (#55). Thanks Greg Karékinian.
+  - Ensure notification assertions work where the resource name contains
+    brackets (#57). Thanks Sean Nolen.
+  - Unit tests updated to explicitly specify attribute precedence as required
+    from Chef 11 (#70). Thanks Mathias Lafeldt.
+  - Documentation added to the README for the `create_remote_file` matcher
+    (#71). Thanks Mathias Lafeldt.
+  - Clarify that `create_file_with_content` matches on partial content (#72).
+    Thanks Mathias Lafeldt.
+
 ## 0.8.0 (September 14, 2012)
 
 Features:
