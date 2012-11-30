@@ -176,6 +176,7 @@ module ChefSpec
         end
       }
     end
+
     def spec_uses_user_convenience_method
       generate_spec %Q{
         it "access the user convenience method" do

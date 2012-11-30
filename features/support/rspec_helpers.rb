@@ -404,8 +404,7 @@ module ChefSpec
       }
     end
 
-
-    def spec_expects_template_notifies_service
+    def spec_expects_template_notifies_service 
       write_file 'cookbooks/example/spec/default_spec.rb', %Q{
         require "chefspec"
 
