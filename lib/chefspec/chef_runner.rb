@@ -112,7 +112,7 @@ module ChefSpec
     end
 
     FILE_RESOURCES    = %w(directory cookbook_file file template link remote_directory remote_file)
-    PACKAGE_RESOURCES = %w(package apt_package dpkg_package easy_install_package freebsd_package macports_package portage_package rpm_package chef_gem solaris_package yum_package zypper_package)
+    PACKAGE_RESOURCES = %w(package apt_package dpkg_package easy_install_package freebsd_package macports_package portage_package rpm_package chef_gem gem_package solaris_package yum_package zypper_package)
     SCRIPT_RESOURCES  = %w(script powershell bash csh perl python ruby)
     MISC_RESOURCES    = %w(cron env user execute service log route ruby_block git subversion group mount ohai ifconfig deploy http_request)
 
@@ -158,7 +158,7 @@ module ChefSpec
     # @param [String] name The resource name
     # @return [Chef::Resource] The matching resource, or Nil
     def find_resource(type, name)
-      resources.find{|resource| resource_type(resource) == type and resource.name == name}
+      resources.find{|resource| resource_type(resource) == type and resource.name == name and (block_given? ? yield(resource) : true)}
     end
 
   end
