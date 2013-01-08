@@ -64,7 +64,7 @@ module ChefSpec
         runner.node.foo.should == 'baz'
       end
       context "default ohai attributes" do
-        let(:node){ChefSpec::ChefRunner.new(platform:'chefspec', version:'0.6.1').node}
+        let(:node){ChefSpec::ChefRunner.new(:platform => 'chefspec', :version => '0.6.1').node}
         specify{node['os'].should == 'chefspec'}
         specify{node['languages']['ruby'].should == "/usr/somewhere"}
         specify{node['os_version'].should == '0.6.1'}
@@ -75,7 +75,7 @@ module ChefSpec
         specify{node['kernel']['machine'].should == 'i386'}
       end
       context "fauxhai delegation" do
-        let(:node){ChefSpec::ChefRunner.new(platform:'ubuntu', version:'12.04').node}
+        let(:node){ChefSpec::ChefRunner.new(:platform => 'ubuntu', :version => '12.04').node}
         specify{node['os'].should == 'linux'}
         specify{node['languages']['ruby']['ruby_bin'].should == '/usr/local/bin/ruby'}
         specify{node['os_version'].should == '3.2.0-26-generic'}

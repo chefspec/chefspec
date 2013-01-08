@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency('erubis', '>= 0')
   s.add_dependency('fauxhai', '~> 0.1')
   s.add_dependency('minitest-chef-handler', '~> 0.6.0')
+  s.add_dependency('moneta', '< 0.7.0') # https://github.com/opscode/chef/commit/c6b6103e3befa355c2645c35fc3b8ba0159375f0
   s.add_dependency('rspec', '~> 2.12.0')
 
   # Development Dependencies
