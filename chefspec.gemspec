@@ -12,8 +12,10 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.require_path = 'lib'
   s.files = Dir['lib/**/*.rb']
+
   s.add_dependency('chef', chef_version)
   s.add_dependency('erubis', '>= 0')
+  s.add_dependency('fauxhai', '~> 0.0')
   s.add_dependency('minitest-chef-handler', '~> 0.6.0')
   s.add_dependency('rspec', '~> 2.11.0')
 end
