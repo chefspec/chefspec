@@ -195,19 +195,22 @@ declares the platform underneath `automatic_attrs`.
 4    'I am running on a Commodore 64.'
 ```
 
-### Missing attributes
+### "Missing" attributes
 
-Because Ohai runs a large number of plugins by default, many community cookbooks
-will assume that a node attribute will be present, and will fail unless a value
-is provided. Providing values for each of these attributes can detract from the
-readability of your examples.
+[Fauxhai](https://github.com/customink/fauxhai) from Seth Vargo is now a dependency of ChefSpec. This means you leverage all the power of fauxhai (and it's community contributed ohai mocks) without additional configuration. Just specify the `platform` and `version` attributes when you instantiate your `ChefRunner`:
 
-[Fauxhai](https://github.com/customink/fauxhai) from Seth Vargo is a promising
-solution to this problem because it enables you to re-use sanitized Ohai
-attribute profiles by name, rather than being required to provide each attribute
-individually. For more on Fauxhai
-[check out this blog post](http://technology.customink.com/blog/2012/08/03/testing-chef-cookbooks/)
-from CustomInk.
+```ruby
+1  chef_run = ChefSpec::ChefRunner.new(platform:'ubuntu', version:'12.04') do |node|
+2    node['my_attribute'] = 'bar'
+3    node['my_other_attribute'] = 'bar2'
+4  end
+5  chef_run.converge 'example::default'
+```
+
+This will include all the default attributes for Ubuntu Precise 12.04. By default, ChefSpec uses the built-in ChefSpec environment (which is minimally configured) for backward compatibility.
+
+For more on Fauxhai
+[check out this blog post](http://technology.customink.com/blog/2012/08/03/testing-chef-cookbooks/) from CustomInk.
 
 ## Search Results
 
