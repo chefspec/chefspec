@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency('erubis', '>= 0')
   s.add_dependency('fauxhai', '~> 0.0')
   s.add_dependency('minitest-chef-handler', '~> 0.6.0')
-  s.add_dependency('rspec', '~> 2.11.0')
+  s.add_dependency('rspec', '~> 2.12.0')
 
   # Development Dependencies
   s.add_development_dependency('rake', '~> 0.9.2.2')
