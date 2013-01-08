@@ -63,30 +63,27 @@ module ChefSpec
         runner = ChefSpec::ChefRunner.new() {|node| node.set[:foo] = 'baz'}
         runner.node.foo.should == 'baz'
       end
-      # context "default ohai attributes" do
-      #   let(:node){ChefSpec::ChefRunner.new(platform:'chefspec', version:'0.6.1').node}
-      #   specify{node['os'].should == 'chefspec'}
-      #   specify{node['languages']['ruby'].should == "/usr/somewhere"}
-      #   specify{node['os_version'].should == '0.6.1'}
-      #   specify{node['fqdn'].should == 'chefspec.local'}
-      #   specify{node['domain'].should == 'local'}
-      #   specify{node['ipaddress'].should == '127.0.0.1'}
-      #   specify{node['hostname'].should == 'chefspec'}
-      #   specify{node['kernel']['machine'].should == 'i386'}
-      # end
+      context "default ohai attributes" do
+        let(:node){ChefSpec::ChefRunner.new(platform:'chefspec', version:'0.6.1').node}
+        specify{node['os'].should == 'chefspec'}
+        specify{node['languages']['ruby'].should == "/usr/somewhere"}
+        specify{node['os_version'].should == '0.6.1'}
+        specify{node['fqdn'].should == 'chefspec.local'}
+        specify{node['domain'].should == 'local'}
+        specify{node['ipaddress'].should == '127.0.0.1'}
+        specify{node['hostname'].should == 'chefspec'}
+        specify{node['kernel']['machine'].should == 'i386'}
+      end
       context "fauxhai delegation" do
         let(:node){ChefSpec::ChefRunner.new(platform:'ubuntu', version:'12.04').node}
-        it 'foo' do
-          node['os'].should == 'linux'
-        end
-        # specify{node['os'].should == 'linux'}
-        # specify{node['languages']['ruby']['ruby_bin'].should == '/usr/local/bin/ruby'}
-        # specify{node['os_version'].should == '3.2.0-26-generic'}
-        # specify{node['fqdn'].should == 'fauxhai.local'}
-        # specify{node['domain'].should == 'local'}
-        # specify{node['ipaddress'].should == '10.0.0.2'}
-        # specify{node['hostname'].should == 'Fauxhai'}
-        # specify{node['kernel']['machine'].should == 'x86_64'}
+        specify{node['os'].should == 'linux'}
+        specify{node['languages']['ruby']['ruby_bin'].should == '/usr/local/bin/ruby'}
+        specify{node['os_version'].should == '3.2.0-26-generic'}
+        specify{node['fqdn'].should == 'fauxhai.local'}
+        specify{node['domain'].should == 'local'}
+        specify{node['ipaddress'].should == '10.0.0.2'}
+        specify{node['hostname'].should == 'Fauxhai'}
+        specify{node['kernel']['machine'].should == 'x86_64'}
       end
     end
     describe "#converge" do
