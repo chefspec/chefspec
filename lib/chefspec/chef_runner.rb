@@ -1,6 +1,8 @@
 require 'chef'
 require 'chef/client'
 require 'chef/cookbook_loader'
+require 'fauxhai'
+
 require 'chefspec/matchers/shared'
 
 # ChefSpec allows you to write rspec examples for Chef recipes to gain faster feedback without the need to converge a
@@ -22,16 +24,18 @@ module ChefSpec
     # @param [Hash] options The options for the new runner
     # @option options [String] :cookbook_path The path to the chef cookbook(s) to be tested.
     # @option options [Symbol] :log_level The log level to use (default is :warn)
+    # @option options [String] :platform The platform to load Ohai attributes from (must be present in fauxhai)
+    # @option options [String] :version The version of the platform to load Ohai attributes from (must be present in fauxhai)
     # @yield [node] Configuration block for Chef::Node
     def initialize(options={})
       defaults = {:cookbook_path => default_cookbook_path, :log_level => :warn, :dry_run => false, :step_into => []}
       options = {:cookbook_path => options} unless options.respond_to?(:to_hash) # backwards-compatibility
-      options = defaults.merge(options)
+      @options = defaults.merge(options)
 
       the_runner = self
       @resources = []
-      @step_into = options[:step_into]
-      @do_dry_run = options[:dry_run]
+      @step_into = @options[:step_into]
+      @do_dry_run = @options[:dry_run]
 
       Chef::Resource.class_eval do
         alias :old_run_action :run_action unless method_defined?(:old_run_action)
@@ -69,10 +73,10 @@ module ChefSpec
       Chef::Config[:solo] = true
       Chef::Config[:cache_type] = "Memory"
       Chef::Cookbook::FileVendor.on_create { |manifest| Chef::Cookbook::FileSystemFileVendor.new(manifest) }
-      Chef::Config[:cookbook_path] = options[:cookbook_path]
+      Chef::Config[:cookbook_path] = @options[:cookbook_path]
       Chef::Config[:client_key] = nil
       Chef::Log.verbose = true if Chef::Log.respond_to?(:verbose)
-      Chef::Log.level(options[:log_level])
+      Chef::Log.level(@options[:log_level])
       @client = Chef::Client.new
       fake_ohai(@client.ohai)
       @client.load_node if @client.respond_to?(:load_node) # chef >= 10.14.0
@@ -136,13 +140,13 @@ module ChefSpec
     # does conditional execution based on these values or additional attributes you can set these via
     # node.automatic_attrs.
     #
+    # This method now relies on fauxhai to set node attributes.
+    #
     # @param [Ohai::System] ohai The ohai instance to set fake attributes on
     def fake_ohai(ohai)
-      {:os => 'chefspec', :os_version => ChefSpec::VERSION, :fqdn => 'chefspec.local', :domain => 'local',
-       :ipaddress => '127.0.0.1', :hostname => 'chefspec', :languages => Mash.new({"ruby" => "/usr/somewhere"}),
-       :kernel => Mash.new({:machine => 'i386'})}.each_pair do |attribute,value|
-         ohai[attribute] = value
-       end
+      ::Fauxhai::Mocker.new(:platform => @options[:platform], :version => @options[:version]).data.each_pair do |attribute, value|
+        ohai[attribute] = value
+      end
     end
 
     # Infer the default cookbook path from the location of the calling spec.
@@ -160,7 +164,6 @@ module ChefSpec
     def find_resource(type, name)
       resources.find{|resource| resource_type(resource) == type and resource.name == name}
     end
-
   end
 
 end
