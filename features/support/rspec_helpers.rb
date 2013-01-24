@@ -315,7 +315,7 @@ module ChefSpec
             end.converge 'example::default'
           end
           it "should log the node foo" do
-            chef_run.should log "The value of node.foo is: bar"
+            chef_run.should log /node.foo is: bar$/
           end
         end
       }

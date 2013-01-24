@@ -10,9 +10,9 @@ module ChefSpec
             false
           elsif resource.respond_to?(:message)
             # Chef 10.18 added message attribute to the log resource
-            resource.message == message
+            message === resource.message
           else
-            resource.name == message
+            message === resource.name
           end
         end
       end

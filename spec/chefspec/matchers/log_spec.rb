@@ -29,6 +29,16 @@ module ChefSpec
           matcher.matches?({:resources => [fake_old_log_resource('Hello World')]}).should be true
         end
 
+        context "regexp" do
+          let(:matcher) { log(/^Hel+/) }
+          it "should match when a matching log resource exists" do
+            matcher.matches?({:resources => [fake_log_resource('Hello World')]}).should be true
+          end
+          it "should not match when only a different log resource exists" do
+            matcher.matches?({:resources => [fake_log_resource('Hola Mundo')]}).should be false
+          end
+        end
+
         def fake_log_resource(name, message = nil)
           fake_resource = fake_old_log_resource(name)
           fake_resource.stub(:message).and_return(message || name)
