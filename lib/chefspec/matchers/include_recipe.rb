@@ -10,7 +10,7 @@ module ChefSpec
 
       failure_message_for_should do |chef_run|
         "expected: ['#{expected_recipe}']\n" +
-        "     got: #{chef_run.node.run_state.recipes}"
+        "     got: #{chef_run.node.run_state[:seen_recipes]}"
       end
     end
   end
