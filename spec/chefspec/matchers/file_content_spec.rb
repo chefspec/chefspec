@@ -17,6 +17,20 @@ module ChefSpec
       end
     end
     describe :create_file_with_content do
+      describe "#match with regex content" do
+        let(:matcher) { create_file_with_content('/etc/config_file', /platform: chefspec/) }
+
+        it "should match a file resource with the right content regex and path" do
+          matcher.matches?({:resources => [{:resource_name => 'file', :name => '/etc/config_file',
+                                            :content => 'platform: chefspec', :action => :create}]}).should be true
+        end
+
+        it "should not match a file resource with the wrong content regex and right path" do
+          matcher.matches?({:resources => [{:resource_name => 'file', :name => '/etc/config_file',
+                                            :content => 'platform: macosx', :action => :create}]}).should be false
+        end
+      end
+
       describe "#match" do
         let(:matcher) { create_file_with_content('/etc/config_file', 'platform: chefspec') }
         it "should not match when no resources exist" do
@@ -41,6 +55,7 @@ module ChefSpec
           matcher.matches?({:resources => [{:resource_name => 'file', :name => '/etc/config_file',
                                             :content => 'platform: chefspec', :action => :create}]}).should be true
         end
+
         it "should match a file resource with the right path and content somewhere in the file" do
           matcher.matches?({:resources => [{:resource_name => 'file', :name => '/etc/config_file',
                                             :content => "fqdn: chefspec.local\nplatform: chefspec\nhostname: chefspec", :action => :create}]}).should be true
@@ -117,6 +132,20 @@ module ChefSpec
             matcher.matches?({:node => { :platform => 'chefspec', :cookbook_collection => { 'cookbook' => cookbook } },
               :resources => [{:resource_name => 'cookbook_file', :name => '/etc/config_file',
               :path => '/etc/config_file', :source => 'config_file', :cookbook => "cookbook", :action => :create_if_missing}]}).should be true
+          end
+
+          describe "#match with regex content" do
+            let(:matcher) { create_file_with_content('/etc/config_file', /platform: chefspec/) }
+
+            it "should match a file resource with the right content regex and path" do
+              matcher.matches?({:resources => [{:resource_name => 'file', :name => '/etc/config_file',
+                                                :content => 'platform: chefspec', :action => :create}]}).should be true
+            end
+
+            it "should not match a file resource with the wrong content regex and right path" do
+              matcher.matches?({:resources => [{:resource_name => 'file', :name => '/etc/config_file',
+                                                :content => 'platform: macosx', :action => :create}]}).should be false
+            end
           end
         end
       end
