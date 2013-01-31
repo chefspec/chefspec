@@ -386,6 +386,12 @@ Assert that a log statement would be logged:
 chef_run.should log 'A log message from my recipe'
 ```
 
+Assert that at least one log statement would match a specified regexp:
+
+```ruby
+chef_run.should log(/bacon \d+/)
+```
+
 If you want to be able to view the log output at the console you can control
 the logging level when creating an instance of `ChefRunner` as below:
 
