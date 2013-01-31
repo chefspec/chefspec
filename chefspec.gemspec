@@ -1,4 +1,8 @@
-chef_version = ENV.key?('CHEF_VERSION') ? "= #{ENV['CHEF_VERSION']}" : ['>= 0.9.12']
+chef_version = ['>= 0.9.12']
+unless ENV['CHEF_VERSION'].to_s.empty?
+  chef_version = Gem::Requirement.new(ENV['CHEF_VERSION'])
+end
+
 lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
