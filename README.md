@@ -432,16 +432,16 @@ chef_run.should include_recipe 'foo::bar'
 
 ## Ruby blocks
 
-Assert that a ruby block would be created:
+Assert that a ruby block would be executed:
 
 ```ruby
-chef_run.should create_ruby_block 'ruby_block_name'
+chef_run.should execute_ruby_block 'ruby_block_name'
 ```
 
-Assert that a ruby block would not be created:
+Assert that a ruby block would not be executed:
 
 ```ruby
-chef_run.should_not create_ruby_block 'ruby_block_name'
+chef_run.should_not execute_ruby_block 'ruby_block_name'
 ```
 
 # Varying the cookbook path

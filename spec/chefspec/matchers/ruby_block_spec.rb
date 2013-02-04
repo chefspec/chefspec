@@ -3,7 +3,7 @@ require 'spec_helper'
 module ChefSpec
   module Matchers
     describe :ruby_block do
-      let(:matcher){create_ruby_block('sample')}
+      let(:matcher){execute_ruby_block('sample')}
       it "shouldn't match when no resources exists" do
         matcher.matches?({:resources => []}).should be false
       end
