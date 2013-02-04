@@ -8,6 +8,7 @@ if defined?(RSpec)
   require 'chefspec/matchers/link'
   require 'chefspec/matchers/log'
   require 'chefspec/matchers/package'
+  require 'chefspec/matchers/ruby_block'
   require 'chefspec/matchers/service'
   require 'chefspec/matchers/shared'
   require 'chefspec/matchers/notifications'
