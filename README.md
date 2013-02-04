@@ -439,6 +439,20 @@ Assert that a recipe would be included:
 chef_run.should include_recipe 'foo::bar'
 ```
 
+## Ruby blocks
+
+Assert that a ruby block would be executed:
+
+```ruby
+chef_run.should execute_ruby_block 'ruby_block_name'
+```
+
+Assert that a ruby block would not be executed:
+
+```ruby
+chef_run.should_not execute_ruby_block 'ruby_block_name'
+```
+
 # Varying the cookbook path
 
 By default chefspec will infer the `cookbook_path` from the location of the
