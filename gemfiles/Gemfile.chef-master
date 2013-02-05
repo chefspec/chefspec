@@ -1,5 +1,5 @@
 source :rubygems
 
-gem 'chef', github: 'opscode/chef'
+gem 'chef', :github => 'opscode/chef'
 
 gemspec :path => '..'
