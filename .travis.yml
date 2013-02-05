@@ -10,7 +10,6 @@ gemfile:
   - gemfiles/Gemfile.chef-10
 matrix:
   allow_failures:
-    - rvm: 2.0.0
     - gemfile: gemfiles/Gemfile.chef-master
 notifications:
   irc:
