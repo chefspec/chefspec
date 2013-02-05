@@ -17,6 +17,7 @@ if defined?(RSpec)
   require 'chefspec/matchers/user'
   require 'chefspec/matchers/env'
   require 'chefspec/matchers/include_recipe'
+  require 'chefspec/matchers/script'
 end
 
 require 'chefspec/minitest'
