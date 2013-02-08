@@ -474,6 +474,28 @@ argument to the `ChefRunner` constructor like so:
 12 end
 ```
 
+# Mocking out environments
+If you want to mock out `node.chef_environment`, you'll need to use RSpec mocks/stubs twice:
+
+```ruby
+let(:chef_run) do
+  ChefSpec::ChefRunner.new do |node|
+    # Create a new environment (you could also use a different :let block or :before block)
+    env = Chef::Environment.new
+    env.name 'staging'
+
+    # Stub the node to return this environment
+    node.stub(:chef_environment).and_return env.name
+
+    # Stub any calls to Environment.load to return this environment
+    Chef::Environment.stub(:load).and_return env
+  end.converge 'cookbook::recipe'
+end
+```
+
+
+See #54 for the in-depth discussion.
+
 # Writing examples for LWRP's
 
 By default chefspec will override all resources to take no action. In order to allow
