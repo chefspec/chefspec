@@ -8,3 +8,4 @@ coverage
 doc
 tmp
 Gemfile.lock
+gemfiles/*.lock
