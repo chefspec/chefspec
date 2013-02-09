@@ -11,8 +11,8 @@ Feature: Set node attributes
   a wide range of attribute values prohibitively slow.
 
       runner = ChefSpec::ChefRunner.new do |node|
-        node[:my_attribute] = 'bar'
-        node[:my_other_attribute] = 'bar2'
+        node.set['my_attribute'] = 'bar'
+        node.set['my_other_attribute'] = 'bar2'
       end
 
   Scenario: Set node attribute
