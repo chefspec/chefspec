@@ -1,6 +1,7 @@
 require 'chef'
 require 'chefspec/chef_runner'
 require 'chefspec/version'
+
 if defined?(RSpec)
   require 'chefspec/matchers/cron'
   require 'chefspec/matchers/execute'
@@ -17,6 +18,8 @@ if defined?(RSpec)
   require 'chefspec/matchers/env'
   require 'chefspec/matchers/include_recipe'
 end
+
 require 'chefspec/minitest'
 require 'chefspec/monkey_patches/hash'
+require 'chefspec/monkey_patches/lwrp_base'
 require 'chefspec/monkey_patches/provider'

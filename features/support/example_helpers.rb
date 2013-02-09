@@ -382,6 +382,7 @@ module ChefSpec
     def recipe_with_remote_file
       write_file 'cookbooks/example/recipes/default.rb', %q{
         remote_file "hello-world.txt" do
+          source 'http://www.google.com/robots.txt'
           action :create
         end
       }

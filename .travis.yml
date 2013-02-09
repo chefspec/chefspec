@@ -1,16 +1,14 @@
 rvm:
+  - ree       # Remove on July 1, 2013
   - 1.9.3
-  - 1.9.2
-  - 1.8.7
-env:
-  - CHEF_VERSION=
-  - CHEF_VERSION="~> 10.16.4"
-  - CHEF_VERSION="~> 10.14.4"
-  - CHEF_VERSION="~> 0.10.10"
-  - CHEF_VERSION="~> 0.9.18"
-matrix:
-  allow_failures:
-    - rvm: 2.0.0
-  include:
-    - rvm: 2.0.0
-      env: CHEF_VERSION=
+  - 2.0.0
+gemfile:
+  - gemfiles/Gemfile.chef-11
+  - gemfiles/Gemfile.chef-10
+  # - gemfiles/Gemfile.chef-master # uncomment to test against master
+notifications:
+  irc:
+    channels:
+      - 'irc.freenode.org#chefspec'
+    skip_join: true
+    use_notice: true
