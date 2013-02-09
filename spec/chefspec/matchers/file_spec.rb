@@ -29,9 +29,29 @@ module ChefSpec
         it "should not match when no resource with the expected path exists" do
           matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/bar', :action => 'create'}]).should be false
         end
-
         it "should match when a remote file with the expected path exists" do
           matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/foo', :action => 'create'}]).should be true
+        end
+      end
+    end
+
+    describe :create_remote_file_with_attributes do
+      describe "#match" do
+        let(:matcher) { create_remote_file_with_attributes('/tmp/foo', :source => 'http://www.example.com/foo', :checksum => 'deadbeef') }
+        it "should not match when no resource with the expected path exists" do
+          matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/bar', :source => 'http://www.example.com/foo', :checksum => 'deadbeef', :action => 'create'}]).should be false
+        end
+        it "should not match when the source differs" do
+          matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/foo', :source => 'http://www.example.com/bar', :checksum => 'deadbeef', :action => 'create'}]).should be false
+        end
+        it "should not match when the source differs" do
+          matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/foo', :source => 'http://www.example.com/foo', :checksum => 'cafebabe', :action => 'create'}]).should be false
+        end
+        it "should match when a remote file with the expected path exists" do
+          matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/foo', :source => 'http://www.example.com/foo', :checksum => 'deadbeef', :action => 'create'}]).should be true
+        end
+        it "should match when the remote file has additional attributes" do
+          matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/foo', :smells_like_peanut_butter => true, :source => 'http://www.example.com/foo', :checksum => 'deadbeef', :action => 'create'}]).should be true
         end
       end
     end
