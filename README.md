@@ -23,23 +23,23 @@ Start by watching Jim Hopp's excellent [Test Driven Development for Chef Practit
 This is an extremely basic Chef recipe that just installs an operating system package.
 
 ```ruby
-1  package "foo" do
-2    action :install
-3  end
+package "foo" do
+  action :install
+end
 ```
 
 This is a matching spec file that defines an example that checks that the
 package would be installed.
 
 ```ruby
-1  require "chefspec"
-2
-3  describe "example::default" do
-4    let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
-5    it "should install foo" do
-6      chef_run.should install_package 'foo'
-7    end
-8  end
+require "chefspec"
+
+describe "example::default" do
+  let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+  it "should install foo" do
+    chef_run.should install_package 'foo'
+  end
+end
 ```
 
 Let's step through this spec file to see what is happening:
@@ -84,14 +84,14 @@ If you look at the generated example you'll see that on line 6 there is a
     $ cat -n my_new_cookbook/spec/default_spec.rb
 
 ```ruby
-1  require 'chefspec'
-2
-3  describe 'my_new_cookbook::default' do
-4    let(:chef_run) { ChefSpec::ChefRunner.new.converge 'my_new_cookbook::default' }
-5    it 'should do something' do
-6      pending 'Your recipe examples go here.'
-7    end
-8  end
+require 'chefspec'
+
+describe 'my_new_cookbook::default' do
+  let(:chef_run) { ChefSpec::ChefRunner.new.converge 'my_new_cookbook::default' }
+  it 'should do something' do
+    pending 'Your recipe examples go here.'
+  end
+end
 ```
 
 You can run the example using rspec:
@@ -139,35 +139,35 @@ In this example the affected resource is a log resource, but it could just as
 easily be a template or package name derived from an attribute value.
 
 ```ruby
-1  it "should log the foo attribute" do
-2    chef_run = ChefSpec::ChefRunner.new
-3    chef_run.node.foo = 'bar'
-4    chef_run.converge 'example::default'
-5    chef_run.should log 'The value of node.foo is: bar'
-6  end
+it "should log the foo attribute" do
+  chef_run = ChefSpec::ChefRunner.new
+  chef_run.node.foo = 'bar'
+  chef_run.converge 'example::default'
+  chef_run.should log 'The value of node.foo is: bar'
+end
 ```
 
 A common mistake is to call `#converge` on the runner before setting the node
 attributes. If you do this then the attributes will not be set correctly.
 
 ```ruby
-1  # Don't do this
-2  it "should log the foo attribute" do
-3    chef_run = ChefSpec::ChefRunner.new.converge 'example::default'
-4    chef_run.node.foo = 'bar'
-5    chef_run.should log 'The value of node.foo is: bar'
-6  end
+# !!! Don't do this !!!
+it "should log the foo attribute" do
+  chef_run = ChefSpec::ChefRunner.new.converge 'example::default'
+  chef_run.node.foo = 'bar'
+  chef_run.should log 'The value of node.foo is: bar'
+end
 ```
 
 To avoid this, you can make use of the alternative syntax for specifying node
 attributes. Using this approach you pass a block when creating the runner.
 
 ```ruby
-1  chef_run = ChefSpec::ChefRunner.new do |node|
-2    node['my_attribute'] = 'bar'
-3    node['my_other_attribute'] = 'bar2'
-4  end
-5  chef_run.converge 'example::default'
+chef_run = ChefSpec::ChefRunner.new do |node|
+  node['my_attribute'] = 'bar'
+  node['my_other_attribute'] = 'bar2'
+end
+chef_run.converge 'example::default'
 ```
 
 ## Ohai Attributes
@@ -189,10 +189,10 @@ running the examples on a different platform altogether. Note that line 2
 declares the platform underneath `automatic_attrs`.
 
 ```ruby
-1  chef_run = ChefSpec::ChefRunner.new
-2  chef_run.node.automatic_attrs[:platform] = 'Commodore 64'
-3  chef_run.converge('example::default').should log
-4    'I am running on a Commodore 64.'
+chef_run = ChefSpec::ChefRunner.new
+chef_run.node.automatic_attrs[:platform] = 'Commodore 64'
+chef_run.converge('example::default').should log
+  'I am running on a Commodore 64.'
 ```
 
 ### "Missing" attributes
@@ -200,11 +200,11 @@ declares the platform underneath `automatic_attrs`.
 [Fauxhai](https://github.com/customink/fauxhai) from Seth Vargo is now a dependency of ChefSpec. This means you leverage all the power of fauxhai (and it's community contributed ohai mocks) without additional configuration. Just specify the `platform` and `version` attributes when you instantiate your `ChefRunner`:
 
 ```ruby
-1  chef_run = ChefSpec::ChefRunner.new(platform:'ubuntu', version:'12.04') do |node|
-2    node['my_attribute'] = 'bar'
-3    node['my_other_attribute'] = 'bar2'
-4  end
-5  chef_run.converge 'example::default'
+chef_run = ChefSpec::ChefRunner.new(platform:'ubuntu', version:'12.04') do |node|
+  node['my_attribute'] = 'bar'
+  node['my_other_attribute'] = 'bar2'
+end
+chef_run.converge 'example::default'
 ```
 
 This will include all the default attributes for Ubuntu Precise 12.04. By default, ChefSpec uses the built-in ChefSpec environment (which is minimally configured) for backward compatibility.
@@ -222,22 +222,22 @@ You can use the built-in features within RSpec to stub out responses to search
 queries. Given a recipe that searches for webservers:
 
 ```ruby
-1  search(:node, 'role:web') do |web_node|
-2    log "Adding webserver to the pool: #{web_node['hostname']}"
-3  end
+search(:node, 'role:web') do |web_node|
+  log "Adding webserver to the pool: #{web_node['hostname']}"
+end
 ```
 
 A example that returned a pre-canned search result to the recipe and then
 asserted that it then logged each node added to the pool might look like this:
 
 ```ruby
-1  it "should log each node added to the load balancer pool" do
-2    Chef::Recipe.any_instance.stub(:search).with(:node, 'role:web').and_yield(
-3      {'hostname' => 'web1.example.com'})
-4    chef_run = ChefSpec::ChefRunner.new
-5    chef_run.converge 'my_new_cookbook::default'
-6    chef_run.should log 'Adding webserver to the pool: web1.example.com'
-7  end
+it "should log each node added to the load balancer pool" do
+  Chef::Recipe.any_instance.stub(:search).with(:node, 'role:web').and_yield(
+    {'hostname' => 'web1.example.com'})
+  chef_run = ChefSpec::ChefRunner.new
+  chef_run.converge 'my_new_cookbook::default'
+  chef_run.should log 'Adding webserver to the pool: web1.example.com'
+end
 ```
 
 Line 2 defines the search response for a search for all nodes with the `web`
@@ -460,18 +460,18 @@ spec. However if you want to use a different path you can pass it in as an
 argument to the `ChefRunner` constructor like so:
 
 ```ruby
- 1 require 'chefspec'
- 2
- 3 describe 'foo::default' do
- 4   let(:chef_run) {
- 5     runner = ChefSpec::ChefRunner.new({:cookbook_path => '/some/path'})
- 6     runner.converge 'foo::default'
- 7     runner
- 8   }
- 9   it 'installs the foo package' do
-10     chef_run.should install_package 'foo'
-11   end
-12 end
+require 'chefspec'
+
+describe 'foo::default' do
+  let(:chef_run) {
+    runner = ChefSpec::ChefRunner.new({:cookbook_path => '/some/path'})
+    runner.converge 'foo::default'
+    runner
+  }
+  it 'installs the foo package' do
+    chef_run.should install_package 'foo'
+  end
+end
 ```
 
 # Mocking out environments
@@ -502,17 +502,17 @@ By default chefspec will override all resources to take no action. In order to a
 your LWRP to be run, you have to explicitly tell `ChefRunner` to step into it:
 
 ```ruby
- 1 require 'chefspec'
- 2
- 3 describe 'foo::default' do
- 4   let(:chef_run) {
- 5     runner = ChefSpec::ChefRunner.new(:step_into => ['my_lwrp'])
- 6     runner.converge 'foo::default'
- 7   }
- 8   it 'installs the foo package through my_lwrp' do
- 9     chef_run.should install_package 'foo'
-10   end
-11 end
+require 'chefspec'
+
+describe 'foo::default' do
+  let(:chef_run) {
+    runner = ChefSpec::ChefRunner.new(:step_into => ['my_lwrp'])
+    runner.converge 'foo::default'
+  }
+  it 'installs the foo package through my_lwrp' do
+    chef_run.should install_package 'foo'
+  end
+end
 ```
 
 # Building
