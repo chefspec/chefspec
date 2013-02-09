@@ -1,16 +1,10 @@
 rvm:
-  - ree         # Remove on July 1, 2013
-  - 1.8.7       # Remove on July 1, 2013
-  - 1.9.2
+  - ree       # Remove on July 1, 2013
   - 1.9.3
   - 2.0.0
 gemfile:
-  - gemfiles/Gemfile.chef-master
   - gemfiles/Gemfile.chef-11
   - gemfiles/Gemfile.chef-10
-matrix:
-  allow_failures:
-    - gemfile: gemfiles/Gemfile.chef-master
 notifications:
   irc:
     channels:
