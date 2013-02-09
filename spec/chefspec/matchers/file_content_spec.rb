@@ -5,7 +5,7 @@ module ChefSpec
     describe "#template_path" do
       let(:template) { stub(:source => 'foo.erb', :cookbook_name => 'example', :cookbook => nil, :path => nil) }
       let(:cookbook) { Chef::CookbookVersion.new('example') }
-      let(:node) { stub(:platform => 'chefspec', :cookbook_collection => { 'example' => cookbook }) }
+      let(:node) { stub(:platform => 'chefspec', :run_context => { :cookbook_collection => { 'example' => cookbook } }) }
       let(:source_path) { 'cookbooks/example/templates/default/foo.erb' }
 
       it "should determine the correct path" do
@@ -101,50 +101,151 @@ module ChefSpec
 
           it "should not match a cookbook_file resource with the right path but no content" do
             File.stub(:read).with(source_path).and_return("")
-            matcher.matches?({:node => { :platform => 'chefspec', :cookbook_collection => { 'cookbook' => cookbook } }, :resources => [{
-              :resource_name => 'cookbook_file', :name => '/etc/config_file',
-              :path => '/etc/config_file', :source => 'config_file', :cookbook => "cookbook", :action => :create}]}).should be false
+            matcher.matches?({
+              :run_context => {
+                :cookbook_collection => {
+                  'cookbook' => cookbook
+                }
+              },
+              :node => {
+                :platform => 'chefspec',
+              },
+              :resources => [
+                {
+                  :resource_name => 'cookbook_file',
+                  :name => '/etc/config_file',
+                  :path => '/etc/config_file',
+                  :source => 'config_file',
+                  :cookbook => "cookbook",
+                  :action => :create
+                }
+              ]
+            }).should be false
           end
 
           it "should not match a cookbook_file resource with the right content but the wrong path" do
             File.stub(:read).with(source_path).and_return("platform: chefspec")
-            matcher.matches?({:node => { :platform => 'chefspec', :cookbook_collection => { 'cookbook' => cookbook } }, :resources => [{
-              :resource_name => 'cookbook_file', :name => '/etc/another_config_file',
-              :path => '/etc/another_config_file', :source => 'config_file', :cookbook => "cookbook", :action => :create}]}).should be false
+            matcher.matches?({
+              :run_context => {
+                :cookbook_collection => {
+                  'cookbook' => cookbook
+                }
+              },
+              :node => {
+                :platform => 'chefspec',
+              },
+              :resources => [
+                {
+                  :resource_name => 'cookbook_file',
+                  :name => '/etc/another_config_file',
+                  :path => '/etc/another_config_file',
+                  :source => 'config_file',
+                  :cookbook => "cookbook",
+                  :action => :create
+                }
+              ]
+            }).should be false
           end
 
           it "should match a cookbook_file resource with the right content and path" do
             File.stub(:read).with(source_path).and_return("platform: chefspec")
-            matcher.matches?({:node => { :platform => 'chefspec', :cookbook_collection => { 'cookbook' => cookbook } }, :resources => [{
-              :resource_name => 'cookbook_file', :name => '/etc/config_file',
-              :path => '/etc/config_file', :source => 'config_file', :cookbook => "cookbook", :action => :create}]}).should be true
+            matcher.matches?({
+              :run_context => {
+                :cookbook_collection => {
+                  'cookbook' => cookbook
+                }
+              },
+              :node => {
+                :platform => 'chefspec',
+              },
+              :resources => [
+                {
+                  :resource_name => 'cookbook_file',
+                  :name => '/etc/config_file',
+                  :path => '/etc/config_file',
+                  :source => 'config_file',
+                  :cookbook => "cookbook",
+                  :action => :create
+                }
+              ]
+            }).should be true
           end
 
           it "should match a cookbook_file resource with the right path and content somewhere in the file" do
             File.stub(:read).with(source_path).and_return("fqdn: chefspec.local\nplatform: chefspec\nhostname: chefspec")
-            matcher.matches?({:node => { :platform => 'chefspec', :cookbook_collection => { 'cookbook' => cookbook } },
-              :resources => [{:resource_name => 'cookbook_file', :name => '/etc/config_file',
-              :path => '/etc/config_file', :source => 'config_file', :cookbook => "cookbook", :action => :create}]}).should be true
+            matcher.matches?({
+              :run_context => {
+                :cookbook_collection => {
+                  'cookbook' => cookbook
+                }
+              },
+              :node => {
+                :platform => 'chefspec',
+              },
+              :resources => [
+                {
+                  :resource_name => 'cookbook_file',
+                  :name => '/etc/config_file',
+                  :path => '/etc/config_file',
+                  :source => 'config_file',
+                  :cookbook => "cookbook",
+                  :action => :create
+                }
+              ]
+            }).should be true
           end
 
           it "should match a cookbook_file resource create_if_missing with the right content and path" do
             File.stub(:read).with(source_path).and_return("platform: chefspec")
-            matcher.matches?({:node => { :platform => 'chefspec', :cookbook_collection => { 'cookbook' => cookbook } },
-              :resources => [{:resource_name => 'cookbook_file', :name => '/etc/config_file',
-              :path => '/etc/config_file', :source => 'config_file', :cookbook => "cookbook", :action => :create_if_missing}]}).should be true
+            matcher.matches?({
+              :run_context => {
+                :cookbook_collection => {
+                  'cookbook' => cookbook
+                }
+              },
+              :node => {
+                :platform => 'chefspec',
+              },
+              :resources => [
+                {
+                  :resource_name => 'cookbook_file',
+                  :name => '/etc/config_file',
+                  :path => '/etc/config_file',
+                  :source => 'config_file',
+                  :cookbook => "cookbook",
+                  :action => :create_if_missing
+                }
+              ]
+            }).should be true
           end
 
           describe "#match with regex content" do
             let(:matcher) { create_file_with_content('/etc/config_file', /platform: chefspec/) }
 
             it "should match a file resource with the right content regex and path" do
-              matcher.matches?({:resources => [{:resource_name => 'file', :name => '/etc/config_file',
-                                                :content => 'platform: chefspec', :action => :create}]}).should be true
+              matcher.matches?({
+                :resources => [
+                  {
+                    :resource_name => 'file',
+                    :name => '/etc/config_file',
+                    :content => 'platform: chefspec',
+                    :action => :create
+                  }
+                ]
+              }).should be true
             end
 
             it "should not match a file resource with the wrong content regex and right path" do
-              matcher.matches?({:resources => [{:resource_name => 'file', :name => '/etc/config_file',
-                                                :content => 'platform: macosx', :action => :create}]}).should be false
+              matcher.matches?({
+                :resources => [
+                  {
+                    :resource_name => 'file',
+                    :name => '/etc/config_file',
+                    :content => 'platform: macosx',
+                    :action => :create
+                  }
+                ]
+              }).should be false
             end
           end
         end

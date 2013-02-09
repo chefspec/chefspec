@@ -305,13 +305,13 @@ module ChefSpec
     end
 
     def spec_sets_node_attribute
-      write_file 'cookbooks/example/spec/default_spec.rb', %q{
+      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
         require "chefspec"
 
         describe "example::default" do
           let(:chef_run) do
             ChefSpec::ChefRunner.new(:log_level => :debug) do |node|
-              node.foo = 'bar'
+              node.set['foo'] = 'bar'
             end.converge 'example::default'
           end
           it "should log the node foo" do
@@ -352,7 +352,7 @@ module ChefSpec
       }
     end
 
-    def spec_uses_user_convenience_method 
+    def spec_uses_user_convenience_method
       write_file 'cookbooks/example/spec/default_spec.rb', %Q{
         require "chefspec"
 
@@ -379,7 +379,7 @@ module ChefSpec
     end
 
 
-    def spec_expects_template_notifies_service 
+    def spec_expects_template_notifies_service
       write_file 'cookbooks/example/spec/default_spec.rb', %Q{
         require "chefspec"
 

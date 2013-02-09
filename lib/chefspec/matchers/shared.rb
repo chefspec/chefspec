@@ -50,6 +50,6 @@ end
 # @return [String] The path on disk
 def template_path(template, node)
   cookbook_name = template.cookbook || template.cookbook_name
-  cookbook = node.cookbook_collection[cookbook_name]
+  cookbook = node.run_context.cookbook_collection[cookbook_name]
   cookbook.preferred_filename_on_disk_location(node, :templates, template.source)
 end

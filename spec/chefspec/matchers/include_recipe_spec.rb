@@ -12,13 +12,19 @@ module ChefSpec
       end
 
       it "should match when the target recipe has been included" do
-        matcher.matches?({:node=>{:run_state=>{:seen_recipes=>['foo::bar']}}}).
-          should be_true
+        matcher.matches?({
+          :run_context => {
+            :loaded_recipe? => true
+          }
+        }).should be_true
       end
 
       it "should not match when the target recipe has not been included" do
-        matcher.matches?({:node=>{:run_state=>{:seen_recipes=>['foo::baz']}}}).
-          should be_false
+        matcher.matches?({
+          :run_context => {
+            :loaded_recipe? => false
+          }
+        }).should be_false
       end
 
     end
