@@ -24,8 +24,14 @@ if Chef::VERSION < '11.0.0'
         # @param [String] class_name The class name. Must be a valid constant name.
         def remove_existing_lwrp(class_name)
           [Chef::Resource, Chef::Provider].each do |resource_holder|
-            if resource_holder.const_defined? class_name
-              resource_holder.send(:remove_const, class_name)
+            if RUBY_VERSION < '1.9'
+              if resource_holder.const_defined? class_name
+                resource_holder.send(:remove_const, class_name)
+              end
+            else
+              if resource_holder.const_defined? class_name, false
+                resource_holder.send(:remove_const, class_name)
+              end
             end
           end
         end
