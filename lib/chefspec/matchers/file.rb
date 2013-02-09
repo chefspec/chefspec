@@ -17,7 +17,7 @@ module ChefSpec
         chef_run.resources.any? do |resource|
           resource_type(resource) == 'remote_file' &&
             resource.path == path &&
-            attributes.all? { |k,v| resource[k] == attributes[k] }
+            attributes.all? { |k,v| resource.send(k) == attributes[k] }
         end
       end
     end
