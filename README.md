@@ -141,7 +141,7 @@ easily be a template or package name derived from an attribute value.
 ```ruby
 1  it "should log the foo attribute" do
 2    chef_run = ChefSpec::ChefRunner.new
-3    chef_run.node.foo = 'bar'
+3    chef_run.node.set['foo'] = 'bar'
 4    chef_run.converge 'example::default'
 5    chef_run.should log 'The value of node.foo is: bar'
 6  end
@@ -154,7 +154,7 @@ attributes. If you do this then the attributes will not be set correctly.
 1  # Don't do this
 2  it "should log the foo attribute" do
 3    chef_run = ChefSpec::ChefRunner.new.converge 'example::default'
-4    chef_run.node.foo = 'bar'
+4    chef_run.node.set['foo'] = 'bar'
 5    chef_run.should log 'The value of node.foo is: bar'
 6  end
 ```
@@ -190,7 +190,7 @@ declares the platform underneath `automatic_attrs`.
 
 ```ruby
 1  chef_run = ChefSpec::ChefRunner.new
-2  chef_run.node.automatic_attrs[:platform] = 'Commodore 64'
+2  chef_run.node.automatic_attrs['platform'] = 'Commodore 64'
 3  chef_run.converge('example::default').should log
 4    'I am running on a Commodore 64.'
 ```
@@ -201,8 +201,8 @@ declares the platform underneath `automatic_attrs`.
 
 ```ruby
 1  chef_run = ChefSpec::ChefRunner.new(platform:'ubuntu', version:'12.04') do |node|
-2    node['my_attribute'] = 'bar'
-3    node['my_other_attribute'] = 'bar2'
+2    node.set['my_attribute'] = 'bar'
+3    node.set['my_other_attribute'] = 'bar2'
 4  end
 5  chef_run.converge 'example::default'
 ```
