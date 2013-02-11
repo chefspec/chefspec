@@ -30,7 +30,7 @@ module ChefSpec
             :path          => '/tmp/foo',
             :source        => 'http://www.example.com/foo',
             :checksum      => 'deadbeef',
-            :action        => 'create' }
+            :action        => :create }
         end
         def do_match(changed_attributes)
           matcher.matches?(:resources => [attributes.merge(changed_attributes)])
@@ -40,10 +40,13 @@ module ChefSpec
           do_match(:path => '/tmp/bar').should be false
         end
         it "should not match when the action is not :create" do
-          do_match(:action => 'foo').should be false
+          do_match(:action => :create_if_missing).should be false
         end
         it "should match when a remote file with the expected path exists" do
           do_match(attributes).should be true
+        end
+        it "should match when a the action encapsulated in an array" do
+          do_match(:action => [:create]).should be true
         end
 
         describe "#with" do

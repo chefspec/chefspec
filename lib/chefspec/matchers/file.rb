@@ -28,9 +28,13 @@ module ChefSpec
         @attributes = attributes
       end
       def expected_remote_file?(resource,path)
+        # The resource action *might* be an array!
+        # (see https://tickets.opscode.com/browse/CHEF-2094)
+        action = resource.action.is_a?(Array) ? resource.action.first :
+          resource.action
         resource_type(resource) == 'remote_file' &&
-          resource.action.to_s  == 'create' &&
-          resource.path         == path
+          resource.path         == path &&
+          action                == :create
       end
       def expected_attributes?(resource)
         @attributes.all? { |k,v| resource.send(k) == @attributes[k] }
