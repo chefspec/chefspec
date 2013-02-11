@@ -45,8 +45,11 @@ module ChefSpec
         it "should match when a remote file with the expected path exists" do
           do_match(attributes).should be true
         end
-        it "should match when a the action encapsulated in an array" do
+        it "should match when the resource action is an array element" do
           do_match(:action => [:create]).should be true
+        end
+        it "should match when the resource action is a string" do
+          do_match(:action => 'create').should be true
         end
 
         describe "#with" do
