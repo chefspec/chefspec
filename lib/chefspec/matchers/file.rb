@@ -40,7 +40,8 @@ module ChefSpec
         @attributes.all? { |k,v| resource.send(k) == @attributes[k] }
       end
       failure_message_for_should do |actual|
-        "No remote_file named '#{path}' found."
+        message = "No remote_file named '#{path}' found"
+        message << " with:\n#{@attributes}" unless @attributes.nil?
       end
       failure_message_for_should_not do |actual|
         "Found remote_file named '#{path}' that should not exist."
