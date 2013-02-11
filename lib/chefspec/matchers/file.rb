@@ -34,7 +34,7 @@ module ChefSpec
           resource.action
         resource_type(resource) == 'remote_file' &&
           resource.path         == path &&
-          action                == :create
+          action.to_sym         == :create
       end
       def expected_attributes?(resource)
         @attributes.all? { |k,v| resource.send(k) == @attributes[k] }
