@@ -222,6 +222,18 @@ module ChefSpec
         runner.package('foo').should be
       end
     end
+    describe "#gem_package" do
+      it "should not return a resource when no gem_package resource has not been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = []
+        runner.gem_package('foo').should_not be
+      end
+      it "should return a resource when the package resource has been declared" do
+        runner = ChefSpec::ChefRunner.new
+        runner.resources = [{:resource_name => 'gem_package', :name => 'foo'}]
+        runner.gem_package('foo').should be
+      end
+    end
     describe "#service" do
       it "should not return a resource when no service resource has not been declared" do
         runner = ChefSpec::ChefRunner.new
