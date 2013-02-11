@@ -41,9 +41,9 @@ module ChefSpec
     describe :create_remote_file_with_attributes do
       describe "#match" do
         let(:matcher) do
-          create_remote_file_with_attributes('/tmp/foo',
-                                             :source   => 'http://www.example.com/foo',
-                                             :checksum => 'deadbeef')
+          create_remote_file('/tmp/foo').with(
+                             :source   => 'http://www.example.com/foo',
+                             :checksum => 'deadbeef')
         end
         let(:attributes) do
           { :resource_name => 'remote_file',
