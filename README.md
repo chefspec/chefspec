@@ -309,6 +309,15 @@ Assert that a remote file would be created:
 chef_run.should create_remote_file '/tmp/foo.tar.gz'
 ```
 
+Assert that a remote file with specific attributes would be created:
+
+```ruby
+chef_run.should create_remote_file('/tmp/foo.tar.gz').with(
+  :source => 'http://www.example.com/foo.tar.gz',
+  :checksum => 'deadbeef'
+)
+```
+
 ## Packages
 
 Note that only packages explicitly declared in the cookbook will be matched by
