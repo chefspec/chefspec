@@ -37,21 +37,35 @@ module ChefSpec
 
     describe :create_remote_file_with_attributes do
       describe "#match" do
-        let(:matcher) { create_remote_file_with_attributes('/tmp/foo', :source => 'http://www.example.com/foo', :checksum => 'deadbeef') }
-        it "should not match when no resource with the expected path exists" do
-          matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/bar', :source => 'http://www.example.com/foo', :checksum => 'deadbeef', :action => 'create'}]).should be false
+        let(:matcher) do
+          create_remote_file_with_attributes('/tmp/foo',
+                                             :source   => 'http://www.example.com/foo',
+                                             :checksum => 'deadbeef')
+        end
+        let(:attributes) do
+          { :resource_name => 'remote_file',
+            :path          => '/tmp/foo',
+            :source        => 'http://www.example.com/foo',
+            :checksum      => 'deadbeef',
+            :action        => 'create' }
+        end
+        def do_match(changed_attributes)
+          matcher.matches?(:resources => [attributes.merge(changed_attributes)])
+        end
+        it "should not match when no remote file with the expected path exists" do
+          do_match(:path => '/tmp/bar').should be false
         end
         it "should not match when the source differs" do
-          matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/foo', :source => 'http://www.example.com/bar', :checksum => 'deadbeef', :action => 'create'}]).should be false
+          do_match(:source => 'http://www.example.com/bar').should be false
         end
-        it "should not match when the source differs" do
-          matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/foo', :source => 'http://www.example.com/foo', :checksum => 'cafebabe', :action => 'create'}]).should be false
+        it "should not match when the checksum differs" do
+          do_match(:checksum => 'cafebabe').should be false
         end
         it "should match when a remote file with the expected path exists" do
-          matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/foo', :source => 'http://www.example.com/foo', :checksum => 'deadbeef', :action => 'create'}]).should be true
+          do_match(attributes).should be true
         end
         it "should match when the remote file has additional attributes" do
-          matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/foo', :smells_like_peanut_butter => true, :source => 'http://www.example.com/foo', :checksum => 'deadbeef', :action => 'create'}]).should be true
+          do_match(:smells_like_peanut_butter => true).should be true
         end
       end
     end
