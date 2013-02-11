@@ -374,6 +374,44 @@ Assert that a command would not be run:
 chef_run.should_not execute_command 'whoami'
 ```
 
+## Scripts
+
+You can assert that a script will be executed via the `script` resource or one of
+its shortcuts (`bash`, `csh`, `perl`, `python`, `ruby`).
+
+Assert that a Bash script would be run:
+
+```ruby
+chef_run.should execute_bash_script 'name of bash script'
+```
+
+Assert that a Csh script would be run:
+
+```ruby
+chef_run.should execute_csh_script 'name of csh script'
+```
+
+Assert that a Perl script would be run:
+
+```ruby
+chef_run.should execute_perl_script 'name of perl script'
+```
+
+Assert that a Python script would be run:
+
+```ruby
+chef_run.should execute_python_script 'name of python script'
+```
+
+Assert that a Ruby script would be run:
+
+```ruby
+chef_run.should execute_ruby_script 'name of ruby script'
+```
+
+Note: To check for the `ruby_block` resource, use the `execute_ruby_block`
+matcher described below.
+
 ## Logging
 
 You can assert that a log resource will be created. Note that this assertion
