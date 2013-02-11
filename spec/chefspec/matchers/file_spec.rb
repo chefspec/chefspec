@@ -29,6 +29,9 @@ module ChefSpec
         it "should not match when no resource with the expected path exists" do
           matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/bar', :action => 'create'}]).should be false
         end
+        it "should not match when the action is not :create" do
+          matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/foo', :action => 'foo'}]).should be false
+        end
         it "should match when a remote file with the expected path exists" do
           matcher.matches?(:resources => [{:resource_name => 'remote_file', :path => '/tmp/foo', :action => 'create'}]).should be true
         end
