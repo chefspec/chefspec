@@ -37,7 +37,7 @@ require "chefspec"
 describe "example::default" do
   let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
   it "should install foo" do
-    chef_run.should install_package 'foo'
+    expect(chef_run).to install_package 'foo'
   end
 end
 ```
@@ -143,7 +143,7 @@ it "should log the foo attribute" do
   chef_run = ChefSpec::ChefRunner.new
   chef_run.node.set['foo'] = 'bar'
   chef_run.converge 'example::default'
-  chef_run.should log 'The value of node.foo is: bar'
+  expect(chef_run).to log 'The value of node.foo is: bar'
 end
 ```
 
@@ -155,7 +155,7 @@ attributes. If you do this then the attributes will not be set correctly.
 it "should log the foo attribute" do
   chef_run = ChefSpec::ChefRunner.new.converge 'example::default'
   chef_run.node.set['foo'] = 'bar'
-  chef_run.should log 'The value of node.foo is: bar'
+  expect(chef_run).to log 'The value of node.foo is: bar'
 end
 ```
 
@@ -191,7 +191,7 @@ declares the platform underneath `automatic_attrs`.
 ```ruby
 chef_run = ChefSpec::ChefRunner.new
 chef_run.node.automatic_attrs['platform'] = 'Commodore 64'
-chef_run.converge('example::default').should log 'I am running on a Commodore 64.'
+expect(chef_run.converge('example::default')).to log 'I am running on a Commodore 64.'
 ```
 
 ### "Missing" attributes
@@ -235,7 +235,7 @@ it "should log each node added to the load balancer pool" do
     {'hostname' => 'web1.example.com'})
   chef_run = ChefSpec::ChefRunner.new
   chef_run.converge 'my_new_cookbook::default'
-  chef_run.should log 'Adding webserver to the pool: web1.example.com'
+  expect(chef_run).to log 'Adding webserver to the pool: web1.example.com'
 end
 ```
 
@@ -264,49 +264,51 @@ aware of resources that are defined within your cookbooks.
 Assert that a directory would be created:
 
 ```ruby
-chef_run.should create_directory '/var/lib/foo'
+expect(chef_run).to create_directory '/var/lib/foo'
 ```
 
 Assert that a directory would be deleted:
 
 ```ruby
-chef_run.should delete_directory '/var/lib/foo'
+expect(chef_run).to delete_directory '/var/lib/foo'
 ```
 
 Assert that a directory would have the correct ownership:
 
 ```ruby
-chef_run.directory('/var/lib/foo').should be_owned_by('user', 'group')
+directory = chef_run.directory('/var/lib/foo')
+expect(directory).to be_owned_by('user', 'group')
 ```
 
 Assert that a file would be created:
 
 ```ruby
-chef_run.should create_file '/var/log/bar.log'
+expect(chef_run).to create_file '/var/log/bar.log'
 ```
 
 Assert that a file would be deleted:
 
 ```ruby
-chef_run.should delete_file '/var/log/bar.log'
+expect(chef_run).to delete_file '/var/log/bar.log'
 ```
 
 Assert that a file would have the correct ownership:
 
 ```ruby
-chef_run.file('/var/log/bar.log').should be_owned_by('user', 'group')
+file = chef_run.file('/var/log/bar.log')
+expect(file).to be_owned_by('user', 'group')
 ```
 
 Assert that a file would have the expected content (matches on partial content):
 
 ```ruby
-chef_run.should create_file_with_content 'hello-world.txt', 'hello world'
+expect(chef_run).to create_file_with_content 'hello-world.txt', 'hello world'
 ```
 
 Assert that a remote file would be created:
 
 ```ruby
-chef_run.should create_remote_file '/tmp/foo.tar.gz'
+expect(chef_run).to create_remote_file '/tmp/foo.tar.gz'
 ```
 
 ## Packages
@@ -318,41 +320,41 @@ another package would not be matched.
 Assert that a package would be installed:
 
 ```ruby
-chef_run.should install_package 'foo'
+expect(chef_run).to install_package 'foo'
 ```
 
 Assert that a package would be installed at a fixed version:
 
 ```ruby
-chef_run.should install_package_at_version 'foo', '1.2.3'
+expect(chef_run).to install_package_at_version 'foo', '1.2.3'
 ```
 
 Assert that a package would be removed:
 
 ```ruby
-chef_run.should remove_package 'foo'
+expect(chef_run).to remove_package 'foo'
 ```
 
 Assert that a package would be purged:
 
 ```ruby
-chef_run.should purge_package 'foo'
+expect(chef_run).to purge_package 'foo'
 ```
 
 Assert that a package would be upgraded:
 
 ```ruby
-chef_run.should upgrade_package 'foo'
+expect(chef_run).to upgrade_package 'foo'
 ```
 
 All of the assertions above are also valid for use with RubyGems:
 
 ```ruby
-chef_run.should install_gem_package 'foo'
+expect(chef_run).to install_gem_package 'foo'
 ```
 
 ```ruby
-chef_run.should install_chef_gem_package 'chef-foo'
+expect(chef_run).to install_chef_gem_package 'chef-foo'
 ```
 
 ## Execute
@@ -365,13 +367,13 @@ be met however.
 Assert that a command would be run:
 
 ```ruby
-chef_run.should execute_command 'whoami'
+expect(chef_run).to execute_command 'whoami'
 ```
 
 Assert that a command would not be run:
 
 ```ruby
-chef_run.should_not execute_command 'whoami'
+expect(chef_run).not_to execute_command 'whoami'
 ```
 
 ## Scripts
@@ -382,31 +384,31 @@ its shortcuts (`bash`, `csh`, `perl`, `python`, `ruby`).
 Assert that a Bash script would be run:
 
 ```ruby
-chef_run.should execute_bash_script 'name of bash script'
+expect(chef_run).to execute_bash_script 'name of bash script'
 ```
 
 Assert that a Csh script would be run:
 
 ```ruby
-chef_run.should execute_csh_script 'name of csh script'
+expect(chef_run).to execute_csh_script 'name of csh script'
 ```
 
 Assert that a Perl script would be run:
 
 ```ruby
-chef_run.should execute_perl_script 'name of perl script'
+expect(chef_run).to execute_perl_script 'name of perl script'
 ```
 
 Assert that a Python script would be run:
 
 ```ruby
-chef_run.should execute_python_script 'name of python script'
+expect(chef_run).to execute_python_script 'name of python script'
 ```
 
 Assert that a Ruby script would be run:
 
 ```ruby
-chef_run.should execute_ruby_script 'name of ruby script'
+expect(chef_run).to execute_ruby_script 'name of ruby script'
 ```
 
 Note: To check for the `ruby_block` resource, use the `execute_ruby_block`
@@ -420,13 +422,13 @@ will not match direct use of `Chef::Log`.
 Assert that a log statement would be logged:
 
 ```ruby
-chef_run.should log 'A log message from my recipe'
+expect(chef_run).to log 'A log message from my recipe'
 ```
 
 Assert that at least one log statement would match a specified regexp:
 
 ```ruby
-chef_run.should log(/bacon \d+/)
+expect(chef_run).to log(/bacon \d+/)
 ```
 
 If you want to be able to view the log output at the console you can control
@@ -441,31 +443,31 @@ let(:chef_run) { ChefSpec::ChefRunner.new(:log_level => :debug) }
 Assert that a daemon would be started:
 
 ```ruby
-chef_run.should start_service 'food'
+expect(chef_run).to start_service 'food'
 ```
 
 Assert that a daemon would be started when the node boots:
 
 ```ruby
-chef_run.should set_service_to_start_on_boot 'food'
+expect(chef_run).to set_service_to_start_on_boot 'food'
 ```
 
 Assert that a daemon would be stopped:
 
 ```ruby
-chef_run.should stop_service 'food'
+expect(chef_run).to stop_service 'food'
 ```
 
 Assert that a daemon would be restarted:
 
 ```ruby
-chef_run.should restart_service 'food'
+expect(chef_run).to restart_service 'food'
 ```
 
 Assert that a daemon would be reloaded:
 
 ```ruby
-chef_run.should reload_service 'food'
+expect(chef_run).to reload_service 'food'
 ```
 
 ## Recipes
@@ -473,7 +475,7 @@ chef_run.should reload_service 'food'
 Assert that a recipe would be included:
 
 ```ruby
-chef_run.should include_recipe 'foo::bar'
+expect(chef_run).to include_recipe 'foo::bar'
 ```
 
 ## Ruby blocks
@@ -481,13 +483,13 @@ chef_run.should include_recipe 'foo::bar'
 Assert that a ruby block would be executed:
 
 ```ruby
-chef_run.should execute_ruby_block 'ruby_block_name'
+expect(chef_run).to execute_ruby_block 'ruby_block_name'
 ```
 
 Assert that a ruby block would not be executed:
 
 ```ruby
-chef_run.should_not execute_ruby_block 'ruby_block_name'
+expect(chef_run).not_to execute_ruby_block 'ruby_block_name'
 ```
 
 # Varying the cookbook path
@@ -506,7 +508,7 @@ describe 'foo::default' do
     runner
   }
   it 'installs the foo package' do
-    chef_run.should install_package 'foo'
+    expect(chef_run).to install_package 'foo'
   end
 end
 ```
@@ -547,7 +549,7 @@ describe 'foo::default' do
     runner.converge 'foo::default'
   }
   it 'installs the foo package through my_lwrp' do
-    chef_run.should install_package 'foo'
+    expect(chef_run).to install_package 'foo'
   end
 end
 ```
