@@ -312,9 +312,10 @@ chef_run.should create_remote_file '/tmp/foo.tar.gz'
 Assert that a remote file with specific attributes would be created:
 
 ```ruby
-chef_run.should create_remote_file_with_attributes '/tmp/foo.tar.gz',
+chef_run.should create_remote_file('/tmp/foo.tar.gz').with(
   :source => 'http://www.example.com/foo.tar.gz',
   :checksum => 'deadbeef'
+)
 ```
 
 ## Packages
