@@ -24,9 +24,11 @@ module ChefSpec
           end
         end
       end
+
       chain :with do |attributes|
         @attributes = attributes
       end
+
       def expected_remote_file?(resource,path)
         # The resource action *might* be an array!
         # (see https://tickets.opscode.com/browse/CHEF-2094)
@@ -36,13 +38,44 @@ module ChefSpec
           resource.path         == path &&
           action.to_sym         == :create
       end
+
       def expected_attributes?(resource)
-        @attributes.all? { |k,v| resource.send(k) == @attributes[k] }
+        @attributes.all? do |attribute,expected|
+          actual = resource.send(attribute)
+          attribute.to_sym == :source ? equal_source?(actual, expected) :
+            actual == expected
+        end
       end
+
+      # Compare two remote_file source attributes for equality.
+      #
+      # @param actual [String, Array<String>] The actual source.
+      # @param expected [String, Array<String>] The expected source.
+      # @return [Boolean] true if they are equal or false if not.
+      def equal_source?(actual, expected)
+        # NOTE: Chef stores the source attribute internally as an array since
+        # version 11 in order to support mirrors.
+        # (see http://docs.opscode.com/breaking_changes_chef_11.html#remote-file-mirror-support-may-break-subclasses)
+
+        # Handle wrong formated expectation for Chef versions >= 11.
+        if actual.is_a?(Array) && expected.is_a?(String)
+          actual == [expected]
+
+        # Handle wrong formated expectation for Chef versions < 11.
+        elsif actual.is_a?(String) && expected.is_a?(Array)
+          [actual] == expected
+
+        # Else assume the actual matches the expected type (String or Array).
+        else
+          actual == expected
+        end
+      end
+
       failure_message_for_should do |actual|
         message = "No remote_file named '#{path}' found"
         message << " with:\n#{@attributes}" unless @attributes.nil?
       end
+
       failure_message_for_should_not do |actual|
         "Found remote_file named '#{path}' that should not exist."
       end
