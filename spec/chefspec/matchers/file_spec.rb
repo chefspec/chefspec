@@ -61,9 +61,6 @@ module ChefSpec
           it "should not match when no remote file with the expected path exists" do
             do_match(:path => '/tmp/bar').should be false
           end
-          it "should not match when the source differs" do
-            do_match(:source => 'http://www.example.com/bar').should be false
-          end
           it "should not match when the checksum differs" do
             do_match(:checksum => 'cafebabe').should be false
           end
@@ -72,6 +69,36 @@ module ChefSpec
           end
           it "should match when the remote file has additional attributes" do
             do_match(:smells_like_peanut_butter => true).should be true
+          end
+
+          context "when the attribute is :source" do
+            def match_sources(expected,actual)
+              create_remote_file('/tmp/foo').
+                with(:source => expected).
+                matches?(:resources => [attributes.merge(:source => actual)])
+            end
+
+            [
+              [  'foo'  ,  'foo'  ],
+              [  'foo'  , ['foo'] ],
+              [ ['foo'] ,  'foo'  ],
+              [ ['foo'] , ['foo'] ]
+            ].each do |expected,actual|
+              it "should match with equal sources" do
+                match_sources(expected, actual).should be true
+              end
+            end
+
+            [
+              [  'foo'  ,  'bar'  ],
+              [  'foo'  , ['bar'] ],
+              [ ['foo'] ,  'bar'  ],
+              [ ['foo'] , ['bar'] ],
+            ].each do |expected,actual|
+              it "should not match with different sources" do
+                match_sources(expected, actual).should be false
+              end
+            end
           end
         end
       end
