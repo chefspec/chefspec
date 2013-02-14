@@ -27,6 +27,30 @@ module ChefSpec
           climb_mountain('Kilimanjaro').failure_message_for_should_not.should == "Found mountain resource named 'Kilimanjaro' with action :climb that should not exist."
         end
       end
+
+      describe "#resource_actions" do
+        context "array of symbols" do
+          let(:resource) { stub(action: [:shake, :stir]) }
+          it "should return an array with symbols converted to strings" do
+            resource_actions(resource).should == ["shake", "stir"]
+          end
+        end
+
+        context "symbol" do
+          let(:resource) { stub(action: :shake) }
+          it "should return an array containing the stringified symbol" do
+            resource_actions(resource).should == ["shake"]
+          end
+        end
+
+        context "string" do
+          let(:resource) { stub(action: "stir") }
+          it "should return an array containing the string" do
+            resource_actions(resource).should == ["stir"]
+          end
+        end
+      end
     end
   end
 end
+

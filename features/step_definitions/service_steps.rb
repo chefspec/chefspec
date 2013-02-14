@@ -38,6 +38,10 @@ Given 'the recipe has a spec example that expects the service to be reloaded' do
   spec_expects_service_action(:reload)
 end
 
+Given 'the recipe has a spec example that expects the service to only have the restart action' do
+  spec_expects_only_restart_service_action
+end
+
 Then /^the service will not have been started$/ do
   # service start would fail
 end
