@@ -22,6 +22,18 @@ module ChefSpec
         it "should not match when the command whitespace differs" do
           matcher.matches?({:resources => [{:resource_name => 'execute', :command =>'ls '}]}).should be false
         end
+
+        describe "#with" do
+          let(:matcher) { execute_command('ls').with(:user => 'foo', :cwd => '/tmp') }
+
+          it "does not match when one attributes differs" do
+            matcher.matches?({:resources => [{:resource_name => 'execute', :command =>'ls', :user => 'bar', :cwd => '/tmp'}]}).should be false
+          end
+
+          it "does match when all attributes are equal" do
+            matcher.matches?({:resources => [{:resource_name => 'execute', :command =>'ls', :user => 'foo', :cwd => '/tmp'}]}).should be true
+          end
+        end
       end
     end
   end
