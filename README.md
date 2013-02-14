@@ -367,14 +367,15 @@ chef_run.should install_chef_gem_package 'chef-foo'
 ## Execute
 
 If you make use of the `execute` resource within your cookbook recipes it is
-important to guard for idempotent behaviour. ChefSpec is not smart enough
-at present to be used to verify that an `only_if` or `not_if` condition would
-be met however.
+important to guard for idempotent behaviour, so keep in mind to verify
+the the `only_if` or `not_if` condition as well.
 
 Assert that a command would be run:
 
 ```ruby
-chef_run.should execute_command 'whoami'
+chef_run.should execute_command('whoami').with(
+  :only_if => "ithinkthereforeiam"
+}
 ```
 
 Assert that a command would not be run:
