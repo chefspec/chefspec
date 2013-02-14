@@ -30,21 +30,21 @@ module ChefSpec
 
       describe "#resource_actions" do
         context "array of symbols" do
-          let(:resource) { stub(action: [:shake, :stir]) }
+          let(:resource) { stub(:action => [:shake, :stir]) }
           it "should return an array with symbols converted to strings" do
             resource_actions(resource).should == ["shake", "stir"]
           end
         end
 
         context "symbol" do
-          let(:resource) { stub(action: :shake) }
+          let(:resource) { stub(:action => :shake) }
           it "should return an array containing the stringified symbol" do
             resource_actions(resource).should == ["shake"]
           end
         end
 
         context "string" do
-          let(:resource) { stub(action: "stir") }
+          let(:resource) { stub(:action => "stir") }
           it "should return an array containing the string" do
             resource_actions(resource).should == ["stir"]
           end
