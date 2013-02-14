@@ -92,6 +92,7 @@ module ChefSpec
         execute "print_hello_world" do
           command "echo Hello World!"
           action :run
+          only_if "true"
         end
       }
     end

@@ -65,7 +65,9 @@ module ChefSpec
         describe "example::default" do
           let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
           it "should print hello world" do
-            chef_run.should execute_command 'echo Hello World!'
+            chef_run.should execute_command('echo Hello World!').with(
+              :only_if => 'true'
+            )
           end
         end
       }
