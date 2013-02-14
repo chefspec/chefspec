@@ -39,6 +39,12 @@ Feature: Write examples for services
     When the recipe example is successfully run
     Then the service will not have been restarted
 
+  Scenario: Restart a service and check for should_not start action
+    Given a Chef cookbook with a recipe that restarts a service
+    And the recipe has a spec example that expects the service to only have the restart action
+    When the recipe example is successfully run
+    Then the service will not have been restarted
+
   Scenario: Reload a service
     Given a Chef cookbook with a recipe that signals a service to reload
     And the recipe has a spec example that expects the service to be reloaded
