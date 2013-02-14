@@ -26,12 +26,20 @@ module ChefSpec
         describe "#with" do
           let(:matcher) { execute_command('ls').with(:user => 'foo', :cwd => '/tmp') }
 
+          def do_match(attributes)
+            default_attributes = {:resource_name => 'execute',
+                                  :command =>'ls',
+                                  :user => 'foo',
+                                  :cwd => '/tmp'}
+            matcher.matches?({:resources => [default_attributes.merge(attributes)]})
+          end
+
           it "does not match when one attributes differs" do
-            matcher.matches?({:resources => [{:resource_name => 'execute', :command =>'ls', :user => 'bar', :cwd => '/tmp'}]}).should be false
+            expect(do_match(:user => 'bar')).to be false
           end
 
           it "does match when all attributes are equal" do
-            matcher.matches?({:resources => [{:resource_name => 'execute', :command =>'ls', :user => 'foo', :cwd => '/tmp'}]}).should be true
+            expect(do_match({})).to be true
           end
         end
       end
