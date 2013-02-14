@@ -371,10 +371,13 @@ important to guard for idempotent behaviour. ChefSpec is not smart enough
 at present to be used to verify that an `only_if` or `not_if` condition would
 be met however.
 
-Assert that a command would be run:
+Assert that a command with specific attributes would be run:
 
 ```ruby
-chef_run.should execute_command 'whoami'
+chef_run.should execute_command('whoami > me').with(
+  :cwd => '/tmp',
+  :creates => '/tmp/me'
+)
 ```
 
 Assert that a command would not be run:

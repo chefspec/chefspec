@@ -92,6 +92,8 @@ module ChefSpec
         execute "print_hello_world" do
           command "echo Hello World!"
           action :run
+          cwd "/tmp"
+          creates "/tmp/foo"
         end
       }
     end

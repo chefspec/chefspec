@@ -9,3 +9,6 @@ doc
 tmp
 Gemfile.lock
 gemfiles/*.lock
+.bundle
+bin
+vendor
