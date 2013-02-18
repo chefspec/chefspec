@@ -364,6 +364,10 @@ chef_run.should install_gem_package 'foo'
 chef_run.should install_chef_gem_package 'chef-foo'
 ```
 
+```ruby
+chef_run.should install_yum_package 'yum-foo'
+```
+
 ## Execute
 
 If you make use of the `execute` resource within your cookbook recipes it is
