@@ -348,6 +348,12 @@ Assert that a package would be purged:
 chef_run.should purge_package 'foo'
 ```
 
+You can even use yum packages:
+
+```ruby
+chef_run.should install_yum_package 'yum-foo'
+```
+
 Assert that a package would be upgraded:
 
 ```ruby
@@ -362,10 +368,6 @@ chef_run.should install_gem_package 'foo'
 
 ```ruby
 chef_run.should install_chef_gem_package 'chef-foo'
-```
-
-```ruby
-chef_run.should install_yum_package 'yum-foo'
 ```
 
 ## Execute
