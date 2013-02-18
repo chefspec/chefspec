@@ -65,7 +65,10 @@ module ChefSpec
         describe "example::default" do
           let(:chef_run) {ChefSpec::ChefRunner.new.converge 'example::default'}
           it "should print hello world" do
-            chef_run.should execute_command 'echo Hello World!'
+            chef_run.should execute_command('echo Hello World!').with(
+              :cwd => '/tmp',
+              :creates => '/tmp/foo'
+            )
           end
         end
       }
@@ -265,6 +268,20 @@ module ChefSpec
           let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
           it "should #{action.to_s} the food service" do
             chef_run.should #{action.to_s}_service 'food'
+          end
+        end
+      }
+    end
+
+    def spec_expects_only_restart_service_action
+      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
+        require "chefspec"
+
+        describe "example::default" do
+          let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+          it "should only restart the food service" do
+            chef_run.should restart_service 'food'
+            chef_run.should_not start_service 'food'
           end
         end
       }

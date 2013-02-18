@@ -164,6 +164,14 @@ module ChefSpec
       }
     end
 
+    def spec_expects_only_restart_service_action
+      generate_spec %q{
+        it "ensures the food service is started" do
+          service('food').must_be_running
+        end
+      }
+    end
+
     def spec_expects_user_action(action)
       state = case action
         when :create then 'must'

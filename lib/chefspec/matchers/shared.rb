@@ -6,6 +6,14 @@ def resource_type(resource)
   resource.resource_name.to_s
 end
 
+# Given a resource return an array of action strings
+#
+# @param [String] resource A Chef Resource
+# @return [Array] An array of actions as Strings
+def resource_actions(resource)
+  resource.action.kind_of?(Array) ? resource.action.map{ |action| action.to_s } : [ resource.action.to_s ]
+end
+
 # Define simple RSpec matchers for the product of resource types and actions
 #
 # @param [Array] actions The valid actions - for example [:create, :delete]
@@ -19,7 +27,7 @@ def define_resource_matchers(actions, resource_types, name_attribute)
         accepted_types << 'template' if action.to_s == 'create' and resource_type.to_s == 'file'
         chef_run.resources.any? do |resource|
           accepted_types.include? resource_type(resource) and resource.send(name_attribute) == name and
-              resource.action.to_s.include? action.to_s
+              resource_actions(resource).include? action.to_s
         end
       end
       failure_message_for_should do |actual|
