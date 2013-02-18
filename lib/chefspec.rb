@@ -15,6 +15,7 @@ if defined?(RSpec)
   require 'chefspec/matchers/notifications'
   require 'chefspec/matchers/file_content'
   require 'chefspec/matchers/user'
+  require 'chefspec/matchers/group'
   require 'chefspec/matchers/env'
   require 'chefspec/matchers/include_recipe'
   require 'chefspec/matchers/script'

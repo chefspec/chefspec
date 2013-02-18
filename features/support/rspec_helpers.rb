@@ -382,6 +382,32 @@ module ChefSpec
       }
     end
 
+    def spec_expects_group_action(action)
+      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
+        require "chefspec"
+
+        describe "example::default" do
+          let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+          it "should #{action.to_s} the group foo" do
+            chef_run.should #{action.to_s}_group 'foo'
+          end
+        end
+      }
+    end
+
+    def spec_uses_group_convenience_method 
+      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
+        require "chefspec"
+
+        describe "example::default" do
+          let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+          it "should uses the group convenience method" do
+            chef_run.group('foo').should_not be_nil
+          end
+        end
+      }
+    end
+
     def spec_uses_convenience_method_with_name(resource,name='foo')
       write_file 'cookbooks/example/spec/default_spec.rb', %Q{
         require "chefspec"
@@ -395,8 +421,7 @@ module ChefSpec
       }
     end
 
-
-    def spec_expects_template_notifies_service
+    def spec_expects_template_notifies_service 
       write_file 'cookbooks/example/spec/default_spec.rb', %Q{
         require "chefspec"
 

@@ -10,9 +10,10 @@ Given /^the recipe has a spec example that expects the user to be ([a-z]+)d$/ do
   spec_expects_user_action(action.to_sym)
 end
 
+Given 'the recipe has a spec example that uses the convenience method to access the user resource' do
+    spec_uses_user_convenience_method
+end
+
 Then 'the user will not have been created' do
 end
 
-Given /^the recipe has a spec example the access the user resorce using the convenience method$/ do
-  spec_uses_user_convenience_method
-end
