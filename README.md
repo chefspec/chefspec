@@ -1,7 +1,5 @@
 [![Built on Travis](https://secure.travis-ci.org/acrmp/chefspec.png?branch=master)](http://travis-ci.org/acrmp/chefspec)
 
-# Introduction
-
 ChefSpec makes it easy to write examples for Opscode Chef cookbooks. Get fast
 feedback on cookbook changes before you spin up a node to do integration
 against.
@@ -9,17 +7,16 @@ against.
 ChefSpec runs your cookbook but without actually converging the node that your
 examples are being executed on. This has two benefits:
 
-* It's really fast!
-* You can write examples that vary node attributes, operating system or search
-  results in order to test thoroughly that your cookbok works correctly.
+- It's really fast!
+- You can write examples that vary node attributes, operating system or search results in order to test thoroughly that your cookbok works correctly.
 
 ChefSpec aims to make Chef development more productive by giving you faster
 feedback on cookbook changes.
 
 Start by watching Jim Hopp's excellent [Test Driven Development for Chef Practitioners](http://www.youtube.com/watch?v=o2e0aZUAVGw) talk from ChefConf which contains lots of great examples of using ChefSpec.
 
-# Writing a cookbook example
-
+Writing a Cookbook Example
+--------------------------
 This is an extremely basic Chef recipe that just installs an operating system package.
 
 ```ruby
@@ -57,8 +54,8 @@ Let's step through this spec file to see what is happening:
    should have been installed. Normally you will have multiple `it` blocks per
    recipe, each making a single assertion.
 
-## Generating an example
-
+Generating an Example
+---------------------
 Ideally you should be writing your specs in tandem with your recipes and
 practicising TDD. However if you have an existing cookbook and you are using
 Chef 0.10.0 or greater then ChefSpec can generate placeholder RSpec examples
@@ -108,8 +105,8 @@ And you'll see output similar to the following:
     Finished in 0.00051 seconds
     1 example, 0 failures, 1 pending
 
-# Examples should do more than restate static resources
-
+Examples should do more than restate static resources
+-----------------------------------------------------
 Being able to write examples for simple cases like this is of some use, but
 because you declare resources in Chef declaratively it can feel like you are
 merely repeating the same resources in example form.
@@ -130,8 +127,8 @@ for all of the variations with real converges can be incredibly time consuming.
 Doing this with real converges is prohibitively slow, but with ChefSpec you can
 identify regressions very quickly while developing your cookbook.
 
-## Setting node attributes
-
+Setting node Attributes
+-----------------------
 You can set node attributes within an individual example. In this example
 the value of the `foo` attribute will be set to `bar` on line 3. The example
 then asserts that a resource is created based on the attribute name.
@@ -170,8 +167,8 @@ end
 chef_run.converge 'example::default'
 ```
 
-## Ohai Attributes
-
+Ohai Attributes
+---------------
 When you converge a node using Chef a large number of attributes are
 pre-populated by Chef which runs
 [Ohai](http://wiki.opscode.com/display/chef/Ohai) to discover information about
@@ -194,8 +191,8 @@ chef_run.node.automatic_attrs['platform'] = 'Commodore 64'
 chef_run.converge('example::default').should log 'I am running on a Commodore 64.'
 ```
 
-### "Missing" attributes
-
+"Missing" Attributes
+--------------------
 [Fauxhai](https://github.com/customink/fauxhai) from Seth Vargo is now a dependency of ChefSpec. This means you leverage all the power of fauxhai (and it's community contributed ohai mocks) without additional configuration. Just specify the `platform` and `version` attributes when you instantiate your `ChefRunner`:
 
 ```ruby
@@ -211,8 +208,8 @@ This will include all the default attributes for Ubuntu Precise 12.04. By defaul
 For more on Fauxhai
 [check out this blog post](http://technology.customink.com/blog/2012/08/03/testing-chef-cookbooks/) from CustomInk.
 
-## Search Results
-
+Search Results
+--------------
 Chef cookbooks will often make use of search in order to locate other services
 within your infrastructure. An example would be a load balancer that searches
 for the webservers to add to its pool.
@@ -243,8 +240,8 @@ Line 2 defines the search response for a search for all nodes with the `web`
 role. Line 6 then asserts that the hostname of the returned node is logged as
 expected.
 
-# Making Assertions
-
+Making Assertions
+-----------------
 Now you have a clear understanding of how to modify the attributes available to
 your cookbook it's time to explore the support available in ChefSpec for
 expressing assertions.
@@ -253,7 +250,7 @@ Each example (within the `it` block) has to specify an assertion to be useful.
 An assertion is a statement about the resources created by your Chef run that
 the node will be converged against.
 
-## Files
+### Files
 
 A basic form of assertion is to check that a file is created by a cookbook
 recipe. Note that this won't work for files or directories that are not
@@ -318,7 +315,7 @@ chef_run.should create_remote_file('/tmp/foo.tar.gz').with(
 )
 ```
 
-## Packages
+### Packages
 
 Note that only packages explicitly declared in the cookbook will be matched by
 these assertions. For example, a package installed only as a dependency of
@@ -370,7 +367,7 @@ chef_run.should install_gem_package 'foo'
 chef_run.should install_chef_gem_package 'chef-foo'
 ```
 
-## Execute
+### Execute
 
 If you make use of the `execute` resource within your cookbook recipes it is
 important to guard for idempotent behaviour. ChefSpec is not smart enough
@@ -392,7 +389,7 @@ Assert that a command would not be run:
 chef_run.should_not execute_command 'whoami'
 ```
 
-## Scripts
+### Scripts
 
 You can assert that a script will be executed via the `script` resource or one of
 its shortcuts (`bash`, `csh`, `perl`, `python`, `ruby`).
@@ -430,7 +427,7 @@ chef_run.should execute_ruby_script 'name of ruby script'
 Note: To check for the `ruby_block` resource, use the `execute_ruby_block`
 matcher described below.
 
-## Logging
+### Logging
 
 You can assert that a log resource will be created. Note that this assertion
 will not match direct use of `Chef::Log`.
@@ -454,7 +451,7 @@ the logging level when creating an instance of `ChefRunner` as below:
 let(:chef_run) { ChefSpec::ChefRunner.new(:log_level => :debug) }
 ```
 
-## Services
+### Services
 
 Assert that a daemon would be started:
 
@@ -486,7 +483,7 @@ Assert that a daemon would be reloaded:
 chef_run.should reload_service 'food'
 ```
 
-## Recipes
+### Recipes
 
 Assert that a recipe would be included:
 
@@ -494,7 +491,7 @@ Assert that a recipe would be included:
 chef_run.should include_recipe 'foo::bar'
 ```
 
-## Ruby blocks
+### Ruby blocks
 
 Assert that a ruby block would be executed:
 
@@ -508,11 +505,9 @@ Assert that a ruby block would not be executed:
 chef_run.should_not execute_ruby_block 'ruby_block_name'
 ```
 
-# Varying the cookbook path
-
-By default chefspec will infer the `cookbook_path` from the location of the
-spec. However if you want to use a different path you can pass it in as an
-argument to the `ChefRunner` constructor like so:
+Varying the Cookbook Path
+-------------------------
+By default chefspec will infer the `cookbook_path` from the location of the spec. However if you want to use a different path you can pass it in as an argument to the `ChefRunner` constructor like so:
 
 ```ruby
 require 'chefspec'
@@ -529,7 +524,8 @@ describe 'foo::default' do
 end
 ```
 
-# Mocking out environments
+Mocking Out Environments
+------------------------
 If you want to mock out `node.chef_environment`, you'll need to use RSpec mocks/stubs twice:
 
 ```ruby
@@ -551,9 +547,9 @@ end
 
 See #54 for the in-depth discussion.
 
-# Writing examples for LWRP's
-
-By default chefspec will override all resources to take no action. In order to allow
+Writing examples for LWRP's
+---------------------------
+By default ChefSpec will override all resources to take no action. In order to allow
 your LWRP to be run, you have to explicitly tell `ChefRunner` to step into it:
 
 ```ruby
@@ -570,19 +566,24 @@ describe 'foo::default' do
 end
 ```
 
-# Building
+Building Locally
+----------------
 
     $ bundle install
     $ bundle exec rake
 
-# Continuous Integration
-[Chefspec on Travis CI](http://travis-ci.org/acrmp/chefspec)
+Testing and Continuous Integration
+----------------------------------
+ChefSpec is on [Travis CI](http://travis-ci.org/acrmp/chefspec) which tests against multiple Chef and Ruby versions. If you're contributing, please see the [Contributing Guidelines](https://github.com/acrmp/chefspec/blob/master/CONTRIBUTING.md) for more information on testing.
 
-# License
+Changelog
+---------
+To see what has changed in recent versions see the [Changelog](https://github.com/acrmp/chefspec/blob/master/CHANGELOG.md). ChefSpec follows the [Rubygems RationalVersioningPolicy](http://docs.rubygems.org/read/chapter/7).
+
+Contributing
+------------
+Please see the [Contributing Guidelines](https://github.com/acrmp/chefspec/blob/master/CONTRIBUTING.md) for more information.
+
+License
+-------
 MIT - see the accompanying [LICENSE](https://github.com/acrmp/chefspec/blob/master/LICENSE) file for details.
-
-# Changelog
-To see what has changed in recent versions see the [CHANGELOG](https://github.com/acrmp/chefspec/blob/master/CHANGELOG.md). ChefSpec follows the [Rubygems RationalVersioningPolicy](http://docs.rubygems.org/read/chapter/7).
-
-# Contributing
-Additional matchers and bugfixes are welcome! Please fork and submit a pull request on an individual branch per change.
