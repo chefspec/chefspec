@@ -311,6 +311,15 @@ Assert that a remote file would be created:
 expect(chef_run).to create_remote_file '/tmp/foo.tar.gz'
 ```
 
+Assert that a remote file with specific attributes would be created:
+
+```ruby
+chef_run.should create_remote_file('/tmp/foo.tar.gz').with(
+  :source => 'http://www.example.com/foo.tar.gz',
+  :checksum => 'deadbeef'
+)
+```
+
 ## Packages
 
 Note that only packages explicitly declared in the cookbook will be matched by
@@ -341,6 +350,12 @@ Assert that a package would be purged:
 expect(chef_run).to purge_package 'foo'
 ```
 
+You can even use yum packages:
+
+```ruby
+chef_run.should install_yum_package 'yum-foo'
+```
+
 Assert that a package would be upgraded:
 
 ```ruby
@@ -364,10 +379,13 @@ important to guard for idempotent behaviour. ChefSpec is not smart enough
 at present to be used to verify that an `only_if` or `not_if` condition would
 be met however.
 
-Assert that a command would be run:
+Assert that a command with specific attributes would be run:
 
 ```ruby
-expect(chef_run).to execute_command 'whoami'
+expect(chef_run).to execute_command('whoami > me').with(
+  :cwd => '/tmp',
+  :creates => '/tmp/me'
+)
 ```
 
 Assert that a command would not be run:

@@ -164,6 +164,14 @@ module ChefSpec
       }
     end
 
+    def spec_expects_only_restart_service_action
+      generate_spec %q{
+        it "ensures the food service is started" do
+          service('food').must_be_running
+        end
+      }
+    end
+
     def spec_expects_user_action(action)
       state = case action
         when :create then 'must'
@@ -176,10 +184,32 @@ module ChefSpec
         end
       }
     end
+
     def spec_uses_user_convenience_method
       generate_spec %Q{
         it "access the user convenience method" do
           user('foo')
+        end
+      }
+    end
+
+    def spec_expects_group_action(action)
+      state = case action
+        when :create then 'must'
+        when :remove then 'wont'
+        else fail "Unrecognised action: #{action}"
+      end
+      generate_spec %Q{
+        it "#{action.to_s} the group foo" do
+          group('foo').#{state}_exist
+        end
+      }
+    end
+    
+    def spec_uses_group_convenience_method
+      generate_spec %Q{
+        it "access the group convenience method" do
+          group('foo')
         end
       }
     end

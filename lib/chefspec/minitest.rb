@@ -123,6 +123,7 @@ module ChefSpec
         override_assertion :enabled, :enabled, [:disable]
         override_assertion :running, :running, [:stop]
         override_assertion :user_exists, :username, [:remove]
+        override_assertion :group_exists, :group_name, [:remove]
 
         def file_resources
           resources.select{|r| r.resource_name.to_s.end_with?('file')} +

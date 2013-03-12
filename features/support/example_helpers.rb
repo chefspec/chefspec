@@ -92,6 +92,8 @@ module ChefSpec
         execute "print_hello_world" do
           command "echo Hello World!"
           action :run
+          cwd "/tmp"
+          creates "/tmp/foo"
         end
       }
     end
@@ -399,6 +401,22 @@ module ChefSpec
     def recipe_removes_user
       write_file 'cookbooks/example/recipes/default.rb', %q{
         user "foo" do
+          action :remove
+        end
+      }
+    end
+
+    def recipe_creates_group
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        group "foo" do
+          action :create
+        end
+      }
+    end
+
+    def recipe_removes_group
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        group "foo" do
           action :remove
         end
       }
