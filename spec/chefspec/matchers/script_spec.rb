@@ -39,6 +39,34 @@ module ChefSpec
             resources = [{:resource_name => 'script', :interpreter => 'bar', :name => 'foo'}]
             matcher.matches?(:resources => resources).should be false
           end
+
+          describe "#with" do
+            before do
+              @interpreter = interpreter
+            end
+
+            let(:matcher) do
+              matcher_name = "execute_#{interpreter}_script"
+              send(matcher_name, 'foo').with(:user => 'foo', :cwd => '/tmp')
+            end
+
+            def do_match(attributes)
+              default_attributes = {:resource_name => 'script',
+                                    :interpreter => @interpreter,
+                                    :name => 'foo',
+                                    :user => 'foo',
+                                    :cwd => '/tmp'}
+              matcher.matches?({:resources => [default_attributes.merge(attributes)]})
+            end
+
+            it "does not match when one attributes differs" do
+              expect(do_match(:user => 'bar')).to be false
+            end
+
+            it "does match when all attributes are equal" do
+              expect(do_match({})).to be true
+            end
+          end
         end
       end
     end
