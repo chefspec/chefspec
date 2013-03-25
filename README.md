@@ -33,7 +33,7 @@ require "chefspec"
 
 describe "example::default" do
   let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
-  it "should install foo" do
+  it "installs foo" do
     expect(chef_run).to install_package 'foo'
   end
 end
@@ -85,7 +85,7 @@ require 'chefspec'
 
 describe 'my_new_cookbook::default' do
   let(:chef_run) { ChefSpec::ChefRunner.new.converge 'my_new_cookbook::default' }
-  it 'should do something' do
+  it 'does something' do
     pending 'Your recipe examples go here.'
   end
 end
@@ -98,7 +98,7 @@ You can run the example using rspec:
 And you'll see output similar to the following:
 
     Pending:
-      my_new_cookbook::default should do something
+      my_new_cookbook::default does something
         # Your recipe examples go here.
         # ./my_new_cookbook/spec/default_spec.rb:5
 
@@ -136,7 +136,7 @@ In this example the affected resource is a log resource, but it could just as
 easily be a template or package name derived from an attribute value.
 
 ```ruby
-it "should log the foo attribute" do
+it "logs the foo attribute" do
   chef_run = ChefSpec::ChefRunner.new
   chef_run.node.set['foo'] = 'bar'
   chef_run.converge 'example::default'
@@ -149,7 +149,7 @@ attributes. If you do this then the attributes will not be set correctly.
 
 ```ruby
 # !!! Don't do this !!!
-it "should log the foo attribute" do
+it "logs the foo attribute" do
   chef_run = ChefSpec::ChefRunner.new.converge 'example::default'
   chef_run.node.set['foo'] = 'bar'
   expect(chef_run).to log 'The value of node.foo is: bar'
@@ -227,7 +227,7 @@ A example that returned a pre-canned search result to the recipe and then
 asserted that it then logged each node added to the pool might look like this:
 
 ```ruby
-it "should log each node added to the load balancer pool" do
+it "logs each node added to the load balancer pool" do
   Chef::Recipe.any_instance.stub(:search).with(:node, 'role:web').and_yield(
     {'hostname' => 'web1.example.com'})
   chef_run = ChefSpec::ChefRunner.new
@@ -311,7 +311,7 @@ expect(chef_run).to create_remote_file '/tmp/foo.tar.gz'
 Assert that a remote file with specific attributes would be created:
 
 ```ruby
-chef_run.should create_remote_file('/tmp/foo.tar.gz').with(
+expect(chef_run).to create_remote_file('/tmp/foo.tar.gz').with(
   :source => 'http://www.example.com/foo.tar.gz',
   :checksum => 'deadbeef'
 )
@@ -350,7 +350,7 @@ expect(chef_run).to purge_package 'foo'
 You can even use yum packages:
 
 ```ruby
-chef_run.should install_yum_package 'yum-foo'
+expect(chef_run).to install_yum_package 'yum-foo'
 ```
 
 Assert that a package would be upgraded:
