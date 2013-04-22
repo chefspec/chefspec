@@ -1,4 +1,3 @@
-before_install: gem update --system 1.8.25
 rvm:
   - ree       # Remove on July 1, 2013
   - 1.9.3
