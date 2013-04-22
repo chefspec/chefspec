@@ -1,3 +1,29 @@
+## 1.0.0 (April 22, 2012)
+
+Features:
+  - Add support for matching file content using Regular Expressions (@ketan)
+  - Add support for `ruby_block` matcher (Andrey Vorobiev)
+  - Use Fauxhai for node attributes (see 4529c10)
+  - Moved `test` and `development` into gemspec for transparency
+  - Improve message logging and testing (@tmatilai)
+  - Chef 11 compatibility (still Chef 10 compatible)
+  - Accept and document new RSpec "expect" syntax
+  - Attribute matchers for various providers (@bjoernalbers)
+  - Add execute_{bash,csh,perl,python,ruby}_script matchers (@mlafeldt)
+  - Add group and user resource matchers (@gildegoma)
+  - Add support for `yum_package` (Justin Witrick)
+  - Add ISSUES.md
+  - Add CONTRIBUTING.md
+  - Relax gemspec constraints (@juliandunn)
+  - Improve documentation and examples
+
+Bugfixes:
+
+  - Fix Rubygems/Bundler 2.0 compatibility issues
+  - Upgrade to newest RSpec
+  - Fix Chef 11 incompatibility
+  - Various documentation fixes
+
 ## 0.9.0 (November 10, 2012)
 
 Features:
