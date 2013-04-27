@@ -13,7 +13,12 @@ examples are being executed on. This has two benefits:
 ChefSpec aims to make Chef development more productive by giving you faster
 feedback on cookbook changes.
 
-Start by watching Jim Hopp's excellent [Test Driven Development for Chef Practitioners](http://www.youtube.com/watch?v=o2e0aZUAVGw) talk from ChefConf which contains lots of great examples of using ChefSpec.
+Start by watching Jim Hopp's excellent [Test Driven Development for Chef Practitioners](http://www.youtube.com/watch?v=o2e0aZUAVGw) talk from ChefConf 2012 which contains lots of great examples of using ChefSpec.
+
+For a really nice walkthrough using ChefSpec with Guard and Fauxhai to do Test
+Driven Development watch
+[Seth Vargo's TDDing tmux talk](http://www.confreaks.com/videos/2364-mwrc2013-tdding-tmux)
+from MountainWest RubyConf 2013.
 
 Writing a Cookbook Example
 --------------------------
