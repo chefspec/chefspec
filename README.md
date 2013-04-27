@@ -300,7 +300,7 @@ Assert that a file would have the expected content (matches on partial content):
 
 ```ruby
 expect(chef_run).to create_file_with_content 'hello-world.txt', 'hello world'
-expect(chef_run).to create_file_with_content 'hello-world.txt', /^hello world$/
+expect(chef_run).to create_file_with_content 'hello-world.txt', /^hello world, your are in the (\d+) day of the year$/
 ```
 
 Assert that a remote file would be created:
