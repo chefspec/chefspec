@@ -300,6 +300,7 @@ Assert that a file would have the expected content (matches on partial content):
 
 ```ruby
 expect(chef_run).to create_file_with_content 'hello-world.txt', 'hello world'
+expect(chef_run).to create_file_with_content 'hello-world.txt', /^hello world, your are in the (\d+) day of the year$/
 ```
 
 Assert that a remote file would be created:
@@ -315,6 +316,22 @@ expect(chef_run).to create_remote_file('/tmp/foo.tar.gz').with(
   :source => 'http://www.example.com/foo.tar.gz',
   :checksum => 'deadbeef'
 )
+```
+
+Assert that a file would be created from cookbook_file ressource:
+
+```ruby
+expect(chef_run).to create_cookbook_file '/etc/my-cookbook-config.cfg'
+file = chef_run.cookbook_file('/var/log/bar.log')
+expect(file).to be_owned_by('user', 'group')
+```
+
+Assert that a file would be created from template ressource:
+
+```ruby
+expect(chef_run).to create_file '/etc/my-cookbook-config.cfg'
+file = chef_run.template('/etc/my-cookbook-config.cfg')
+expect(file).to be_owned_by('user', 'group')
 ```
 
 ### Packages
