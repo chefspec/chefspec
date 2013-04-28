@@ -324,6 +324,7 @@ Assert that a file would be created from cookbook_file ressource:
 expect(chef_run).to create_cookbook_file '/etc/my-cookbook-config.cfg'
 file = chef_run.cookbook_file('/var/log/bar.log')
 expect(file).to be_owned_by('user', 'group')
+expect(file.mode).to eq("0440")
 ```
 
 Assert that a file would be created from template ressource:
