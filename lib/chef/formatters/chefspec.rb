@@ -1,7 +1,8 @@
 if defined?(Chef::Formatters::Base)
   class Chef
     module Formatters
-      # A specific formatter for Chef 11
+      # A specific formatter for Chef 11. This base for this formatter was
+      # taken from Chef::Formatters:Min and all the output was then removed.
       #
       # @author Seth Vargo <sethvargo@gmail.com>
       class ChefSpec < Formatters::Base
