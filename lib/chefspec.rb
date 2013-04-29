@@ -2,6 +2,8 @@ require 'chef'
 require 'chefspec/chef_runner'
 require 'chefspec/version'
 
+require 'chef/formatters/chefspec'
+
 if defined?(RSpec)
   require 'chefspec/matchers/cron'
   require 'chefspec/matchers/execute'
