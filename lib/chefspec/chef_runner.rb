@@ -75,6 +75,11 @@ module ChefSpec
       Chef::Cookbook::FileVendor.on_create { |manifest| Chef::Cookbook::FileSystemFileVendor.new(manifest) }
       Chef::Config[:cookbook_path] = @options[:cookbook_path]
       Chef::Config[:client_key] = nil
+
+      # As of Chef 11, Chef uses custom formatters which munge the RSpec output.
+      # This uses a custom formatter which basically tells Chef to shut up.
+      Chef::Config.add_formatter('chefspec') if Chef::Config.respond_to?(:add_formatter)
+
       Chef::Log.verbose = true if Chef::Log.respond_to?(:verbose)
       Chef::Log.level(@options[:log_level])
       @client = Chef::Client.new
