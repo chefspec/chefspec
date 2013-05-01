@@ -72,7 +72,7 @@ module ChefSpec
 
       Chef::Config[:solo] = true
       Chef::Config[:cache_type] = "Memory"
-      Chef::Config[:cache_options] = { :path => "#{ENV['HOME']}/.chef/checksums" }
+      Chef::Config[:cache_options] = { :path => File.join(File.expand_path('~'), '.chef', 'checksums') }
       Chef::Cookbook::FileVendor.on_create { |manifest| Chef::Cookbook::FileSystemFileVendor.new(manifest) }
       Chef::Config[:cookbook_path] = @options[:cookbook_path]
       Chef::Config[:client_key] = nil
