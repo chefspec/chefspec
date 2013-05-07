@@ -139,7 +139,16 @@ module ChefSpec
       return "chef_run: #{@node.run_list.to_s}" unless @node.run_list.empty?
       'chef_run'
     end
-
+    
+    # Find the resource with the declared type and name
+    #
+    # @param [String] type The type of resource - e.g. 'file' or 'directory'
+    # @param [String] name The resource name
+    # @return [Chef::Resource] The matching resource, or Nil
+    def find_resource(type, name)
+      resources.find{|resource| resource_type(resource) == type and resource.name == name}
+    end
+    
     private
 
     # Populate basic OHAI attributes required to get recipes working. This is a minimal set - if your recipe example
@@ -162,14 +171,6 @@ module ChefSpec
       Pathname.new(File.join(caller(2).first.split(':').slice(0..-3).join(':'), '..', '..', '..')).cleanpath.to_s
     end
 
-    # Find the resource with the declared type and name
-    #
-    # @param [String] type The type of resource - e.g. 'file' or 'directory'
-    # @param [String] name The resource name
-    # @return [Chef::Resource] The matching resource, or Nil
-    def find_resource(type, name)
-      resources.find{|resource| resource_type(resource) == type and resource.name == name}
-    end
   end
 
 end
