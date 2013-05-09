@@ -152,9 +152,9 @@ module ChefSpec
     # @param [Ohai::System] ohai The ohai instance to set fake attributes on
     def fake_ohai(ohai)
       data = if @options.has_key?(:ohai_data_path)
-              ::Fauxhai::Mocker.new(:path => @options[:ohai_data_path]).data
+              Fauxhai::Mocker.new(:path => @options[:ohai_data_path]).data
              else
-              ::Fauxhai::Mocker.new(:platform => @options[:platform], :version => @options[:version]).data
+              Fauxhai::Mocker.new(:platform => @options[:platform], :version => @options[:version]).data
              end
       data.each_pair do |attribute, value|
         ohai[attribute] = value
