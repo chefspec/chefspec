@@ -26,6 +26,7 @@ module ChefSpec
     # @option options [Symbol] :log_level The log level to use (default is :warn)
     # @option options [String] :platform The platform to load Ohai attributes from (must be present in fauxhai)
     # @option options [String] :version The version of the platform to load Ohai attributes from (must be present in fauxhai)
+    # @option options [String] :ohai_data_path Path of a json file that will be passed to fauxhai as :path option 
     # @yield [node] Configuration block for Chef::Node
     def initialize(options={})
       defaults = {:cookbook_path => default_cookbook_path, :log_level => :warn, :dry_run => false, :step_into => []}
@@ -150,7 +151,12 @@ module ChefSpec
     #
     # @param [Ohai::System] ohai The ohai instance to set fake attributes on
     def fake_ohai(ohai)
-      ::Fauxhai::Mocker.new(:platform => @options[:platform], :version => @options[:version]).data.each_pair do |attribute, value|
+      data = if @options.has_key?(:ohai_data_path)
+              Fauxhai::Mocker.new(:path => @options[:ohai_data_path]).data
+             else
+              Fauxhai::Mocker.new(:platform => @options[:platform], :version => @options[:version]).data
+             end
+      data.each_pair do |attribute, value|
         ohai[attribute] = value
       end
     end
