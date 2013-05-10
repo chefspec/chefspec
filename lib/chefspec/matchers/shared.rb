@@ -1,5 +1,8 @@
-require 'chef/provider/template_finder'
-require 'chef/mixin/template'
+begin
+  require 'chef/mixin/template'
+  require 'chef/provider/template_finder'
+rescue LoadError
+end
 # Given a resource return the unqualified type it is
 #
 # @param [String] resource A Chef Resource
@@ -51,7 +54,9 @@ def render(template, node, template_finder)
   # Duplicates functionality in the Chef Template provider
   context = {}; context.merge!(template.variables)
   context[:node] = node
-  context[:template_finder] = template_finder
+  unless template_finder.nil?
+    context[:template_finder] = template_finder
+  end
   Erubis::Context.send(:include, Chef::Mixin::Template::ChefContext)
   Erubis::Eruby.new(IO.read(template_path(template, node))).evaluate(context)
 end
@@ -71,5 +76,7 @@ def template_path(template, node)
 end
 
 def template_finder(run_context, template, node)
-  Chef::Provider::TemplateFinder.new(run_context,template.cookbook_name, node)
+  if Chef::Provider.const_defined?(:TemplateFinder)
+    Chef::Provider::TemplateFinder.new(run_context,template.cookbook_name, node)
+  end
 end
