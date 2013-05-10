@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency('chef', '>= 10.0')
   s.add_dependency('erubis')
-  s.add_dependency('fauxhai', '~> 0.1')
+  s.add_dependency('fauxhai', '>= 0.1.1', '< 2.0')
   s.add_dependency('minitest-chef-handler', '>= 0.6.0')
   s.add_dependency('rspec', '~> 2.0')
 
