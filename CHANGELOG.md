@@ -1,6 +1,23 @@
-## 1.0.0 (April 22, 2012)
+Changelog for ChefSpec
+======================
+
+## 1.1.0 (May 10, 2013)
 
 Features:
+
+  - Upgrade to newest version of fauxhai (@tmatilai)
+  - Make `find_resource` a public method (@adamhjk)
+  - Add path support (from fauxhai) (@RanjibDey)
+  - Custom Chef formatter for ChefSpec (removes pesky output) (@sethvargo)
+
+Bugfixes:
+
+  - Remove pesky output from Chef 11
+
+## 1.0.0 (April 22, 2013)
+
+Features:
+
   - Add support for matching file content using Regular Expressions (@ketan)
   - Add support for `ruby_block` matcher (Andrey Vorobiev)
   - Use Fauxhai for node attributes (see 4529c10)
