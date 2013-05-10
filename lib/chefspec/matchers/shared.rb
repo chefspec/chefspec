@@ -49,6 +49,7 @@ end
 #
 # @param [Chef::Resource::Template] template The template to render
 # @param [Chef::Node] node The node which may be required to render the template
+# @param [Chef::Provider::TemplateFinder] a TemplateFinder use for rendering templates containing partials
 # @return [String] The result result of rendering the template
 def render(template, node, template_finder)
   # Duplicates functionality in the Chef Template provider
@@ -56,8 +57,8 @@ def render(template, node, template_finder)
   context[:node] = node
   unless template_finder.nil?
     context[:template_finder] = template_finder
+    Erubis::Context.send(:include, Chef::Mixin::Template::ChefContext)
   end
-  Erubis::Context.send(:include, Chef::Mixin::Template::ChefContext)
   Erubis::Eruby.new(IO.read(template_path(template, node))).evaluate(context)
 end
 
