@@ -20,6 +20,7 @@ def register_spec_features(spec_type)
     t.cucumber_opts = "CS_SPEC_TYPE=#{spec_type} features --format pretty"
     t.cucumber_opts << ' -t ~@requires_chef_10' if Chef::VERSION.start_with? '0.9.'
     t.cucumber_opts << ' -t ~@chefgem' unless defined?(Chef::Resource::ChefGem)
+    t.cucumber_opts << ' -t ~@requires_template_finder' unless defined?(Chef::Provider::TemplateFinder)
     t.cucumber_opts << " -t ~@not_implemented_#{spec_type.downcase}"
   end
 end

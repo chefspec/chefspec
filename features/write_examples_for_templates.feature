@@ -16,6 +16,7 @@ Feature: Write examples for templates
     When the recipe example is successfully run
     Then the file will not have been created
 
+@requires_template_finder
   Scenario: Rendered template with partial
     Given a Chef cookbook with a recipe that declares a template resource with partials in it
     And the recipe has a spec example of the rendered template which includes the partial
