@@ -9,7 +9,8 @@ module ChefSpec
             if (Array(resource.action).map { |action| action.to_sym } & [:create, :create_if_missing]).any?
               case resource_type(resource)
                 when 'template'
-                  @actual_content = render(resource, chef_run.node)
+                  template_finder = template_finder(chef_run.run_context, resource, chef_run.node)
+                  @actual_content = render(resource, chef_run.node, template_finder)
                 when 'file'
                   @actual_content = resource.content
                 when 'cookbook_file'
