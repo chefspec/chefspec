@@ -154,7 +154,7 @@ module ChefSpec
                 when :file
                   f.content
                 when :template
-                  render(f, node)
+                  render(f, node, template_finder(run_context, f, node))
                 else raise NotImplementedError,
                   ":#{f.resource_name} not supported for comparison"
               end.include?(content)

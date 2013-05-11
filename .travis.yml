@@ -16,3 +16,7 @@ notifications:
 branches:
   only:
     - master
+matrix:
+  allow_failures:
+    - rvm: ree
+      gemfile: gemfiles/Gemfile.chef-11
