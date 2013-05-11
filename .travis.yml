@@ -19,4 +19,4 @@ branches:
 matrix:
   allow_failures:
     - rvm: ree
-    - gemfile: gemfiles/Gemfile.chef-11
+      gemfile: gemfiles/Gemfile.chef-11
