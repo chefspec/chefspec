@@ -26,7 +26,7 @@ module ChefSpec
     # @option options [Symbol] :log_level The log level to use (default is :warn)
     # @option options [String] :platform The platform to load Ohai attributes from (must be present in fauxhai)
     # @option options [String] :version The version of the platform to load Ohai attributes from (must be present in fauxhai)
-    # @option options [String] :ohai_data_path Path of a json file that will be passed to fauxhai as :path option 
+    # @option options [String] :ohai_data_path Path of a json file that will be passed to fauxhai as :path option
     # @yield [node] Configuration block for Chef::Node
     def initialize(options={})
       defaults = {:cookbook_path => default_cookbook_path, :log_level => :warn, :dry_run => false, :step_into => []}
@@ -75,7 +75,7 @@ module ChefSpec
       Chef::Config[:cache_type] = "Memory"
       Chef::Config[:cache_options] = { :path => File.join(File.expand_path('~'), '.chef', 'checksums') }
       Chef::Cookbook::FileVendor.on_create { |manifest| Chef::Cookbook::FileSystemFileVendor.new(manifest) }
-      Chef::Config[:cookbook_path] = @options[:cookbook_path]
+      Chef::Config[:cookbook_path] = cookbook_paths
       Chef::Config[:client_key] = nil
 
       # As of Chef 11, Chef uses custom formatters which munge the RSpec output.
@@ -140,7 +140,7 @@ module ChefSpec
       return "chef_run: #{@node.run_list.to_s}" unless @node.run_list.empty?
       'chef_run'
     end
-    
+
     # Find the resource with the declared type and name
     #
     # @param [String] type The type of resource - e.g. 'file' or 'directory'
@@ -149,7 +149,7 @@ module ChefSpec
     def find_resource(type, name)
       resources.find{|resource| resource_type(resource) == type and resource.name == name}
     end
-    
+
     private
 
     # Populate basic OHAI attributes required to get recipes working. This is a minimal set - if your recipe example
@@ -175,6 +175,19 @@ module ChefSpec
     # @return [String] The path to the cookbooks directory
     def default_cookbook_path
       Pathname.new(File.join(caller(2).first.split(':').slice(0..-3).join(':'), '..', '..', '..')).cleanpath.to_s
+    end
+
+    # The cookbook path, appended with some "common" directories to search
+    # as well (such as vendor/cookbooks)
+    #
+    # @return [Array<String>] The cookbook_paths
+    def cookbook_paths
+      vendor_path = File.expand_path(File.join('vendor', 'cookbooks'))
+      test_path   = File.expand_path(File.join('test', 'cookbooks'))
+      tk_path     = File.expand_path(File.join('test', 'integration', 'cookbooks'))
+      spec_path   = File.expand_path(File.join('spec', 'cookbooks'))
+
+      Array(@options[:cookbook_path]).push(vendor_path).push(test_path).push(tk_path).push(spec_path)
     end
 
   end
