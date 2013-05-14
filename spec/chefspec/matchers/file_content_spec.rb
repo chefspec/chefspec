@@ -19,6 +19,7 @@ module ChefSpec
     describe :create_file_with_content do
       describe "#match with regex content" do
         let(:matcher) { create_file_with_content('/etc/config_file', /platform: chefspec/) }
+        let(:canned_template){}
 
         it "should match a file resource with the right content regex and path" do
           matcher.matches?({:resources => [{:resource_name => 'file', :name => '/etc/config_file',
@@ -67,8 +68,8 @@ module ChefSpec
         end
         it "should not match a template resource with the right path but no content" do
           matcher.stub(:render).and_return("")
-          matcher.matches?({:node => {}, :resources => [{:resource_name => 'template', :name => '/etc/config_file',
-                                            :action => :create}]}).should be false
+          matcher.matches?({:node => {}, :run_context=>{}, :resources => [{:resource_name => 'template', :name => '/etc/config_file',
+                                            :cookbook_name=>'foo', :action => :create}]}).should be false
         end
         it "should not match a template resource with the right content but the wrong path" do
           matcher.stub(:render).and_return("platform: chefspec")
@@ -77,18 +78,18 @@ module ChefSpec
         end
         it "should match a template resource with the right content and path" do
           matcher.stub(:render).and_return("platform: chefspec")
-          matcher.matches?({:node => {}, :resources => [{:resource_name => 'template', :name => '/etc/config_file',
-                                            :action => :create}]}).should be true
+          matcher.matches?({:node => {}, :run_context=>{}, :resources => [{:resource_name => 'template', :name => '/etc/config_file',
+                                            :cookbook_name=>'foo', :action => :create}]}).should be true
         end
         it "should match a template resource with the right path and content somewhere in the file" do
           matcher.stub(:render).and_return("fqdn: chefspec.local\nplatform: chefspec\nhostname: chefspec")
-          matcher.matches?({:node => {}, :resources => [{:resource_name => 'template', :name => '/etc/config_file',
-                                            :action => :create}]}).should be true
+          matcher.matches?({:node => {}, :run_context=>{}, :resources => [{:resource_name => 'template', :name => '/etc/config_file',
+                                            :cookbook_name=>'foo', :action => :create}]}).should be true
         end
         it "should match a template resource create_if_missing with the right content and path" do
           matcher.stub(:render).and_return("platform: chefspec")
-          matcher.matches?({:node => {}, :resources => [{:resource_name => 'template', :name => '/etc/config_file',
-                                            :action => :create_if_missing}]}).should be true
+          matcher.matches?({:node => {}, :run_context=>{}, :resources => [{:resource_name => 'template', :name => '/etc/config_file',
+                                            :cookbook_name=>'foo', :action => :create_if_missing}]}).should be true
         end
 
         context "a cookbook_file resource" do
