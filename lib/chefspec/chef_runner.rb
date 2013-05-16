@@ -5,6 +5,10 @@ require 'fauxhai'
 
 require 'chefspec/matchers/shared'
 
+begin
+  require 'berkshelf'
+rescue LoadError; end
+
 # ChefSpec allows you to write rspec examples for Chef recipes to gain faster feedback without the need to converge a
 # node.
 module ChefSpec
@@ -184,10 +188,13 @@ module ChefSpec
     def cookbook_paths
       vendor_path = File.expand_path(File.join('vendor', 'cookbooks'))
       test_path   = File.expand_path(File.join('test', 'cookbooks'))
-      tk_path     = File.expand_path(File.join('test', 'integration', 'cookbooks'))
       spec_path   = File.expand_path(File.join('spec', 'cookbooks'))
 
-      Array(@options[:cookbook_path]).push(vendor_path).push(test_path).push(tk_path).push(spec_path)
+      Array(@options[:cookbook_path])
+        .push(vendor_path)
+        .push(test_path)
+        .push(spec_path)
+        .select { |path| File.exists?(path) }
     end
 
   end
