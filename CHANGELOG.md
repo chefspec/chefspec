@@ -1,6 +1,13 @@
 Changelog for ChefSpec
 ======================
 
+## 1.2.0 (May 16, 2013)
+
+Features:
+
+  - Add support for partial files
+  - Automatically check certain directories for cookbooks
+
 ## 1.1.0 (May 10, 2013)
 
 Features:
