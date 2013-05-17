@@ -3,6 +3,9 @@ require 'spec_helper'
 module ChefSpec
   describe ChefRunner do
     describe "#initialize" do
+      before do
+        File.stub(:exists?).and_return(false)
+      end
       it "should create a node for use within the examples" do
         runner = ChefSpec::ChefRunner.new
         expect(runner.node).not_to be_nil
@@ -13,13 +16,15 @@ module ChefSpec
         expect(Chef::Config[:cookbook_path]).not_to be_nil
       end
       it "should set the chef cookbook path to any provided value" do
+        File.stub(:exists?).with('/tmp/foo').and_return(true)
         ChefSpec::ChefRunner.new(:cookbook_path => '/tmp/foo')
-        expect(Chef::Config[:cookbook_path]).to eql '/tmp/foo'
+        expect(Chef::Config[:cookbook_path]).to eql ['/tmp/foo']
       end
       it "should support the chef cookbook path being passed as a string for backwards compatibility" do
         Chef::Config[:cookbook_path] = nil
+        File.stub(:exists?).with('/tmp/bar').and_return(true)
         ChefSpec::ChefRunner.new('/tmp/bar')
-        expect(Chef::Config[:cookbook_path]).to eql '/tmp/bar'
+        expect(Chef::Config[:cookbook_path]).to eql ['/tmp/bar']
       end
       it "should default the log_level to warn" do
         expect(Chef::Log.level).to eql :warn

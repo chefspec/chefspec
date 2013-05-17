@@ -532,7 +532,7 @@ expect(chef_run).not_to execute_ruby_block 'ruby_block_name'
 
 Varying the Cookbook Path
 -------------------------
-By default chefspec will infer the `cookbook_path` from the location of the spec. However if you want to use a different path you can pass it in as an argument to the `ChefRunner` constructor like so:
+By default ChefSpec will infer the `cookbook_path` from the location of the spec. However if you want to use a different path you can pass it in as an argument to the `ChefRunner` constructor like so:
 
 ```ruby
 require 'chefspec'
@@ -548,6 +548,21 @@ describe 'foo::default' do
   end
 end
 ```
+
+As of `v2.0.1`, ChefSpc will also automatically look in the following locations for vendored cookbooks:
+
+- vendor/cookbooks
+- test/cookbooks
+- test/integration (test kitchen)
+- spec/cookbooks
+
+This makes it easy to test a cookbook that is using Berkshelf, for example:
+
+    $ bundle exec berks install --path vendor/cookbooks
+    $ bundle exec rspec
+
+You don't have to modify the ChefSpec cookbook_path - it is automatically detected.
+
 
 Mocking Out Environments
 ------------------------
