@@ -5,8 +5,8 @@ Changelog for ChefSpec
 
 Features:
 
-  - Add support for partial files
-  - Automatically check certain directories for cookbooks
+  - Add support for partial files (@RanjibDey)
+  - Automatically check certain directories for cookbooks (@sethvargo)
 
 ## 1.1.0 (May 10, 2013)
 
