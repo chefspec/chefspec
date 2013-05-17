@@ -190,11 +190,11 @@ module ChefSpec
       test_path   = File.expand_path(File.join('test', 'cookbooks'))
       spec_path   = File.expand_path(File.join('spec', 'cookbooks'))
 
-      Array(@options[:cookbook_path])
-        .push(vendor_path)
-        .push(test_path)
-        .push(spec_path)
-        .select { |path| File.exists?(path) }
+      Array(@options[:cookbook_path]).
+        push(vendor_path).
+        push(test_path).
+        push(spec_path).
+        select { |path| File.exists?(path) }
     end
 
   end
