@@ -82,6 +82,11 @@ module ChefSpec
       Chef::Config[:cookbook_path] = cookbook_paths
       Chef::Config[:client_key] = nil
 
+      # it should be saved to an instance variable to prevent automatic
+      # unlinking during garbage collection
+      @dummy_config = Tempfile.new 'chef-config'
+      Chef::Config[:config_file] = @dummy_config.path
+
       # As of Chef 11, Chef uses custom formatters which munge the RSpec output.
       # This uses a custom formatter which basically tells Chef to shut up.
       Chef::Config.add_formatter('chefspec') if Chef::Config.respond_to?(:add_formatter)
