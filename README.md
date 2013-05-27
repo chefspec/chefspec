@@ -59,6 +59,22 @@ Let's step through this spec file to see what is happening:
    should have been installed. Normally you will have multiple `it` blocks per
    recipe, each making a single assertion.
 
+Instead of hardcoding recipe name everywhere, it's possible to use ```described_recipe```
+and ```described_cookbook``` methods which for the above example will return ```example::default```
+and ```example``` appropriately. These helpers can be used like ```described_class``` is used
+in RSpec - to DRY the name of described cookbook/recipe making specs more refactoring proof.
+
+```ruby
+require "chefspec"
+
+describe "example::default" do
+  let(:chef_run) { ChefSpec::ChefRunner.new.converge described_recipe }
+  it "includes another_recipe" do
+    expect(chef_run).to include_recipe "#{described_cookbook}::another_recipe"
+  end
+end
+```
+
 Generating an Example
 ---------------------
 Ideally you should be writing your specs in tandem with your recipes and
