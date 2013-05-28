@@ -411,9 +411,7 @@ expect(chef_run).to install_chef_gem_package 'chef-foo'
 ### Execute
 
 If you make use of the `execute` resource within your cookbook recipes it is
-important to guard for idempotent behaviour. ChefSpec is not smart enough
-at present to be used to verify that an `only_if` or `not_if` condition would
-be met however.
+important to guard for idempotent behaviour.
 
 Assert that a command with specific attributes would be run:
 
@@ -618,6 +616,64 @@ describe 'foo::default' do
   }
   it 'installs the foo package through my_lwrp' do
     expect(chef_run).to install_package 'foo'
+  end
+end
+```
+
+Resource Guards
+---------------
+Chef resources may use the `not_if` or `only_if`
+[conditional execution attributes](http://docs.opscode.com/resource_common_conditionals.html)
+to check whether a resource should be applied.
+
+By default ChefSpec will not evaluate these guards. There are two reasons for
+this default:
+
+* Guards may contain any Ruby or Shell code. It's not possible for ChefSpec to
+  know if running the guard may have side effects that harm your workstation.
+* Guards may assume state or command-line utilities that aren't present on your
+  workstation. Typically you will mock these out but ChefSpec doesn't force you
+  to do this.
+
+## Evaluating Guards
+
+You can tell ChefSpec to evaluate any `only_if` or `not_if` attributes present
+on your resources when you instantiate the `ChefRunner`:
+
+```ruby
+let(:chef_run) do
+  chef_run = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+  chef_run.converge 'example::default'
+end
+```
+
+## Mocking out file operations in Ruby blocks
+
+Given a conditional that uses Ruby to check for the existence of a file:
+
+```ruby
+template "/etc/app/config" do
+  only_if{ File.exists?("/opt/app/installed") }
+end
+```
+
+We can mock out both cases so that we check that our recipe behaves correctly
+when the file is present or not:
+
+```ruby
+require "chefspec"
+describe "example::default" do
+  let(:chef_run){ ChefSpec::ChefRunner.new({:evaluate_guards => true}) }
+  before(:each){ File.stub(:exists?).and_call_original }
+  it "should render the template if the install file exists" do
+    File.should_receive(:exists?).with("/opt/app/installed").and_return(true)
+    chef_run.converge "example::default"
+    expect(chef_run).to create_file("/etc/app/config")
+  end
+  it "should not render the template if the install file doesn't exist" do
+    File.should_receive(:exists?).with("/opt/app/installed").and_return(false)
+    chef_run.converge "example::default"
+    expect(chef_run).not_to create_file("/etc/app/config")
   end
 end
 ```
