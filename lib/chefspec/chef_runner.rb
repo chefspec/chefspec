@@ -33,7 +33,13 @@ module ChefSpec
     # @option options [String] :ohai_data_path Path of a json file that will be passed to fauxhai as :path option
     # @yield [node] Configuration block for Chef::Node
     def initialize(options={})
-      defaults = {:cookbook_path => default_cookbook_path, :log_level => :warn, :dry_run => false, :step_into => []}
+      defaults = {
+        :cookbook_path => default_cookbook_path,
+        :log_level => :warn,
+        :dry_run => false,
+        :step_into => [],
+        :evaluate_guards => false
+      }
       options = {:cookbook_path => options} unless options.respond_to?(:to_hash) # backwards-compatibility
       @options = defaults.merge(options)
 
@@ -41,6 +47,7 @@ module ChefSpec
       @resources = []
       @step_into = @options[:step_into]
       @do_dry_run = @options[:dry_run]
+      @evaluate_guards = @options[:evaluate_guards]
 
       Chef::Resource.class_eval do
         alias :old_run_action :run_action unless method_defined?(:old_run_action)
@@ -57,6 +64,16 @@ module ChefSpec
             self.class.class_variable_get(:@@runner)
           else
             @@runner
+          end
+
+          if runner.evaluate_guards?
+            if self.respond_to?(:should_skip?) # Chef >= 0.10
+              if self.method(:should_skip?).arity == 1
+                return if self.should_skip?(action)
+              else
+                return if self.should_skip?
+              end
+            end
           end
 
           if runner.step_into.include?(self.resource_name.to_s)
@@ -129,6 +146,10 @@ module ChefSpec
       runner = Chef::Runner.new(@run_context)
       runner.converge
       self
+    end
+
+    def evaluate_guards?
+      !! @evaluate_guards
     end
 
     FILE_RESOURCES    = %w(directory cookbook_file file template link remote_directory remote_file)

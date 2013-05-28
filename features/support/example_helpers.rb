@@ -31,7 +31,7 @@ module ChefSpec
       end
     end
 
-    def cookbook_with_lwrp
+    def cookbook_with_lwrp(lwrp_attributes = '')
       write_file 'cookbooks/example/resources/default.rb', %Q{
         actions :greet
         attribute :name, :kind_of => String, :name_attribute => true
@@ -47,6 +47,7 @@ module ChefSpec
       write_file 'cookbooks/example/recipes/default.rb', %Q{
         example "Foobar" do
           action :greet
+          #{lwrp_attributes}
         end
       }
     end
@@ -64,6 +65,15 @@ module ChefSpec
       write_file 'cookbooks/example/recipes/default.rb', %q{
         directory "foo" do
           action :create
+        end
+      }
+    end
+
+    def recipe_creates_file(resource_attributes)
+      write_file 'cookbooks/example/recipes/default.rb', %Q{
+        file "/tmp/foo" do
+          action :create
+          #{resource_attributes}
         end
       }
     end
