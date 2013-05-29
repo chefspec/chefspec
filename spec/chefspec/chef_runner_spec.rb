@@ -51,18 +51,33 @@ module ChefSpec
         file.should_receive(:old_run_action).with(:create)
         file.run_action(:create)
       end
-      it "should not execute not_if/only_if guards" do
-        Chef::Platform.stub(:provider_for_resource) { stub.as_null_object }
-        runner = ChefSpec::ChefRunner.new(:step_into => ['file'])
-        not_if_action = double()
-        only_if_action = double()
-        file = Chef::Resource::File.new '/tmp/foo.txt'
-        file.not_if { not_if_action.call }
-        file.only_if { only_if_action.call }
-        not_if_action.should_receive(:call).never
-        only_if_action.should_receive(:call).never
-        file.stub(:run_context) { stub.as_null_object }
-        file.run_action(:create)
+      context "stepping into lwrps" do
+        before :each do
+          Chef::Platform.stub(:provider_for_resource){ stub.as_null_object }
+        end
+        let(:not_if_action){ double }
+        let(:only_if_action){ double }
+        let(:file) do
+          file = Chef::Resource::File.new '/tmp/foo.txt'
+          file.not_if{ not_if_action.call }
+          file.only_if{ only_if_action.call }
+          file
+        end
+        it "should not execute not_if/only_if guards" do
+          runner = ChefSpec::ChefRunner.new(:step_into => ['file'])
+          not_if_action.should_receive(:call).never
+          only_if_action.should_receive(:call).never
+          file.stub(:run_context){ stub.as_null_object }
+          file.run_action(:create)
+        end
+        it "should execute not_if/only_if guards if asked to" do
+          ChefSpec::ChefRunner.new(:step_into => ['file'],
+                                   :evaluate_guards => true)
+          not_if_action.should_receive(:call).once.and_return(false)
+          only_if_action.should_receive(:call).once.and_return(true)
+          file.stub(:run_context){ stub.as_null_object }
+          file.run_action(:create)
+        end
       end
       it "should accept a block to set node attributes" do
         runner = ChefSpec::ChefRunner.new() {|node| node.set[:foo] = 'baz'}
@@ -90,6 +105,16 @@ module ChefSpec
         specify{node['hostname'] == 'Fauxhai'}
         specify{node['kernel']['machine'] == 'x86_64'}
       end
+      it "should allow evaluate_guards to be falsey" do
+        expect(
+          ChefSpec::ChefRunner.new({:evaluate_guards => false}).evaluate_guards?
+        ).to be_false
+      end
+      it "should allow evaluate_guards to be truthy" do
+        expect(
+          ChefSpec::ChefRunner.new({:evaluate_guards => true}).evaluate_guards?
+        ).to be_true
+      end
     end
     describe "#converge" do
       it "should rethrow the exception if a cookbook cannot be found" do
@@ -98,6 +123,100 @@ module ChefSpec
       end
       it "should return a reference to the runner" do
         expect(ChefSpec::ChefRunner.new.converge.respond_to?(:resources)).to be_true
+      end
+      it "should not execute guards by default" do
+        Chef::Platform.stub(:provider_for_resource){ stub.as_null_object }
+        runner = ChefSpec::ChefRunner.new
+        not_if_action = double()
+        only_if_action = double()
+        file = Chef::Resource::File.new '/tmp/foo.txt'
+        file.not_if{ not_if_action.call }
+        file.only_if{ only_if_action.call }
+        not_if_action.should_receive(:call).never
+        only_if_action.should_receive(:call).never
+        file.stub(:run_context){ stub.as_null_object }
+        file.run_action(:create)
+      end
+      it "should not execute ruby guards if explicitly asked not to" do
+        Chef::Platform.stub(:provider_for_resource){ stub.as_null_object }
+        runner = ChefSpec::ChefRunner.new({:evaluate_guards => false})
+        not_if_action = double()
+        only_if_action = double()
+        file = Chef::Resource::File.new '/tmp/foo.txt'
+        file.not_if{ not_if_action.call }
+        file.only_if{ only_if_action.call }
+        not_if_action.should_receive(:call).never
+        only_if_action.should_receive(:call).never
+        file.stub(:run_context){ stub.as_null_object }
+        file.run_action(:create)
+      end
+      it "should execute ruby guards if asked to" do
+        Chef::Platform.stub(:provider_for_resource){ stub.as_null_object }
+        runner = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+        not_if_action = double()
+        only_if_action = double()
+        file = Chef::Resource::File.new '/tmp/foo.txt'
+        file.not_if{ not_if_action.call }
+        file.only_if{ only_if_action.call }
+        not_if_action.should_receive(:call).once.and_return(false)
+        only_if_action.should_receive(:call).once.and_return(true)
+        file.stub(:run_context){ stub.as_null_object }
+        file.run_action(:create)
+      end
+      context "executing shell guards" do
+        before :each do
+          Chef::Platform.stub(:provider_for_resource){ stub.as_null_object }
+          ChefSpec::ChefRunner.new({:evaluate_guards => true})
+        end
+        let(:file) do
+          file = Chef::Resource::File.new '/tmp/foo.txt'
+          file.stub(:run_context){ stub.as_null_object }
+          file
+        end
+        it "evaluates not_if" do
+          file.not_if "non-existent-command"
+          Chef::Resource::Conditional.any_instance.should_receive(
+            :evaluate_command).and_return(false)
+          file.run_action(:create)
+        end
+        it "evaluates only_if" do
+          file.only_if "ls"
+          Chef::Resource::Conditional.any_instance.should_receive(
+            :evaluate_command).and_return(true)
+          file.run_action(:create)
+        end
+      end
+      it "omits the resource if the guard is failed" do
+        Chef::Platform.stub(:provider_for_resource){ stub.as_null_object }
+        runner = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+        not_if_action = double()
+        only_if_action = double()
+        file = Chef::Resource::File.new '/tmp/foo.txt'
+        file.only_if{ only_if_action.call }
+        only_if_action.should_receive(:call).once.and_return(false)
+        file.stub(:run_context){ stub.as_null_object }
+        file.run_action(:create)
+        expect(runner).to_not create_file '/tmp/foo.txt'
+      end
+      it "includes the resource if the guard is passed" do
+        Chef::Platform.stub(:provider_for_resource){ stub.as_null_object }
+        runner = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+        not_if_action = double()
+        only_if_action = double()
+        file = Chef::Resource::File.new '/tmp/foo.txt'
+        file.not_if{ not_if_action.call }
+        file.only_if{ only_if_action.call }
+        not_if_action.should_receive(:call).once.and_return(false)
+        only_if_action.should_receive(:call).once.and_return(true)
+        file.stub(:run_context){ stub.as_null_object }
+        file.run_action(:create)
+        expect(runner).to create_file '/tmp/foo.txt'
+      end
+    end
+    describe "#evaluate_guards?" do
+      it "should coerce evaluate_guards to a boolean" do
+        expect(ChefSpec::ChefRunner.new(
+          {:evaluate_guards => :yeah}).evaluate_guards?).to eq(true)
       end
     end
     describe "#node" do
