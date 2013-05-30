@@ -139,6 +139,19 @@ module ChefSpec
       }
     end
 
+    def spec_expects_file_with_args(constructor_args, expectation, be_declared)
+      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
+        require "chefspec"
+
+        describe "example::default" do
+          let(:chef_run) {ChefSpec::ChefRunner.new(#{Hash[constructor_args].inspect}).converge 'example::default'}
+          it "should #{be_declared}" do
+            expect(chef_run).#{expectation} create_file("/tmp/foo")
+          end
+        end
+      }
+    end
+
     def spec_expects_file_with_content
       write_file 'cookbooks/example/spec/default_spec.rb', %q{
         require "chefspec"
@@ -337,19 +350,20 @@ module ChefSpec
       }
     end
 
-    def spec_expects_lwrp_to_greet
-      write_file 'cookbooks/example/spec/default_spec.rb', %q{
+    def spec_expects_lwrp_to_greet(constructor_args = [], expectation = 'to')
+      constructor_args << [:step_into, ['example']]
+      write_file 'cookbooks/example/spec/default_spec.rb', %Q{
         require "chefspec"
 
         describe "example::default" do
           let(:chef_run) do
-            ChefSpec::ChefRunner.new(:step_into => ['example']).converge 'example::default'
+            ChefSpec::ChefRunner.new(#{Hash[constructor_args].inspect}).converge 'example::default'
           end
           it "should greet" do
-            chef_run.should execute_command "echo Hello Foobar!"
+            expect(chef_run).#{expectation} execute_command("echo Hello Foobar!")
           end
           it "should not say hello world" do
-            chef_run.should_not execute_command "echo Hello World!"
+            expect(chef_run).not_to execute_command("echo Hello World!")
           end
         end
       }

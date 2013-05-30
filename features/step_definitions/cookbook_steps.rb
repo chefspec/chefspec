@@ -10,7 +10,7 @@ Given /^the recipe has a spec example that overrides the operating system to '([
   spec_overrides_operating_system(operating_system)
 end
 
-When 'the recipe example is successfully run' do
+When /^the (?:guard|recipe) example is successfully run/ do
   run_examples_successfully
 end
 
