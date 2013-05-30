@@ -22,6 +22,7 @@ module ChefSpec
     attr_reader :step_into
     attr_reader :run_context
     attr_reader :node
+    attr_reader :stubbed_commands
 
     # Instantiate a new runner to run examples with.
     #
@@ -48,6 +49,23 @@ module ChefSpec
       @step_into = @options[:step_into]
       @do_dry_run = @options[:dry_run]
       @evaluate_guards = @options[:evaluate_guards]
+      @actually_run_shell_guards = @options[:actually_run_shell_guards]
+      @stubbed_commands = []
+
+      Chef::Resource::Conditional.class_eval do
+        if self.class.methods.include?(:class_variable_set)
+          self.class_variable_set :@@runner, the_runner
+        else
+          @@runner = the_runner
+        end
+        def runner
+          if self.class.methods.include?(:class_variable_get)
+            self.class.send(:class_variable_get, :@@runner)
+          else
+            @@runner
+          end
+        end
+      end
 
       Chef::Resource.class_eval do
         alias :old_run_action :run_action unless method_defined?(:old_run_action)
@@ -119,6 +137,15 @@ module ChefSpec
       end
     end
 
+    def stub_command(command, result)
+      # We want to preserve insertion order so that stubs are applied in a
+      # known order. Ruby 1.9 hashes behave like this but we are still
+      # supporting 1.8.
+      @stubbed_commands.reject!{|existing_cmd, _| existing_cmd == command}
+      @stubbed_commands << [command, result]
+      self
+    end
+
     # Run the specified recipes, but without actually converging the node.
     #
     # @param [array] recipe_names The names of the recipes to execute
@@ -150,6 +177,10 @@ module ChefSpec
 
     def evaluate_guards?
       !! @evaluate_guards
+    end
+
+    def actually_run_shell_guards?
+      !! @actually_run_shell_guards
     end
 
     FILE_RESOURCES    = %w(directory cookbook_file file template link remote_directory remote_file)
