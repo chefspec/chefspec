@@ -678,6 +678,66 @@ describe "example::default" do
 end
 ```
 
+## Stubbing results of shell guards
+
+Given a shell guard that uses Ruby to check for the existence of a file:
+
+```ruby
+template "/etc/app/config" do
+  only_if "test -f /opt/app/installed"
+end
+```
+
+If we set `:evaluate_guards => true` then the presence of any unstubbed shell
+guards will result in test failures:
+
+```
+Failures:
+
+  1) example::default should render the template if the install file exists
+     Failure/Error: chef_run.converge "example::default"
+       The following shell guard was unstubbed: only_if command `test -f /opt/app/installed`
+```
+
+We can mock out both cases so that we check that our recipe behaves correctly
+when the file is present or not:
+
+```ruby
+require "chefspec"
+  describe "example::default" do
+    let(:chef_run){ ChefSpec::ChefRunner.new({:evaluate_guards => true}) }
+    it "should render the template if the install file exists" do
+      chef_run.stub_command(/test/, true)
+      chef_run.converge "example::default"
+      expect(chef_run).to create_file("/etc/app/config")
+    end
+    it "should not render the template if the install file doesn't exist" do
+      chef_run.stub_command(/test/, false)
+      chef_run.converge "example::default"
+      expect(chef_run).not_to create_file("/etc/app/config")
+    end
+end
+```
+
+## Actually running shell guards
+
+If it makes sense to actually run shell guards on the workstation your examples
+are running on then you can tell ChefSpec you want it to do so:
+
+```ruby
+require "chefspec"
+  describe "example::default" do
+    let(:chef_run) do
+      ChefSpec::ChefRunner.new(
+        {:evaluate_guards => true, :actually_run_shell_guards => true})
+    end
+    it "should render the template if the install file exists" do
+      chef_run.converge "example::default"
+      expect(chef_run).to create_file("/etc/app/config")
+    end
+end
+```
+
 Building Locally
 ----------------
 
