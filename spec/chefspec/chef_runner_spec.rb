@@ -116,6 +116,22 @@ module ChefSpec
         ).to be_true
       end
     end
+    describe "#stub_command" do
+      let(:chef_run){ ChefSpec::ChefRunner.new({:evaluate_guards => true}) }
+      it "should allow a stub to be defined as a string" do
+        expect(chef_run.stub_command('which blah', false).stubbed_commands
+          ).to eq([['which blah', false]])
+      end
+      it "should allow a stub to be defined as a regex" do
+        expect(chef_run.stub_command(/which/, false).stubbed_commands
+          ).to eq([[/which/, false]])
+      end
+      it "should allow multiple commands to be stubbed" do
+        expect(
+          chef_run.stub_command(/which/, false).stub_command(/grep/, true).stubbed_commands
+          ).to eq([[/which/, false], [/grep/, true]])
+      end
+    end
     describe "#converge" do
       it "should rethrow the exception if a cookbook cannot be found" do
         expect { ChefSpec::ChefRunner.new.converge('non_existent::default') }.to raise_error
@@ -173,17 +189,109 @@ module ChefSpec
           file.stub(:run_context){ stub.as_null_object }
           file
         end
-        it "evaluates not_if" do
+        it "raises if a not_if shell guard has not been stubbed" do
           file.not_if "non-existent-command"
-          Chef::Resource::Conditional.any_instance.should_receive(
-            :evaluate_command).and_return(false)
-          file.run_action(:create)
+          expect{ file.run_action(:create)}.to raise_error(
+            RSpec::Mocks::MockExpectationError,
+            'The following shell guard was unstubbed: not_if command `non-existent-command`')
         end
-        it "evaluates only_if" do
+        it "raises if an only_if shell guard has not been stubbed" do
           file.only_if "ls"
-          Chef::Resource::Conditional.any_instance.should_receive(
-            :evaluate_command).and_return(true)
+          expect{ file.run_action(:create)}.to raise_error(
+            RSpec::Mocks::MockExpectationError,
+            'The following shell guard was unstubbed: only_if command `ls`')
+        end
+        it "raises if a stub is provided that doesn't match" do
+          file.only_if "ls"
+          chef_run = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+          chef_run.stub_command('dir', false)
+          expect{ file.run_action(:create)}.to raise_error(
+            RSpec::Mocks::MockExpectationError,
+            'The following shell guard was unstubbed: only_if command `ls`')
+        end
+        context "actually evaluating shell guards" do
+          it "doesn't actually run shell guards" do
+            file.only_if "non-existent-command"
+            chef_run = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+            Chef::Resource::Conditional.any_instance.should_not_receive(
+              :original_evaluate_command)
+            expect{ file.run_action(:create)}.to raise_error(
+              RSpec::Mocks::MockExpectationError,
+              'The following shell guard was unstubbed: only_if command `non-existent-command`')
+          end
+          it "uses stubs in preference to the actual command if defined" do
+            file.only_if "ls"
+            Chef::Resource::Conditional.any_instance.should_not_receive(
+              :original_evaluate_command)
+            chef_run = ChefSpec::ChefRunner.new(
+              {:evaluate_guards => true, :actually_run_shell_guards => true})
+            chef_run.stub_command('ls', true)
+            file.run_action(:create)
+            expect(chef_run).to create_file '/tmp/foo.txt'
+          end
+          it "runs shell guards that are not stubbed if explicitly asked to" do
+            file.only_if "non-existent-command"
+            chef_run = ChefSpec::ChefRunner.new(
+              {:evaluate_guards => true, :actually_run_shell_guards => true})
+            Chef::Resource::Conditional.any_instance.should_receive(
+              :original_evaluate_command).and_return(true)
+            file.run_action(:create)
+            expect(chef_run).to create_file '/tmp/foo.txt'
+          end
+        end
+        it "omits the resource if the guard is failed" do
+          file.only_if "which foo"
+          chef_run = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+          chef_run.stub_command('which foo', false)
           file.run_action(:create)
+          expect(chef_run).to_not create_file '/tmp/foo.txt'
+        end
+        it "includes the resource if the guard is passed (string stub)" do
+          file.only_if "which foo"
+          chef_run = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+          chef_run.stub_command('which foo', true)
+          file.run_action(:create)
+          expect(chef_run).to create_file '/tmp/foo.txt'
+        end
+        it "includes the resource if the guard is passed (regex stub)" do
+          file.only_if "which foo"
+          chef_run = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+          chef_run.stub_command(/which/, true)
+          file.run_action(:create)
+          expect(chef_run).to create_file '/tmp/foo.txt'
+        end
+        it "stubs multiple conditionals from multiple stubs" do
+          file.only_if "which foo"
+          file.only_if "which baz"
+          chef_run = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+          chef_run.stub_command(/foo/, true)
+          chef_run.stub_command(/baz/, true)
+          file.run_action(:create)
+          expect(chef_run).to create_file '/tmp/foo.txt'
+        end
+        it "stubs multiple conditionals from a single stub if they match" do
+          file.only_if "which foo"
+          file.only_if "which baz"
+          chef_run = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+          chef_run.stub_command(/which/, true)
+          file.run_action(:create)
+          expect(chef_run).to create_file '/tmp/foo.txt'
+        end
+        it "applies stubs in the order in which they are stubbed" do
+          file.only_if "which azimuth"
+          chef_run = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+          chef_run.stub_command(/zi/, true)
+          chef_run.stub_command(/a/, false)
+          file.run_action(:create)
+          expect(chef_run).to create_file '/tmp/foo.txt'
+        end
+        it "allows stub results to be replaced if the commands are identical" do
+          file.only_if "which azimuth"
+          chef_run = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+          chef_run.stub_command(/a/, true)
+          chef_run.stub_command(/a/, false)
+          file.run_action(:create)
+          expect(chef_run).not_to create_file '/tmp/foo.txt'
         end
       end
       it "omits the resource if the guard is failed" do

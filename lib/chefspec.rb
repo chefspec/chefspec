@@ -28,6 +28,7 @@ if defined?(RSpec)
 end
 
 require 'chefspec/minitest'
+require 'chefspec/monkey_patches/conditional'
 require 'chefspec/monkey_patches/hash'
 require 'chefspec/monkey_patches/lwrp_base'
 require 'chefspec/monkey_patches/provider'
