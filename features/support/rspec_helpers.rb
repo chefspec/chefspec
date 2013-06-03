@@ -22,7 +22,9 @@ module ChefSpec
     def run_examples_unsuccessfully(failure_message)
       run_simple 'rspec cookbooks/example/spec/', false
       assert_success(false)
-      assert_partial_output failure_message, all_output
+      Array(failure_message).each do |failure|
+        assert_partial_output failure, all_output
+      end
     end
 
     def spec_already_exists
@@ -139,14 +141,23 @@ module ChefSpec
       }
     end
 
-    def spec_expects_file_with_args(constructor_args, expectation, be_declared)
+    def spec_expects_file_with_args(options = {})
+      stubbing = if options[:stub] && ! options[:stub].empty?
+        "chef_run.stub_command(#{options[:stub]}, #{options[:stub_result]})"
+      else
+        ''
+      end
       write_file 'cookbooks/example/spec/default_spec.rb', %Q{
         require "chefspec"
 
         describe "example::default" do
-          let(:chef_run) {ChefSpec::ChefRunner.new(#{Hash[constructor_args].inspect}).converge 'example::default'}
-          it "should #{be_declared}" do
-            expect(chef_run).#{expectation} create_file("/tmp/foo")
+          let(:chef_run) do
+            chef_run = ChefSpec::ChefRunner.new(#{Hash[options[:constructor_args]].inspect})
+            #{stubbing}
+            chef_run.converge 'example::default'
+          end
+          it "should #{options[:be_declared]}" do
+            expect(chef_run).#{options[:expectation]} create_file("/tmp/foo")
           end
         end
       }
