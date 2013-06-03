@@ -8,7 +8,7 @@ ChefSpec runs your cookbook but without actually converging the node that your
 examples are being executed on. This has two benefits:
 
 - It's really fast!
-- You can write examples that vary node attributes, operating system or search results in order to test thoroughly that your cookbok works correctly.
+- You can write examples that vary node attributes, operating system or search results in order to test thoroughly that your cookbook works correctly.
 
 ChefSpec aims to make Chef development more productive by giving you faster
 feedback on cookbook changes.
