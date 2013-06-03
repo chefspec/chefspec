@@ -405,7 +405,7 @@ expect(chef_run).to install_gem_package 'foo'
 ```
 
 ```ruby
-expect(chef_run).to install_chef_gem_package 'chef-foo'
+expect(chef_run).to install_chef_gem 'chef-foo'
 ```
 
 ### Execute
