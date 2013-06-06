@@ -563,7 +563,7 @@ describe 'foo::default' do
 end
 ```
 
-As of `v2.0.1`, ChefSpc will also automatically look in the following locations for vendored cookbooks:
+As of `v1.2.0`, ChefSpc will also automatically look in the following locations for vendored cookbooks:
 
 - vendor/cookbooks
 - test/cookbooks
