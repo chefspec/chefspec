@@ -1,6 +1,20 @@
 Changelog for ChefSpec
 ======================
 
+## 1.3.0 (June 6, 2013)
+
+Features:
+
+  - Added the ability to evaluate `only_if` and `not_if` conditional guards and
+    support for stubbing shell guards (#142, #144).
+  - New `described_recipe` and `described_cookbook` helpers to keep your specs
+    DRY (#140). Thanks Andrey Chernih.
+
+Bugfixes:
+
+  - Ensure that Ohai plugin reloader works with ChefSpec (#141). Thanks Andrey
+    Chernih.
+
 ## 1.2.0 (May 16, 2013)
 
 Features:
