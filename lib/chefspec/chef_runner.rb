@@ -34,8 +34,12 @@ module ChefSpec
     # @option options [String] :ohai_data_path Path of a json file that will be passed to fauxhai as :path option
     # @yield [node] Configuration block for Chef::Node
     def initialize(options={})
+      # Because we evaluate the "caller" in this method, we need to call
+      # it first so that the path is correctly calculated.
+      @default_cookbook_path = default_cookbook_path
+
       defaults = {
-        :cookbook_path => default_cookbook_path,
+        :cookbook_path => cookbook_paths,
         :log_level => :warn,
         :dry_run => false,
         :step_into => [],
@@ -114,7 +118,7 @@ module ChefSpec
       Chef::Config[:cache_type] = "Memory"
       Chef::Config[:cache_options] = { :path => File.join(File.expand_path('~'), '.chef', 'checksums') }
       Chef::Cookbook::FileVendor.on_create { |manifest| Chef::Cookbook::FileSystemFileVendor.new(manifest) }
-      Chef::Config[:cookbook_path] = cookbook_paths
+      Chef::Config[:cookbook_path] = Array(@options[:cookbook_path])
       Chef::Config[:client_key] = nil
 
       # it should be saved to an instance variable to prevent automatic
@@ -247,7 +251,7 @@ module ChefSpec
       test_path   = File.expand_path(File.join('test', 'cookbooks'))
       spec_path   = File.expand_path(File.join('spec', 'cookbooks'))
 
-      Array(@options[:cookbook_path]).
+      Array(@default_cookbook_path).
         push(vendor_path).
         push(test_path).
         push(spec_path).
