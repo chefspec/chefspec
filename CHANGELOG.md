@@ -1,6 +1,12 @@
 Changelog for ChefSpec
 ======================
 
+## 1.3.1 (June 10, 2013)
+
+Bugfixes:
+
+  - Allow the user to override `cookbook_path` again
+
 ## 1.3.0 (June 6, 2013)
 
 Features:
