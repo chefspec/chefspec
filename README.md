@@ -538,6 +538,12 @@ Assert that a ruby block would be executed:
 expect(chef_run).to execute_ruby_block 'ruby_block_name'
 ```
 
+Assert that a ruby block would be executed using a regular expression expectation:
+
+```ruby
+expect(chef_run).to execute_ruby_block /ruby/
+```
+
 Assert that a ruby block would not be executed:
 
 ```ruby
