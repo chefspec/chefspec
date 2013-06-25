@@ -74,6 +74,7 @@ module ChefSpec
       failure_message_for_should do |actual|
         message = "No remote_file named '#{path}' found"
         message << " with:\n#{@attributes}" unless @attributes.nil?
+        message
       end
 
       failure_message_for_should_not do |actual|
