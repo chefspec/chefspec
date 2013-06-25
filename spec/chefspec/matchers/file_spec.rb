@@ -23,38 +23,40 @@ module ChefSpec
       end
     end
 
-    describe :create_remote_file do
+shared_examples "remote_file_template" do |remote_file_matcher, action|
+
+    describe remote_file_matcher.to_sym do
       describe "#match" do
         let(:attributes) do
           { :resource_name => 'remote_file',
             :path          => '/tmp/foo',
             :source        => 'http://www.example.com/foo',
             :checksum      => 'deadbeef',
-            :action        => :create }
+            :action        => action.to_sym}
         end
         def do_match(changed_attributes)
           matcher.matches?(:resources => [attributes.merge(changed_attributes)])
         end
-        let(:matcher) { create_remote_file('/tmp/foo') }
+        let(:matcher) { send(remote_file_matcher, '/tmp/foo') }
         it "should not match when no resource with the expected path exists" do
           do_match(:path => '/tmp/bar').should be false
         end
-        it "should not match when the action is not :create" do
-          do_match(:action => :create_if_missing).should be false
+        it "should not match when the action is not #{remote_file_matcher.to_sym}" do
+          do_match(:action => :righteous).should be false
         end
         it "should match when a remote file with the expected path exists" do
           do_match(attributes).should be true
         end
         it "should match when the resource action is an array element" do
-          do_match(:action => [:create]).should be true
+          do_match(:action => [action.to_sym]).should be true
         end
         it "should match when the resource action is a string" do
-          do_match(:action => 'create').should be true
+          do_match(:action => action).should be true
         end
 
         describe "#with" do
           let(:matcher) do
-            create_remote_file('/tmp/foo').with(
+            send(remote_file_matcher, '/tmp/foo').with(
                                :source   => 'http://www.example.com/foo',
                                :checksum => 'deadbeef')
           end
@@ -72,8 +74,8 @@ module ChefSpec
           end
 
           context "when the attribute is :source" do
-            def match_sources(expected,actual)
-              create_remote_file('/tmp/foo').
+            def match_sources(expected,actual,remote_file_matcher)
+              send(remote_file_matcher, '/tmp/foo').
                 with(:source => expected).
                 matches?(:resources => [attributes.merge(:source => actual)])
             end
@@ -85,7 +87,7 @@ module ChefSpec
               [ ['foo'] , ['foo'] ]
             ].each do |expected,actual|
               it "should match with equal sources" do
-                match_sources(expected, actual).should be true
+                match_sources(expected, actual, remote_file_matcher).should be true
               end
             end
 
@@ -96,12 +98,23 @@ module ChefSpec
               [ ['foo'] , ['bar'] ],
             ].each do |expected,actual|
               it "should not match with different sources" do
-                match_sources(expected, actual).should be false
+                match_sources(expected, actual, remote_file_matcher).should be false
               end
             end
           end
         end
       end
+    end
+    end
+    describe :create_remote_file do
+
+      it_should_behave_like "remote_file_template", 'create_remote_file', 'create'
+
+    end
+    describe :create_remote_file_if_missing do
+
+      it_should_behave_like "remote_file_template", 'create_remote_file_if_missing', 'create_if_missing'
+
     end
   end
 end

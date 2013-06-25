@@ -404,6 +404,15 @@ module ChefSpec
       }
     end
 
+    def recipe_with_missing_remote_file
+      write_file 'cookbooks/example/recipes/default.rb', %q{
+        remote_file "hello-world.txt" do
+          source 'http://www.google.com/robots.txt'
+          action :create_if_missing
+        end
+      }
+    end
+
     def recipe_creates_user
       write_file 'cookbooks/example/recipes/default.rb', %q{
         user "foo" do
