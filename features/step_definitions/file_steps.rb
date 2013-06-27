@@ -22,6 +22,10 @@ Given 'a Chef cookbook with a recipe that creates a remote file' do
   recipe_with_remote_file
 end
 
+Given 'a Chef cookbook with a recipe that creates a missing remote file' do
+  recipe_with_missing_remote_file
+end
+
 Given 'a Chef cookbook with a recipe that sets file ownership' do
   recipe_sets_file_ownership('file')
 end
@@ -52,6 +56,10 @@ end
 
 Given 'the recipe has a spec example that expects the remote file to be created' do
   spec_expects_file(:remote_file)
+end
+
+Given 'the recipe has a spec example that expects the missing remote file to be created' do
+  spec_expects_file(:remote_file_if_missing)
 end
 
 Given 'the recipe has a spec example that expects the file to be set to be owned by a specific user' do

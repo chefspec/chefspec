@@ -48,6 +48,12 @@ Feature: Write examples for files
     When the recipe example is successfully run
     Then the file will not have been created
 
+  Scenario: Create a remote file only if the file is missing
+    Given a Chef cookbook with a recipe that creates a missing remote file
+    And the recipe has a spec example that expects the missing remote file to be created
+    When the recipe example is successfully run
+    Then the file will not have been created
+
   Scenario: Check file ownership
     Given a Chef cookbook with a recipe that sets file ownership
     And the recipe has a spec example that expects the file to be set to be owned by a specific user
