@@ -339,6 +339,21 @@ expect(chef_run).to create_remote_file('/tmp/foo.tar.gz').with(
 )
 ```
 
+Assert that a remote file would be created if it did not exist:
+
+```ruby
+expect(chef_run).to create_remote_file_if_missing '/tmp/foo.tar.gz'
+```
+
+Assert that a remote file with specific attributes would be created if it did not exist:
+
+```ruby
+expect(chef_run).to create_remote_file_if_missing('/tmp/foo.tar.gz').with(
+  :source => 'http://www.example.com/foo.tar.gz',
+  :checksum => 'deadbeef'
+)
+```
+
 Assert that a file would be created from cookbook_file ressource:
 
 ```ruby
