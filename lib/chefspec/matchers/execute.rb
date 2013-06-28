@@ -22,7 +22,7 @@ module ChefSpec
 
       def expected_resource?(resource,command)
         resource_type(resource) == 'execute' &&
-          resource.command == command
+          command === resource.command
       end
 
       def expected_attributes?(resource)
