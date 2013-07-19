@@ -24,6 +24,10 @@ module ChefSpec
     attr_reader :node
     attr_reader :stubbed_commands
 
+    # As of Chef 11, Chef uses custom formatters which munge the RSpec output.
+    # This uses a custom formatter which basically tells Chef to shut up.
+    Chef::Config.add_formatter('chefspec') if Chef::Config.respond_to?(:add_formatter)
+
     # Instantiate a new runner to run examples with.
     #
     # @param [Hash] options The options for the new runner
@@ -125,10 +129,6 @@ module ChefSpec
       # unlinking during garbage collection
       @dummy_config = Tempfile.new 'chef-config'
       Chef::Config[:config_file] = @dummy_config.path
-
-      # As of Chef 11, Chef uses custom formatters which munge the RSpec output.
-      # This uses a custom formatter which basically tells Chef to shut up.
-      Chef::Config.add_formatter('chefspec') if Chef::Config.respond_to?(:add_formatter)
 
       Chef::Log.verbose = true if Chef::Log.respond_to?(:verbose)
       Chef::Log.level(@options[:log_level])
