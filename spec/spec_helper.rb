@@ -10,3 +10,11 @@ require 'chefspec'
 def matcher_defined?(matcher)
   RSpec::Matchers.method_defined?(matcher)
 end
+
+class ErrorStub < StandardError
+  def initialize(*args)
+    super(args.first)
+    @args = args
+  end
+end
+
