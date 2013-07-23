@@ -18,15 +18,13 @@ module ChefSpec
 
     @resources = []
 
+    @@needs_formatter_registered = Chef::Config.respond_to?(:add_formatter)
+
     attr_accessor :resources
     attr_reader :step_into
     attr_reader :run_context
     attr_reader :node
     attr_reader :stubbed_commands
-
-    # As of Chef 11, Chef uses custom formatters which munge the RSpec output.
-    # This uses a custom formatter which basically tells Chef to shut up.
-    Chef::Config.add_formatter('chefspec') if Chef::Config.respond_to?(:add_formatter)
 
     # Instantiate a new runner to run examples with.
     #
@@ -129,6 +127,13 @@ module ChefSpec
       # unlinking during garbage collection
       @dummy_config = Tempfile.new 'chef-config'
       Chef::Config[:config_file] = @dummy_config.path
+
+      # As of Chef 11, Chef uses custom formatters which munge the RSpec output.
+      # This uses a custom formatter which basically tells Chef to shut up.
+      if @@needs_formatter_registered
+        Chef::Config.add_formatter('chefspec')
+        @@needs_formatter_registered = false
+      end
 
       Chef::Log.verbose = true if Chef::Log.respond_to?(:verbose)
       Chef::Log.level(@options[:log_level])
