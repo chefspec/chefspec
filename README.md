@@ -581,6 +581,14 @@ Assert that a ruby block would not be executed:
 expect(chef_run).not_to execute_ruby_block 'ruby_block_name'
 ```
 
+### Notifications
+
+Assert that a notification was fired:
+```ruby
+expect(chef_run.resource(resource_name)).to notify 'resource_type[resource_name]', :action
+```
+
+
 Varying the Cookbook Path
 -------------------------
 By default ChefSpec will infer the `cookbook_path` from the location of the spec. However if you want to use a different path you can pass it in as an argument to the `ChefRunner` constructor like so:
