@@ -18,7 +18,19 @@ module ChefSpec
 
     @resources = []
 
-    @@needs_formatter_registered = Chef::Config.respond_to?(:add_formatter)
+    @needs_formatter_registered = Chef::Config.respond_to?(:add_formatter)
+    @nfr_mutex = Mutex.new
+
+    def self.register_formatter
+      return unless @needs_formatter_registered
+      @nfr_mutex.synchronize do
+        return unless @needs_formatter_registered
+        @needs_formatter_registered = false
+        # As of Chef 11, Chef uses custom formatters which munge the RSpec output.
+        # This uses a custom formatter which basically tells Chef to shut up.
+        Chef::Config.add_formatter('chefspec')
+      end
+    end
 
     attr_accessor :resources
     attr_reader :step_into
@@ -128,12 +140,7 @@ module ChefSpec
       @dummy_config = Tempfile.new 'chef-config'
       Chef::Config[:config_file] = @dummy_config.path
 
-      # As of Chef 11, Chef uses custom formatters which munge the RSpec output.
-      # This uses a custom formatter which basically tells Chef to shut up.
-      if @@needs_formatter_registered
-        Chef::Config.add_formatter('chefspec')
-        @@needs_formatter_registered = false
-      end
+      self.class.register_formatter
 
       Chef::Log.verbose = true if Chef::Log.respond_to?(:verbose)
       Chef::Log.level(@options[:log_level])
