@@ -376,14 +376,14 @@ expect(file).to be_owned_by('user', 'group')
 Assert that a link is created.
 
 ````ruby
-chef_run.should create_link "/usr/bin/bar"
-chef_run.link("/usr/bin/bar").should link_to "/usr/bin/foo"
+expect(chef_run).to create_link "/usr/bin/bar"
+expect(chef_run.link("/usr/bin/bar")).to link_to "/usr/bin/foo"
 ````
 
 Assert that a link is deleted.
 
 ````ruby
-chef_run.should delete_link "/usr/bin/bar"
+expect(chef_run).to delete_link "/usr/bin/bar"
 ````
 
 
