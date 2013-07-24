@@ -371,6 +371,22 @@ file = chef_run.template('/etc/my-cookbook-config.cfg')
 expect(file).to be_owned_by('user', 'group')
 ```
 
+### Links
+
+Assert that a link is created.
+
+````ruby
+expect(chef_run).to create_link "/usr/bin/bar"
+expect(chef_run.link("/usr/bin/bar")).to link_to "/usr/bin/foo"
+````
+
+Assert that a link is deleted.
+
+````ruby
+expect(chef_run).to delete_link "/usr/bin/bar"
+````
+
+
 ### Packages
 
 Note that only packages explicitly declared in the cookbook will be matched by
