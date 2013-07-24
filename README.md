@@ -783,7 +783,36 @@ require "chefspec"
 end
 ```
 
-Building Locally
+## Silencing expecting fails
+
+In your definition or resource:
+
+```ruby
+frequencies.include?(frequency) or raise ::DataError, "Frequency #{frequency} not recognized"
+```
+
+In your spec:
+```ruby
+require "chefspec"
+  describe "example::expect_fail" do
+    let(:chef_run) do
+      ChefSpec::ChefRunner.new
+    end
+
+    it "should fail with a bad frequency" do
+      m = "Frequency yerly not recognized"
+      Chef::ExpectException.expect(DataError, m)
+      expect{chef_run.converge}.to raise_error(DataError, m)
+    end
+end
+```
+
+If a DataError is raised with the message "Frequency yerly not expected", the
+spec output will be quiet.  Any other exception will have full chef diagnostic
+information output. (The `expect{...}.to raise_error ... ` is basic rspec.)
+
+
+Building ChefSpec Locally
 ----------------
 
     $ bundle install
