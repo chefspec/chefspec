@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), *%w{.. spec_helper})
 
 class Chef
-	describe ExpectException do
+  describe ExpectException do
     let(:m1){ 'message' }
     let(:m2){ 'message2' }
     let(:r){ 'return object' }
@@ -16,8 +16,8 @@ class Chef
       ExpectException.clear
     end
 
-		it 'expects nothing if nothing registered' do
-			expect(result).to be_false
+    it 'expects nothing if nothing registered' do
+      expect(result).to be_false
     end
 
     it 'expects an error if the matching class and message have been registered' do
