@@ -1,5 +1,6 @@
 require 'chef'
 require 'chef/formatters/chefspec'
+require 'chef/expect_exception'
 require 'chefspec/chef_runner'
 require 'chefspec/version'
 

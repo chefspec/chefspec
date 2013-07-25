@@ -749,18 +749,18 @@ when the file is present or not:
 
 ```ruby
 require "chefspec"
-  describe "example::default" do
-    let(:chef_run){ ChefSpec::ChefRunner.new({:evaluate_guards => true}) }
-    it "should render the template if the install file exists" do
-      chef_run.stub_command(/test/, true)
-      chef_run.converge "example::default"
-      expect(chef_run).to create_file("/etc/app/config")
-    end
-    it "should not render the template if the install file doesn't exist" do
-      chef_run.stub_command(/test/, false)
-      chef_run.converge "example::default"
-      expect(chef_run).not_to create_file("/etc/app/config")
-    end
+describe "example::default" do
+  let(:chef_run){ ChefSpec::ChefRunner.new({:evaluate_guards => true}) }
+  it "should render the template if the install file exists" do
+    chef_run.stub_command(/test/, true)
+    chef_run.converge "example::default"
+    expect(chef_run).to create_file("/etc/app/config")
+  end
+  it "should not render the template if the install file doesn't exist" do
+    chef_run.stub_command(/test/, false)
+    chef_run.converge "example::default"
+    expect(chef_run).not_to create_file("/etc/app/config")
+  end
 end
 ```
 
@@ -771,19 +771,50 @@ are running on then you can tell ChefSpec you want it to do so:
 
 ```ruby
 require "chefspec"
-  describe "example::default" do
-    let(:chef_run) do
-      ChefSpec::ChefRunner.new(
-        {:evaluate_guards => true, :actually_run_shell_guards => true})
-    end
-    it "should render the template if the install file exists" do
-      chef_run.converge "example::default"
-      expect(chef_run).to create_file("/etc/app/config")
-    end
+describe "example::default" do
+  let(:chef_run) do
+    ChefSpec::ChefRunner.new(
+      {:evaluate_guards => true, :actually_run_shell_guards => true})
+  end
+  it "should render the template if the install file exists" do
+    chef_run.converge "example::default"
+    expect(chef_run).to create_file("/etc/app/config")
+  end
 end
 ```
 
-Building Locally
+## Silencing expecting fails
+
+In your definition or resource:
+
+```ruby
+frequencies.include?(frequency) or raise ::DataError, "Frequency #{frequency} not recognized"
+```
+
+In your spec:
+```ruby
+require "chefspec"
+describe "example::default" do
+  let(:chef_run) do
+    ChefSpec::ChefRunner.new
+  end
+
+  it "should fail with a bad frequency" do
+    m = "Frequency yerly not recognized"
+    Chef::ExpectException.expect(DataError, m)
+    expect {
+      chef_run.converge "example::default"
+    }.to raise_error(DataError, m)
+  end
+end
+```
+
+If a DataError is raised with the message "Frequency yerly not expected", the
+spec output will be quiet.  Any other exception will have full chef diagnostic
+information output. (The `expect {...}.to raise_error ... ` is basic rspec.)
+
+
+Building ChefSpec Locally
 ----------------
 
     $ bundle install

@@ -1,20 +1,19 @@
 if defined?(Chef::Formatters::Base)
   class Chef
     module Formatters
-      # A specific formatter for Chef 11. This base for this formatter was
-      # taken from Chef::Formatters:Min and all the output was then removed.
-      #
-      # @author Seth Vargo <sethvargo@gmail.com>
-      class ChefSpec < Formatters::Base
+      class ChefSpec < Base
         cli_name(:chefspec)
 
-        attr_reader :updated_resources
-        attr_reader :updates_by_resource
+        attr_reader :updated_resources, :updates_by_resource
 
         def initialize(out, err)
           super
           @updated_resources = []
           @updates_by_resource = Hash.new {|h, k| h[k] = []}
+        end
+
+        def error_expected?(message, exception, *args)
+          ExpectException.expected?(message, exception, *args)
         end
 
         # Called at the very start of a Chef Run
@@ -28,6 +27,7 @@ if defined?(Chef::Formatters::Base)
 
         # called at the end of a failed run
         def run_failed(exception)
+          return if error_expected?(:run_failed, exception)
           puts "chef client failed. #{@updated_resources.size} resources updated"
         end
 
@@ -48,7 +48,7 @@ if defined?(Chef::Formatters::Base)
 
         # Failed to register this client with the server.
         def registration_failed(node_name, exception, config)
-          super
+          super unless error_expected?(:registration_failed, exception, config, node_name)
         end
 
         def node_load_start(node_name, config)
@@ -56,6 +56,11 @@ if defined?(Chef::Formatters::Base)
 
         # Failed to load node data from the server
         def node_load_failed(node_name, exception, config)
+          super unless error_expected?(:node_load_failed, exception)
+        end
+
+        def run_list_expand_failed(expanded_run_list, exception)
+          super unless error_expected?(:run_list_expand_failed, exception, expanded_run_list)
         end
 
         # Default and override attrs from roles have been computed, but not yet applied.
@@ -70,6 +75,11 @@ if defined?(Chef::Formatters::Base)
         # Called when there is an error getting the cookbook collection from the
         # server.
         def cookbook_resolution_failed(expanded_run_list, exception)
+          super unless error_expected?(:cookbook_resolution_failed, exception, expanded_run_list)
+        end
+
+        def cookbook_sync_failed(cookbooks, exception)
+          super unless error_expected?(:cookbook_sync_failed, exception, cookbooks)
         end
 
         # Called when the cookbook collection is returned from the server.
@@ -116,8 +126,28 @@ if defined?(Chef::Formatters::Base)
         def file_loaded(path)
         end
 
-        def file_load_failed(path, exception)
-          super
+        def file_load_failed(path, exception, message = :file_load_failed, &block)
+          super(path, exception, &block) unless error_expected?(message, exception, path)
+        end
+
+        def library_file_load_failed(path, exception)
+          file_load_failed(path, exception, :library_file_load_failed)
+        end
+
+        def lwrp_file_load_failed(path, exception)
+          file_load_failed(path, exception, :lwrp_file_load_failed)
+        end
+
+        def attribute_file_load_failed(path, exception)
+          file_load_failed(path, exception, :attribute_file_load_failed)
+        end
+
+        def definition_file_load_failed(path, exception)
+          file_load_failed(path, exception, :definition_file_load_failed)
+        end
+
+        def recipe_file_load_failed(path, exception)
+          file_load_failed(path, exception, :recipe_file_load_failed)
         end
 
         # Called when recipes have been loaded.
@@ -138,10 +168,12 @@ if defined?(Chef::Formatters::Base)
 
         # Called when a resource fails, but will retry.
         def resource_failed_retriable(resource, action, retry_count, exception)
+          super unless error_expected?(:resource_failed_retriable, exception, retry_count, action, resource)
         end
 
         # Called when a resource fails and will not be retried.
         def resource_failed(resource, action, exception)
+          super unless error_expected?(:resource, exception, exception, resource)
         end
 
         # Called when a resource action has been skipped b/c of a conditional
@@ -159,6 +191,10 @@ if defined?(Chef::Formatters::Base)
         ## TODO: callback for assertion failures
 
         ## TODO: callback for assertion fallback in why run
+
+        def recipe_not_found(exception)
+          super unless error_expected?(:recipe_not_found, exception)
+        end
 
         # Called when a change has been made to a resource. May be called multiple
         # times per resource, e.g., a file may have its content updated, and then
@@ -191,7 +227,6 @@ if defined?(Chef::Formatters::Base)
         # callback for it.
         def msg(message)
         end
-
       end
     end
   end
