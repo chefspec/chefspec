@@ -585,8 +585,16 @@ expect(chef_run).not_to execute_ruby_block 'ruby_block_name'
 
 Assert that a notification was fired:
 ```ruby
-expect(chef_run.resource(resource_name)).to notify 'resource_type[resource_name]', :action
+expect(chef_run.find_resource(resource_type,resource_name)).to notify 'resource_type[resource_name]', :action
 ```
+
+Assert that a notification from a template was fired:
+```ruby
+notifying_resource = chef_run.template('/template/path')
+expect(notifying_resource).to notify 'resource_type[resource_name]', :action
+```
+
+The above can also be done with all of the other basic types (file, cookbook_file, etc.)
 
 
 Varying the Cookbook Path
