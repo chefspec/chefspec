@@ -29,7 +29,7 @@ def define_resource_matchers(actions, resource_types, name_attribute)
     RSpec::Matchers.define "#{action}_#{resource_type}".to_sym do |name|
       match do |chef_run|
         accepted_types = [resource_type.to_s]
-        accepted_types << 'template' if action.to_s == 'create' and resource_type.to_s == 'file'
+        accepted_types += ['template', 'cookbook_file']  if action.to_s == 'create' and resource_type.to_s == 'file'
         chef_run.resources.any? do |resource|
           accepted_types.include? resource_type(resource) and resource.send(name_attribute) == name and
               resource_actions(resource).include? action.to_s
