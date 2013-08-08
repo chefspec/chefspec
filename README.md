@@ -182,8 +182,8 @@ attributes. Using this approach you pass a block when creating the runner.
 
 ```ruby
 chef_run = ChefSpec::ChefRunner.new do |node|
-  node['my_attribute'] = 'bar'
-  node['my_other_attribute'] = 'bar2'
+  node.set['my_attribute'] = 'bar'
+  node.set['my_other_attribute'] = 'bar2'
 end
 chef_run.converge 'example::default'
 ```
