@@ -31,8 +31,9 @@ def define_resource_matchers(actions, resource_types, name_attribute)
         accepted_types = [resource_type.to_s]
         accepted_types += ['template', 'cookbook_file']  if action.to_s == 'create' and resource_type.to_s == 'file'
         chef_run.resources.any? do |resource|
-          accepted_types.include? resource_type(resource) and resource.send(name_attribute) == name and
-              resource_actions(resource).include? action.to_s
+          (accepted_types.include? resource_type(resource) and
+           name === resource.send(name_attribute) and
+           resource_actions(resource).include? action.to_s)
         end
       end
       failure_message_for_should do |actual|
