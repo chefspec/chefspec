@@ -18,6 +18,14 @@ module ChefSpec
           define_resource_matchers([:tail], [:log], :name)
           tail_log('Hello').matches?({:resources => [{:resource_name => 'log', :action => 'tail', :name => 'Hello'}]}).should be true
         end
+        it "should define a matcher that matches on resource type, name and action using a regexp for the name" do
+          define_resource_matchers([:tail], [:log], :name)
+          tail_log(/He[l]+o/).matches?({:resources => [{:resource_name => 'log', :action => 'tail', :name => 'Hello'}]}).should be true
+        end
+        it "should define a matcher that matches on resource type, name and action using a regexp for the name and returns false" do
+          define_resource_matchers([:tail], [:log], :name)
+          tail_log(/DoesntMatch/).matches?({:resources => [{:resource_name => 'log', :action => 'tail', :name => 'Hello'}]}).should be false
+        end
         it "should define a should failure message" do
           define_resource_matchers([:climb], [:mountain], :name)
           climb_mountain('everest').failure_message_for_should.should == "No mountain resource named 'everest' with action :climb found."
