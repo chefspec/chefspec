@@ -1,6 +1,5 @@
 before_install: gem update --system 1.8.25 # Chef is not yet Ruby 2.0 compatible
 rvm:
-  - ree       # Remove on July 1, 2013
   - 1.9.3
   - 2.0.0
 gemfile:
