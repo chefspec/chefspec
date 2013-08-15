@@ -3,9 +3,9 @@ require 'spec_helper'
 module ChefSpec
   module Matchers
     describe "#template_path" do
-      let(:template) { stub(:source => 'foo.erb', :cookbook_name => 'example', :cookbook => nil, :path => nil) }
+      let(:template) { double(:source => 'foo.erb', :cookbook_name => 'example', :cookbook => nil, :path => nil) }
       let(:cookbook) { Chef::CookbookVersion.new('example') }
-      let(:node) { stub(:platform => 'chefspec', :run_context => { :cookbook_collection => { 'example' => cookbook } }) }
+      let(:node) { double(:platform => 'chefspec', :run_context => { :cookbook_collection => { 'example' => cookbook } }) }
       let(:source_path) { 'cookbooks/example/templates/default/foo.erb' }
 
       it "should determine the correct path" do
