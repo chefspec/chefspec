@@ -1,11 +1,13 @@
+rvm:
+  - 1.9.3
+  - 2.0.0
+gemfile:
+  - gemfiles/Gemfile.chef-11
+  - gemfiles/Gemfile.chef-10
 matrix:
-  include:
-    - rvm: 1.9.3
-      gemfile: gemfiles/Gemfile.chef-10
-    - rvm: 1.9.3
-      gemfile: gemfiles/Gemfile.chef-11
+  exclude:
     - rvm: 2.0.0
-      gemfile: gemfiles/Gemfile.chef-11
+      gemfile: gemfiles/Gemfile.chef-10
 script:
   - bundle exec rspec --color --format progress
   - CS_SPEC_TYPE=MiniTest bundle exec cucumber --color --format progress
