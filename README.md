@@ -439,6 +439,16 @@ expect(chef_run).to install_gem_package 'foo'
 expect(chef_run).to install_chef_gem 'chef-foo'
 ```
 
+You can use regexp for any of the one-argument matchers above (i.e. except for `install_package_at_version``):
+
+```ruby
+expect(chef_run).to install_package /(ca){2}\-dev(el)?$/
+```
+
+```ruby
+expect(chef_run).not_to install_gem_package /([Rr]ed|[Bb]lue)\-?[Cc]loth/
+```
+
 ### Execute
 
 If you make use of the `execute` resource within your cookbook recipes it is

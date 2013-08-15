@@ -23,5 +23,15 @@ module ChefSpec
         end
       end
     end
+    describe :install_package do
+      it "should match when using regexp" do
+        install_package(/(ca){2}\-dev(el)?$/).matches?({:resources => [{:resource_name => 'package', :package_name => 'libcaca-devel', :version => '1.2.3', :action => :install}]}).should be true
+      end
+    end
+    describe :remove_gem_package do
+      it "should match when using regexp" do
+        remove_gem_package(/([Rr]ed|[Bb]lue)\-?[Cc]loth/).matches?({:resources => [{:resource_name => 'gem_package', :package_name => 'RedCloth', :version => '1.2.3', :action => :remove}]}).should be true
+      end
+    end
   end
 end
