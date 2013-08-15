@@ -1,16 +1,11 @@
-rvm:
-  - 1.9.3
-  - 2.0.0
-gemfile:
-  - gemfiles/Gemfile.chef-11
-  - gemfiles/Gemfile.chef-10
-  # - gemfiles/Gemfile.chef-master # uncomment to test against master
-notifications:
-  irc:
-    channels:
-      - 'irc.freenode.org#chefspec'
-    skip_join: true
-    use_notice: true
+matrix:
+  include:
+    - rvm: 1.9.3
+      gemfile: gemfiles/Gemfile.chef-10
+    - rvm: 1.9.3
+      gemfile: gemfiles/Gemfile.chef-11
+    - rvm: 2.0.0
+      gemfile: gemfiles/Gemfile.chef-11
 script:
   - bundle exec rspec --color --format progress
   - CS_SPEC_TYPE=MiniTest bundle exec cucumber --color --format progress
