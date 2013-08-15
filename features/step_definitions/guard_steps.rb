@@ -1,3 +1,5 @@
+World(ChefSpec::RSpecHelpers)
+
 Given /^a recipe that declares a (lwrp )?resource with a (only_if|not_if) ruby guard that returns (true|false)$/ do |lwrp, guard_type, guard_result|
   guard_attribute = "#{guard_type}{ #{guard_result} }"
   if lwrp
