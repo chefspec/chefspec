@@ -13,19 +13,19 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.files = Dir['lib/**/*.rb']
 
-  s.add_dependency('chef', '>= 10.0')
-  s.add_dependency('erubis')
-  s.add_dependency('fauxhai', '>= 0.1.1', '< 2.0')
-  s.add_dependency('minitest-chef-handler', '>= 0.6.0')
-  s.add_dependency('rspec', '~> 2.0')
+  s.add_dependency 'chef',    '>= 10.0'
+  s.add_dependency 'erubis'
+  s.add_dependency 'fauxhai', '~> 1.1'
+  s.add_dependency 'minitest-chef-handler', '>= 0.6.0'
+  s.add_dependency 'rspec', '~> 2.0'
 
   # Development Dependencies
-  s.add_development_dependency('rake')
-  s.add_development_dependency('yard', '~> 0.8.1')
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'yard', '~> 0.8'
 
   # Testing Dependencies
-  s.add_development_dependency('aruba', '~> 0.4.11')
-  s.add_development_dependency('cucumber', '~> 1.2.0')
-  s.add_development_dependency('i18n', '~> 0.6.1')
-  s.add_development_dependency('simplecov', '~> 0.7.1')
+  s.add_development_dependency 'aruba',     '~> 0.5'
+  s.add_development_dependency 'cucumber',  '~> 1.3'
+  s.add_development_dependency 'i18n',      '~> 0.6'
+  s.add_development_dependency 'simplecov', '~> 0.7'
 end
