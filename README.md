@@ -78,7 +78,7 @@ end
 Generating an Example
 ---------------------
 Ideally you should be writing your specs in tandem with your recipes and
-practicising TDD. However if you have an existing cookbook and you are using
+practicing TDD. However if you have an existing cookbook and you are using
 Chef 0.10.0 or greater then ChefSpec can generate placeholder RSpec examples
 for you. Knife will automagically detect the ChefSpec Knife Plugin and provide
 you with the new `create_specs` subcommand.
@@ -143,7 +143,7 @@ resources based on different inputs:
 
 This is where ChefSpec really starts to shine. ChefSpec makes it possible to
 write examples for all of the variations of the different inputs above and
-make assertions about the created resources. Verifying correct behaviour
+make assertions about the created resources. Verifying correct behavior
 for all of the variations with real converges can be incredibly time consuming.
 Doing this with real converges is prohibitively slow, but with ChefSpec you can
 identify regressions very quickly while developing your cookbook.
@@ -354,7 +354,7 @@ expect(chef_run).to create_remote_file_if_missing('/tmp/foo.tar.gz').with(
 )
 ```
 
-Assert that a file would be created from cookbook_file ressource:
+Assert that a file would be created from cookbook_file resource:
 
 ```ruby
 expect(chef_run).to create_cookbook_file '/etc/my-cookbook-config.cfg'
@@ -363,7 +363,7 @@ expect(file).to be_owned_by('user', 'group')
 expect(file.mode).to eq("0440")
 ```
 
-Assert that a file would be created from template ressource:
+Assert that a file would be created from template resource:
 
 ```ruby
 expect(chef_run).to create_file '/etc/my-cookbook-config.cfg'
@@ -452,7 +452,7 @@ expect(chef_run).not_to install_gem_package /([Rr]ed|[Bb]lue)\-?[Cc]loth/
 ### Execute
 
 If you make use of the `execute` resource within your cookbook recipes it is
-important to guard for idempotent behaviour.
+important to guard for idempotent behavior.
 
 Assert that a command with specific attributes would be run:
 
@@ -626,7 +626,7 @@ describe 'foo::default' do
 end
 ```
 
-As of `v1.2.0`, ChefSpc will also automatically look in the following locations for vendored cookbooks:
+As of `v1.2.0`, ChefSpec will also automatically look in the following locations for vendored cookbooks:
 
 - vendor/cookbooks
 - test/cookbooks
@@ -818,7 +818,7 @@ describe "example::default" do
   end
 
   it "should fail with a bad frequency" do
-    m = "Frequency yerly not recognized"
+    m = "Frequency yearly not recognized"
     Chef::ExpectException.expect(DataError, m)
     expect {
       chef_run.converge "example::default"
@@ -827,7 +827,7 @@ describe "example::default" do
 end
 ```
 
-If a DataError is raised with the message "Frequency yerly not expected", the
+If a DataError is raised with the message "Frequency yearly not expected", the
 spec output will be quiet.  Any other exception will have full chef diagnostic
 information output. (The `expect {...}.to raise_error ... ` is basic rspec.)
 
