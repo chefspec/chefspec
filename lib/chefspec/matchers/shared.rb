@@ -60,7 +60,7 @@ def render(template, node, template_finder)
     context[:template_finder] = template_finder
     Erubis::Context.send(:include, Chef::Mixin::Template::ChefContext)
   end
-  Erubis::Eruby.new(IO.read(template_path(template, node))).evaluate(context)
+  Erubis::Eruby.new(IO.read(template_path(template, node))).evaluate(context.node)
 end
 
 # Given a template, return the path on disk.
