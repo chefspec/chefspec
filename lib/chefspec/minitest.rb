@@ -134,13 +134,6 @@ module ChefSpec
           resources.select{|r| r.resource_name == type}
         end
 
-        def cookbook_file_content(file_resource)
-          file = cookbook_files(file_resource.cookbook_name).find do |f|
-            Pathname.new(f).basename.to_s == file_resource.path
-          end
-          File.read(file)
-        end
-
         def cookbook_files(cookbook)
           run_context.cookbook_collection[cookbook].file_filenames
         end
@@ -150,11 +143,11 @@ module ChefSpec
             f.path == file.path &&
               case f.resource_name
                 when :cookbook_file
-                  cookbook_file_content(f)
+                  content_from_cookbook_file(chef_run, f)
                 when :file
-                  f.content
+                  content_from_file(chef_run, f)
                 when :template
-                  render(f, node, template_finder(run_context, f, node))
+                  content_from_template(chef_run, f)
                 else raise NotImplementedError,
                   ":#{f.resource_name} not supported for comparison"
               end.include?(content)
@@ -179,6 +172,7 @@ module ChefSpec
         :cookbook_path => default_cookbook_path).converge recipe_for_module(spec_mod)
       override_minitest_resources(chef_run.run_context, spec_mod)
       override_minitest_assertions(chef_run)
+      share_object(spec_mod, :chef_run, chef_run)
       share_object(spec_mod, :node, chef_run.node)
       share_object(spec_mod, :resources, chef_run.resources)
       share_object(spec_mod, :run_context, chef_run.run_context)

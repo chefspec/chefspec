@@ -57,7 +57,6 @@ end
 # @return [String]
 def content_from_template(chef_run, template)
   cookbook_name = template.cookbook || template.cookbook_name
-  # template_finder = Chef::Provider::TemplateFinder.new(chef_run.run_context, cookbook_name, chef_run.node)
   template_location = cookbook_collection(chef_run.node)[cookbook_name].preferred_filename_on_disk_location(chef_run.node, :templates, template.source)
 
   if Chef::Mixin::Template.const_defined?(:TemplateContext) # Chef 11+
