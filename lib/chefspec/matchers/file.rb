@@ -11,7 +11,7 @@ module ChefSpec
       end
     end
 
-    {:create_remote_file => :create, :create_remote_file_if_missing => :create_if_missing}.each do |matcher, corr_action|
+    {:create_remote_file => [:create], :create_remote_file_if_missing => [:create_if_missing]}.each do |matcher, corr_action|
       RSpec::Matchers.define matcher do |path|
         match do |chef_run|
           if @attributes
@@ -31,13 +31,9 @@ module ChefSpec
         end
 
         def expected_remote_file?(resource,path,corr_action)
-          # The resource action *might* be an array!
-          # (see https://tickets.opscode.com/browse/CHEF-2094)
-          action = resource.action.is_a?(Array) ? resource.action.first :
-            resource.action
           resource_type(resource) == 'remote_file' &&
-            resource.path         == path &&
-            action.to_sym         == corr_action
+          resource.path == path &&
+          Array(resource.action).map(&:to_sym).include?(corr_action.to_sym)
         end
 
         def expected_attributes?(resource)
