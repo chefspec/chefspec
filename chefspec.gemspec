@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage = 'http://acrmp.github.com/chefspec'
   s.license = 'MIT'
   s.require_path = 'lib'
+  s.required_ruby_version = '>= 1.9'
   s.files = Dir['lib/**/*.rb']
 
   s.add_dependency 'chef',    '>= 10.0'
