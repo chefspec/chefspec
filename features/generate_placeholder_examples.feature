@@ -1,4 +1,4 @@
-@requires_chef_10 @not_implemented_minitest
+@not_implemented_minitest
 Feature: Generate placeholder examples
 
   If you are using Chef 0.10.0 or greater then ChefSpec can generate placeholder RSpec examples for you. Knife will

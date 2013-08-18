@@ -1,21 +1,13 @@
-before_install: gem update --system 1.8.25 # Chef is not yet Ruby 2.0 compatible
 rvm:
   - 1.9.3
   - 2.0.0
 gemfile:
   - gemfiles/Gemfile.chef-11
   - gemfiles/Gemfile.chef-10
-  # - gemfiles/Gemfile.chef-master # uncomment to test against master
-notifications:
-  irc:
-    channels:
-      - 'irc.freenode.org#chefspec'
-    skip_join: true
-    use_notice: true
-branches:
-  only:
-    - master
 matrix:
-  allow_failures:
-    - rvm: ree
-      gemfile: gemfiles/Gemfile.chef-11
+  exclude:
+    - rvm: 2.0.0
+      gemfile: gemfiles/Gemfile.chef-10
+script:
+  - bundle exec rake unit
+  - bundle exec rake acceptance

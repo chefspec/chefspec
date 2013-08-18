@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module ChefSpec
   module Matchers
-    describe :install_chef_gem_at_version, :if => defined?(::Chef::Resource::ChefGem) do
+    describe :install_chef_gem_at_version do
       describe "#match" do
         let(:matcher) { install_chef_gem_at_version('foo', '1.2.3') }
         it "should not match when no resources exist" do

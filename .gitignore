@@ -12,3 +12,4 @@ gemfiles/*.lock
 .bundle
 bin
 vendor
+.rspec
