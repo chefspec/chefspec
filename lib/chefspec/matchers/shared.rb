@@ -1,5 +1,8 @@
-require 'chef/mixin/template'
-require 'chef/provider/template_finder'
+begin
+  require 'chef/mixin/template'
+  require 'chef/provider/template_finder'
+rescue LoadError
+end
 
 # Given a resource return the unqualified type it is
 #
