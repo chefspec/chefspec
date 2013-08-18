@@ -1,8 +1,6 @@
-begin
-  require 'chef/mixin/template'
-  require 'chef/provider/template_finder'
-rescue LoadError
-end
+require 'chef/mixin/template'
+require 'chef/provider/template_finder'
+
 # Given a resource return the unqualified type it is
 #
 # @param [String] resource A Chef Resource
@@ -46,39 +44,48 @@ def define_resource_matchers(actions, resource_types, name_attribute)
   end
 end
 
-# Render a template.
+# Compute the contents of a template using Chef's templating logic.
 #
-# @param [Chef::Resource::Template] template The template to render
-# @param [Chef::Node] node The node which may be required to render the template
-# @param [Chef::Provider::TemplateFinder] a TemplateFinder use for rendering templates containing partials
-# @return [String] The result result of rendering the template
-def render(template, node, template_finder)
-  # Duplicates functionality in the Chef Template provider
-  context = {}; context.merge!(template.variables)
-  context[:node] = node
-  unless template_finder.nil?
-    context[:template_finder] = template_finder
-    Erubis::Context.send(:include, Chef::Mixin::Template::ChefContext)
-  end
-  Erubis::Eruby.new(IO.read(template_path(template, node))).evaluate(context.node)
-end
-
-# Given a template, return the path on disk.
+# @param [Chef::RunContext]
+#   the run context for the node
+# @param [Chef::Provider::Template]
+#   the template resource
 #
-# @param [Chef::Resource::Template] template The template
-# @return [String] The path on disk
-def template_path(template, node)
+# @return [String]
+def content_from_template(chef_run, template)
   cookbook_name = template.cookbook || template.cookbook_name
-  if node.respond_to?(:run_context)
-    cookbook = node.run_context.cookbook_collection[cookbook_name] # Chef 11+
-  else
-    cookbook = node.cookbook_collection[cookbook_name] # Chef 10 and lower
-  end
-  cookbook.preferred_filename_on_disk_location(node, :templates, template.source)
+  template_finder = Chef::Provider::TemplateFinder.new(chef_run.run_context, cookbook_name, chef_run.node)
+  template_location = template_finder.find(template.source)
+
+  template_context = Chef::Mixin::Template::TemplateContext.new([])
+  template_context.update({
+    :node => chef_run.node,
+    :template_finder => template_finder,
+  }.merge(template.variables))
+
+  template_context.render_template(template_location)
 end
 
-def template_finder(run_context, template, node)
-  if Chef::Provider.const_defined?(:TemplateFinder)
-    Chef::Provider::TemplateFinder.new(run_context,template.cookbook_name, node)
-  end
+# Get the contents of a file resource.
+#
+# @param [Chef::RunContext]
+#   the run context for the node
+# @param [Chef::Provider::File]
+#   the file resource
+#
+# @return [String]
+def content_from_file(chef_run, file)
+  file.content
+end
+
+# Get the contents of a cookbook file using Chef.
+#
+# @param [Chef::RunContext]
+#   the run context for the node
+# @param [Chef::Provider::CookbookFile]
+#   the file resource
+def content_from_cookbook_file(chef_run, cookbook_file)
+  cookbook_name = cookbook_file.cookbook || cookbook_file.cookbook_name
+  cookbook = chef_run.run_context.cookbook_collection[cookbook_name]
+  File.read(cookbook.preferred_filename_on_disk_location(chef_run.node, :files, cookbook_file.source, cookbook_file.path))
 end
