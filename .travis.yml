@@ -9,6 +9,5 @@ matrix:
     - rvm: 2.0.0
       gemfile: gemfiles/Gemfile.chef-10
 script:
-  - bundle exec rspec --color --format progress
-  - CS_SPEC_TYPE=MiniTest bundle exec cucumber --color --format progress
-  - CS_SPEC_TYPE=RSpec bundle exec cucumber --color --format progress
+  - bundle exec rake unit
+  - bundle exec rake acceptance
