@@ -33,7 +33,7 @@ module ChefSpec
         def expected_remote_file?(resource,path,corr_action)
           resource_type(resource) == 'remote_file' &&
           resource.path == path &&
-          Array(resource.action).map(&:to_sym).include?(corr_action.to_sym)
+          !(corr_action & Array(resource.action).map(&:to_sym)).empty?
         end
 
         def expected_attributes?(resource)
