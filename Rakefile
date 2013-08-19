@@ -1,37 +1,31 @@
-require 'rubygems'
-require 'bundler'
-require 'cucumber'
+require 'bundler/gem_tasks'
+require 'chefspec'
 require 'cucumber/rake/task'
 require 'rspec/core/rake_task'
-require 'yard'
-task :default => [:install, :spec, :features]
 
-Bundler.setup
-Bundler::GemHelper.install_tasks
+RSpec::Core::RakeTask.new(:unit) do |t|
+  t.rspec_opts = [].tap do |a|
+    a.push('--color')
+    a.push('--format progress')
+    a.push('--tag ~chef_11') unless ChefSpec.chef_11?
+    a.push('--tag ~chef_10') unless ChefSpec.chef_10?
+  end.join(' ')
+end
 
-RSpec::Core::RakeTask.new
-YARD::Rake::YardocTask.new
-
-require 'chef'
-
-def register_spec_features(spec_type)
-  Cucumber::Rake::Task.new(feature_task_name(spec_type),
-    "Run Cucumber features (#{spec_type} support only)") do |t|
-    t.cucumber_opts = "CS_SPEC_TYPE=#{spec_type} features --format pretty"
-    t.cucumber_opts << ' -t ~@requires_chef_10' if Chef::VERSION.start_with? '0.9.'
-    t.cucumber_opts << ' -t ~@chefgem' unless defined?(Chef::Resource::ChefGem)
-    t.cucumber_opts << ' -t ~@requires_template_finder' unless defined?(Chef::Provider::TemplateFinder)
-    t.cucumber_opts << " -t ~@not_implemented_#{spec_type.downcase}"
+namespace :acceptance do
+  ['MiniTest', 'RSpec'].each do |spec_type|
+    Cucumber::Rake::Task.new(spec_type.downcase.to_sym, "Run #{spec_type} Cucumber features") do |t|
+      t.cucumber_opts = [].tap do |a|
+        a.push('CS_SPEC_TYPE=' + spec_type)
+        a.push('--color')
+        a.push('--format progress')
+        a.push('--tags ~@not_implemented_' + spec_type.downcase)
+        a.push('--tags ~@chef_11') unless ChefSpec.chef_11?
+        a.push('--tags ~@chef_10') unless ChefSpec.chef_10?
+      end.join(' ')
+    end
   end
 end
 
-def feature_task_name(spec_type)
-  "features_#{spec_type.downcase}".to_sym
-end
-
-desc "Run all Cucumber features"
-task :features
-['RSpec', 'MiniTest'].each do |spec_type|
-  register_spec_features(spec_type)
-  task :features => feature_task_name(spec_type)
-end
+desc 'Run all Cucumber tests'
+task :acceptance => ['acceptance:minitest', 'acceptance:rspec']

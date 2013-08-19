@@ -34,3 +34,15 @@ require 'chefspec/monkey_patches/conditional'
 require 'chefspec/monkey_patches/hash'
 require 'chefspec/monkey_patches/lwrp_base'
 require 'chefspec/monkey_patches/provider'
+
+module ChefSpec
+  class << self
+    def chef_11?
+      Gem::Requirement.new('~> 11.0').satisfied_by?(Gem::Version.new(Chef::VERSION))
+    end
+
+    def chef_10?
+      Gem::Requirement.new('~> 10.0').satisfied_by?(Gem::Version.new(Chef::VERSION))
+    end
+  end
+end
