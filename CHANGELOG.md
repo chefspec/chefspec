@@ -1,6 +1,32 @@
 Changelog for ChefSpec
 ======================
 
+## 2.0.0 (August 22, 2013)
+
+Breaking:
+
+  - Remove support for REE ([@andrewgross][] for the CI)
+
+Bugfixes:
+
+  - Better failure message for `create_remote_file` ([@tmatilai][])
+  - Add `cookbook_file` as an accepted type to the `create_file` matchers ([@dafyddcrosby][])
+  - Ensure formatter is only registered once ([@student][])
+  - Signifant README updates ([@phoolish][])
+  - Fix `described_recipe` helper (S.R.Garcia)
+  - Refactor Chef 10/11 template rendering ([@sethvargo][])
+  - Fix CI ([@sethvargo][])
+  - Match File actions as an array ([@sethvargo][])
+
+Features:
+
+  - Extend `ruby_block` matcher to accept regular expressions ([@ssimeonov][])
+  - Add `create_remote_file_if_missing` matcher ([@jimhopp][])
+  - Extend `execute` matcher to accept regular expressions ([@eliaslevy][])
+  - Add ability to expect exceptions during a run ([@student][])
+  - Add regular expression support for resource names ([@mapleoin][])
+  - Add support for `python_pip` LWRP ([@mapleoin][])
+
 ## 1.3.1 (June 10, 2013)
 
 Bugfixes:
@@ -228,3 +254,17 @@ Bugfixes:
 ## 0.0.1 (July 31, 2011)
 
 Initial version.
+
+- - -
+[@acrmp]: <https://github.com/acrmp> "Andrew Crump GitHub"
+[@andrewgross]: <https://github.com/andrewgross> "Andrew Gross's GitHub"
+[@dafyddcrosby]: <https://github.com/dafyddcrosby> "Dafydd Crosby's GitHub"
+[@eliaslevy]: <https://github.com/eliaslevy> "eliaslevy's GitHub"
+[@jimhopp]: <https://github.com/jimhopp> "Jim Hopp's GitHub"
+[@mapleoin]: <https://github.com/mapleoin> "Ionuț Arțăriși's GitHub"
+[@phoolish]: <https://github.com/phoolish> "phoolish's GitHub"
+[@ranjib]: <https://github.com/ranjib> "Ranjib Dey's GitHub"
+[@sethvargo]: <https://github.com/sethvargo> "Seth Vargo GitHub"
+[@ssimeonov]: <https://github.com/ssimeonov> "Simeon Simeonov's GitHub"
+[@student]: <https://github.com/student> "Nathan Zook's GitHub"
+[@tmatilai]: <https://github.com/tmatilai> "Teemu Matilainen's GitHub"
