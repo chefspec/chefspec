@@ -13,7 +13,7 @@ class Hash
 
   # Monkey-patch to stdlib Hash to correspond to Mash-style lookup
   # @see {Hash#respond_to?}
-  def respond_to?(m)
+  def respond_to?(m, include_private = false)
     if has_key?(m.to_sym) || has_key?(m.to_s)
       true
     else
