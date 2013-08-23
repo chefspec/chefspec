@@ -3,18 +3,53 @@ require 'spec_helper'
 module ChefSpec
   module Matchers
     describe :python_pip do
-      let(:matcher) { install_python_pip 'foo' }
-      it "should not match when no resources exist" do
-        matcher.matches?({:resources => []}).should be false
-      end
-      it "should not match when there is no python package" do
-        matcher.matches?({:resources => [{:resource_name => 'package', :name => 'vim-enhanced'}]}).should be false
-      end
-      it "should match when the python package exists" do
-        matcher.matches?({:resources => [{:resource_name => 'python_pip', :name => 'foo', :action=> :install}]}).should be true
-      end
-      it "should not match when the python package name is different" do
-        matcher.matches?({:resources => [{:resource_name => 'python_pip', :name => 'bar'}]}).should be false
+      ['install', 'remove', 'upgrade', 'purge'].each do |action|
+        describe "##{action}" do
+          let(:name) { 'foo-bar' }
+          let(:resource) do
+            {
+              resources: [{
+                  resource_name: 'python_pip',
+                  action: action.to_sym,
+                  name: name
+                }]
+            }
+          end
+
+          context 'using a string' do
+            let(:matcher) { eval("#{action}_python_pip('#{name}')") }
+
+            it 'does not match when no resource exists' do
+              expect(matcher).to_not be_matches({ resources: [] })
+            end
+
+            it 'does not match when the package is not installed' do
+              resource[:resources][0][:name] = 'qux'
+              expect(matcher).to_not be_matches(resource)
+            end
+
+            it 'matches when the python package exists' do
+              expect(matcher).to be_matches(resource)
+            end
+          end
+
+          context 'using a regular expression' do
+            let(:regex_matcher) { eval("#{action}_python_pip(/foo-(.+)/)") }
+
+            it 'does not match when no resource exists' do
+              expect(regex_matcher).to_not be_matches({ resources: [] })
+            end
+
+            it 'does not match when the package is not installed' do
+              resource[:resources][0][:name] = 'qux'
+              expect(regex_matcher).to_not be_matches(resource)
+            end
+
+            it 'matches when the python package exists' do
+              expect(regex_matcher).to be_matches(resource)
+            end
+          end
+        end
       end
     end
   end
