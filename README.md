@@ -591,6 +591,40 @@ Assert that a ruby block would not be executed:
 expect(chef_run).not_to execute_ruby_block 'ruby_block_name'
 ```
 
+### Python packages
+
+ChefSpec supports the python LWRP's `python_pip` resource.
+
+Assert that a python package gets installed:
+
+```ruby
+expect(chef_run).to install_python_pip 'foo'
+```
+
+Assert that a python package gets purged:
+
+```ruby
+expect(chef_run).to purge_python_pip 'foo'
+```
+
+Assert that a python package gets upgraded:
+
+```ruby
+expect(chef_run).to upgrade_python_pip 'foo'
+```
+
+Assert that a python package gets removed:
+
+```ruby
+expect(chef_run).to remove_python_pip 'foo'
+```
+
+You can use regexp for any of the above commands. For example:
+
+```ruby
+expect(chef_run).to remove_python_pip /foo-(bar|baz)/
+```
+
 ### Notifications
 
 Assert that a notification was fired:
