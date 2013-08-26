@@ -32,16 +32,19 @@ def define_resource_matchers(actions, resource_types, name_attribute)
         accepted_types = [resource_type.to_s]
         accepted_types += ['template', 'cookbook_file']  if action.to_s == 'create' and resource_type.to_s == 'file'
         chef_run.resources.any? do |resource|
-          (accepted_types.include? resource_type(resource) and
-           name === resource.send(name_attribute) and
-           resource_actions(resource).include? action.to_s)
+          if (accepted_types.include? resource_type(resource) and
+              name === resource.send(name_attribute) and
+              resource_actions(resource).include? action.to_s)
+            @resource_name = resource.send(name_attribute)
+            true
+          end
         end
       end
       failure_message_for_should do |actual|
-        "No #{resource_type} resource named '#{name}' with action :#{action} found."
+        "No #{resource_type} resource matching name '#{name}' with action :#{action} found."
       end
       failure_message_for_should_not do |actual|
-        "Found #{resource_type} resource named '#{name}' with action :#{action} that should not exist."
+        "Found #{resource_type} resource named '#{@resource_name}' matching name: '#{name}' with action :#{action} that should not exist."
       end
     end
   end

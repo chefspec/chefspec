@@ -28,11 +28,13 @@ module ChefSpec
         end
         it "should define a should failure message" do
           define_resource_matchers([:climb], [:mountain], :name)
-          climb_mountain('everest').failure_message_for_should.should == "No mountain resource named 'everest' with action :climb found."
+          climb_mountain('everest').failure_message_for_should.should == "No mountain resource matching name 'everest' with action :climb found."
         end
-        it "should define a should_not failure message" do
+        it "should define a dynamically built should_not failure message" do
           define_resource_matchers([:climb], [:mountain], :name)
-          climb_mountain('Kilimanjaro').failure_message_for_should_not.should == "Found mountain resource named 'Kilimanjaro' with action :climb that should not exist."
+          matcher = climb_mountain(/Kili/)
+          matcher.matches?({ resources: [{:resource_name => 'mountain', :action => 'climb', :name => 'Kilimanjaro'}]})
+          matcher.failure_message_for_should_not.should == "Found mountain resource named 'Kilimanjaro' matching name: '(?-mix:Kili)' with action :climb that should not exist."
         end
       end
 
