@@ -1,6 +1,17 @@
 Changelog for ChefSpec
 ======================
 
+## 2.0.1 (August 28, 2013)
+
+Bugfixes:
+
+  - Add missing second optional parameter to `Hash#respond_to?` monkey patch
+
+Features
+
+  - Improve error message when using a regular express
+  - Improve documentation for Python packages
+
 ## 2.0.0 (August 22, 2013)
 
 Breaking:
