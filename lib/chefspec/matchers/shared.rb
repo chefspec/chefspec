@@ -35,7 +35,7 @@ def define_resource_matchers(actions, resource_types, name_attribute)
           if (accepted_types.include? resource_type(resource) and
               name === resource.send(name_attribute) and
               resource_actions(resource).include? action.to_s and
-              (@attributes.nil? or expected_attributes?(resource)))
+              expected_attributes?(resource))
             @resource_name = resource.send(name_attribute)
             true
           end
@@ -52,9 +52,7 @@ def define_resource_matchers(actions, resource_types, name_attribute)
       end
       
       def expected_attributes?(resource)
-        @attributes.all? do |attribute,expected|
-          resource.send(attribute) == expected
-        end
+        @attributes.nil? or @attributes.all?{|attribute,expected| expected === resource.send(attribute) }
       end
     end
   end
