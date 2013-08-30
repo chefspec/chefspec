@@ -36,6 +36,32 @@ module ChefSpec
           matcher.matches?({ resources: [{:resource_name => 'mountain', :action => 'climb', :name => 'Kilimanjaro'}]})
           matcher.failure_message_for_should_not.should == "Found mountain resource named 'Kilimanjaro' matching name: '(?-mix:Kili)' with action :climb that should not exist."
         end
+        
+        describe "#with" do
+          let(:attributes) do
+            { :resource_name => 'mountain',
+              :name => 'Kilimanjaro',
+              :speed => :quick,
+              :path => :long,
+              :action => :climb }
+          end
+          def do_match(changed_attributes)
+            matcher.matches?(:resources => [attributes.merge(changed_attributes)])
+          end
+          let(:matcher) { climb_mountain('Kilimanjaro').with(:speed => :quick, :path => :long)}
+          it "should not match when name is wrong" do
+            do_match(:name => 'Everest').should be false
+          end
+          it "should not match when the additional attribute (speed) differs" do
+            do_match(:speed => :slow).should be false
+          end
+          it "should match when we have exact match" do
+            do_match(attributes).should be true
+          end
+          it "should match when the mountain has additional attributes" do
+            do_match(:team_size => 5).should be true
+          end
+        end
       end
 
       describe "#resource_actions" do
