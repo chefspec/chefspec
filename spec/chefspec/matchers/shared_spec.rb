@@ -109,28 +109,32 @@ module ChefSpec
         end
         
         describe "#with" do
-          let(:attributes) do
+          let(:resource) do
             { :resource_name => 'mountain',
               :name => 'Kilimanjaro',
               :speed => :quick,
-              :path => :long,
+              :comment => "We managed it!",
+              :team_size => 5,
               :action => :climb }
           end
-          def do_match(changed_attributes)
-            matcher.matches?(:resources => [attributes.merge(changed_attributes)])
+          let(:matcher) { climb_mountain('Kilimanjaro').with(:speed => :quick, :team_size => (3..5), :comment => /managed\b/)}
+          it "matches when we have exact match" do
+            expect( matcher ).to be_matches(:resources => [resource])
           end
-          let(:matcher) { climb_mountain('Kilimanjaro').with(:speed => :quick, :path => :long)}
-          it "should not match when name is wrong" do
-            do_match(:name => 'Everest').should be false
+          it "matches when the mountain has additional attributes" do
+            expect( matcher ).to be_matches(:resources => [resource.merge(:path => :straight)])
           end
-          it "should not match when the additional attribute (speed) differs" do
-            do_match(:speed => :slow).should be false
+          it "does not match when name is wrong" do
+            expect( matcher ).to_not be_matches(:resources => [resource.merge(:name => 'Everest')])
           end
-          it "should match when we have exact match" do
-            do_match(attributes).should be true
+          it "does not match when the additional attribute (speed) differs" do
+            expect( matcher ).to_not be_matches(:resources => [resource.merge(:speed => :slow)])
           end
-          it "should match when the mountain has additional attributes" do
-            do_match(:team_size => 5).should be true
+          it "does not match when Regex fails to match" do
+          	expect( matcher ).to_not be_matches(:resources => [resource.merge(:comment => "We managedit!")])
+          end
+          it "does not match when Range fails to match" do
+          	expect( matcher ).to_not be_matches(:resources => [resource.merge(:team_size => (1..3))])
           end
         end
       end
