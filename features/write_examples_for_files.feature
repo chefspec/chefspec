@@ -6,11 +6,11 @@ Feature: Write examples for files
 
   Check that a directory has been created:
 
-      chef_run.should create_directory '/var/lib/foo'
+      expect(chef_run).to create_directory '/var/lib/foo'
 
   Check that a file has the correct ownership:
 
-      chef_run.file('/var/log/bar.log').should be_owned_by('user', 'group')
+      expect(chef_run.file('/var/log/bar.log')).to be_owned_by('user', 'group')
 
   Scenario: File resource
     Given a Chef cookbook with a recipe that declares a file resource

@@ -2,7 +2,7 @@ Feature: Write examples for gem packages
 
   Express an expectation that a gem package will be installed:
 
-      chef_run.should install_gem_package 'foo'
+      expect(chef_run).to install_gem_package('foo')
 
   Scenario: Gem package resource
     Given a Chef cookbook with a recipe that declares a gem package resource

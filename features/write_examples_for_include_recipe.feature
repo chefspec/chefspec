@@ -6,7 +6,7 @@ Feature: Write examples for include_recipe
 
   Check that recipe is being included:
 
-    chef_run.should include_recipe 'foo::bar'
+    expect(chef_run).to include_recipe('foo::bar')
 
   Scenario: Include recipe
     Given a Chef cookbook with a recipe that includes another recipe

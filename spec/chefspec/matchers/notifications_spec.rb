@@ -3,39 +3,33 @@ require 'spec_helper'
 module ChefSpec
   module Matchers
     describe :notifications do
-      describe "#notify " do
-        let(:matcher){notify "service[nginx]" ,:restart}
-        it "should define one notify matcher per resource" do
-          matcher_defined?(:notify).should be_true 
-        end
-        it "should match a genuine notification from a resource" do
-          fake_resource = fake_resource_with_notification('nginx','service','restart')
-          matcher.matches?(fake_resource).should be_true
-        end
-        it "should not match a notification from a resource that does not notify the intended resource" do
-          fake_resource = fake_resource_with_notification('nginx','service','stop')
-          matcher.matches?(fake_resource).should be_false
+      describe '#notify' do
+        let(:matcher) { notify('service[nginx]', :restart) }
+
+        it 'defines one notify matcher per resource' do
+          expect(matcher_defined?(:notify)).to be_true
         end
 
-        context "name regex" do
-          let(:matcher){notify "service[nginx[v1.2.3]]" ,:restart}
-          it 'should allow brackets in the name' do
-            fake_resource = fake_resource_with_notification('nginx[v1.2.3]','service','restart')
-            matcher.matches?(fake_resource).should be_true
+        it 'matches a genuine notification from a resource' do
+          expect(matcher).to be_matches(fake_resource_with_notification('nginx', 'service', 'restart'))
+        end
+
+        it 'does not match a notification from a resource that does not notify the intended resource' do
+          expect(matcher).to_not be_matches(fake_resource_with_notification('nginx', 'service', 'stop'))
+        end
+
+        context 'regex' do
+          let(:matcher) { notify('service[nginx[v1.2.3]]', :restart) }
+
+          it 'allows brackets in the name' do
+            expect(matcher).to be_matches(fake_resource_with_notification('nginx[v1.2.3]', 'service', 'restart'))
           end
         end
 
-        def fake_resource_with_notification(name,type,action)
-          notified_resource = double('notified-resource')
-          notified_resource.stub(:resource_name).and_return(type)
-          notified_resource.stub(:name).and_return(name)
-          notified_resource_struct = double('notified-resource-struct')
-          notified_resource_struct.stub(:resource).and_return(notified_resource)
-          notified_resource_struct.stub(:action).and_return(action)
-          fake_resource = double("resource")
-          fake_resource.stub(:delayed_notifications).and_return([notified_resource_struct])
-          fake_resource.stub(:immediate_notifications).and_return([])
-          fake_resource
+        def fake_resource_with_notification(name, type, action)
+          notified_resource = double('notified-resource', resource_name: type, name: name)
+          notified_resource_struct = double('notified-resource-struct', resource: notified_resource, action: action)
+          return double('resource', delayed_notifications: [notified_resource_struct], immediate_notifications: [])
         end
       end
     end

@@ -3,48 +3,69 @@ require 'spec_helper'
 module ChefSpec
   module Matchers
     describe :env do
-      let(:matcher){create_env('java_home')}
+      let(:matcher) { create_env('java_home') }
+
+      let(:chef_run) do
+        {
+          node: {},
+          resources: [{
+            resource_name: 'env',
+            key_name: 'java_home'
+          }]
+        }
+      end
+
       describe :create_env do
-        let(:matcher){create_env('java_home')}
-        it "should not match when no resources exist" do
-          matcher.matches?({:resources=>[]}).should be false
+        let(:matcher) { create_env('java_home') }
+
+        it 'does not match when no resources exist' do
+          expect(matcher).to_not be_matches({ resources: [] })
         end
-        it "should match when the env resource exist" do
-          matcher.matches?({:resources=>[{:resource_name =>'env',
-            :key_name=>'java_home',:action=>:create}]}).should be true
+
+        it 'does match when the env resource exist' do
+          chef_run[:resources].first[:action] = :create
+          expect(matcher).to be_matches(chef_run)
         end
-        it "should not match when the env resource with another name exist" do
-          matcher.matches?({:resources=>[{:resource_name =>'env',
-            :key_name=>'not_java_home'}]}).should be false
+
+        it 'does not match when the env resource with another name exist' do
+          chef_run[:resources].first[:key_name] = 'not_java_home'
+          expect(matcher).to_not be_matches(chef_run)
         end
       end
 
       describe :delete_env do
-        let(:matcher){delete_env('java_home')}
-        it "should not match when no resources exist" do
-          matcher.matches?({:resources=>[]}).should be false
+        let(:matcher) { delete_env('java_home') }
+
+        it 'does not match when no resources exist' do
+          expect(matcher).to_not be_matches({ resources: [] })
         end
-        it "should match when the env resource exist and the action is delete" do
-          matcher.matches?({:resources=>[{:resource_name =>'env',
-            :key_name=>'java_home',:action=>:delete}]}).should be true
+
+        it 'matches when the env resource exist and the action is delete' do
+          chef_run[:resources].first[:action] = :delete
+          expect(matcher).to be_matches(chef_run)
         end
-        it "should not match when the env resource with another name exist" do
-          matcher.matches?({:resources=>[{:resource_name =>'env',
-            :key_name=>'not_java_home',:action=>:delete}]}).should be false
+
+        it 'does not match when the env resource with another name exist' do
+          chef_run[:resources].first[:key_name] = 'not_java_home'
+          expect(matcher).to_not be_matches(chef_run)
         end
       end
+
       describe :modify_env do
-        let(:matcher){modify_env('java_home')}
-        it "should not match when no resources exist" do
-          matcher.matches?({:resources=>[]}).should be false
+        let(:matcher) { modify_env('java_home') }
+
+        it 'does not match when no resources exist' do
+          expect(matcher).to_not be_matches({ resources: [] })
         end
-        it "should match when the env resource exist" do
-          matcher.matches?({:resources=>[{:resource_name =>'env',
-            :key_name=>'java_home',:action=>:modify}]}).should be true
+
+        it 'matches when the env resource exist' do
+          chef_run[:resources].first[:action] = :modify
+          expect(matcher).to be_matches(chef_run)
         end
-        it "should not match when the env resource with modify action but with another name exist" do
-          matcher.matches?({:resources=>[{:resource_name =>'env',
-            :key_name=>'not_java_home',:action=>:modify}]}).should be false
+
+        it 'does not match when the env resource with modify action but with another name exist' do
+          chef_run[:resources].first[:key_name] = 'not_java_home'
+          expect(matcher).to_not be_matches(chef_run)
         end
       end
     end

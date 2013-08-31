@@ -2,7 +2,7 @@ Feature: Write examples for chef gem packages
 
   Express an expectation that a chef gem package will be installed:
 
-      chef_run.should install_chef gem_package 'foo'
+      expect(chef_run).to install_chef gem_package('foo')
 
   Scenario: chef gem package resource
     Given a Chef cookbook with a recipe that declares a chef gem package resource

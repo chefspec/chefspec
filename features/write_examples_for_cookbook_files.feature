@@ -4,11 +4,11 @@ Feature: Write examples for cookbook files
 
   Check that a cookbook file has been created:
 
-      chef_run.should create_file '/var/lib/foo'
+      expect(chef_run).to create_file('/var/lib/foo')
 
   Check that a file has the correct ownership:
 
-      chef_run.cookbook_file('/var/log/bar.log').should be_owned_by('user', 'group')
+      expect(chef_run.cookbook_file('/var/log/bar.log')).to be_owned_by('user', 'group')
 
   Scenario: Cookbook file resource
     Given a Chef cookbook with a recipe that declares a cookbook file resource

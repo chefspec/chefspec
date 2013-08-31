@@ -46,11 +46,11 @@ Then 'no examples will be found to run' do
 end
 
 Then 'the example when run will be pending' do
-  spec_example_is_pending?.should == true
+  expect(spec_example_is_pending?).to be_true
 end
 
 Then 'the existing example will not be overwritten' do
-  spec_existing_example_not_overwritten?.should == true
+  expect(spec_existing_example_not_overwritten?).to be_true
 end
 
 Then 'a placeholder example will be generated for each recipe' do

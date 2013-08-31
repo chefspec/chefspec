@@ -4,7 +4,7 @@ Feature: Write examples for cookbook users
 
   Check that a user has been created:
 
-      chef_run.should create_user 'foo'
+      expect(chef_run).to create_user('foo')
 
   Scenario: Create a user
     Given a Chef cookbook with a recipe that creates a user resource
