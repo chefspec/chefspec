@@ -34,17 +34,25 @@ def define_resource_matchers(actions, resource_types, name_attribute)
         chef_run.resources.any? do |resource|
           if (accepted_types.include? resource_type(resource) and
               name === resource.send(name_attribute) and
-              resource_actions(resource).include? action.to_s)
+              resource_actions(resource).include? action.to_s and
+              expected_attributes?(resource))
             @resource_name = resource.send(name_attribute)
             true
           end
         end
+      end
+      chain :with do |attributes|
+        @attributes = attributes
       end
       failure_message_for_should do |actual|
         "No #{resource_type} resource matching name '#{name}' with action :#{action} found."
       end
       failure_message_for_should_not do |actual|
         "Found #{resource_type} resource named '#{@resource_name}' matching name: '#{name}' with action :#{action} that should not exist."
+      end
+      
+      def expected_attributes?(resource)
+        @attributes.nil? or @attributes.all?{|attribute,expected| expected === resource.send(attribute) }
       end
     end
   end

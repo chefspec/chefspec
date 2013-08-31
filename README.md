@@ -640,6 +640,45 @@ expect(notifying_resource).to notify 'resource_type[resource_name]', :action
 
 The above can also be done with all of the other basic types (file, cookbook_file, etc.)
 
+### Asserting attributes
+
+Most of the above mentioned matchers correspond to resources that also have attributes. ChefSpec allows you to chain the assertions about these attributes with the main assertions of the resource.
+
+Compare: assert that a *system* user was created with particular *shell*.
+
+Using *with*:
+
+```ruby
+expect(chef_run).to create_user('tomcat').with(system: true, shell: '/bin/false')
+```
+
+No *with*:
+
+```ruby
+user = chef_run.user('tomcat')
+expect(user.system)to be_true
+expect(user.shell).to eq('/bin/false')
+```
+
+Assert that a link is created:
+
+```ruby
+expect(chef_run).to create_link('/usr/bin/bar').with(to: '/usr/bin/foo')
+```
+
+These assertions using *with* allow also Regex and Range assertions.
+
+Assert that an Upstart service is created:
+
+```ruby
+expect(chef_run).to create_service('tomcat').with(provider: /Upstart/)
+```
+
+Assert that file is created with number of backups of 1 to 3:
+
+```ruby
+expect(chef_run).to create_file('/tmp/some_file').with(backup: (1..3))
+```
 
 Varying the Cookbook Path
 -------------------------
