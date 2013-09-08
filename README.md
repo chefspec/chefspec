@@ -423,6 +423,11 @@ You can even use yum packages:
 expect(chef_run).to install_yum_package 'yum-foo'
 ```
 
+Windows packages too!
+```ruby
+expect(chef_run).to install_windows_package 'Notepad++'
+```
+
 Assert that a package would be upgraded:
 
 ```ruby
