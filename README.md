@@ -304,6 +304,12 @@ Assert that a file would be created:
 expect(chef_run).to create_file '/var/log/bar.log'
 ```
 
+Assert that a file would be created if missing:
+
+```ruby
+expect(chef_run).to create_if_missing_file '/var/log/bar.log'
+```
+
 Assert that a file would be deleted:
 
 ```ruby
