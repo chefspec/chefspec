@@ -9,7 +9,7 @@ describe 'ChefSpec::Matchers#create_file_with_content' do
       context "a #{type} resource" do
         [:create, :create_if_missing].each do |action|
           let(:stub_method) { "content_from_#{type}".to_sym }
-          let(:resource) do
+          let(:chef_run) do
             {
               node: {},
               resources: [{
@@ -22,39 +22,39 @@ describe 'ChefSpec::Matchers#create_file_with_content' do
 
           it 'does not match with no content' do
             matcher.stub(stub_method).and_return('')
-            expect(matcher).to_not be_matches(resource)
+            expect(matcher).to_not be_matches(chef_run)
           end
 
           it 'does not match with the wrong path' do
             matcher.stub(stub_method).and_return('platform: chefspec')
-            resource[:resources].first[:name] = '/etc/wrong_config_file'
-            expect(matcher).to_not be_matches(resource)
+            chef_run[:resources].first[:name] = '/etc/wrong_config_file'
+            expect(matcher).to_not be_matches(chef_run)
           end
 
           it 'matches with the right content and path' do
             matcher.stub(stub_method).and_return('platform: chefspec')
-            expect(matcher).to be_matches(resource)
+            expect(matcher).to be_matches(chef_run)
           end
 
           it 'matches partial file contents' do
             matcher.stub(stub_method).and_return("fqdn: chefspec.local\nplatform: chefspec\nhostname: chefspec")
-            expect(matcher).to be_matches(resource)
+            expect(matcher).to be_matches(chef_run)
           end
 
           it 'does not match regex with no context' do
             regex_matcher.stub(stub_method).and_return('')
-            expect(regex_matcher).to_not be_matches(resource)
+            expect(regex_matcher).to_not be_matches(chef_run)
           end
 
           it 'does not match regex with the wrong path' do
             regex_matcher.stub(stub_method).and_return('platform: chefspec')
-            resource[:resources].first[:name] = '/etc/wrong_config_file'
-            expect(regex_matcher).to_not be_matches(resource)
+            chef_run[:resources].first[:name] = '/etc/wrong_config_file'
+            expect(regex_matcher).to_not be_matches(chef_run)
           end
 
           it 'matches regex with the right content and path' do
             regex_matcher.stub(stub_method).and_return('platform: chefspec')
-            expect(regex_matcher).to be_matches(resource)
+            expect(regex_matcher).to be_matches(chef_run)
           end
         end
       end

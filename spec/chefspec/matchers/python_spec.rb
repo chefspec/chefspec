@@ -8,11 +8,12 @@ module ChefSpec
           let(:name) { 'foo-bar' }
           let(:resource) do
             {
+              node: {},
               resources: [{
-                  resource_name: 'python_pip',
-                  action: action.to_sym,
-                  name: name
-                }]
+                resource_name: 'python_pip',
+                action: action.to_sym,
+                name: name
+              }]
             }
           end
 
@@ -24,7 +25,7 @@ module ChefSpec
             end
 
             it 'does not match when the package is not installed' do
-              resource[:resources][0][:name] = 'qux'
+              resource[:resources].first[:name] = 'qux'
               expect(matcher).to_not be_matches(resource)
             end
 
@@ -41,7 +42,7 @@ module ChefSpec
             end
 
             it 'does not match when the package is not installed' do
-              resource[:resources][0][:name] = 'qux'
+              resource[:resources].first[:name] = 'qux'
               expect(regex_matcher).to_not be_matches(resource)
             end
 

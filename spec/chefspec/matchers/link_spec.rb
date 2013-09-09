@@ -3,16 +3,19 @@ require 'spec_helper'
 module ChefSpec
   module Matchers
     describe :link_to do
-      describe "#match" do
+      describe '#match' do
         let(:matcher) { link_to('/foo') }
-        it "should not match when the link is nil" do
-          matcher.matches?(nil).should be false
+
+        it 'does not match when the link is nil' do
+          expect(matcher).to_not be_matches(nil)
         end
-        it "should not match when the link is different" do
-          matcher.matches?({:to => '/bar'}).should be false
+
+        it 'does not match when the link is different' do
+          expect(matcher).to_not be_matches({ to: '/bar' })
         end
-        it "should match when the link matches" do
-          matcher.matches?({:to => '/foo'}).should be true
+
+        it 'matches when the link matches' do
+          expect(matcher).to be_matches({ to: '/foo' })
         end
       end
     end

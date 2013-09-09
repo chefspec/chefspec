@@ -2,7 +2,7 @@ Feature: Write examples for yum packages
 
   Express an expectation that a package will be installed:
 
-      chef_run.should install_yum_package 'foo'
+      expect(chef_run).to install_yum_package('foo')
 
   Scenario: Yum package resource
     Given a Chef cookbook with a recipe that declares a yum_package resource
@@ -30,13 +30,13 @@ Feature: Write examples for yum packages
 
   @not_implemented_minitest
   Scenario: Upgrade a package
-    Given a Chef cookbook that uses yum_package to upgrade a package 
+    Given a Chef cookbook that uses yum_package to upgrade a package
     And the recipe has a spec example that expects the package to be upgraded
     When the recipe example is successfully run
     Then the package will not have been upgraded
 
   Scenario: Remove a package
-    Given a Chef cookbook that uses yum_package to remove a package 
+    Given a Chef cookbook that uses yum_package to remove a package
     And the recipe has a spec example that expects the package to be removed
     When the recipe example is successfully run
     Then the package will not have been removed

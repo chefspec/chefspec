@@ -5,66 +5,89 @@ module ChefSpec
     describe :script do
       %w(bash csh perl python ruby).each do |interpreter|
         describe interpreter do
-          let(:matcher) do
-            matcher_name = "execute_#{interpreter}_script"
-            send(matcher_name, 'foo')
+          let(:matcher) { send("execute_#{interpreter}_script", 'foo') }
+
+          it "does not match when no #{interpreter} resources exist" do
+            expect(matcher).to_not be_matches({ resources: [] })
           end
 
-          it "should not match when no resources exist" do
-            matcher.matches?(:resources => []).should be false
+          it "matches when #{interpreter} resource exists" do
+            expect(matcher).to be_matches({
+              node: {},
+              resources: [{
+                resource_name: interpreter,
+                name: 'foo'
+              }]
+            })
           end
 
-          it "should match when #{interpreter} resource exists" do
-            resources = [{:resource_name => interpreter, :name => 'foo'}]
-            matcher.matches?(:resources => resources).should be true
+          it "matches when script resource with #{interpreter} interpreter exists" do
+            expect(matcher).to be_matches({
+              node: {},
+              resources: [{
+                resource_name: 'script',
+                interpreter: interpreter,
+                name: 'foo'
+              }]
+            })
           end
 
-          it "should match when script resource with #{interpreter} interpreter exists" do
-            resources = [{:resource_name => 'script', :interpreter => interpreter, :name => 'foo'}]
-            matcher.matches?(:resources => resources).should be true
+          it "matches when there is another #{interpreter} resource" do
+            expect(matcher).to be_matches({
+              node: {},
+              resources: [{
+                resource_name: interpreter,
+                name: 'foo'
+              }, {
+                resource_name: interpreter,
+                name: 'bar'
+              }]
+            })
           end
 
-          it "should match when there is another #{interpreter} resource" do
-            resources = [{:resource_name => interpreter, :name => 'foo'},
-                         {:resource_name => interpreter, :name => 'bar'}]
-            matcher.matches?(:resources => resources).should be true
+          it "does not match when #{interpreter} resource with another name exists" do
+            expect(matcher).to_not be_matches({
+              node: {},
+              resources: [{
+                resource_name: 'bash',
+                name: 'bar'
+              }]
+            })
           end
 
-          it "should not match when #{interpreter} resource with another name exists" do
-            resources = [{:resource_name => 'bash', :name => 'bar'}]
-            matcher.matches?(:resources => resources).should be false
+          it "does not match when script resource with another interpreter exists" do
+            expect(matcher).to_not be_matches({
+              node: {},
+              resources: [{
+                resource_name: 'script',
+                interpreter: 'bar',
+                name: 'foo'
+              }]
+            })
           end
 
-          it "should not match when script resource with another interpreter exists" do
-            resources = [{:resource_name => 'script', :interpreter => 'bar', :name => 'foo'}]
-            matcher.matches?(:resources => resources).should be false
-          end
-
-          describe "#with" do
-            before do
-              @interpreter = interpreter
+          describe '#with' do
+            let(:matcher) { send("execute_#{interpreter}_script", 'foo').with(user: 'foo', cwd: '/tmp') }
+            let(:chef_run) do
+              {
+                node: {},
+                resources: [{
+                  resource_name: 'script',
+                  interpreter: interpreter,
+                  name: 'foo',
+                  user: 'foo',
+                  cwd: '/tmp'
+                }]
+              }
             end
 
-            let(:matcher) do
-              matcher_name = "execute_#{interpreter}_script"
-              send(matcher_name, 'foo').with(:user => 'foo', :cwd => '/tmp')
+            it 'does not match when one attributes differs' do
+              chef_run[:resources].first[:user] = 'bar'
+              expect(matcher).to_not be_matches(chef_run)
             end
 
-            def do_match(attributes)
-              default_attributes = {:resource_name => 'script',
-                                    :interpreter => @interpreter,
-                                    :name => 'foo',
-                                    :user => 'foo',
-                                    :cwd => '/tmp'}
-              matcher.matches?({:resources => [default_attributes.merge(attributes)]})
-            end
-
-            it "does not match when one attributes differs" do
-              expect(do_match(:user => 'bar')).to be false
-            end
-
-            it "does match when all attributes are equal" do
-              expect(do_match({})).to be true
+            it 'does match when all attributes are equal' do
+              expect(matcher).to be_matches(chef_run)
             end
           end
         end

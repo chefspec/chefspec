@@ -1,7 +1,7 @@
 @not_implemented_minitest
 Feature: Write examples for executing commands
 
-      chef_run.should execute_command "whoami"
+      expect(chef_run).to execute_command "whoami"
 
   Scenario: Execute resource
     Given a Chef cookbook with a recipe that declares an execute resource
