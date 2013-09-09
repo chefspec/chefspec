@@ -6,9 +6,9 @@ Feature: Write examples for notifcations
 
   Check that a resource is being notified from another resource
 
-      chef_run.template('/etc/nginx/nginx.conf').should notify("service[nginx]",:restart)
+      expect(chef_run.template('/etc/nginx/nginx.conf')).to notify('service[nginx]', :restart)
 
-  Scenario: Notify a resource 
+  Scenario: Notify a resource
     Given a Chef cookbook with a recipe in which a template notifies a service
     And the recipe has a spec example that assert on the notification
     When the recipe example is successfully run
