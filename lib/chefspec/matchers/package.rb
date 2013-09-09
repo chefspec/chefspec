@@ -45,7 +45,11 @@ module ChefSpec
     RSpec::Matchers.define :install_windows_package_at_version do |package_name, version|
       match do |chef_run|
        chef_run.resources.any? do |resource|
+<<<<<<< HEAD
           resource_type(resource) == 'windows_package' and resource.package_name == package_name and resource.action.to_s.include? 'install' and resource.version == version
+=======
+          resource_type(resource) === 'windows_package' and resource.package_name == package_name and resource.action.to_s.include? 'install' and resource.version == version
+>>>>>>> refs/heads/windows_package
         end
       end
     end
