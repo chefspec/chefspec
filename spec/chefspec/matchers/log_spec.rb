@@ -57,6 +57,29 @@ module ChefSpec
           end
         end
       end
+
+      describe '#with' do
+        let(:matcher) { log('Hello World').with(level: :info) }
+        let(:chef_run) do
+          {
+            node: {},
+            resources: [{
+              resource_name: 'log',
+              name: 'Hello World',
+              level: :info
+            }]
+          }
+        end
+
+        it 'does not match when one attributes differs' do
+          chef_run[:resources].first[:level] = :fatal
+          expect(matcher).to_not be_matches(chef_run)
+        end
+
+        it 'matches when all attributes are equal' do
+          expect(matcher).to be_matches(chef_run)
+        end
+      end
     end
   end
 end
