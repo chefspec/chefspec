@@ -535,6 +535,15 @@ Assert that at least one log statement would match a specified regexp:
 expect(chef_run).to log(/bacon \d+/)
 ```
 
+There are also assertion modules for certain log levels:
+
+```ruby
+expect(chef_run).to log('bacon').with(level: :info)
+expect(chef_run).to log('bacon').with(level: :warn)
+expect(chef_run).to log('bacon').with(level: :debug)
+expect(chef_run).to log('bacon').with(level: :fatal)
+```
+
 If you want to be able to view the log output at the console you can control
 the logging level when creating an instance of `ChefRunner` as below:
 
