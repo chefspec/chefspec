@@ -1,8 +1,5 @@
-
-require 'chefspec/matchers/shared'
-
 module ChefSpec
   module Matchers
-    define_resource_matchers([:create, :delete,:modify], [:env], :key_name)
+    define_resource_matchers([:create, :delete, :modify], [:env])
   end
 end

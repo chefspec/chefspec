@@ -41,7 +41,7 @@ package would be installed.
 require "chefspec"
 
 describe "example::default" do
-  let(:chef_run) { ChefSpec::ChefRunner.new.converge 'example::default' }
+  let(:chef_run) { ChefSpec::Runner.new.converge 'example::default' }
   it "installs foo" do
     expect(chef_run).to install_package 'foo'
   end
@@ -72,7 +72,7 @@ in RSpec - to DRY the name of described cookbook/recipe making specs more refact
 require "chefspec"
 
 describe "example::default" do
-  let(:chef_run) { ChefSpec::ChefRunner.new.converge described_recipe }
+  let(:chef_run) { ChefSpec::Runner.new.converge described_recipe }
   it "includes another_recipe" do
     expect(chef_run).to include_recipe "#{described_cookbook}::another_recipe"
   end
@@ -109,7 +109,7 @@ If you look at the generated example you'll see that on line 6 there is a
 require 'chefspec'
 
 describe 'my_new_cookbook::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new.converge 'my_new_cookbook::default' }
+  let(:chef_run) { ChefSpec::Runner.new.converge 'my_new_cookbook::default' }
   it 'does something' do
     pending 'Your recipe examples go here.'
   end
@@ -162,7 +162,7 @@ easily be a template or package name derived from an attribute value.
 
 ```ruby
 it "logs the foo attribute" do
-  chef_run = ChefSpec::ChefRunner.new
+  chef_run = ChefSpec::Runner.new
   chef_run.node.set['foo'] = 'bar'
   chef_run.converge 'example::default'
   expect(chef_run).to log 'The value of node.foo is: bar'
@@ -175,7 +175,7 @@ attributes. If you do this then the attributes will not be set correctly.
 ```ruby
 # !!! Don't do this !!!
 it "logs the foo attribute" do
-  chef_run = ChefSpec::ChefRunner.new.converge 'example::default'
+  chef_run = ChefSpec::Runner.new.converge 'example::default'
   chef_run.node.set['foo'] = 'bar'
   expect(chef_run).to log 'The value of node.foo is: bar'
 end
@@ -185,7 +185,7 @@ To avoid this, you can make use of the alternative syntax for specifying node
 attributes. Using this approach you pass a block when creating the runner.
 
 ```ruby
-chef_run = ChefSpec::ChefRunner.new do |node|
+chef_run = ChefSpec::Runner.new do |node|
   node.set['my_attribute'] = 'bar'
   node.set['my_other_attribute'] = 'bar2'
 end
@@ -211,7 +211,7 @@ running the examples on a different platform altogether. Note that line 2
 declares the platform underneath `automatic_attrs`.
 
 ```ruby
-chef_run = ChefSpec::ChefRunner.new
+chef_run = ChefSpec::Runner.new
 chef_run.node.automatic_attrs['platform'] = 'Commodore 64'
 expect(chef_run.converge('example::default')).to log 'I am running on a Commodore 64.'
 ```
@@ -221,7 +221,7 @@ expect(chef_run.converge('example::default')).to log 'I am running on a Commodor
 [Fauxhai](https://github.com/customink/fauxhai) from Seth Vargo is now a dependency of ChefSpec. This means you leverage all the power of fauxhai (and it's community contributed ohai mocks) without additional configuration. Just specify the `platform` and `version` attributes when you instantiate your `ChefRunner`:
 
 ```ruby
-chef_run = ChefSpec::ChefRunner.new(platform:'ubuntu', version:'12.04') do |node|
+chef_run = ChefSpec::Runner.new(platform:'ubuntu', version:'12.04') do |node|
   node.set['my_attribute'] = 'bar'
   node.set['my_other_attribute'] = 'bar2'
 end
@@ -255,7 +255,7 @@ asserted that it then logged each node added to the pool might look like this:
 it "logs each node added to the load balancer pool" do
   Chef::Recipe.any_instance.stub(:search).with(:node, 'role:web').and_yield(
     {'hostname' => 'web1.example.com'})
-  chef_run = ChefSpec::ChefRunner.new
+  chef_run = ChefSpec::Runner.new
   chef_run.converge 'my_new_cookbook::default'
   expect(chef_run).to log 'Adding webserver to the pool: web1.example.com'
 end
@@ -469,10 +469,16 @@ expect(chef_run).not_to install_gem_package /([Rr]ed|[Bb]lue)\-?[Cc]loth/
 If you make use of the `execute` resource within your cookbook recipes it is
 important to guard for idempotent behavior.
 
-Assert that a command with specific parameters would be run:
+Assert that a command would be executed:
 
 ```ruby
-expect(chef_run).to execute_command('whoami > me').with(
+expect(chef_run).to run_execute('test -f /var/bacon')
+```
+
+Assert that a command with specific attributes would be run:
+
+```ruby
+expect(chef_run).to run_execute('whoami > me').with(
   :cwd => '/tmp',
   :creates => '/tmp/me'
 )
@@ -481,7 +487,7 @@ expect(chef_run).to execute_command('whoami > me').with(
 Assert that a command would not be run:
 
 ```ruby
-expect(chef_run).not_to execute_command 'whoami'
+expect(chef_run).not_to run_execute('whoami')
 ```
 
 ### Scripts
@@ -552,7 +558,7 @@ If you want to be able to view the log output at the console you can control
 the logging level when creating an instance of `ChefRunner` as below:
 
 ```ruby
-let(:chef_run) { ChefSpec::ChefRunner.new(:log_level => :debug) }
+let(:chef_run) { ChefSpec::Runner.new(:log_level => :debug) }
 ```
 
 ### Services
@@ -566,7 +572,7 @@ expect(chef_run).to start_service 'food'
 Assert that a daemon would be started when the node boots:
 
 ```ruby
-expect(chef_run).to set_service_to_start_on_boot 'food'
+expect(chef_run).to enabled_service 'food'
 ```
 
 Assert that a daemon would be stopped:
@@ -713,7 +719,7 @@ require 'chefspec'
 
 describe 'foo::default' do
   let(:chef_run) {
-    runner = ChefSpec::ChefRunner.new({:cookbook_path => '/some/path'})
+    runner = ChefSpec::Runner.new({:cookbook_path => '/some/path'})
     runner.converge 'foo::default'
     runner
   }
@@ -744,7 +750,7 @@ If you want to mock out `node.chef_environment`, you'll need to use RSpec mocks/
 
 ```ruby
 let(:chef_run) do
-  ChefSpec::ChefRunner.new do |node|
+  ChefSpec::Runner.new do |node|
     # Create a new environment (you could also use a different :let block or :before block)
     env = Chef::Environment.new
     env.name 'staging'
@@ -771,7 +777,7 @@ require 'chefspec'
 
 describe 'foo::default' do
   let(:chef_run) {
-    runner = ChefSpec::ChefRunner.new(:step_into => ['my_lwrp'])
+    runner = ChefSpec::Runner.new(:step_into => ['my_lwrp'])
     runner.converge 'foo::default'
   }
   it 'installs the foo package through my_lwrp' do
@@ -802,7 +808,7 @@ on your resources when you instantiate the `ChefRunner`:
 
 ```ruby
 let(:chef_run) do
-  chef_run = ChefSpec::ChefRunner.new({:evaluate_guards => true})
+  chef_run = ChefSpec::Runner.new({:evaluate_guards => true})
   chef_run.converge 'example::default'
 end
 ```
@@ -823,7 +829,7 @@ when the file is present or not:
 ```ruby
 require "chefspec"
 describe "example::default" do
-  let(:chef_run){ ChefSpec::ChefRunner.new({:evaluate_guards => true}) }
+  let(:chef_run){ ChefSpec::Runner.new({:evaluate_guards => true}) }
   before(:each){ File.stub(:exists?).and_call_original }
   it "should render the template if the install file exists" do
     File.should_receive(:exists?).with("/opt/app/installed").and_return(true)
@@ -865,7 +871,7 @@ when the file is present or not:
 ```ruby
 require "chefspec"
 describe "example::default" do
-  let(:chef_run){ ChefSpec::ChefRunner.new({:evaluate_guards => true}) }
+  let(:chef_run){ ChefSpec::Runner.new({:evaluate_guards => true}) }
   it "should render the template if the install file exists" do
     chef_run.stub_command(/test/, true)
     chef_run.converge "example::default"
@@ -888,7 +894,7 @@ are running on then you can tell ChefSpec you want it to do so:
 require "chefspec"
 describe "example::default" do
   let(:chef_run) do
-    ChefSpec::ChefRunner.new(
+    ChefSpec::Runner.new(
       {:evaluate_guards => true, :actually_run_shell_guards => true})
   end
   it "should render the template if the install file exists" do
@@ -911,7 +917,7 @@ In your spec:
 require "chefspec"
 describe "example::default" do
   let(:chef_run) do
-    ChefSpec::ChefRunner.new
+    ChefSpec::Runner.new
   end
 
   it "should fail with a bad frequency" do

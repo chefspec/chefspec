@@ -1,0 +1,17 @@
+require 'chefspec'
+
+describe 'link::delete' do
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
+  it 'deletes a link with an explicit action' do
+    expect(chef_run).to delete_link('/tmp/explicit_action')
+  end
+
+  it 'deletes a link with attributes' do
+    expect(chef_run).to delete_link('/tmp/with_attributes').with(to: 'destination')
+  end
+
+  it 'deletes a link when specifying the identity attribute' do
+    expect(chef_run).to delete_link('/tmp/identity_attribute')
+  end
+end

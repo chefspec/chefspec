@@ -9,5 +9,4 @@ matrix:
     - rvm: 2.0.0
       gemfile: gemfiles/Gemfile.chef-10
 script:
-  - bundle exec rake unit
-  - bundle exec rake acceptance
+  - bundle exec rake

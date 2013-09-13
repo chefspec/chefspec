@@ -1,0 +1,17 @@
+require 'chefspec'
+
+describe 'http_request::options' do
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
+  it 'optionss a http_request with an explicit action' do
+    expect(chef_run).to options_http_request('explicit_action')
+  end
+
+  it 'optionss a http_request with attributes' do
+    expect(chef_run).to options_http_request('with_attributes').with(url: 'http://my.url')
+  end
+
+  it 'optionss a http_request when specifying the identity attribute' do
+    expect(chef_run).to options_http_request('identity_attribute')
+  end
+end

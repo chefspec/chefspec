@@ -1,0 +1,17 @@
+require 'chefspec'
+
+describe 'route::delete' do
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
+  it 'deletes a route with an explicit action' do
+    expect(chef_run).to delete_route('10.0.0.2')
+  end
+
+  it 'deletes a route with attributes' do
+    expect(chef_run).to delete_route('10.0.0.3').with(gateway: '10.0.0.0')
+  end
+
+  it 'deletes a route when specifying the identity attribute' do
+    expect(chef_run).to delete_route('10.0.0.4')
+  end
+end

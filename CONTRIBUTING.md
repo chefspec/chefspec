@@ -14,6 +14,7 @@ Pleas be receptive and responsive to feedback about your additions or changes. T
 
 If you're looking to contribute but aren't sure where to start, check ou the [open issues](https://github.com/acrmp/chefspec/issues?state=open).
 
+
 Coding Standards
 ----------------
 The submitted code should be compatible with the standard Ruby coding guidelines. Here are some additional resources:
@@ -23,6 +24,7 @@ The submitted code should be compatible with the standard Ruby coding guidelines
 
 There is a tool called [Cane](https://github.com/square/cane) that allows you to validate your code's ABC complexity and documentation.
 
+
 Testing
 -------
 Whether your pull request is a bug fix or introduces new classes or methods to the project, we kindly ask that you include tests for your changes. Even if it's just a small improvement, a test is necessary to ensure the bug is never re-introduced.
@@ -30,6 +32,7 @@ Whether your pull request is a bug fix or introduces new classes or methods to t
 We understand that not all users submitting pull requests will be proficient with RSpec. The maintainers and community as a whole are a helpful group and can help you with writing tests. The [Better Specs](http://betterspecs.org/) site should provide some helpful resources to get you started.
 
 ChefSpec is tested on [Travis CI](https://travis-ci.org/acrmp/chefspec) against multiple Chef Versions and Ruby Versions. **Your patches must work for all Chef and Ruby Versions on Travis.** This is in an effort to maintain backward compatibility as long as possible. For more information on which Chef and Ruby versions to support, checkout the [`.travis.yml`](https://github.com/acrmp/chefspec/blob/master/.travis.yml) file.
+
 
 Documentation
 -------------

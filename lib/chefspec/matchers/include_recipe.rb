@@ -1,19 +1,29 @@
-require 'chefspec/matchers/shared'
-
 module ChefSpec
   module Matchers
-    RSpec::Matchers.define :include_recipe do |expected_recipe|
+    #
+    # Assert that a Chef run includes a certain recipe.
+    #
+    # @example Assert the apache2::default recipe is included in the Chef run
+    #   expect(chef_run).to include_recipe('apache2::default')
+    #
+    #
+    # NOTE: This matches the literal name of the recipe in the resource
+    # collection. This means if you `include_recipe 'apache2'`, then
+    # the matcher `include_recipe('apache2::default')` will fail. For
+    # this reason, it is always recommended you explictly list the name of
+    # the recipe, even if it's the default.
+    #
+    RSpec::Matchers.define(:include_recipe) do |expected_recipe|
       match do |chef_run|
-        if chef_run.run_context.respond_to?(:loaded_recipe?)
-          chef_run.run_context.loaded_recipe?(expected_recipe) # Chef 11+
-        else
-          chef_run.node.run_state[:seen_recipes].include?(expected_recipe) # Chef 10 and lower
-        end
+        chef_run.run_context.loaded_recipes.include?(expected_recipe)
       end
 
       failure_message_for_should do |chef_run|
-        "expected: ['#{expected_recipe}']\n" +
-        "     got: #{chef_run.run_context.respond_to?(:loaded_recipes) ? chef_run.run_context.loaded_recipes : chef_run.node.run_state[:seen_recipes]}"
+        "expected #{chef_run.run_context.loaded_recipes.to_s} to include '#{expected_recipe}'"
+      end
+
+      failure_message_for_should_not do |chef_run|
+        "expected '#{expected_recipe}' to not be included"
       end
     end
   end
