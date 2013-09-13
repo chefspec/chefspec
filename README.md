@@ -1,3 +1,5 @@
+ChefSpec
+========
 [![Built on Travis](https://secure.travis-ci.org/acrmp/chefspec.png?branch=master)](http://travis-ci.org/acrmp/chefspec)
 
 ChefSpec makes it easy to write examples for Opscode Chef cookbooks. Get fast
@@ -19,6 +21,8 @@ For a really nice walkthrough using ChefSpec with Guard and Fauxhai to do Test
 Driven Development watch
 [Seth Vargo's TDDing tmux talk](http://www.confreaks.com/videos/2364-mwrc2013-tdding-tmux)
 from MountainWest RubyConf 2013.
+
+**This documentation will always correspond to the master branch (which may be unreleased). Please check the README of the latest git tag or the gem's source for the proper documentation!**
 
 Writing a Cookbook Example
 --------------------------
