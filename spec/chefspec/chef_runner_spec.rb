@@ -405,7 +405,7 @@ module ChefSpec
         end
 
         it "returns the resource when a #{matcher} exists" do
-          chef_run.resources = [{ resource_name: matcher, name: 'value' }]
+          chef_run.resources = [{ identity: 'value', resource_name: matcher, name: 'value' }]
           expect(chef_run.send(matcher, 'value')).to_not be_nil
         end
       end
