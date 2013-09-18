@@ -194,7 +194,7 @@ module ChefSpec
     end
 
     FILE_RESOURCES    = %w(directory cookbook_file file template link remote_directory remote_file)
-    PACKAGE_RESOURCES = %w(package apt_package dpkg_package easy_install_package freebsd_package macports_package portage_package rpm_package chef_gem solaris_package windows_package yum_package zypper_package python_pip)
+    PACKAGE_RESOURCES = %w(package apt_package dpkg_package easy_install_package freebsd_package gem_package macports_package portage_package rpm_package chef_gem solaris_package windows_package yum_package zypper_package python_pip)
     SCRIPT_RESOURCES  = %w(script powershell bash csh perl python ruby)
     MISC_RESOURCES    = %w(cron env user execute service log route ruby_block git subversion group mount ohai ifconfig deploy http_request)
 
