@@ -427,14 +427,30 @@ Assert that a package would be purged:
 expect(chef_run).to purge_package 'foo'
 ```
 
-You can even use yum packages:
+You can use every type of package defined in chef:
 
 ```ruby
+expect(chef_run).to install_apt_package 'apt-foo'
+expect(chef_run).to install_dpkg_package 'dpkg-foo'
+expect(chef_run).to install_easy_install_package 'easy-foo'
+expect(chef_run).to install_freebsd_package 'bsd-foo'
+expect(chef_run).to install_ips_package 'ips-foo'
+expect(chef_run).to install_gem_package 'gem-foo'
+expect(chef_run).to install_macports_package 'mac-foo'
+expect(chef_run).to install_pacman_package 'pacman-foo'
+expect(chef_run).to install_portage_package 'portage-foo'
+expect(chef_run).to install_rpm_package 'rpm-foo'
+expect(chef_run).to install_chef_gem 'chef-gem-foo'
+expect(chef_run).to install_smartos_package 'sol-foo'
+expect(chef_run).to install_solaris_package 'sol-foo'
 expect(chef_run).to install_yum_package 'yum-foo'
+expect(chef_run).to install_zypper_package 'zyp-foo'
 ```
 
-Windows packages too!
+And even more! Windows and python pip:
+
 ```ruby
+expect(chef_run).to install_python_pip 'pip-foo'
 expect(chef_run).to install_windows_package 'Notepad++'
 ```
 
