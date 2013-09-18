@@ -61,7 +61,7 @@ module ChefSpec
 
     describe :package do
       it 'has right package resources' do
-        expect(ChefSpec::ChefRunner::PACKAGE_RESOURCES).to eq %w(package apt_package dpkg_package easy_install_package freebsd_package gem_package macports_package portage_package rpm_package chef_gem solaris_package windows_package yum_package zypper_package python_pip)
+        expect(ChefSpec::ChefRunner::PACKAGE_RESOURCES).to eq %w(package apt_package dpkg_package easy_install_package freebsd_package ips_package gem_package macports_package pacman_package portage_package rpm_package chef_gem smartos_package solaris_package windows_package yum_package zypper_package python_pip)
       end
 
       [:install, :upgrade, :remove, :purge].each do |action|
