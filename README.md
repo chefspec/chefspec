@@ -1,3 +1,5 @@
+ChefSpec
+========
 [![Built on Travis](https://secure.travis-ci.org/acrmp/chefspec.png?branch=master)](http://travis-ci.org/acrmp/chefspec)
 
 ChefSpec makes it easy to write examples for Opscode Chef cookbooks. Get fast
@@ -19,6 +21,8 @@ For a really nice walkthrough using ChefSpec with Guard and Fauxhai to do Test
 Driven Development watch
 [Seth Vargo's TDDing tmux talk](http://www.confreaks.com/videos/2364-mwrc2013-tdding-tmux)
 from MountainWest RubyConf 2013.
+
+**This documentation will always correspond to the master branch (which may be unreleased). Please check the README of the latest git tag or the gem's source for the proper documentation!**
 
 Writing a Cookbook Example
 --------------------------
@@ -304,6 +308,12 @@ Assert that a file would be created:
 expect(chef_run).to create_file '/var/log/bar.log'
 ```
 
+Assert that a file would be created if missing:
+
+```ruby
+expect(chef_run).to create_if_missing_file '/var/log/bar.log'
+```
+
 Assert that a file would be deleted:
 
 ```ruby
@@ -423,6 +433,11 @@ You can even use yum packages:
 expect(chef_run).to install_yum_package 'yum-foo'
 ```
 
+Windows packages too!
+```ruby
+expect(chef_run).to install_windows_package 'Notepad++'
+```
+
 Assert that a package would be upgraded:
 
 ```ruby
@@ -522,6 +537,15 @@ Assert that at least one log statement would match a specified regexp:
 
 ```ruby
 expect(chef_run).to log(/bacon \d+/)
+```
+
+There are also assertion modules for certain log levels:
+
+```ruby
+expect(chef_run).to log('bacon').with(level: :info)
+expect(chef_run).to log('bacon').with(level: :warn)
+expect(chef_run).to log('bacon').with(level: :debug)
+expect(chef_run).to log('bacon').with(level: :fatal)
 ```
 
 If you want to be able to view the log output at the console you can control
@@ -640,7 +664,7 @@ expect(notifying_resource).to notify 'resource_type[resource_name]', :action
 
 The above can also be done with all of the other basic types (file, cookbook_file, etc.)
 
-###Asserting attributes
+### Asserting attributes
 
 Most of the above mentioned matchers correspond to resources that also have attributes. ChefSpec allows you to chain the assertions about these attributes with the main assertions of the resource.
 
@@ -649,24 +673,21 @@ Compare: assert that a *system* user was created with particular *shell*.
 Using *with*:
 
 ```ruby
-expect(chef_run).to create_user('tomcat').with(
-  :system => true,
-  :shell => '/bin/false'
-)
+expect(chef_run).to create_user('tomcat').with(system: true, shell: '/bin/false')
 ```
 
 No *with*:
 
 ```ruby
-expect(chef_run).to create_user('tomcat')
-expect(chef_run.user('tomcat')).system.to be_true
-expect(chef_run.user('tomcat')).shell.to be '/bin/false'
+user = chef_run.user('tomcat')
+expect(user.system).to be_true
+expect(user.shell).to eq('/bin/false')
 ```
 
 Assert that a link is created:
 
 ```ruby
-expect(chef_run).to create_link("/usr/bin/bar").with :to => "/usr/bin/foo"
+expect(chef_run).to create_link('/usr/bin/bar').with(to: '/usr/bin/foo')
 ```
 
 These assertions using *with* allow also Regex and Range assertions.
@@ -674,17 +695,13 @@ These assertions using *with* allow also Regex and Range assertions.
 Assert that an Upstart service is created:
 
 ```ruby
-expect(chef_run).to create_service('tomcat').with(
-  :provider => /Upstart/
-)
+expect(chef_run).to create_service('tomcat').with(provider: /Upstart/)
 ```
 
 Assert that file is created with number of backups of 1 to 3:
 
 ```ruby
-expect(chef_run).to create_file('/tmp/some_file').with(
-  :backup => (1..3)
-)
+expect(chef_run).to create_file('/tmp/some_file').with(backup: (1..3))
 ```
 
 Varying the Cookbook Path

@@ -5,15 +5,15 @@ Feature: Write examples for services
 
   Express an expectation that a service will be started:
 
-      chef_run.should start_service 'food'
+      expect(chef_run_.to start_service('food')
 
   Will it come up if we bounce the box?
 
-      chef_run.should set_service_to_start_on_boot 'food'
+      expect(chef_run_.to set_service_to_start_on_boot('food')
 
   Many daemons need a prompt to reload their config and you should check for this:
 
-      chef_run.should reload_service 'food'
+      expect(chef_run_.to reload_service('food')
 
   Scenario: Start a service
     Given a Chef cookbook with a recipe that starts a service

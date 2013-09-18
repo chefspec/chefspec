@@ -87,9 +87,9 @@ Then 'the directory will not have been deleted' do
 end
 
 Then 'the file will not have had its ownership changed' do
-  @original_stat.should eql(owner_and_group 'hello-world.txt')
+  expect(@original_stat).to eq(owner_and_group 'hello-world.txt')
 end
 
 Then 'the directory will not have had its ownership changed' do
-  @original_stat.should eql(owner_and_group 'foo')
+  expect(@original_stat).to eq(owner_and_group 'foo')
 end

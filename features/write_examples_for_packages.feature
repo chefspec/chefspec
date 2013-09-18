@@ -2,7 +2,7 @@ Feature: Write examples for packages
 
   Express an expectation that a package will be installed:
 
-      chef_run.should install_package 'foo'
+      expect(chef_run).to install_package('foo')
 
   Scenario: Package resource
     Given a Chef cookbook with a recipe that declares a package resource

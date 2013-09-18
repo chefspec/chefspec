@@ -113,13 +113,7 @@ module ChefSpec
           end
 
           if runner.step_into.include?(self.resource_name.to_s)
-            # Ignore not_if / only_if guards
-            if self.only_if.is_a?(Array) # 0.10.x
-              self.instance_eval { @not_if = []; @only_if = [] }
-            else # 0.9.x
-              self.only_if { true }
-              self.not_if { false }
-            end
+            self.instance_eval { @not_if = []; @only_if = [] }
             self.old_run_action(action)
           end
 
@@ -200,7 +194,7 @@ module ChefSpec
     end
 
     FILE_RESOURCES    = %w(directory cookbook_file file template link remote_directory remote_file)
-    PACKAGE_RESOURCES = %w(package apt_package dpkg_package easy_install_package freebsd_package macports_package portage_package rpm_package chef_gem solaris_package yum_package zypper_package python_pip)
+    PACKAGE_RESOURCES = %w(package apt_package dpkg_package easy_install_package freebsd_package macports_package portage_package rpm_package chef_gem solaris_package windows_package yum_package zypper_package python_pip)
     SCRIPT_RESOURCES  = %w(script powershell bash csh perl python ruby)
     MISC_RESOURCES    = %w(cron env user execute service log route ruby_block git subversion group mount ohai ifconfig deploy http_request)
 

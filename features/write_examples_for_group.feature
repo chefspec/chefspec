@@ -4,7 +4,7 @@ Feature: Write examples for cookbook groups
 
   Check that a group has been created:
 
-      chef_run.should create_group 'foo'
+      expect(chef_run).to create_group('foo')
 
   Scenario: Create a group
     Given a Chef cookbook with a recipe that creates a group resource

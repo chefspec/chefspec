@@ -2,7 +2,7 @@ Feature: Write examples for templates
 
   Very handy for verifying that the result of rendering a template to generate a config file is what you expect:
 
-      chef_run.should create_file_with_content('/etc/foo', expected_content)
+      expect(chef_run).to create_file_with_content('/etc/foo', expected_content)
 
   Scenario: Template resource
     Given a Chef cookbook with a recipe that declares a template resource

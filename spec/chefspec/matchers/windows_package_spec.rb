@@ -2,9 +2,9 @@ require 'spec_helper'
 
 module ChefSpec
   module Matchers
-    describe :install_yum_package_at_version do
+    describe :install_windows_package_at_version do
       describe '#match' do
-        let(:matcher) { install_yum_package_at_version('foo', '1.2.3') }
+        let(:matcher) { install_windows_package_at_version('foo', '1.2.3') }
 
         it 'does not match when no resources exist' do
           expect(matcher).to_not be_matches({ resources: [] })
@@ -21,11 +21,11 @@ module ChefSpec
           })
         end
 
-        it 'does not match if is a different package and an unspecified version' do
+        it 'does not match if package differs and version is unspecified' do
           expect(matcher).to_not be_matches({
             node: {},
             resources: [{
-              resource_name: 'yum_package',
+              resource_name: 'windows_package',
               package_name: 'bar',
               version: nil,
               action: :install
@@ -33,23 +33,11 @@ module ChefSpec
           })
         end
 
-        it 'does not match if it is the same package and version but a different action' do
-          expect(matcher).to_not be_matches({
-            node: {},
-            resources: [{
-              resource_name: 'package',
-              yum_package_name: 'foo',
-              version: '1.2.3',
-              action: :upgrade
-            }]
-          })
-        end
-
-        it 'matches if is the same package, the correct version and the install action' do
+        it 'does match if package & version correct, with install action' do
           expect(matcher).to be_matches({
             node: {},
             resources: [{
-              resource_name: 'yum_package',
+              resource_name: 'windows_package',
               package_name: 'foo',
               version: '1.2.3',
               action: :install
