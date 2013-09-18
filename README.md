@@ -696,7 +696,7 @@ No *with*:
 
 ```ruby
 user = chef_run.user('tomcat')
-expect(user.system)to be_true
+expect(user.system).to be_true
 expect(user.shell).to eq('/bin/false')
 ```
 
