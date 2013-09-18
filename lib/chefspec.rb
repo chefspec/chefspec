@@ -21,7 +21,6 @@ if defined?(RSpec)
   require 'chefspec/matchers/env'
   require 'chefspec/matchers/include_recipe'
   require 'chefspec/matchers/script'
-  require 'chefspec/matchers/python'
 
   require 'chefspec/helpers/describe'
   RSpec.configure do |c|
