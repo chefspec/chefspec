@@ -245,7 +245,9 @@ module ChefSpec
     #
     # @return [String] The path to the cookbooks directory
     def default_cookbook_path
-      Pathname.new(File.join(caller(2).first.split(':').slice(0..-3).join(':'), '..', '..', '..')).cleanpath.to_s
+      calling_spec = caller(2).first.split(':').slice(0..-3).join(':')
+      bits = calling_spec.split(File::SEPARATOR)
+      File.expand_path(File.join(bits[0...bits.index('spec')], '..'))
     end
 
     # The cookbook path, appended with some "common" directories to search
