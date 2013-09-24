@@ -23,6 +23,7 @@ module ChefSpec
       while metahash.has_key?(:example_group)
         metahash = metahash[:example_group]
       end
+
       metahash[:description_args].first
     end
 
