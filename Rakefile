@@ -1,5 +1,4 @@
 require 'bundler/gem_tasks'
-require 'chefspec'
 require 'cucumber/rake/task'
 require 'rspec/core/rake_task'
 
