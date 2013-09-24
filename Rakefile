@@ -16,8 +16,7 @@ Cucumber::Rake::Task.new(:acceptance) do |t|
     a.push('--color')
     a.push('--format progress')
     a.push('--strict')
-    a.push('--tags ~@broken_in_chef')
-    a.push('--tags ~@no_run_' + Chef::VERSION.gsub('.', '_'))
+    a.push('--tags ~@not_chef_' + Chef::VERSION.gsub('.', '_'))
   end.join(' ')
 end
 
