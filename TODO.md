@@ -1,7 +1,7 @@
 3.0.0 TODO
 ==========
 
-- Support `inherits` attribute
+- Deprecation errors (instead of failing)
 
 Notes
 -----

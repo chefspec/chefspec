@@ -1,6 +1,60 @@
 Changelog for ChefSpec
 ======================
 
+## 3.0.0 (TBD)
+Breaking:
+  - Renamed `ChefSpec::ChefRunner` to `ChefSpec::Runner` to better reflect what happens in Chef Core. Using `ChefRunner` will throw deprecation errors for now and will be removed in a future release.
+  - Resource matchers all follow the pattern "action_resource_name". This means the following matchers have changed:
+    - `execute_command` => `run_execute`
+    - `set_service_to_start_on_boot` => `enable_service`
+    - `create_file_with_content` => `render_file`
+    - `execute_ruby_block` => `run_ruby_block`
+  - The following matchers have been dropped:
+    - `install_package_at_version`
+  - Remove dependency on Erubis
+  - Remove dependency on MiniTest Chef Handler
+  - Remove development dependency on Cucumber
+  - Remove development dependency on i18n
+  - Remove development dependency on simplecov
+  - Separate package matchers. In prior versions of ChefSpec, the `package` matcher would match on any kind of package and any kind of package action. However, some subclasses of the package resource do not support all actions. Each package provider now has it's own matcher with only the actions it supports. Prior specs that used the generic `package` matcher will no longer match on subclasses - you must use the specific subclass matcher.
+  - Separate file/cookbook_file/template matchers. In prior versions of ChefSpec, the `file` matcher would match on `file`, `cookbook_file`, and `template`. This is not ideal because it doesn't verify the correct message was sent. Now, `file`, `cookbook_file`, and `template` matchers will _only_ match resources of that type. For generic file checking, please use the new `render_file` matcher.
+  - Guards are now evaluated by default. If a shell guard is executed, it must first be stubbed with the `stub_command` macro.
+
+Features:
+  - Added a new `render_file` action to replace `create_file_with_content`. This matcher will render the contents of any file to a string and then optionally compare the result if given a `with` chainable.
+  - All resources now accept a `with` chainable for matching specific resource attributes.
+  - Added `cookbook_file` resource matchers
+  - Added `deploy` resource matchers
+  - Added `git` resource matchers
+  - Added `http_request` resource matchers
+  - Added `ifconfig` resource matchers
+  - Normalized `link` resource matchers
+  - Added `log` resource matchers
+  - Added `mount` resource matchers
+  - Added `:immediate` and `:delayed` notification matchers
+  - Added `ohai` resource matchers
+  - Added `powershell_script` matchers (Chef 11.6+)
+  - Added `remote_directory` matchers
+  - Added `route` matchers
+  - Added `subversion` matchers
+  - Added support for testing Window's `inherits` attribute on non-Windows systems
+  - Added `stub_command` macro (formerly on `ChefSpec::ChefRunner`) for stubbbing the results of shell commands. Because shell commands are evaluated by default, ChefSpec will raise an exception when encountering a shell command that has not been stubbed.
+  - Added `stub_search` macro for easily stubbing `search` calls. Like shell commands, ChefSpec will raise an exception when encountering a `search` call that has not been stubbed.
+  - Added `stub_data_bag` macro for easily stubbing `data_bag` calls. Like shell commands, ChefSpec will raise an exception when encountering a `data_bag` call that has not been stubbed.
+  - Added `stub_data_bag_item` macro for easily stubbing` data_bag_item` calls. Like shell commands, ChefSpec will raise an exception when encountering a `data_bag_item` call that has not been stubbed.
+  - Added `stub_node` helper for quickly generating a node object from Fauxhai data
+  - Added `ChefSpec::Runner#apply` command to mimic the behavior of `chef-apply` (use with caution)
+  - Share the `ChefSpec::Runner` object with the Node object
+
+Improvements:
+  - Implement InProcess Aruba testing for ultra-fast tests
+  - Create "examples" directory for testing and demonstration
+  - Unified all failure_messages_for_should
+  - Use `shared_examples` for easily testing defined custom matchers
+  - Infer the `cookbook_path` from the calling spec
+  - Directly set node attributes with Fauxhai (formerly this was an O(n) operation)
+
+
 ## 2.0.1 (August 28, 2013)
 
 Bugfixes:
