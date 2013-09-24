@@ -2,7 +2,6 @@ rvm:
   - 1.9.3
   - 2.0.0
 gemfile:
-  - gemfiles/chef-11.4.4.gemfile
   - gemfiles/chef-11.6.0.gemfile
   - gemfiles/chef-master.gemfile
 allow_failure:
