@@ -1,3 +1,4 @@
+@no_run_11_4_4
 Feature: The powershell_script matcher
   Background:
     * I am using the "powershell_script" cookbook
