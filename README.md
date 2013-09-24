@@ -340,7 +340,7 @@ Assert that a remote file would be created:
 expect(chef_run).to create_remote_file '/tmp/foo.tar.gz'
 ```
 
-Assert that a remote file with specific attributes would be created:
+Assert that a remote file with specific parameters would be created:
 
 ```ruby
 expect(chef_run).to create_remote_file('/tmp/foo.tar.gz').with(
@@ -355,7 +355,7 @@ Assert that a remote file would be created if it did not exist:
 expect(chef_run).to create_remote_file_if_missing '/tmp/foo.tar.gz'
 ```
 
-Assert that a remote file with specific attributes would be created if it did not exist:
+Assert that a remote file with specific parameters would be created if it did not exist:
 
 ```ruby
 expect(chef_run).to create_remote_file_if_missing('/tmp/foo.tar.gz').with(
@@ -469,7 +469,7 @@ expect(chef_run).not_to install_gem_package /([Rr]ed|[Bb]lue)\-?[Cc]loth/
 If you make use of the `execute` resource within your cookbook recipes it is
 important to guard for idempotent behavior.
 
-Assert that a command with specific attributes would be run:
+Assert that a command with specific parameters would be run:
 
 ```ruby
 expect(chef_run).to execute_command('whoami > me').with(
@@ -664,9 +664,9 @@ expect(notifying_resource).to notify 'resource_type[resource_name]', :action
 
 The above can also be done with all of the other basic types (file, cookbook_file, etc.)
 
-### Asserting attributes
+### Asserting Resource Parameters
 
-Most of the above mentioned matchers correspond to resources that also have attributes. ChefSpec allows you to chain the assertions about these attributes with the main assertions of the resource.
+Most of the above mentioned matchers correspond to resources that also have parameters. ChefSpec allows you to chain the assertions about these parameters with the main assertions of the resource.
 
 Compare: assert that a *system* user was created with particular *shell*.
 
@@ -783,7 +783,7 @@ end
 Resource Guards
 ---------------
 Chef resources may use the `not_if` or `only_if`
-[conditional execution attributes](http://docs.opscode.com/resource_common_conditionals.html)
+[conditional execution parameters](http://docs.opscode.com/chef/resources.html#conditional-execution)
 to check whether a resource should be applied.
 
 By default ChefSpec will not evaluate these guards. There are two reasons for
@@ -797,7 +797,7 @@ this default:
 
 ## Evaluating Guards
 
-You can tell ChefSpec to evaluate any `only_if` or `not_if` attributes present
+You can tell ChefSpec to evaluate any `only_if` or `not_if` parameters present
 on your resources when you instantiate the `ChefRunner`:
 
 ```ruby
