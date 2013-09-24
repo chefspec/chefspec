@@ -4,7 +4,7 @@ Changelog for ChefSpec
 ## 3.0.0 (TBD)
 Breaking:
   - Renamed `ChefSpec::ChefRunner` to `ChefSpec::Runner` to better reflect what happens in Chef Core. Using `ChefRunner` will throw deprecation errors for now and will be removed in a future release.
-  - Resource matchers all follow the pattern "action_resource_name". This means the following matchers have changed:
+  - Resource matchers all follow the pattern "(action)_(resource_name)". This means the following matchers have changed:
     - `execute_command` => `run_execute`
     - `set_service_to_start_on_boot` => `enable_service`
     - `create_file_with_content` => `render_file`
