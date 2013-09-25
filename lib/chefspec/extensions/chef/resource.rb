@@ -7,7 +7,7 @@ class Chef::Resource
   # Pretend to run resource actions, adding them to the resource collection
   # to prevent actually executing resources
   #
-  # @override Chef::Resource#run_action
+  # @see Chef::Resource#run_action
   #
   def run_action(action, notification_type = nil, notifying_resource = nil)
     return if should_skip?(action)

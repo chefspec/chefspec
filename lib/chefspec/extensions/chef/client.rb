@@ -7,7 +7,7 @@ class Chef::Client
   #
   # Don't actually run ohai (we have fake data for that)
   #
-  # @override
+  # @see Chef::Client#run_ohai
   #
   def run_ohai
     # noop

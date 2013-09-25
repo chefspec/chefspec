@@ -64,7 +64,7 @@ module ChefSpec
     # @example stubbing a search with a query
     #   stub_search(:node, 'name:*')
     #
-    # @examle stubbing a search with a query as a regex
+    # @example stubbing a search with a query as a regex
     #   stub_search(:node, /name:(.+)/)
     #
     # @example stubbing a search with a block that is evaluated at runtime
@@ -79,7 +79,7 @@ module ChefSpec
     #
     # @param [String, Symbol] type
     #   the type to search to stub
-    # @param [String, Symbol, nil]
+    # @param [String, Symbol, nil] query
     #   the query to stub
     #
     # @return [ChefSpec::SearchStub]

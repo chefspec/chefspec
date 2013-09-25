@@ -14,6 +14,8 @@ module Kernel
 end
 
 module ChefSpec
+  # @deprecated {ChefSpec::ChefRunner} is deprecated. Please use
+  #   {ChefSpec::Runner} instead.
   class ChefRunner
     def self.new(*args, &block)
       deprecated '`ChefSpec::ChefRunner` is deprecated. Please use' \
