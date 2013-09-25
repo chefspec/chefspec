@@ -9,8 +9,7 @@ Breaking:
     - `set_service_to_start_on_boot` => `enable_service`
     - `create_file_with_content` => `render_file`
     - `execute_ruby_block` => `run_ruby_block`
-  - The following matchers have been dropped:
-    - `install_package_at_version`
+    - `install_package_at_version` => `install_package().with(version: '')`
   - Remove dependency on Erubis
   - Remove dependency on MiniTest Chef Handler
   - Remove development dependency on Cucumber

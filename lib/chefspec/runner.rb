@@ -52,6 +52,7 @@ module ChefSpec
       Chef::Log.level = options[:log_level] || :warn
 
       Chef::Config.reset!
+      Chef::Config.add_formatter('chefspec') unless Hash[*Chef::Config.formatters.flatten].has_key?('chefspec')
       Chef::Config[:cache_type]    = 'Memory'
       Chef::Config[:cookbook_path] = Array(options[:cookbook_path])
       Chef::Config[:force_logger]  = true
@@ -86,6 +87,7 @@ module ChefSpec
         recipe.from_file(recipe_path)
       end
 
+      @resources = []
       @run_context = Chef::RunContext.new(client.node, {}, client.events)
 
       Chef::Runner.new(@run_context).converge
@@ -114,6 +116,9 @@ module ChefSpec
       recipe_names.each { |recipe_name| node.run_list.add(recipe_name) }
 
       return self if dry_run?
+
+      # Reset the resource collection
+      @resources = []
 
       client.build_node
       @run_context = client.setup_run_context
@@ -193,7 +198,8 @@ module ChefSpec
 
     private
       def calling_cookbook_path(kaller)
-        bits = kaller.first.split(':', 2).first.split(File::SEPARATOR)
+        calling_spec = kaller.find { |line| line =~ /\/spec/ }
+        bits = calling_spec.split(':', 2).first.split(File::SEPARATOR)
         spec_dir = bits.index('spec') || 0
 
         File.expand_path(File.join(bits.slice(0, spec_dir), '..'))
@@ -211,6 +217,3 @@ module ChefSpec
       end
   end
 end
-
-# @todo Remove in ChefSpec 4.0
-ChefSpec::ChefRunner = ChefSpec::Runner
