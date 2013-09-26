@@ -20,7 +20,7 @@ module ChefSpec
     #
     RSpec::Matchers.define(:render_file) do |path, expected|
       match do |chef_run|
-        chef_run.resources.any? do |resource|
+        chef_run.resources.any? do |_, resource|
           if file_resource?(resource) &&
              (path === resource.identity || path === resource.name) &&
              has_create_action?(resource) &&

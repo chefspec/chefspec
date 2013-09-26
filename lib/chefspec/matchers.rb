@@ -20,7 +20,7 @@ module ChefSpec
 
         RSpec::Matchers.define matcher_name.to_sym do |name|
           match do |chef_run|
-            chef_run.resources.any? do |resource|
+            chef_run.resources.any? do |_, resource|
               if resource_type == resource.resource_name.to_sym &&
                  (name === resource.identity || name === resource.name) &&
                  Array(resource.action).map(&:to_sym).include?(action) &&

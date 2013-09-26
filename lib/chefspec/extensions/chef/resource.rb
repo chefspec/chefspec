@@ -18,6 +18,10 @@ class Chef::Resource
     end
 
     Chef::Log.info("Processing #{self} action #{action} (#{defined_at})")
-    node.runner.resources << self
+
+    # Append the currently run action to the existing resource actions,
+    # making sure it's a unique array of symbols.
+    @action = [self.action, action].flatten.compact.map(&:to_sym).uniq
+    node.runner.resources[self.to_s] ||= self
   end
 end

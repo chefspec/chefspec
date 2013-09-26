@@ -23,86 +23,97 @@ shared_examples('a resource matcher') do |resource_name = nil, resource_action =
   it 'does not match when there are other types of resources' do
     expect(matcher).to_not be_matches({
       node: {},
-      resources: [{
-        resource_name: 'bacon',
-        action:        @resource_action,
-      }]
+      resources: {
+        'bacon[name]' => { resource_name: 'bacon', action: @resource_action }
+      }
     })
   end
 
   it 'does not match when the resource exists but has the wrong name attribute' do
     expect(matcher).to_not be_matches({
       node: {},
-      resources: [{
-        resource_name: @resource_name,
-        action:        @resource_action,
-        identity:      'incorrect',
-        name:          'incorrect',
-      }]
+      resources: {
+        "#{@resource_name}[incorrect]" => {
+          resource_name: @resource_name,
+          action:        @resource_action,
+          identity:      'incorrect',
+          name:          'incorrect',
+        }
+      }
     })
   end
 
   it 'matches when the resource exists' do
     expect(matcher).to be_matches({
       node: {},
-      resources: [{
-        resource_name: @resource_name,
-        action:        @resource_action,
-        identity:      'resource',
-        name:          'resource',
-      }]
+      resources: {
+        "#{@resource_name}[resource]" => {
+          resource_name: @resource_name,
+          action:        @resource_action,
+          identity:      'resource',
+          name:          'resource',
+        }
+      }
     })
   end
 
   it 'does not match when the resource exists but has an incorrect attribute' do
     expect(chain_matcher).to_not be_matches({
       node: {},
-      resources: [{
-        resource_name: @resource_name,
-        action:        @resource_action,
-        identity:      'resource',
-        attribute:     'incorrect',
-        name:          'incorrect',
-      }]
+      resources: {
+        "#{@resource_name}[resource]" => {
+          resource_name: @resource_name,
+          action:        @resource_action,
+          identity:      'resource',
+          attribute:     'incorrect',
+          name:          'incorrect',
+        }
+      }
     })
   end
 
   it 'matches when all attributes are equal' do
     expect(chain_matcher).to be_matches({
       node: {},
-      resources: [{
-        resource_name: @resource_name,
-        action:        @resource_action,
-        identity:      'resource',
-        name:          'resource',
-        attribute:     'value',
-      }]
+      resources: {
+        "#{@resource_name}[resource]" => {
+          resource_name: @resource_name,
+          action:        @resource_action,
+          identity:      'resource',
+          name:          'resource',
+          attribute:     'value',
+        }
+      }
     })
   end
 
   it 'does not match when the resource exists but has an incorrect regex attribute' do
     expect(regex_matcher).to_not be_matches({
       node: {},
-      resources: [{
-        resource_name: @resource_name,
-        action:        @resource_action,
-        identity:      'resource',
-        name:          'resource',
-        attribute:     'incorrect',
-      }]
+      resources: {
+        "#{@resource_name}[resource]" => {
+          resource_name: @resource_name,
+          action:        @resource_action,
+          identity:      'resource',
+          name:          'resource',
+          attribute:     'incorrect',
+        }
+      }
     })
   end
 
   it 'matches when all attributes match the regex' do
     expect(chain_matcher).to be_matches({
       node: {},
-      resources: [{
-        resource_name: @resource_name,
-        action:        @resource_action,
-        identity:      'resource',
-        name:          'resource',
-        attribute:     'value',
-      }]
+      resources: {
+        "#{@resource_name}[resource]" => {
+          resource_name: @resource_name,
+          action:        @resource_action,
+          identity:      'resource',
+          name:          'resource',
+          attribute:     'value',
+        }
+      }
     })
   end
 

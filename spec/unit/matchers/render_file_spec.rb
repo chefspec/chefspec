@@ -11,12 +11,14 @@ module ChefSpec
             let(:chef_run) do
               {
                 node: {},
-                resources: [{
-                  resource_name: type,
-                  identity:      '/etc/foo',
-                  name:          '/etc/foo',
-                  action:        action,
-                }]
+                resources: {
+                  "#{type}[/etc/foo]" => {
+                    resource_name: type,
+                    identity:      '/etc/foo',
+                    name:          '/etc/foo',
+                    action:        action,
+                  }
+                }
               }
             end
 
@@ -27,24 +29,28 @@ module ChefSpec
             it 'does not match when there are other types of resources' do
               expect(matcher).to_not be_matches({
                 node: {},
-                resources: [{
-                  resource_name: 'bacon',
-                  identity:      '/etc/foo',
-                  name:          '/etc/foo',
-                  action:        action,
-                }]
+                resources: {
+                  'bacon[/etc/foo]' => {
+                    resource_name: 'bacon',
+                    identity:      '/etc/foo',
+                    name:          '/etc/foo',
+                    action:        action,
+                  }
+                }
               })
             end
 
             it 'does not match when the resource exists but has the wrong name attribute' do
               expect(matcher).to_not be_matches({
                 node: {},
-                resources: [{
-                  resource_name: type,
-                  identity:      '/invalid/path',
-                  name:          '/invalid/path',
-                  action:        action,
-                }]
+                resources: {
+                  "#{type}[/invalid/path]" => {
+                    resource_name: type,
+                    identity:      '/invalid/path',
+                    name:          '/invalid/path',
+                    action:        action,
+                  }
+                }
               })
             end
 

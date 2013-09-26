@@ -18,6 +18,7 @@ Breaking:
   - Separate package matchers. In prior versions of ChefSpec, the `package` matcher would match on any kind of package and any kind of package action. However, some subclasses of the package resource do not support all actions. Each package provider now has it's own matcher with only the actions it supports. Prior specs that used the generic `package` matcher will no longer match on subclasses - you must use the specific subclass matcher.
   - Separate file/cookbook_file/template matchers. In prior versions of ChefSpec, the `file` matcher would match on `file`, `cookbook_file`, and `template`. This is not ideal because it doesn't verify the correct message was sent. Now, `file`, `cookbook_file`, and `template` matchers will _only_ match resources of that type. For generic file checking, please use the new `render_file` matcher.
   - Guards are now evaluated by default. If a shell guard is executed, it must first be stubbed with the `stub_command` macro.
+  - `Runner#resources` converted from an Array to a Hash. This is to ensure that all resource actions are added (when multiple calls to run_action exist (#201)). This also drastically improves resource lookup times.
 
 Features:
   - Added a new `render_file` action to replace `create_file_with_content`. This matcher will render the contents of any file to a string and then optionally compare the result if given a `with` chainable.

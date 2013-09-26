@@ -32,15 +32,17 @@ module ChefSpec
         let(:chef_run) do
           {
             node: {},
-            resources: [{
-              resource_name: 'log',
-              action:        'tail',
-              identity:      'Hello',
-              name:          'Hello',
-              mode:          :info,
-              max_size:      4,
-              comment:       'Managed by Chef',
-            }]
+            resources: {
+              'log[Hello]' => {
+                resource_name: 'log',
+                action:        'tail',
+                identity:      'Hello',
+                name:          'Hello',
+                mode:          :info,
+                max_size:      4,
+                comment:       'Managed by Chef',
+              }
+            }
           }
         end
 
@@ -72,12 +74,12 @@ module ChefSpec
           let(:matcher) { tail_log('Hello').with(mode: :info, max_size: (3..5), comment: /Managed|b/) }
 
           it 'does not match when an attribute is different' do
-            chef_run[:resources].first[:mode] = :warn
+            chef_run[:resources]['log[Hello]'][:mode] = :warn
             expect(matcher).to_not be_matches(chef_run)
           end
 
           it 'matches when additional attributes are present' do
-            chef_run[:resources].first[:ttl] = 300
+            chef_run[:resources]['log[Hello]'][:ttl] = 300
             expect(matcher).to be_matches(chef_run)
           end
 

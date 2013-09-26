@@ -88,7 +88,7 @@ module ChefSpec
         recipe.from_file(recipe_path)
       end
 
-      @resources = []
+      @resources = {}
       @run_context = Chef::RunContext.new(client.node, {}, client.events)
 
       Chef::Runner.new(@run_context).converge
@@ -119,7 +119,7 @@ module ChefSpec
       return self if dry_run?
 
       # Reset the resource collection
-      @resources = []
+      @resources = {}
 
       client.build_node
       @run_context = client.setup_run_context
@@ -141,10 +141,10 @@ module ChefSpec
     #
     # The full collection of resources for this Runner.
     #
-    # @return [Array<Chef::Resource>]
+    # @return [Hash<String, Chef::Resource>]
     #
     def resources
-      @resources ||= []
+      @resources ||= {}
     end
 
     #
@@ -164,7 +164,7 @@ module ChefSpec
     #   The matching resource, or Nil
     #
     def find_resource(type, name)
-      resources.find do |resource|
+      resources["#{type}[#{name}]"] || resources.find do |_, resource|
         resource.resource_name.to_s == type.to_s && (name === resource.identity || name === resource.name)
       end
     end
