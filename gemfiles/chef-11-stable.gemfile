@@ -1,5 +1,0 @@
-source 'https://rubygems.org'
-
-gem 'chef', :github => 'opscode/chef', branch: '11-stable'
-
-gemspec :path => '..'
