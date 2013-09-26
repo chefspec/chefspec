@@ -9,7 +9,7 @@ gemfile:
   - gemfiles/chef-master.gemfile
 matrix:
   allow_failures:
-    gemfile: gemfiles/chef-master.gemfile
+    - gemfile: gemfiles/chef-master.gemfile
   exclude:
     - rvm: 2.0.0
       gemfile: gemfiles/chef-11.0.0.gemfile
