@@ -1,134 +1,54 @@
 ChefSpec
 ========
 [![Built on Travis](https://secure.travis-ci.org/acrmp/chefspec.png?branch=master)](http://travis-ci.org/acrmp/chefspec)
+[![Gem Version](https://badge.fury.io/rb/chefspec.png)](http://badge.fury.io/rb/chefspec)
+[![Dependency Status](https://gemnasium.com/acrmp/chefspec.png)](https://gemnasium.com/acrmp/chefspec)
+[![Code Climate](https://codeclimate.com/github/acrmp/chefspec.png)](https://codeclimate.com/github/acrmp/chefspec)
 
-ChefSpec makes it easy to write examples for Opscode Chef cookbooks. Get fast
-feedback on cookbook changes before you spin up a node to do integration
-against.
+ChefSpec is a unit testing framework for testing Chef cookbooks. ChefSpec makes it easy to write examples and get fast feedback on cookbook changes without the need for virtual machines or cloud servers to test against.
 
-ChefSpec runs your cookbook but without actually converging the node that your
-examples are being executed on. This has two benefits:
+ChefSpec runs your cookbook without actually converging the node. This has two primary benefits:
 
 - It's really fast!
-- You can write examples that vary node attributes, operating system or search results in order to test thoroughly that your cookbook works correctly.
+- You can write examples that vary node attributes, operating system, and search results to test that your cookbook works correctly.
 
-ChefSpec aims to make Chef development more productive by giving you faster
-feedback on cookbook changes.
 
-Start by watching Jim Hopp's excellent [Test Driven Development for Chef Practitioners](http://www.youtube.com/watch?v=o2e0aZUAVGw) talk from ChefConf 2012 which contains lots of great examples of using ChefSpec.
+Important Notes
+---------------
+- **This documentation will always correspond to the master branch (which may be unreleased). Please check the README of the latest git tag or the gem's source for the proper documentation!**
+- **Each resource matcher is self-documented in the `examples` directory. If you cannot find the documentation you are looking for in the README, look in the `examples` directory.**
 
-For a really nice walkthrough using ChefSpec with Guard and Fauxhai to do Test
-Driven Development watch
-[Seth Vargo's TDDing tmux talk](http://www.confreaks.com/videos/2364-mwrc2013-tdding-tmux)
-from MountainWest RubyConf 2013.
-
-**This documentation will always correspond to the master branch (which may be unreleased). Please check the README of the latest git tag or the gem's source for the proper documentation!**
 
 Writing a Cookbook Example
 --------------------------
-This is an extremely basic Chef recipe that just installs an operating system package.
+Given an extremely basic Chef recipe that just installs an operating system package:
 
 ```ruby
-package "foo" do
-  action :install
-end
+package 'foo'
 ```
 
-This is a matching spec file that defines an example that checks that the
-package would be installed.
-
-```ruby
-require "chefspec"
-
-describe "example::default" do
-  let(:chef_run) { ChefSpec::Runner.new.converge 'example::default' }
-  it "installs foo" do
-    expect(chef_run).to install_package 'foo'
-  end
-end
-```
-
-Let's step through this spec file to see what is happening:
-
-1. At the top of the spec file we require the chefspec gem.
-1. The `describe` keyword is part of RSpec and indicates that everything from
-   this line up until line 8 is describing the `example::default` recipe.
-   Normally the convention is that you would have a separate spec file per
-   recipe.
-1. The `let` block on line 4 creates the ChefSpec runner and then does a fake
-   Chef run with the run list of `example::default`. Any subsequent
-   examples can then refer to `chef_run` in order to make assertions about the
-   resources that were created during the mock converge.
-1. The `it` block on line 5 is an example that specifies that the `foo` package
-   should have been installed. Normally you will have multiple `it` blocks per
-   recipe, each making a single assertion.
-
-Instead of hardcoding recipe name everywhere, it's possible to use ```described_recipe```
-and ```described_cookbook``` methods which for the above example will return ```example::default```
-and ```example``` appropriately. These helpers can be used like ```described_class``` is used
-in RSpec - to DRY the name of described cookbook/recipe making specs more refactoring proof.
-
-```ruby
-require "chefspec"
-
-describe "example::default" do
-  let(:chef_run) { ChefSpec::Runner.new.converge described_recipe }
-  it "includes another_recipe" do
-    expect(chef_run).to include_recipe "#{described_cookbook}::another_recipe"
-  end
-end
-```
-
-Generating an Example
----------------------
-Ideally you should be writing your specs in tandem with your recipes and
-practicing TDD. However if you have an existing cookbook and you are using
-Chef 0.10.0 or greater then ChefSpec can generate placeholder RSpec examples
-for you. Knife will automagically detect the ChefSpec Knife Plugin and provide
-you with the new `create_specs` subcommand.
-
-You can choose to run this immediately after creating a new cookbook like so:
-
-    $ knife cookbook create -o . my_new_cookbook
-    $ knife cookbook create_specs -o . my_new_cookbook
-
-The first command is a Knife built-in and will generate the standard Chef
-cookbook structure, including a default recipe. The second is provided by
-ChefSpec and will add a `specs` directory and a `default_spec.rb` placeholder.
-
-You'll see the following output:
-
-    ** Creating specs for cookbook: my_new_cookbook
-
-If you look at the generated example you'll see that on line 6 there is a
-`pending` keyword indicating where you will later add your cookbook example:
-
-    $ cat -n my_new_cookbook/spec/default_spec.rb
+the associated ChefSpec test might look like:
 
 ```ruby
 require 'chefspec'
 
-describe 'my_new_cookbook::default' do
-  let(:chef_run) { ChefSpec::Runner.new.converge 'my_new_cookbook::default' }
-  it 'does something' do
-    pending 'Your recipe examples go here.'
+describe 'example::default' do
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
+  it 'installs foo' do
+    expect(chef_run).to install_package('foo')
   end
 end
 ```
 
-You can run the example using rspec:
+Let's step through this file to see what is happening:
 
-    $ rspec my_new_cookbook
+1. At the top of the spec file we require the chefspec gem. This is required so that our custom matchers are loaded.
+1. The `describe` keyword is part of RSpec and indicates that everything from this line up until line 7 is describing the `example::default` recipe. Normally the convention is that you would have a separate spec file per recipe in your cookbook.
+1. The `let` block on line 4 creates the `ChefSpec:Runner` and then does a fake Chef run with the run_list of `example::default`. Any subsequent examples can then refer to `chef_run` in order to make assertions about the resources that were created during the mock converge.
+1. The `described_recipe` macro is a ChefSpec helper method that infers the recipe from the `describe` block. Alternatively you could specify the recipe directly.
+1. The `it` block on line 6 is an example specifying that the `foo` package is installed. Normally you will have multiple `it` blocks per recipe, each making a single assertion.
 
-And you'll see output similar to the following:
-
-    Pending:
-      my_new_cookbook::default does something
-        # Your recipe examples go here.
-        # ./my_new_cookbook/spec/default_spec.rb:5
-
-    Finished in 0.00051 seconds
-    1 example, 0 failures, 1 pending
 
 Examples should do more than restate static resources
 -----------------------------------------------------
@@ -152,118 +72,121 @@ for all of the variations with real converges can be incredibly time consuming.
 Doing this with real converges is prohibitively slow, but with ChefSpec you can
 identify regressions very quickly while developing your cookbook.
 
+
 Setting node Attributes
 -----------------------
-You can set node attributes within an individual example. In this example
-the value of the `foo` attribute will be set to `bar` on line 3. The example
-then asserts that a resource is created based on the attribute name.
-In this example the affected resource is a log resource, but it could just as
-easily be a template or package name derived from an attribute value.
+You can set node attribtues when creating the `ChefSpec::Runner` by passing a block to the initializer:
 
 ```ruby
-it "logs the foo attribute" do
-  chef_run = ChefSpec::Runner.new
-  chef_run.node.set['foo'] = 'bar'
-  chef_run.converge 'example::default'
-  expect(chef_run).to log 'The value of node.foo is: bar'
+describe 'example::default' do
+  let(:chef_run) do
+    ChefSpec::ChefRunner.new do |node|
+      node.set['cookbook']['attribute'] = 'hello'
+    end
+  end
 end
 ```
 
-A common mistake is to call `#converge` on the runner before setting the node
-attributes. If you do this then the attributes will not be set correctly.
+This will set the node attribute for all Chef runners. If you only need to set an attribute for a specific test, you can set that attribute in the `it` block:
 
 ```ruby
-# !!! Don't do this !!!
-it "logs the foo attribute" do
-  chef_run = ChefSpec::Runner.new.converge 'example::default'
-  chef_run.node.set['foo'] = 'bar'
-  expect(chef_run).to log 'The value of node.foo is: bar'
+describe 'example::default' do
+  let(:chef_run) { ChefSpec::ChefRunner.new }
+
+  it 'performs the action' do
+    chef_run.node.set['cookbook']['attribute'] = 'hello'
+    chef_run.converge(described_recipe)
+  end
 end
 ```
 
-To avoid this, you can make use of the alternative syntax for specifying node
-attributes. Using this approach you pass a block when creating the runner.
+Notice that, unlike the previous examples, here were are converging the node inside the `it` block, rather than the `let` block. This is because if we converge the node _before_ setting those node attributes, the Chef Runner will not use the resources (because it's already been run). In other words, this won't work:
 
 ```ruby
-chef_run = ChefSpec::Runner.new do |node|
-  node.set['my_attribute'] = 'bar'
-  node.set['my_other_attribute'] = 'bar2'
+# !!! Don't do this
+describe 'example::default' do
+  it 'performs the action' do
+    chef_run = ChefSpec::Runer.new.converge(described_recipe)
+    chef_run.node.set['cookbook']['attribute'] = 'hello'
+    chef_run.converge(described_recipe)
+  end
 end
-chef_run.converge 'example::default'
 ```
+
 
 Ohai Attributes
 ---------------
-When you converge a node using Chef a large number of attributes are
-pre-populated by Chef which runs
-[Ohai](http://wiki.opscode.com/display/chef/Ohai) to discover information about
-the node it is running on.
-
-You can use these attributes within your cookbooks - the most common usage is
-to declare different resources based on the node platform (operating system)
-but Ohai ships with a large number of plugins that discover everything from
-hardware to installed language interpreters.
-
-It's useful to be able to override these values from within your cookbook
-examples in order to assert the resources created on different platforms. In
-this way you can explore all of the code paths within your cookbook despite
-running the examples on a different platform altogether. Note that line 2
-declares the platform underneath `automatic_attrs`.
+When you converge a real node using Chef, a large number of attributes are pre-populated by Chef which runs [Ohai](http://github.com/opscode/ohai) to discover information about
+the node on which it's running. Unfortunately, in ChefSpec, we cannot effectively rely on the results from Ohai, because the target system may not match the local one. Many cookboos rely on Ohai attributes, especially those that use platform conditionals and networking attributes. You can mock these attributes like in the previous section:
 
 ```ruby
-chef_run = ChefSpec::Runner.new
-chef_run.node.automatic_attrs['platform'] = 'Commodore 64'
-expect(chef_run.converge('example::default')).to log 'I am running on a Commodore 64.'
-```
-
-"Missing" Attributes
---------------------
-[Fauxhai](https://github.com/customink/fauxhai) from Seth Vargo is now a dependency of ChefSpec. This means you leverage all the power of fauxhai (and it's community contributed ohai mocks) without additional configuration. Just specify the `platform` and `version` attributes when you instantiate your `ChefRunner`:
-
-```ruby
-chef_run = ChefSpec::Runner.new(platform:'ubuntu', version:'12.04') do |node|
-  node.set['my_attribute'] = 'bar'
-  node.set['my_other_attribute'] = 'bar2'
-end
-chef_run.converge 'example::default'
-```
-
-This will include all the default attributes for Ubuntu Precise 12.04. By default, ChefSpec uses the built-in ChefSpec environment (which is minimally configured) for backward compatibility.
-
-For more on Fauxhai
-[check out this blog post](http://technology.customink.com/blog/2012/08/03/testing-chef-cookbooks/) from CustomInk.
-
-Search Results
---------------
-Chef cookbooks will often make use of search in order to locate other services
-within your infrastructure. An example would be a load balancer that searches
-for the webservers to add to its pool.
-
-You can use the built-in features within RSpec to stub out responses to search
-queries. Given a recipe that searches for webservers:
-
-```ruby
-search(:node, 'role:web') do |web_node|
-  log "Adding webserver to the pool: #{web_node['hostname']}"
+describe 'example::default' do
+  let(:chef_run) do
+    ChefSpec::ChefRunner.new do |node|
+      node.automatic_attrs['platform'] = 'Ubuntu'
+      node.automatic_attrs['platform_version'] = '12.04'
+    end
+  end
 end
 ```
 
-A example that returned a pre-canned search result to the recipe and then
-asserted that it then logged each node added to the pool might look like this:
+However, this can quickly become cumbersome with large numbers of node attributes. Fortunately, you can tell ChefSpec to automatically generate Ohai attributes for another platform by specifying the `platform` and `version` keys to the `ChefSpec::Runner`:
 
 ```ruby
-it "logs each node added to the load balancer pool" do
-  Chef::Recipe.any_instance.stub(:search).with(:node, 'role:web').and_yield(
-    {'hostname' => 'web1.example.com'})
-  chef_run = ChefSpec::Runner.new
-  chef_run.converge 'my_new_cookbook::default'
-  expect(chef_run).to log 'Adding webserver to the pool: web1.example.com'
+describe 'example::default' do
+  let(:chef_run) { ChefSpec::ChefRunner.new(platform: 'ubuntu', version: '12.04') }
 end
 ```
 
-Line 2 defines the search response for a search for all nodes with the `web`
-role. Line 6 then asserts that the hostname of the returned node is logged as
-expected.
+Under the hood, ChefSpec uses Seth Vargo's [Fauxhai](https://github.com/customink/fauxhai). Please see Fauxhai's README for a full list of configuration options (such as passing a static JSON file and the various types of systems that can be mocked). For more on Fauxhai [check out this blog post](http://technology.customink.com/blog/2012/08/03/testing-chef-cookbooks/) from CustomInk.
+
+
+Stubbing Search
+---------------
+Because ChecSpec is a unit-testing framework, all third-party API calls should be mocked and stubbed. ChefSpec 3.0 exposes a helpful RSpec macro for stubbing search results. If you converge a Chef recipe that has a `search` call, ChefSpec will throw an error like:
+
+```text
+Real searches are disabled. Unregistered search: search(:node, 'name:hello')
+
+You can stub this search with:
+
+  stub_search(:node, 'name:hello') {  }
+
+============================================================
+```
+
+Just like the error message says, you must stub the search result. This can be done inside a `before` block or inside the `it` block:
+
+```ruby
+describe 'example::default' do
+  let(:chef_run) { ChefSpec::ChefRunner.new }
+
+  before do
+    stub_search(:node, 'name:hello').and_return([])
+  end
+end
+```
+
+```ruby
+describe 'example::default' do
+  let(:chef_run) { ChefSpec::ChefRunner.new }
+
+  before do
+    stub_search(:node, 'name:hello') { ruby_code }
+  end
+end
+```
+
+```ruby
+describe 'example::default' do
+  let(:chef_run) { ChefSpec::ChefRunner.new }
+
+  it 'performs the action' do
+    stub_search(:node, 'name:hello').and_return(nil)
+  end
+end
+```
+
 
 Making Assertions
 -----------------
@@ -710,6 +633,7 @@ Assert that file is created with number of backups of 1 to 3:
 expect(chef_run).to create_file('/tmp/some_file').with(backup: (1..3))
 ```
 
+
 Varying the Cookbook Path
 -------------------------
 By default ChefSpec will infer the `cookbook_path` from the location of the spec. However if you want to use a different path you can pass it in as an argument to the `ChefRunner` constructor like so:
@@ -767,6 +691,7 @@ end
 
 See #54 for the in-depth discussion.
 
+
 Writing examples for LWRP's
 ---------------------------
 By default ChefSpec will override all resources to take no action. In order to allow
@@ -785,6 +710,7 @@ describe 'foo::default' do
   end
 end
 ```
+
 
 Resource Guards
 ---------------
@@ -933,6 +859,12 @@ end
 If a DataError is raised with the message "Frequency yearly not expected", the
 spec output will be quiet.  Any other exception will have full chef diagnostic
 information output. (The `expect {...}.to raise_error ... ` is basic rspec.)
+
+
+Videos
+------
+- Jim Hopp's excellent [Test Driven Development for Chef Practitioners](http://www.youtube.com/watch?v=o2e0aZUAVGw)
+- Seth Vargo's [TDDing tmux talk](http://www.confreaks.com/videos/2364-mwrc2013-tdding-tmux) Using ChefSpec with Guard.
 
 
 Building ChefSpec Locally

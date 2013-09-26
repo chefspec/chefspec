@@ -20,7 +20,8 @@ Gem::Specification.new do |s|
 
   # Development Dependencies
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'yard', '~> 0.8'
+  s.add_development_dependency 'redcarpet', '~> 3.0'
+  s.add_development_dependency 'yard',      '~> 0.8'
 
   # Testing Dependencies
   s.add_development_dependency 'aruba',     '~> 0.5'
