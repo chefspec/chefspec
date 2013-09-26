@@ -22,19 +22,24 @@ Breaking:
 Features:
   - Added a new `render_file` action to replace `create_file_with_content`. This matcher will render the contents of any file to a string and then optionally compare the result if given a `with` chainable.
   - All resources now accept a `with` chainable for matching specific resource attributes.
+  - Added `batch` resource matchers
   - Added `cookbook_file` resource matchers
   - Added `deploy` resource matchers
+  - Added `erl_call` resource matchers
   - Added `git` resource matchers
   - Added `http_request` resource matchers
   - Added `ifconfig` resource matchers
   - Normalized `link` resource matchers
   - Added `log` resource matchers
+  - Added `mdadm` resource matchers
   - Added `mount` resource matchers
   - Added `:immediate` and `:delayed` notification matchers
   - Added `ohai` resource matchers
   - Added `powershell_script` matchers (Chef 11.6+)
+  - Added `registry_key` matchers
   - Added `remote_directory` matchers
   - Added `route` matchers
+  - Added `scm` matchers
   - Added `subversion` matchers
   - Added support for testing Window's `inherits` attribute on non-Windows systems
   - Added `stub_command` macro (formerly on `ChefSpec::ChefRunner`) for stubbbing the results of shell commands. Because shell commands are evaluated by default, ChefSpec will raise an exception when encountering a shell command that has not been stubbed.
@@ -52,6 +57,7 @@ Improvements:
   - Use `shared_examples` for easily testing defined custom matchers
   - Infer the `cookbook_path` from the calling spec
   - Directly set node attributes with Fauxhai (formerly this was an O(n) operation)
+  - Refactored ExpectExpectation to work without stubbing
 
 
 ## 2.0.1 (August 28, 2013)

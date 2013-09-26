@@ -1,7 +1,6 @@
 3.0.0 TODO
 ==========
 
-- Deprecation errors (instead of failing)
 
 Notes
 -----

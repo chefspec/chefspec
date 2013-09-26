@@ -1,22 +1,14 @@
-require 'rspec/matchers/built_in/raise_error'
+class RSpec::Matchers::BuiltIn::RaiseError
+  class << self
+    attr_accessor :last_run
+  end
 
-module RSpec
-  module Matchers
-    module BuiltIn
-      class RaiseError
-        class << self
-          attr_accessor :last_run
-        end
+  attr_reader :expected_error, :expected_message
 
-        attr_reader :expected_error, :expected_message
-
-        alias_method :old_matches?, :matches?
-        def matches?(*args)
-          self.class.last_run = self
-          old_matches?(*args)
-        end
-      end
-    end
+  alias_method :old_matches?, :matches?
+  def matches?(*args)
+    self.class.last_run = self
+    old_matches?(*args)
   end
 end
 

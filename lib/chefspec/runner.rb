@@ -52,7 +52,8 @@ module ChefSpec
       Chef::Log.level = options[:log_level] || :warn
 
       Chef::Config.reset!
-      Chef::Config.add_formatter('chefspec') unless Hash[*Chef::Config.formatters.flatten].has_key?('chefspec')
+      Chef::Config.formatters.clear
+      Chef::Config.add_formatter('chefspec')
       Chef::Config[:cache_type]    = 'Memory'
       Chef::Config[:cookbook_path] = Array(options[:cookbook_path])
       Chef::Config[:force_logger]  = true

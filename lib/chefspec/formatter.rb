@@ -263,8 +263,7 @@ module ChefSpec
       end
 
       def expecting_exception(exception, &block)
-        yield
-        # yield unless ChefSpec::ExpectException.new(exception).expected?
+        yield unless ChefSpec::ExpectException.new(exception).expected?
       end
 
   end

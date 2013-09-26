@@ -1,0 +1,17 @@
+require 'chefspec'
+
+describe 'mdadm::assemble' do
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
+  it 'assembles a mdadm with an explicit action' do
+    expect(chef_run).to assemble_mdadm('explicit_action')
+  end
+
+  it 'assembles a mdadm with attributes' do
+    expect(chef_run).to assemble_mdadm('with_attributes').with(chunk: 8)
+  end
+
+  it 'assembles a mdadm when specifying the identity attribute' do
+    expect(chef_run).to assemble_mdadm('identity_attribute')
+  end
+end
