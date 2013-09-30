@@ -218,7 +218,7 @@ module ChefSpec
     # @param [String] name The resource name
     # @return [Chef::Resource] The matching resource, or Nil
     def find_resource(type, name)
-      resources.find{|resource| resource_type(resource) == type and resource.name == name}
+      resources.find{|resource| resource_type(resource) == type and resource.name == resource.identity}
     end
 
     private
