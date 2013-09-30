@@ -17,10 +17,17 @@ def matcher_defined?(matcher)
   RSpec::Matchers.method_defined?(matcher)
 end
 
+# The assumption is that the specs are contained in a cookbook, and the cookbook
+# lives with its siblings nested in a directory (i.e. the cookbook path ).
+#
+# @return [String] path to the directory containing this project
+def cookbook_path
+  File.expand_path('../../..', __FILE__)
+end
+
 class ErrorStub < StandardError
   def initialize(*args)
     super(args.first)
     @args = args
   end
 end
-

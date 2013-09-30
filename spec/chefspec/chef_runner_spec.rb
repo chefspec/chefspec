@@ -11,7 +11,7 @@ module ChefSpec
       it 'sets the chef cookbook path to a default if not provided' do
         Chef::Config[:cookbook_path] = nil
         ChefSpec::ChefRunner.new
-        expect(Chef::Config[:cookbook_path]).not_to be_nil
+        expect(Chef::Config[:cookbook_path]).to include(cookbook_path)
       end
 
       it 'sets the chef cookbook path to any provided value' do
