@@ -259,7 +259,7 @@ describe 'example::default' do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
 
   it 'does something' do
-    expect(chef_run).to ACTION_RESOURCE(NAME_ATTRIBUTE)
+    expect(chef_run).to ACTION_RESOURCE(NAME)
   end
 end
 ```
@@ -268,7 +268,7 @@ where:
 
 - *ACTION* - the action on the resource (e.g. `install`)
 - *RESOURCE* - the name of the resource (e.g. `package`)
-- *NAME_ATTRIBUTE* - the name attribute for the resource (e.g. `apache2`)
+- *NAME* - the name attribute for the resource (e.g. `apache2`)
 
 Here's a more concrete example:
 
@@ -397,7 +397,7 @@ end
 
 ChefSpec's built-in `ResourceMatcher` _should_ satisfy most common use cases for custom LWRPs and matchers. However, if your cookbook is extending Chef core or is outside of the scope of traditional resource testing, you may need to create a custom matcher. For more information on custom matchers in RSpec, please [watch the Railscast on Custom Matchers](http://railscasts.com/episodes/157-rspec-matchers-macros).
 
-### Example
+#### Example
 Suppose I have a cookbook named "motd" with a resource/provider "message".
 
 ```ruby
@@ -446,7 +446,7 @@ _Don't forget to include documentation in your cookbook's README noting the cust
 
 Silent Output
 -------------
-In Chef 11, custom formatters were introduced. ChefSpec uses a custom formatter to supress Chef Client output. In the event of a convergence failure, ChefSpec will output the error message from the run to help you debug:
+In Chef 11, custom formatters were introduced and ChefSpec uses a custom formatter to supress Chef Client output. In the event of a convergence failure, ChefSpec will output the error message from the run to help you debug:
 
 ```text
 ================================================================================

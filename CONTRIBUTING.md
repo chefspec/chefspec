@@ -19,7 +19,7 @@ Will Not Merge
 --------------
 This section details, specifically, Pull Requests or features that will _not_ be merged:
 
-1. Machers for non-Chef core resources. ChefSpec 3.0 introduced a way for cookbook maintiners to package matchers _with_ their cookbooks at distribution time.
+1. Machers for non-Chef core resources. ChefSpec 3.0 introduced a way for cookbook maintiners to [package matchers _with_ their cookbooks](https://github.com/acrmp/chefspec/tree/unify_matchers#packaging-lwrp-matchers) at distribution time.
 2. New features without accompanying unit tests, cucumber tests, and documentation.
 
 
