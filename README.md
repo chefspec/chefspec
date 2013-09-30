@@ -371,11 +371,81 @@ end
 
 Packaging LWRP Matchers
 -----------------------
-Todo: docs
+ChefSpec exposes the ability for cookbook authors to package custom matchers in a cookbooks so other developers may take advantage of them in testing. This is done by creating a special library file in the cookbook named `matcher.rb`:
+
+```ruby
+# cookbook/libraries/matcher.rb
+
+if defined?(ChefSpec)
+  def my_custom_matcher(resource_name)
+    ChefSpec::Matchers::ResourceMatcher.new(resource, action, resource_name)
+  end
+end
+```
+
+1. The entire contents of this file must be wrapped with the conditional clause checking if `ChefSpec` is defined.
+2. Each matcher is actually a top-level method. The above example corresponds to the following RSpec test:
+
+    ```ruby
+    expect(chef_run).to my_custom_matcher('...')
+    ```
+
+3. `ChefSpec::Matchers::ResourceMatcher` accepts three parameters:
+    1. The name of the resource to find in the resource collection (i.e. the name of the LWRP).
+    2. The action that resource should receive.
+    3. The value of the name attribute of the resource to find. (This is typically proxied as the value from the matcher definition.)
+
+ChefSpec's built-in `ResourceMatcher` _should_ satisfy most common use cases for custom LWRPs and matchers. However, if your cookbook is extending Chef core or is outside of the scope of traditional resource testing, you may need to create a custom matcher. For more information on custom matchers in RSpec, please [watch the Railscast on Custom Matchers](http://railscasts.com/episodes/157-rspec-matchers-macros).
+
+### Example
+Suppose I have a cookbook named "motd" with a resource/provider "message".
+
+```ruby
+# motd/resources/message.rb
+
+actions :write
+default_action :write
+
+attribute :message, name_attribute: true
+```
+
+```ruby
+# motd/providers/message.rb
+
+action :write do
+  # ...
+end
+```
+
+Chef will dynamically build the `motd_message` LWRP at runtime that can be used in the recipe DSL:
+
+```ruby
+motd_message 'my message'
+```
+
+You can package a custom ChefSpec matcher with the motd cookbook by including the following code in `libraries/matcher.rb`:
+
+```ruby
+# motd/libraries/matcher.rb
+
+if defined?(ChefSpec)
+  def write_motd_message(message)
+    ChefSpec::Matchers::ResourceMatcher.new(:motd_message, :write, message)
+  end
+end
+```
+
+This allows developers to write RSpec tests against your LWRP in their own cookbooks:
+
+```ruby
+expect(chef_run).to write_motd_message('my message')
+```
+
+_Don't forget to include documentation in your cookbook's README noting the custom matcher and it's API!_
 
 
-Silencing Output
-----------------
+Silent Output
+-------------
 In Chef 11, custom formatters were introduced. ChefSpec uses a custom formatter to supress Chef Client output. In the event of a convergence failure, ChefSpec will output the error message from the run to help you debug:
 
 ```text

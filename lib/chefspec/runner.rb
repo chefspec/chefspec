@@ -145,6 +145,10 @@ module ChefSpec
     end
 
     #
+    # The +Chef::Node+ corresponding to this Runner.
+    #
+    # @return [Chef::Node]
+    #
     def node
       return @node if @node
 
