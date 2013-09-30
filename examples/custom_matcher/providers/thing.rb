@@ -1,2 +1,2 @@
-action(:left)  {}
-action(:right) {}
+action(:install)  {}
+action(:remove) {}

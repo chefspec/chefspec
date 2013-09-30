@@ -6,6 +6,22 @@ require 'chef/resources'
 
 module ChefSpec
   class Runner
+    #
+    # Defines a new runner method on the +ChefSpec::Runner+.
+    #
+    # @param [Symbol] resource_name
+    #   the name of the resource to define a method
+    #
+    # @return [self]
+    #
+    def self.define_runner_method(resource_name)
+      define_method(resource_name) do |identity|
+        find_resource(resource_name, identity)
+      end
+
+      self
+    end
+
     # @return [Hash]
     attr_reader :options
 
@@ -151,21 +167,42 @@ module ChefSpec
     # Find the resource with the declared type and resource name.
     #
     # @example Find a template at `/etc/foo`
-    #   chef_run.find_resource('/etc/foo') #=> #<Chef::Resource::Template>
+    #   chef_run.find_resource(:template, '/etc/foo') #=> #<Chef::Resource::Template>
     #
     #
-    # @param [String] type
+    # @param [Symbol] type
     #   The type of resource (sometimes called `resource_name`) such as `file`
     #   or `directory`.
     # @param [String, Regexp] name
     #   The value of the name attribute or identity attribute for the resource.
     #
-    # @return [Chef::Resource]
-    #   The matching resource, or Nil
+    # @return [Chef::Resource, nil]
+    #   The matching resource, or nil if one is not found
     #
     def find_resource(type, name)
-      resources["#{type}[#{name}]"] || resources.find do |_, resource|
-        resource.resource_name.to_s == type.to_s && (name === resource.identity || name === resource.name)
+      return resources["#{type}[#{name}]"] if resources["#{type}[#{name}]"]
+
+      resources.values.find do |resource|
+        resource.resource_name.to_sym == type && (name === resource.identity || name === resource.name)
+      end
+    end
+
+    #
+    # Find the resource with the declared type.
+    #
+    # @example Find all template resources
+    #   chef_run.find_resources('template') #=> [#<Chef::Resource::Template>, #...]
+    #
+    #
+    # @param [Symbol] type
+    #   The type of resource such as `:file` or `:directory`.
+    #
+    # @return [Array<Chef::Resource>]
+    #   The matching resources
+    #
+    def find_resources(type)
+      resources.select do |_, resource|
+        resource.resource_name.to_s == type.to_s
       end
     end
 
@@ -195,6 +232,15 @@ module ChefSpec
     def to_s
       return "chef_run: #{node.run_list.to_s}" unless node.run_list.empty?
       'chef_run'
+    end
+
+    #
+    # The runner as a String with helpful output.
+    #
+    # @return [String]
+    #
+    def inspect
+      "#<#{self.class} options: #{options.inspect}, run_list: '#{node.run_list.to_s}'>"
     end
 
     private

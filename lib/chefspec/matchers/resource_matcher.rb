@@ -1,0 +1,139 @@
+module ChefSpec::Matchers
+  class ResourceMatcher
+    def initialize(resource_name, expected_action, expected_identity)
+      @resource_name     = resource_name
+      @expected_action   = expected_action
+      @expected_identity = expected_identity
+    end
+
+    def with(parameters = {})
+      params.merge(parameters)
+      self
+    end
+
+    #
+    # Allow users to specify fancy #with matchers.
+    #
+    def method_missing(m, *args, &block)
+      if m.to_s =~ /^with_(.+)$/
+        with($1.to_sym => args.first)
+        self
+      else
+        super
+      end
+    end
+
+    def matches?(runner)
+      @runner = runner
+
+      if resource
+        resource_actions.include?(@expected_action) && unmatched_parameters.empty?
+      else
+        false
+      end
+    end
+
+    def failure_message_for_should
+      if resource
+        if resource_actions.include?(@expected_action)
+          "expected '#{resource.to_s}' to have parameters:" \
+          "\n\n" \
+          "  " + unmatched_parameters.collect { |parameter, h|
+            "  #{parameter} #{h[:expected].inspect}, was #{h[:actual].inspect}"
+          }
+
+        else
+          "expected '#{resource.to_s}' actions #{resource_actions.inspect}" \
+          " to include ':#{@expected_action}'"
+        end
+      else
+        "expected '#{@resource_name}[#{@expected_identity}]' with" \
+        " action ':#{@expected_action}' to be in Chef run. Other" \
+        " #{@resource_name} resources:" \
+        "\n\n" \
+        "  " + similar_resources.map(&:to_s).join("  \n")
+      end
+    end
+
+    # def failure_message_for_should_not
+    #   "expected #{}"
+    # end
+
+    def description
+      "#{@expected_action} #{@resource_name}"
+    end
+
+    private
+      def unmatched_parameters
+        return @_unmatched_parameters if @_unmatched_parameters
+
+        @_unmatched_parameters = {}
+
+        params.each do |parameter, expected|
+          unless matches_parameter?(parameter, expected)
+            @_unmatched_parameters[parameter] = {
+              expected: expected,
+              actual:   safe_send(parameter),
+            }
+          end
+        end
+
+        @_unmatched_parameters
+      end
+
+      def matches_parameter?(parameter, expected)
+        # Chef 11+ stores the source parameter internally as an Array
+        if parameter == :source
+          Array(expected) == Array(safe_send(parameter))
+        else
+          expected === safe_send(parameter)
+        end
+      end
+
+      def safe_send(parameter)
+        resource.send(parameter)
+      rescue NoMethodError
+        nil
+      end
+
+      #
+      # Any other resources in the Chef run that have the same resource
+      # type. Used by {failure_message} to be ultra helpful.
+      #
+      # @return [Array<Chef::Resource>]
+      #
+      def similar_resources
+        @_similar_resources ||= @runner.find_resources(@resource_name)
+      end
+
+      #
+      # Find the resource in the Chef run by the given class name and
+      # resource identity/name.
+      #
+      # @see ChefSpec::Runner#find_resource
+      #
+      # @return [Chef::Resource, nil]
+      #
+      def resource
+        @_resource ||= @runner.find_resource(@resource_name, @expected_identity)
+      end
+
+      #
+      # The list of actions on this resource.
+      #
+      # @return [Array<Symbol>]
+      #
+      def resource_actions
+        @_resource_actions ||= Array(resource.action).map(&:to_sym)
+      end
+
+      #
+      # The list of parameters passed to the {with} matcher.
+      #
+      # @return [Hash]
+      #
+      def params
+        @_params ||= {}
+      end
+  end
+end

@@ -1,5 +1,6 @@
 RSpec.configure do |config|
   config.include(ChefSpec::API)
+  config.include(ChefSpec::Macros)
 
   config.after(:each) do
     ChefSpec::Stubs::CommandRegistry.reset!

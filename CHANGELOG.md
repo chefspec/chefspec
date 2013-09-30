@@ -1,15 +1,23 @@
-Changelog for ChefSpec
+CHANGELOG for ChefSpec
 ======================
 
 ## 3.0.0 (TBD)
 Breaking:
   - Renamed `ChefSpec::ChefRunner` to `ChefSpec::Runner` to better reflect what happens in Chef Core. Using `ChefRunner` will throw deprecation errors for now and will be removed in a future release.
-  - Resource matchers all follow the pattern "(action)_(resource_name)". This means the following matchers have changed:
+  - Removed MiniTest Chef Handler examples/matchers
+  - No longer load default cookbook paths:
+    - vendor/cookbooks
+    - test/cookbooks
+    - test/integration (test kitchen)
+    - spec/cookbooks
+  - Resource matchers all follow the pattern "(action)_(resource_name)". ChefSpec will warn you of these deprecations in 3.0. They will be removed in 4.0. However, some resources cannot be automatically converted - **these resources will raise a deprecation exception of `ChefSpec::NoConversionError`**. The following matchers have changed:
     - `execute_command` => `run_execute`
     - `set_service_to_start_on_boot` => `enable_service`
     - `create_file_with_content` => `render_file`
+    - `execute_(script)` => `run_(script)`
     - `execute_ruby_block` => `run_ruby_block`
     - `install_package_at_version` => `install_package().with(version: '')`
+    - `*_python_pip` => (removed - see "Packaging Custom LWRPs in the README")
   - Remove dependency on Erubis
   - Remove dependency on MiniTest Chef Handler
   - Remove development dependency on Cucumber
@@ -23,6 +31,7 @@ Breaking:
 Features:
   - Added a new `render_file` action to replace `create_file_with_content`. This matcher will render the contents of any file to a string and then optionally compare the result if given a `with` chainable.
   - All resources now accept a `with` chainable for matching specific resource attributes.
+  - Windows attributes are now testable on non-Windows systems (like `inherits`)
   - Added `batch` resource matchers
   - Added `cookbook_file` resource matchers
   - Added `deploy` resource matchers
@@ -40,7 +49,6 @@ Features:
   - Added `registry_key` matchers
   - Added `remote_directory` matchers
   - Added `route` matchers
-  - Added `scm` matchers
   - Added `subversion` matchers
   - Added support for testing Window's `inherits` attribute on non-Windows systems
   - Added `stub_command` macro (formerly on `ChefSpec::ChefRunner`) for stubbbing the results of shell commands. Because shell commands are evaluated by default, ChefSpec will raise an exception when encountering a shell command that has not been stubbed.
@@ -52,6 +60,7 @@ Features:
   - Share the `ChefSpec::Runner` object with the Node object
 
 Improvements:
+  - Move to inline documentation (Yard)
   - Implement InProcess Aruba testing for ultra-fast tests
   - Create "examples" directory for testing and demonstration
   - Unified all failure_messages_for_should

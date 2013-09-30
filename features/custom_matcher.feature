@@ -7,5 +7,5 @@ Feature: The custom_matcher matcher
     * the output should contain "0 failures"
   Examples:
     | Matcher |
-    | left    |
-    | right   |
+    | install |
+    | remove  |

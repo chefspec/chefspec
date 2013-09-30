@@ -1,6 +1,6 @@
 ChefSpec Issues
 ---------------
-So you're having problems with ChefSpec. This file is here to help! If you're running into an error, try reading the rest of this file for help. If you can't figure out how to solve your problem, there are also instructions on how to report a bug.
+This file documents the steps necessary to report and issue with ChefSpec. Following these guidelines will help ensure your issue is resolved in a timely manner.
 
 Reporting
 ---------
