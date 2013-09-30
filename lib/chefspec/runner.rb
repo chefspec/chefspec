@@ -75,8 +75,6 @@ module ChefSpec
       Chef::Config[:force_logger]  = true
       Chef::Config[:solo]          = true
 
-      puts Chef::Config[:cookbook_path]
-
       yield node if block_given?
     end
 
