@@ -371,10 +371,10 @@ end
 
 Packaging LWRP Matchers
 -----------------------
-ChefSpec exposes the ability for cookbook authors to package custom matchers in a cookbooks so other developers may take advantage of them in testing. This is done by creating a special library file in the cookbook named `matcher.rb`:
+ChefSpec exposes the ability for cookbook authors to package custom matchers in a cookbooks so other developers may take advantage of them in testing. This is done by creating a special library file in the cookbook named `matchers.rb`:
 
 ```ruby
-# cookbook/libraries/matcher.rb
+# cookbook/libraries/matchers.rb
 
 if defined?(ChefSpec)
   def my_custom_matcher(resource_name)
