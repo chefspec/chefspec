@@ -79,43 +79,6 @@ module ChefSpec::API
 
     #
     # Assert that a +dpkg_package+ resource exists in the Chef run with the
-    # action +:reconfig+. Given a Chef Recipe that reconfigures "apache2" as a
-    # +dpkg_package+:
-    #
-    #     dpkg_package 'apache2' do
-    #       action :reconfig
-    #     end
-    #
-    # The Examples section demonstrates the different ways to test a
-    # +dpkg_package+ resource with ChefSpec.
-    #
-    # @example Assert that a +dpkg_package+ was reconfigured
-    #   expect(chef_run).to reconfig_dpkg_package('apache2')
-    #
-    # @example Assert that a +dpkg_package+ was reconfigured with predicate matchers
-    #   expect(chef_run).to reconfig_dpkg_package('apache2').with_version('1.2.3')
-    #
-    # @example Assert that a +dpkg_package+ was reconfigured with attributes
-    #   expect(chef_run).to reconfig_dpkg_package('apache2').with(version: '1.2.3')
-    #
-    # @example Assert that a +dpkg_package+ was reconfigured using a regex
-    #   expect(chef_run).to reconfig_dpkg_package('apache2').with(version: /(\d+\.){2}\.\d+/)
-    #
-    # @example Assert that a +dpkg_package+ was _not_ reconfigured
-    #   expect(chef_run).to_not reconfig_dpkg_package('apache2')
-    #
-    #
-    # @param [String, Regex] resource_name
-    #   the name of the resource to match
-    #
-    # @return [ChefSpec::Matchers::ResourceMatcher]
-    #
-    def reconfig_dpkg_package(resource_name)
-      ChefSpec::Matchers::ResourceMatcher.new(:dpkg_package, :reconfig, resource_name)
-    end
-
-    #
-    # Assert that a +dpkg_package+ resource exists in the Chef run with the
     # action +:remove+. Given a Chef Recipe that removes "apache2" as a
     # +dpkg_package+:
     #
@@ -149,43 +112,6 @@ module ChefSpec::API
     #
     def remove_dpkg_package(resource_name)
       ChefSpec::Matchers::ResourceMatcher.new(:dpkg_package, :remove, resource_name)
-    end
-
-    #
-    # Assert that a +dpkg_package+ resource exists in the Chef run with the
-    # action +:upgrade+. Given a Chef Recipe that upgrades "apache2" as a
-    # +dpkg_package+:
-    #
-    #     dpkg_package 'apache2' do
-    #       action :upgrade
-    #     end
-    #
-    # The Examples section demonstrates the different ways to test a
-    # +dpkg_package+ resource with ChefSpec.
-    #
-    # @example Assert that a +dpkg_package+ was upgraded
-    #   expect(chef_run).to upgrade_dpkg_package('apache2')
-    #
-    # @example Assert that a +dpkg_package+ was upgraded with predicate matchers
-    #   expect(chef_run).to upgrade_dpkg_package('apache2').with_version('1.2.3')
-    #
-    # @example Assert that a +dpkg_package+ was upgraded with attributes
-    #   expect(chef_run).to upgrade_dpkg_package('apache2').with(version: '1.2.3')
-    #
-    # @example Assert that a +dpkg_package+ was upgraded using a regex
-    #   expect(chef_run).to upgrade_dpkg_package('apache2').with(version: /(\d+\.){2}\.\d+/)
-    #
-    # @example Assert that a +dpkg_package+ was _not_ upgraded
-    #   expect(chef_run).to_not upgrade_dpkg_package('apache2')
-    #
-    #
-    # @param [String, Regex] resource_name
-    #   the name of the resource to match
-    #
-    # @return [ChefSpec::Matchers::ResourceMatcher]
-    #
-    def upgrade_dpkg_package(resource_name)
-      ChefSpec::Matchers::ResourceMatcher.new(:dpkg_package, :upgrade, resource_name)
     end
   end
 end
