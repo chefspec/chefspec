@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version = ChefSpec::VERSION
   s.description = 'Write RSpec examples for Opscode Chef recipes'
   s.summary = "chefspec-#{s.version}"
-  s.authors = ['Andrew Crump']
+  s.authors = ['Andrew Crump', 'Seth Vargo']
   s.homepage = 'http://acrmp.github.com/chefspec'
   s.license = 'MIT'
   s.require_path = 'lib'
