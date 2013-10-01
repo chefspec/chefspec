@@ -50,7 +50,6 @@ Features:
   - Added `remote_directory` matchers
   - Added `route` matchers
   - Added `subversion` matchers
-  - Added support for testing Window's `inherits` attribute on non-Windows systems
   - Added `stub_command` macro (formerly on `ChefSpec::ChefRunner`) for stubbbing the results of shell commands. Because shell commands are evaluated by default, ChefSpec will raise an exception when encountering a shell command that has not been stubbed.
   - Added `stub_search` macro for easily stubbing `search` calls. Like shell commands, ChefSpec will raise an exception when encountering a `search` call that has not been stubbed.
   - Added `stub_data_bag` macro for easily stubbing `data_bag` calls. Like shell commands, ChefSpec will raise an exception when encountering a `data_bag` call that has not been stubbed.
