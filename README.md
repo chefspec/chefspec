@@ -17,6 +17,7 @@ Important Notes
 ---------------
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version' documentation!**
 - **Each resource matcher is self-documented using Yard and has a corresponding cucumber test from the `examples` directory.**
+- **ChefSpec 3.0 requires Ruby 1.9 or higher. It is tested on 1.9.3 and 2.0.0, but may work on older versions of Ruby. If you are experiencing problems, please try Ruby 1.9.3 or 2.0.0.**
 
 
 Writing a Cookbook Example
