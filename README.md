@@ -514,8 +514,8 @@ Development
 
         $ git checkout -b my_bug_fix
 
-4. Make your changes/patches/fixes, committing appropiately
-5. **Write tests**
+4. **Write tests**
+5. Make your changes/patches/fixes, committing appropiately
 6. Run the tests: `bundle exec rake`
 7. Push your changes to GitHub
 8. Open a Pull Request
