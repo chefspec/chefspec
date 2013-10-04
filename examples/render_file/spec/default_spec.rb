@@ -44,4 +44,18 @@ describe 'render_file::default' do
       expect(chef_run).to render_file('/tmp/template').with_content(/^This(.+)$/)
     end
   end
+
+  context 'template with render' do
+    it 'renders the file' do
+      expect(chef_run).to render_file('/tmp/partial')
+    end
+
+    it 'renders the file with content' do
+      expect(chef_run).to render_file('/tmp/partial').with_content('This template has a partial: This is a template partial!')
+    end
+
+    it 'renders the file with matching content' do
+      expect(chef_run).to render_file('/tmp/partial').with_content(/^This(.+)$/)
+    end
+  end
 end

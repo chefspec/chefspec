@@ -9,3 +9,7 @@ end
 template '/tmp/template' do
   source 'template.erb'
 end
+
+template '/tmp/partial' do
+  source 'partial.erb'
+end
