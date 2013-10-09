@@ -14,6 +14,15 @@ Pleas be receptive and responsive to feedback about your additions or changes. T
 
 If you're looking to contribute but aren't sure where to start, check ou the [open issues](https://github.com/acrmp/chefspec/issues?state=open).
 
+
+Will Not Merge
+--------------
+This section details, specifically, Pull Requests or features that will _not_ be merged:
+
+1. Machers for non-Chef core resources. ChefSpec 3.0 introduced a way for cookbook maintiners to [package matchers _with_ their cookbooks](https://github.com/acrmp/chefspec/tree/unify_matchers#packaging-lwrp-matchers) at distribution time.
+2. New features without accompanying unit tests, cucumber tests, and documentation.
+
+
 Coding Standards
 ----------------
 The submitted code should be compatible with the standard Ruby coding guidelines. Here are some additional resources:
@@ -23,6 +32,7 @@ The submitted code should be compatible with the standard Ruby coding guidelines
 
 There is a tool called [Cane](https://github.com/square/cane) that allows you to validate your code's ABC complexity and documentation.
 
+
 Testing
 -------
 Whether your pull request is a bug fix or introduces new classes or methods to the project, we kindly ask that you include tests for your changes. Even if it's just a small improvement, a test is necessary to ensure the bug is never re-introduced.
@@ -31,15 +41,12 @@ We understand that not all users submitting pull requests will be proficient wit
 
 ChefSpec is tested on [Travis CI](https://travis-ci.org/acrmp/chefspec) against multiple Chef Versions and Ruby Versions. **Your patches must work for all Chef and Ruby Versions on Travis.** This is in an effort to maintain backward compatibility as long as possible. For more information on which Chef and Ruby versions to support, checkout the [`.travis.yml`](https://github.com/acrmp/chefspec/blob/master/.travis.yml) file.
 
+
 Documentation
 -------------
-Documentation is a crucial part to ChefSpec, especially given its broad depth of features. All documentation is currently placed in the main `README.md` file at the root of the repository and uses Github Flavored Markdown.
+Documentation is a crucial part to ChefSpec, especially given its broad depth of features. All documentation is placed inline on the method matcher so it can be generated with Yard. Please see existing matchers for an example and check out the [Yard documentation](http://yardoc.info)
 
-When contributing new features, please add notes and examples about the new features to the existing `README.md` file.
-
-Any additional matchers will require a set of examples in the README.
-
-The documentation should explain how a developer should should be able to get started testing with ChefSpec. The documentation should provide several simple examples.
+When contributing new features, please ensure adequate documentation and examples are present.
 
 ---
 This contributing guide is based off of the [Joomla Contributing Guide](https://raw.github.com/joomla/joomla-framework/master/CONTRIBUTING.markdown).

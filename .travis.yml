@@ -2,12 +2,18 @@ rvm:
   - 1.9.3
   - 2.0.0
 gemfile:
-  - gemfiles/Gemfile.chef-11
-  - gemfiles/Gemfile.chef-10
+  - gemfiles/chef-11.0.0.gemfile
+  - gemfiles/chef-11.2.0.gemfile
+  - gemfiles/chef-11.4.4.gemfile
+  - gemfiles/chef-11.6.0.gemfile
+  - gemfiles/chef-master.gemfile
 matrix:
+  allow_failures:
+    - gemfile: gemfiles/chef-master.gemfile
   exclude:
     - rvm: 2.0.0
-      gemfile: gemfiles/Gemfile.chef-10
-script:
-  - bundle exec rake unit
-  - bundle exec rake acceptance
+      gemfile: gemfiles/chef-11.0.0.gemfile
+    - rvm: 2.0.0
+      gemfile: gemfiles/chef-11.2.0.gemfile
+    - rvm: 2.0.0
+      gemfile: gemfiles/chef-11.4.4.gemfile

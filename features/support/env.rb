@@ -1,13 +1,19 @@
-require 'simplecov'
-SimpleCov.start
-
+require 'aruba'
 require 'aruba/cucumber'
+require 'aruba/in_process'
+
+require 'rspec'
+require 'chefspec'
+
+require_relative 'executor'
+Aruba::InProcess.main_class = ChefSpec::Executor
+Aruba.process = Aruba::InProcess
 
 Before do
-  @aruba_timeout_seconds = 300
-end
+  FileUtils.mkdir_p(current_dir)
+  FileUtils.cp_r('examples', current_dir)
 
-unless ENV['CS_SPEC_TYPE']
-  raise ArgumentError,
-    'Please set CS_SPEC_TYPE to specify the test framework to be tested against'
+  # Need to reload this on each run because RSpec.reset (called by the
+  # RSpec::Runner) removes our configurations :(
+  load 'lib/chefspec/rspec.rb'
 end

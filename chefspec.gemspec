@@ -7,26 +7,22 @@ Gem::Specification.new do |s|
   s.version = ChefSpec::VERSION
   s.description = 'Write RSpec examples for Opscode Chef recipes'
   s.summary = "chefspec-#{s.version}"
-  s.authors = ['Andrew Crump']
+  s.authors = ['Andrew Crump', 'Seth Vargo']
   s.homepage = 'http://acrmp.github.com/chefspec'
   s.license = 'MIT'
   s.require_path = 'lib'
   s.required_ruby_version = '>= 1.9'
   s.files = Dir['lib/**/*.rb']
 
-  s.add_dependency 'chef',    '>= 10.0'
-  s.add_dependency 'erubis'
+  s.add_dependency 'chef',    '~> 11.0'
   s.add_dependency 'fauxhai', '~> 1.1'
-  s.add_dependency 'minitest-chef-handler', '>= 0.6.0'
-  s.add_dependency 'rspec', '~> 2.0'
+  s.add_dependency 'rspec',   '~> 2.14'
 
   # Development Dependencies
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'yard', '~> 0.8'
+  s.add_development_dependency 'redcarpet', '~> 3.0'
+  s.add_development_dependency 'yard',      '~> 0.8'
 
   # Testing Dependencies
   s.add_development_dependency 'aruba',     '~> 0.5'
-  s.add_development_dependency 'cucumber',  '~> 1.3'
-  s.add_development_dependency 'i18n',      '~> 0.6'
-  s.add_development_dependency 'simplecov', '~> 0.7'
 end

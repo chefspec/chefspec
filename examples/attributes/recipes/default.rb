@@ -1,0 +1,1 @@
+log node['attributes']['message']

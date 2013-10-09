@@ -1,48 +1,34 @@
-require 'chef'
-require 'chef/formatters/chefspec'
-require 'chef/expect_exception'
-require 'chefspec/chef_runner'
-require 'chefspec/version'
+require 'rspec'
 
-if defined?(RSpec)
-  require 'chefspec/matchers/cron'
-  require 'chefspec/matchers/execute'
-  require 'chefspec/matchers/file'
-  require 'chefspec/matchers/link'
-  require 'chefspec/matchers/log'
-  require 'chefspec/matchers/package'
-  require 'chefspec/matchers/ruby_block'
-  require 'chefspec/matchers/service'
-  require 'chefspec/matchers/shared'
-  require 'chefspec/matchers/notifications'
-  require 'chefspec/matchers/file_content'
-  require 'chefspec/matchers/user'
-  require 'chefspec/matchers/group'
-  require 'chefspec/matchers/env'
-  require 'chefspec/matchers/include_recipe'
-  require 'chefspec/matchers/script'
-  require 'chefspec/matchers/python'
+require_relative 'chefspec/extensions/chef/client'
+require_relative 'chefspec/extensions/chef/conditional'
+require_relative 'chefspec/extensions/chef/data_query'
+require_relative 'chefspec/extensions/chef/lwrp_base'
+require_relative 'chefspec/extensions/chef/resource'
+require_relative 'chefspec/extensions/chef/securable'
 
-  require 'chefspec/helpers/describe'
-  RSpec.configure do |c|
-    c.include ChefSpec::Helpers::Describe
-  end
-end
+require_relative 'chefspec/stubs/command_registry'
+require_relative 'chefspec/stubs/command_stub'
+require_relative 'chefspec/stubs/data_bag_item_registry'
+require_relative 'chefspec/stubs/data_bag_item_stub'
+require_relative 'chefspec/stubs/data_bag_registry'
+require_relative 'chefspec/stubs/data_bag_stub'
+require_relative 'chefspec/stubs/registry'
+require_relative 'chefspec/stubs/stub'
+require_relative 'chefspec/stubs/search_registry'
+require_relative 'chefspec/stubs/search_stub'
 
-require 'chefspec/minitest'
-require 'chefspec/monkey_patches/conditional'
-require 'chefspec/monkey_patches/hash'
-require 'chefspec/monkey_patches/lwrp_base'
-require 'chefspec/monkey_patches/provider'
+require_relative 'chefspec/api'
+require_relative 'chefspec/errors'
+require_relative 'chefspec/expect_exception'
+require_relative 'chefspec/formatter'
+require_relative 'chefspec/macros'
+require_relative 'chefspec/matchers'
+require_relative 'chefspec/renderer'
+require_relative 'chefspec/rspec'
+require_relative 'chefspec/runner'
+require_relative 'chefspec/version'
 
-module ChefSpec
-  class << self
-    def chef_11?
-      Gem::Requirement.new('~> 11.0').satisfied_by?(Gem::Version.new(Chef::VERSION))
-    end
-
-    def chef_10?
-      Gem::Requirement.new('~> 10.0').satisfied_by?(Gem::Version.new(Chef::VERSION))
-    end
-  end
-end
+# Load deprecations module last, so it can monkey patch and print out nasty
+# deprecation warnings for us :)
+require_relative 'chefspec/deprecations'
