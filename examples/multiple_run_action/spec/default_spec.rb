@@ -18,4 +18,8 @@ describe 'multiple_run_action::default' do
   it 'includes an action specific called in #run_action' do
     expect(actions).to include(:touch)
   end
+
+  it 'does not include something random' do
+    expect(actions).to_not include(:bacon)
+  end
 end

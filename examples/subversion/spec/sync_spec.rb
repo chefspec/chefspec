@@ -5,6 +5,7 @@ describe 'subversion::sync' do
 
   it 'syncs a subversion with the default action' do
     expect(chef_run).to sync_subversion('/tmp/default_action')
+    expect(chef_run).to_not sync_subversion('/tmp/not_default_action')
   end
 
   it 'syncs a subversion with an explicit action' do
@@ -13,6 +14,7 @@ describe 'subversion::sync' do
 
   it 'syncs a subversion with attributes' do
     expect(chef_run).to sync_subversion('/tmp/with_attributes').with(repository: 'ssh://subversion.path')
+    expect(chef_run).to_not sync_subversion('/tmp/with_attributes').with(repository: 'ssh://subversion.other_path')
   end
 
   it 'syncs a subversion when specifying the identity attribute' do

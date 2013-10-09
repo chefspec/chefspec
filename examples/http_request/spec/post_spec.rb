@@ -5,10 +5,12 @@ describe 'http_request::post' do
 
   it 'posts a http_request with an explicit action' do
     expect(chef_run).to post_http_request('explicit_action')
+    expect(chef_run).to_not post_http_request('not_explicit_action')
   end
 
   it 'posts a http_request with attributes' do
     expect(chef_run).to post_http_request('with_attributes').with(url: 'http://my.url')
+    expect(chef_run).to_not post_http_request('with_attributes').with(url: 'http://my.other.url')
   end
 
   it 'posts a http_request when specifying the identity attribute' do

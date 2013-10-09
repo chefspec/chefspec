@@ -7,7 +7,7 @@ module ChefSpec::Matchers
     end
 
     def with(parameters = {})
-      params.merge(parameters)
+      params.merge!(parameters)
       self
     end
 
@@ -39,8 +39,8 @@ module ChefSpec::Matchers
           "expected '#{resource.to_s}' to have parameters:" \
           "\n\n" \
           "  " + unmatched_parameters.collect { |parameter, h|
-            "  #{parameter} #{h[:expected].inspect}, was #{h[:actual].inspect}"
-          }
+            "#{parameter} #{h[:expected].inspect}, was #{h[:actual].inspect}"
+          }.join("\n  ")
 
         else
           "expected '#{resource.to_s}' actions #{resource_actions.inspect}" \
@@ -51,13 +51,17 @@ module ChefSpec::Matchers
         " action ':#{@expected_action}' to be in Chef run. Other" \
         " #{@resource_name} resources:" \
         "\n\n" \
-        "  " + similar_resources.map(&:to_s).join("  \n")
+        "  " + similar_resources.map(&:to_s).join("\n  ")
       end
     end
 
-    # def failure_message_for_should_not
-    #   "expected #{}"
-    # end
+    def failure_message_for_should_not
+      if resource
+        "expected '#{resource.to_s}' actions #{resource_actions.inspect} to not exist"
+      else
+        "expected '#{resource.to_s}' to not exist"
+      end
+    end
 
     def description
       "#{@expected_action} #{@resource_name}"

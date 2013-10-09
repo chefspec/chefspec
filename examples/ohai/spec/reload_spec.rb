@@ -5,6 +5,7 @@ describe 'ohai::reload' do
 
   it 'reloads a ohai with the default action' do
     expect(chef_run).to reload_ohai('default_action')
+    expect(chef_run).to_not reload_ohai('not_default_action')
   end
 
   it 'reloads a ohai with an explicit action' do
@@ -13,6 +14,7 @@ describe 'ohai::reload' do
 
   it 'reloads a ohai with attributes' do
     expect(chef_run).to reload_ohai('with_attributes').with(plugin: 'plugin')
+    expect(chef_run).to_not reload_ohai('with_attributes').with(plugin: 'not_plugin')
   end
 
   it 'reloads a ohai when specifying the identity attribute' do

@@ -11,9 +11,11 @@ describe 'inherits::default' do
 
   it 'matches on the default inherits attribute' do
     expect(chef_run).to create_directory('/tmp/inherit')
+    expect(chef_run).to_not create_directory('/tmp/not_inherit')
   end
 
   it 'matches on the inherits attribute' do
     expect(chef_run).to create_directory('/tmp/no_inherit').with(inherits: false)
+    expect(chef_run).to_not create_directory('/tmp/no_inherit').with(inherits: true)
   end
 end

@@ -5,6 +5,7 @@ describe 'ruby_block::run' do
 
   it 'runs a ruby_block with the default action' do
     expect(chef_run).to run_ruby_block('default_action')
+    expect(chef_run).to_not run_ruby_block('not_default_action')
   end
 
   it 'runs a ruby_block with an explicit action' do

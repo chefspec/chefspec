@@ -5,6 +5,7 @@ describe 'erl_call::run' do
 
   it 'runs a erl_call with the default action' do
     expect(chef_run).to run_erl_call('default_action')
+    expect(chef_run).to_not run_erl_call('not_default_action')
   end
 
   it 'runs a erl_call with an explicit action' do
@@ -13,6 +14,7 @@ describe 'erl_call::run' do
 
   it 'runs a erl_call with attributes' do
     expect(chef_run).to run_erl_call('with_attributes').with(code: 'hello')
+    expect(chef_run).to_not run_erl_call('with_attributes').with(code: 'not_hello')
   end
 
   it 'runs a erl_call when specifying the identity attribute' do

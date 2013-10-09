@@ -5,6 +5,7 @@ describe 'apt_package::install' do
 
   it 'installs a apt_package with the default action' do
     expect(chef_run).to install_apt_package('default_action')
+    expect(chef_run).to_not install_apt_package('not_default_action')
   end
 
   it 'installs a apt_package with an explicit action' do
@@ -13,6 +14,7 @@ describe 'apt_package::install' do
 
   it 'installs a apt_package with attributes' do
     expect(chef_run).to install_apt_package('with_attributes').with(version: '1.0.0')
+    expect(chef_run).to_not install_apt_package('with_attributes').with(version: '1.2.3')
   end
 
   it 'installs a apt_package when specifying the identity attribute' do

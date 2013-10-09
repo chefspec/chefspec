@@ -6,9 +6,11 @@ describe 'notifications::immediately' do
 
   it 'sends a notification to the service' do
     expect(template).to notify('service[receiving_resource]').immediately
+    expect(template).to_not notify('service[not_receiving_resource]').immediately
   end
 
   it 'sends the specific notification to the serivce immediately' do
     expect(template).to notify('service[receiving_resource]').to(:restart).immediately
+    expect(template).to_not notify('service[receiving_resource]').to(:restart).delayed
   end
 end

@@ -9,5 +9,6 @@ describe 'attributes::default' do
 
   it 'uses the overriden node attribute' do
     expect(chef_run).to write_log('The new message is here')
+    expect(chef_run).to_not write_log('The old message is here')
   end
 end

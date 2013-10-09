@@ -5,6 +5,7 @@ describe 'cookbook_file::create_if_missing' do
 
   it 'creates a cookbook_file with an explicit action' do
     expect(chef_run).to create_cookbook_file_if_missing('/tmp/explicit_action')
+    expect(chef_run).to_not create_cookbook_file_if_missing('/tmp/not_explicit_action')
   end
 
   it 'creates a cookbook_file with attributes' do
@@ -12,6 +13,12 @@ describe 'cookbook_file::create_if_missing' do
       user:   'user',
       group:  'group',
       backup: false,
+    )
+
+    expect(chef_run).to_not create_cookbook_file_if_missing('/tmp/with_attributes').with(
+      user:   'bacon',
+      group:  'fat',
+      backup: true,
     )
   end
 

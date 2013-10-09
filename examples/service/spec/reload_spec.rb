@@ -5,10 +5,12 @@ describe 'service::reload' do
 
   it 'reloads a service with an explicit action' do
     expect(chef_run).to reload_service('explicit_action')
+    expect(chef_run).to_not reload_service('not_explicit_action')
   end
 
   it 'reloads a service with attributes' do
     expect(chef_run).to reload_service('with_attributes').with(pattern: 'pattern')
+    expect(chef_run).to_not reload_service('with_attributes').with(pattern: 'bacon')
   end
 
   it 'reloads a service when specifying the identity attribute' do

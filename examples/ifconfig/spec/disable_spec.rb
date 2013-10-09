@@ -5,9 +5,11 @@ describe 'ifconfig::disable' do
 
   it 'disables a ifconfig with an explicit action' do
     expect(chef_run).to disable_ifconfig('10.0.0.2')
+    expect(chef_run).to_not disable_ifconfig('10.0.0.10')
   end
 
   it 'disables a ifconfig with attributes' do
     expect(chef_run).to disable_ifconfig('10.0.0.3').with(device: 'en0')
+    expect(chef_run).to_not disable_ifconfig('10.0.0.3').with(device: 'en1')
   end
 end

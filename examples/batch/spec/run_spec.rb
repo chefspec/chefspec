@@ -5,6 +5,7 @@ describe 'batch::run' do
 
   it 'runs a batch with the default action' do
     expect(chef_run).to run_batch('default_action')
+    expect(chef_run).to_not run_batch('not_default_action')
   end
 
   it 'runs a batch with an explicit action' do
@@ -13,6 +14,7 @@ describe 'batch::run' do
 
   it 'runs a batch with attributes' do
     expect(chef_run).to run_batch('with_attributes').with(flags: '-f')
+    expect(chef_run).to_not run_batch('with_attributes').with(flags: '-x')
   end
 
   it 'runs a batch when specifying the identity attribute' do

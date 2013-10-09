@@ -5,10 +5,12 @@ describe 'service::enable' do
 
   it 'enables a service with an explicit action' do
     expect(chef_run).to enable_service('explicit_action')
+    expect(chef_run).to_not enable_service('not_explicit_action')
   end
 
   it 'enables a service with attributes' do
     expect(chef_run).to enable_service('with_attributes').with(pattern: 'pattern')
+    expect(chef_run).to_not enable_service('with_attributes').with(pattern: 'bacon')
   end
 
   it 'enables a service when specifying the identity attribute' do

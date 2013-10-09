@@ -5,6 +5,7 @@ describe 'directory::create' do
 
   it 'creates a directory with the default action' do
     expect(chef_run).to create_directory('/tmp/default_action')
+    expect(chef_run).to_not create_directory('/tmp/not_default_action')
   end
 
   it 'creates a directory with an explicit action' do
@@ -15,6 +16,11 @@ describe 'directory::create' do
     expect(chef_run).to create_directory('/tmp/with_attributes').with(
       user:   'user',
       group:  'group',
+    )
+
+    expect(chef_run).to_not create_directory('/tmp/with_attributes').with(
+      user:   'bacon',
+      group:  'fat',
     )
   end
 

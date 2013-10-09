@@ -5,6 +5,7 @@ describe 'custom_matcher::install' do
 
   it 'installs a custom_matcher with the default action' do
     expect(chef_run).to install_custom_matcher_thing('default_action')
+    expect(chef_run).to_not install_custom_matcher_thing('not_default_action')
   end
 
   it 'installs a custom_matcher with an explicit action' do
@@ -13,6 +14,7 @@ describe 'custom_matcher::install' do
 
   it 'installs a custom_matcher with attributes' do
     expect(chef_run).to install_custom_matcher_thing('with_attributes').with(config: true)
+    expect(chef_run).to_not install_custom_matcher_thing('with_attributes').with(config: false)
   end
 
   it 'installs a custom_matcher when specifying the identity attribute' do
