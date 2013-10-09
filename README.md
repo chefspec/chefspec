@@ -16,8 +16,8 @@ ChefSpec runs your cookbook locally using Chef Solo without actually converging 
 Important Notes
 ---------------
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version' documentation!**
-- **Each resource matcher is self-documented using Yard and has a corresponding cucumber test from the `examples` directory.**
-- **ChefSpec 3.0 requires Ruby 1.9 or higher. It is tested on 1.9.3 and 2.0.0, but may work on older versions of Ruby. If you are experiencing problems, please try Ruby 1.9.3 or 2.0.0.**
+- **Each resource matcher is self-documented using Yard and has a corresponding aruba test from the `examples` directory.**
+- **ChefSpec 3.0 requires Ruby 1.9 or higher!**
 
 
 Writing a Cookbook Example
@@ -53,70 +53,146 @@ Let's step through this file to see what is happening:
 
 Setting node Attributes
 -----------------------
-You can set node attribtues when creating the `ChefSpec::Runner` by passing a block to the initializer:
+Node attribute can be set when creating the `Runner`. The initializer yields a block that gives full access to the node object:
 
 ```ruby
 describe 'example::default' do
   let(:chef_run) do
     ChefSpec::ChefRunner.new do |node|
       node.set['cookbook']['attribute'] = 'hello'
-    end
+    end.converge(described_recipe)
   end
 end
 ```
 
-This will set the node attribute for all Chef runners. If you only need to set an attribute for a specific test, you can set that attribute in the `it` block:
+The `node` that is returned is actually a [`Chef::Node`](http://docs.opscode.com/essentials_node_object.html) object.
+
+To set an attribute within a specific test, set the attribute in the `it` block and then **(re-)converge the node**:
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::ChefRunner.new } # Notice we don't converge here
 
   it 'performs the action' do
     chef_run.node.set['cookbook']['attribute'] = 'hello'
-    chef_run.converge(described_recipe)
-  end
-end
-```
+    chef_run.converge(described_recipe) # The converge happens inside the test
 
-Notice that, unlike the previous examples, here were are converging the node inside the `it` block, rather than the `let` block. This is because if we converge the node _before_ setting those node attributes, the Chef Runner will not use the resources (because it's already been run). In other words, this won't work:
-
-```ruby
-# !!! Don't do this
-describe 'example::default' do
-  it 'performs the action' do
-    chef_run = ChefSpec::Runer.new.converge(described_recipe)
-    chef_run.node.set['cookbook']['attribute'] = 'hello'
-    chef_run.converge(described_recipe)
+    expect(chef_run).to do_something
   end
 end
 ```
 
 
-Ohai Attributes
----------------
-When you converge a real node using Chef, a large number of attributes are pre-populated by Chef which runs [Ohai](http://github.com/opscode/ohai) to discover information about
-the node on which it's running. Unfortunately, in ChefSpec, we cannot effectively rely on the results from Ohai, because the target system may not match the local one. Many cookboos rely on Ohai attributes, especially those that use platform conditionals and networking attributes. You can mock these attributes like in the previous section:
+Configuration
+-------------
+ChefSpec exposes a configuration layer at the global level and at the `Runner` level. The following settings are available:
 
 ```ruby
+RSpec.configure do |config|
+  # Specify the path for Chef Solo to find cookbooks (default: [inferred from
+  # the location of the calling spec file])
+  config.cookbook_path = '/var/cookbooks'
+
+  # Specify the Chef log_level (default: :warn)
+  config.log_level = :debug
+
+  # Specify the path to a local JSON file with Ohai data (default: nil)
+  config.path = 'ohai.json'
+
+  # Specify the operating platform to mock Ohai data from (default: nil)
+  config.platform = 'ubuntu'
+
+  # Specify the operating version to mock Ohai data from (default: nil)
+  config.version = '12.04'
+end
+```
+
+Values specified at the initalization of the `Runner` merge and take precedence over the global settings:
+
+```ruby
+# Override only the operating system version (platform is still "ubuntu" from above)
+ChefSpec::Runner.new(version: '10.04')
+
+# Use a different operating system platform and version
+ChefSpec::Runner.new(platform: 'centos', version: '5.4')
+
+# Specify a different cookbook_path
+ChefSpec::Runner.new(cookbook_path: '/var/my/other/path')
+
+# Add debug log output
+ChefSpec::Runner.new(log_level: :debug).converge(described_recipe)
+```
+
+**Note:** You do not _need_ to specify a platform and version. However, some cookbooks may rely on [Ohai](http://github.com/opscode/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/customink/fauxhai).
+
+
+Making Assertions
+-----------------
+ChefSpec asserts that resource actions have been performed. In general, ChefSpec follows the following pattern:
+
+```ruby
+require 'chefspec'
+
 describe 'example::default' do
-  let(:chef_run) do
-    ChefSpec::ChefRunner.new do |node|
-      node.automatic_attrs['platform'] = 'Ubuntu'
-      node.automatic_attrs['platform_version'] = '12.04'
-    end
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
+  it 'does something' do
+    expect(chef_run).to ACTION_RESOURCE(NAME)
   end
 end
 ```
 
-However, this can quickly become cumbersome with large numbers of node attributes. Fortunately, you can tell ChefSpec to automatically generate Ohai attributes for another platform by specifying the `platform` and `version` keys to the `ChefSpec::Runner`:
+where:
+
+- _ACTION_ - the action on the resource (e.g. `install`)
+- _RESOURCE_ - the name of the resource (e.g. `package`)
+- _NAME_ - the name attribute for the resource (e.g. `apache2`)
+
+Here's a more concrete example:
 
 ```ruby
+require 'chefspec'
+
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new(platform: 'ubuntu', version: '12.04') }
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
+  it 'does something' do
+    expect(chef_run).to install_package('apache2')
+  end
 end
 ```
 
-Under the hood, ChefSpec uses [fauxhai](https://github.com/customink/fauxhai) to populate these node attributes. You can also pass the path to a local JSON file instead. Please see fauxhai's README for a full list of configuration options. For more on fauxhai [check out this blog post](http://technology.customink.com/blog/2012/08/03/testing-chef-cookbooks/) from CustomInk.
+This test is asserting that the Chef run will have a _package_ resource with the name _apache2_ with an action of _install_.
+
+ChefSpec includes matchers for all of Chef's core resources using the above schema. Each resource matcher is self-documented using Yard and has a corresponding cucumber test from the `examples` directory.
+
+Additionally, ChefSpec includes the following helpful matchers. They are also documented in Yard, but they are included here because they do not follow the "general pattern".
+
+##### include_recipe
+Assert that the Chef run included a recipe from another cookbook
+
+```ruby
+expect(chef_run).to include_recipe('other_cookbook::recipe')
+```
+
+##### notify
+Assert that a resource notifies another in the Chef run
+
+```ruby
+resource = chef_run.template('/etc/foo')
+expect(resource).to notify('service[apache2]').to(:restart)
+```
+
+##### render_file
+Assert that the Chef run renders a file (with optional content); this will match `cookbook_file`, `file`, and `template` resources and can also check the resulting content
+
+```ruby
+expect(chef_run).to render_file('/etc/foo')
+expect(chef_run).to render_file('/etc/foo').with_content('This is content')
+expect(chef_run).to render_file('/etc/foo').with_content(/regex works too.+/)
+```
+
+**For more complex examples, please see the examples directory or the Yard documentation.**
 
 
 Stubbing
@@ -165,7 +241,7 @@ end
 ```
 
 ### Data Bag & Data Bag Item
-ChefSpec also requires you stub the results of `data_bag` and `data_bag_item` calls. Given a recipe that executes a `data_bag` method:
+Given a recipe that executes a `data_bag` method:
 
 ```ruby
 data_bag('users').each do |user|
@@ -249,85 +325,6 @@ end
 ```
 
 
-Making Assertions
------------------
-ChefSpec asserts that resource actions have been performed. In general, ChefSpec follows the following pattern:
-
-```ruby
-require 'chefspec'
-
-describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
-
-  it 'does something' do
-    expect(chef_run).to ACTION_RESOURCE(NAME)
-  end
-end
-```
-
-where:
-
-- *ACTION* - the action on the resource (e.g. `install`)
-- *RESOURCE* - the name of the resource (e.g. `package`)
-- *NAME* - the name attribute for the resource (e.g. `apache2`)
-
-Here's a more concrete example:
-
-```ruby
-require 'chefspec'
-
-describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
-
-  it 'does something' do
-    expect(chef_run).to install_package('apache2')
-  end
-end
-```
-
-This test is asserting that the Chef run will have a _package_ resource with the name _apache2_ with an action of _install_.
-
-ChefSpec includes matchers for all of Chef's core resources using the above schema. Each resource matcher is self-documented using Yard and has a corresponding cucumber test from the `examples` directory. Additionally, ChefSpec includes the following matchers:
-
-- `include_recipe` - asserts that the Chef run included a recipe from another cookbook
-
-```ruby
-expect(chef_run).to include_recipe('other_cookbook:recipe')
-```
-
-- `notify` - asserts that a resource notifies another in the Chef run
-
-```ruby
-resource = chef_run.template('/etc/foo')
-expect(resource).to notify('service[apache2]').to(:restart)
-```
-
-- `render_file` - assert that the Chef run renders a file (with optional content); this will match `cookbook_file`, `file`, and `template` resources and can also check the resulting content
-
-```ruby
-expect(chef_run).to render_file('/etc/foo')
-expect(chef_run).to render_file('/etc/foo').with_content('This is content')
-expect(chef_run).to render_file('/etc/foo').with_content(/regex works too.+/)
-```
-
-
-Varying the Cookbook Path
--------------------------
-By default ChefSpec will infer the `cookbook_path` from the location of the calling spec. However if you want to use a different path, or append additional paths, you can pass it in as an argument to the `Runner` constructor:
-
-```ruby
-require 'chefspec'
-
-describe 'foo::default' do
-  let(:chef_run) { ChefSpec::Runner.new(cookbook_path: '/some/path').converge('foo::default') }
-
-  it 'installs the foo package' do
-    expect(chef_run).to install_package('foo')
-  end
-end
-```
-
-
 Mocking Out Environments
 ------------------------
 If you want to mock out `node.chef_environment`, you'll need to use RSpec mocks/stubs twice:
@@ -348,10 +345,12 @@ let(:chef_run) do
 end
 ```
 
+**There is probably a better/easier way to do this. If you have a better solution, please open an issue or Pull Request so we can make this less painful :)**
+
 
 Testing LWRPs
 -------------
-By default ChefSpec will override all resources to take no action. This means that the steps inside your LWRP are not actually executed. If an LWRP performs actions, those actions are never executed, or added to the resource collection.
+ChefSpec overrides all providers to take no action (otherwise it would actually converge your system). This means that the steps inside your LWRP are not actually executed. If an LWRP performs actions, those actions are never executed or added to the resource collection.
 
 In order to run the actions exposed by your LWRP, you have to explicitly tell the `Runner` to step into it:
 
@@ -370,9 +369,9 @@ end
 **You should never `step_into` an LWRP unless you are testing it. Never `step_into` an LWRP from another cookbook!**
 
 
-Packaging LWRP Matchers
------------------------
-ChefSpec exposes the ability for cookbook authors to package custom matchers in a cookbooks so other developers may take advantage of them in testing. This is done by creating a special library file in the cookbook named `matchers.rb`:
+Packaging Custom Matchers
+-------------------------
+ChefSpec exposes the ability for cookbook authors to package custom matchers inside a cookbook so that other developers may take advantage of them in testing. This is done by creating a special library file in the cookbook named `matchers.rb`:
 
 ```ruby
 # cookbook/libraries/matchers.rb
@@ -386,7 +385,6 @@ end
 
 1. The entire contents of this file must be wrapped with the conditional clause checking if `ChefSpec` is defined.
 2. Each matcher is actually a top-level method. The above example corresponds to the following RSpec test:
-
     ```ruby
     expect(chef_run).to my_custom_matcher('...')
     ```
@@ -396,14 +394,13 @@ end
     2. The action that resource should receive.
     3. The value of the name attribute of the resource to find. (This is typically proxied as the value from the matcher definition.)
 
-ChefSpec's built-in `ResourceMatcher` _should_ satisfy most common use cases for custom LWRPs and matchers. However, if your cookbook is extending Chef core or is outside of the scope of traditional resource testing, you may need to create a custom matcher. For more information on custom matchers in RSpec, please [watch the Railscast on Custom Matchers](http://railscasts.com/episodes/157-rspec-matchers-macros).
+ChefSpec's built-in `ResourceMatcher` _should_ satisfy most common use cases for custom LWRPs and matchers. However, if your cookbook is extending Chef core or is outside of the scope of traditional resource testing, you may need to create a custom matcher. For more information on custom matchers in RSpec, please [watch the Railscast on Custom Matchers](http://railscasts.com/episodes/157-rspec-matchers-macros) or look at some of the custom matchers in ChefSpec's source code.
 
 #### Example
 Suppose I have a cookbook named "motd" with a resource/provider "message".
 
 ```ruby
 # motd/resources/message.rb
-
 actions :write
 default_action :write
 
@@ -412,7 +409,6 @@ attribute :message, name_attribute: true
 
 ```ruby
 # motd/providers/message.rb
-
 action :write do
   # ...
 end
@@ -428,7 +424,6 @@ You can package a custom ChefSpec matcher with the motd cookbook by including th
 
 ```ruby
 # motd/libraries/matcher.rb
-
 if defined?(ChefSpec)
   def write_motd_message(message)
     ChefSpec::Matchers::ResourceMatcher.new(:motd_message, :write, message)
@@ -436,17 +431,17 @@ if defined?(ChefSpec)
 end
 ```
 
-This allows developers to write RSpec tests against your LWRP in their own cookbooks:
+Other developers can write RSpec tests against your LWRP in their cookbooks:
 
 ```ruby
 expect(chef_run).to write_motd_message('my message')
 ```
 
-_Don't forget to include documentation in your cookbook's README noting the custom matcher and it's API!_
+**Don't forget to include documentation in your cookbook's README noting the custom matcher and it's API!**
 
 
-Silent Output
--------------
+Expecting Exceptions
+--------------------
 In Chef 11, custom formatters were introduced and ChefSpec uses a custom formatter to supress Chef Client output. In the event of a convergence failure, ChefSpec will output the error message from the run to help you debug:
 
 ```text

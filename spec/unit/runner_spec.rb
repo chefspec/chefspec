@@ -67,6 +67,25 @@ describe ChefSpec::Runner do
         expect(hash['kernel']['machine']).to eq('x86_64')
       end
     end
+
+    context 'RSpec global configuration' do
+      before do
+        RSpec.configuration.stub(:cookbook_path).and_return('./path')
+        RSpec.configuration.stub(:log_level).and_return(:fatal)
+        RSpec.configuration.stub(:path).and_return('ohai.json')
+        RSpec.configuration.stub(:platform).and_return('ubuntu')
+        RSpec.configuration.stub(:version).and_return('12.04')
+      end
+
+      it 'uses the RSpec values' do
+        options = described_class.new.options
+        expect(options[:cookbook_path]).to eq('./path')
+        expect(options[:log_level]).to eq(:fatal)
+        expect(options[:path]).to eq('ohai.json')
+        expect(options[:platform]).to eq('ubuntu')
+        expect(options[:version]).to eq('12.04')
+      end
+    end
   end
 
   describe '#node' do

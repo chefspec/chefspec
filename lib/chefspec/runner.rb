@@ -62,10 +62,14 @@ module ChefSpec
     #
     def initialize(options = {}, &block)
       @options = options = {
-        cookbook_path: calling_cookbook_path(caller)
+        cookbook_path: RSpec.configuration.cookbook_path || calling_cookbook_path(caller),
+        log_level:     RSpec.configuration.log_level,
+        path:          RSpec.configuration.path,
+        platform:      RSpec.configuration.platform,
+        version:       RSpec.configuration.version,
       }.merge(options)
 
-      Chef::Log.level = options[:log_level] || :warn
+      Chef::Log.level = options[:log_level]
 
       Chef::Config.reset!
       Chef::Config.formatters.clear

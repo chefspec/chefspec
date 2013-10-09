@@ -8,4 +8,10 @@ RSpec.configure do |config|
     ChefSpec::Stubs::DataBagItemRegistry.reset!
     ChefSpec::Stubs::SearchRegistry.reset!
   end
+
+  config.add_setting :cookbook_path
+  config.add_setting :log_level, default: :warn
+  config.add_setting :path
+  config.add_setting :platform
+  config.add_setting :version
 end
