@@ -8,6 +8,7 @@ module Kernel
   def deprecated(*messages)
     messages.each do |message|
       calling_spec = caller.find { |line| line =~ /(\/spec)|(_spec\.rb)/ }
+      calling_spec = 'spec/' + calling_spec.split('/spec/').last
       warn "[DEPRECATION] #{message} (called from #{calling_spec})"
     end
   end
@@ -57,7 +58,7 @@ module ChefSpec::API
         "  expect(resource.group).to eq('#{group}')" \
         "\n\n" \
         "instead"
-      raise ChefSpec::NoConversionError
+      raise ChefSpec::NoConversionError.new('be_owned_by')
     end
 
     def create_file_with_content(path, content)
@@ -104,7 +105,7 @@ module ChefSpec::API
       deprecated "The `set_service_to_not_start_on_boot` matcher is" \
         " deprecated. Please use `enable_service(#{service.inspect})`" \
         " with a negating argument instead."
-      raise ChefSpec::NoConversionError
+      raise ChefSpec::NoConversionError.new('set_service_to_start_on_boot')
     end
 
     def execute_ruby_block(name)
@@ -141,7 +142,7 @@ module ChefSpec
   class NoConversionError < Error
     def initialize(matcher)
       message = "I cannot convert `#{matcher}` to use a new matcher format!" \
-        " Please see the ChefSpec documentation and Changelog for details" \
+        " Please see the ChefSpec documentation and CHANGELOG for details" \
         " on converting this matcher. Sorry :("
 
       super(message)

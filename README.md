@@ -51,38 +51,6 @@ Let's step through this file to see what is happening:
 1. The `it` block is an example specifying that the `foo` package is installed. Normally you will have multiple `it` blocks per recipe, each making a single assertion.
 
 
-Setting node Attributes
------------------------
-Node attribute can be set when creating the `Runner`. The initializer yields a block that gives full access to the node object:
-
-```ruby
-describe 'example::default' do
-  let(:chef_run) do
-    ChefSpec::ChefRunner.new do |node|
-      node.set['cookbook']['attribute'] = 'hello'
-    end.converge(described_recipe)
-  end
-end
-```
-
-The `node` that is returned is actually a [`Chef::Node`](http://docs.opscode.com/essentials_node_object.html) object.
-
-To set an attribute within a specific test, set the attribute in the `it` block and then **(re-)converge the node**:
-
-```ruby
-describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new } # Notice we don't converge here
-
-  it 'performs the action' do
-    chef_run.node.set['cookbook']['attribute'] = 'hello'
-    chef_run.converge(described_recipe) # The converge happens inside the test
-
-    expect(chef_run).to do_something
-  end
-end
-```
-
-
 Configuration
 -------------
 ChefSpec exposes a configuration layer at the global level and at the `Runner` level. The following settings are available:
@@ -125,6 +93,23 @@ ChefSpec::Runner.new(log_level: :debug).converge(described_recipe)
 
 **Note:** You do not _need_ to specify a platform and version. However, some cookbooks may rely on [Ohai](http://github.com/opscode/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/customink/fauxhai).
 
+### Berkshelf
+If you are using Berkshelf, simply require `chefspec/berkshelf` in your `spec_helper` after requiring `chefspec`:
+
+```ruby
+# spec_helper.rb
+require 'chefspec'
+require 'chefspec/berkshelf'
+```
+
+Requiring this file will:
+
+- Create a temporary working directory
+- Download all the dependencies listed in your `Berksfile` into the temporary directory
+- Set ChefSpec's `cookbook_path` to the temporary directory
+
+### Librarian
+_There is not currently librarian integration, but we would welcome a community patch!_
 
 Making Assertions
 -----------------
@@ -193,6 +178,38 @@ expect(chef_run).to render_file('/etc/foo').with_content(/regex works too.+/)
 ```
 
 **For more complex examples, please see the examples directory or the Yard documentation.**
+
+
+Setting node Attributes
+-----------------------
+Node attribute can be set when creating the `Runner`. The initializer yields a block that gives full access to the node object:
+
+```ruby
+describe 'example::default' do
+  let(:chef_run) do
+    ChefSpec::ChefRunner.new do |node|
+      node.set['cookbook']['attribute'] = 'hello'
+    end.converge(described_recipe)
+  end
+end
+```
+
+The `node` that is returned is actually a [`Chef::Node`](http://docs.opscode.com/essentials_node_object.html) object.
+
+To set an attribute within a specific test, set the attribute in the `it` block and then **(re-)converge the node**:
+
+```ruby
+describe 'example::default' do
+  let(:chef_run) { ChefSpec::ChefRunner.new } # Notice we don't converge here
+
+  it 'performs the action' do
+    chef_run.node.set['cookbook']['attribute'] = 'hello'
+    chef_run.converge(described_recipe) # The converge happens inside the test
+
+    expect(chef_run).to do_something
+  end
+end
+```
 
 
 Stubbing
