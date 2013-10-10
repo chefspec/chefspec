@@ -16,7 +16,7 @@ ChefSpec runs your cookbook locally using Chef Solo without actually converging 
 Important Notes
 ---------------
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version' documentation!**
-- **Each resource matcher is self-documented using Yard and has a corresponding aruba test from the `examples` directory.**
+- **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/acrmp/chefspec) and has a corresponding aruba test from the [examples directory](https://github.com/acrmp/chefspec/tree/master/examples).**
 - **ChefSpec 3.0 requires Ruby 1.9 or higher!**
 
 
@@ -149,9 +149,9 @@ end
 
 This test is asserting that the Chef run will have a _package_ resource with the name _apache2_ with an action of _install_.
 
-ChefSpec includes matchers for all of Chef's core resources using the above schema. Each resource matcher is self-documented using Yard and has a corresponding cucumber test from the `examples` directory.
+ChefSpec includes matchers for all of Chef's core resources using the above schema. Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/acrmp/chefspec) and has a corresponding cucumber test from the [examples directory](https://github.com/acrmp/chefspec/tree/master/examples).
 
-Additionally, ChefSpec includes the following helpful matchers. They are also documented in Yard, but they are included here because they do not follow the "general pattern".
+Additionally, ChefSpec includes the following helpful matchers. They are also [documented in Yard](http://rubydoc.info/github/acrmp/chefspec), but they are included here because they do not follow the "general pattern".
 
 ##### include_recipe
 Assert that the Chef run included a recipe from another cookbook
@@ -177,7 +177,7 @@ expect(chef_run).to render_file('/etc/foo').with_content('This is content')
 expect(chef_run).to render_file('/etc/foo').with_content(/regex works too.+/)
 ```
 
-**For more complex examples, please see the examples directory or the Yard documentation.**
+**For more complex examples, please see the [examples directory](https://github.com/acrmp/chefspec/tree/master/examples) or the [Yard documentation](http://rubydoc.info/github/acrmp/chefspec).**
 
 
 Setting node Attributes
