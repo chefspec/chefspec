@@ -7,6 +7,8 @@ rescue LoadError
     " to your Gemfile:\n\n  gem 'berkshelf'\n\n"
 end
 
+require 'fileutils'
+
 module ChefSpec
   class Berkshelf
     class << self
@@ -23,12 +25,24 @@ module ChefSpec
     def setup!
       tmpdir = Dir.mktmpdir
 
-      ::Berkshelf.ui.mute do
-        ::Berkshelf::Berksfile.from_file('Berksfile').install(path: tmpdir)
-      end
+      vendor_cookbooks(tmpdir)
 
       ::RSpec.configure do |config|
         config.cookbook_path = tmpdir
+      end
+    end
+
+    private
+
+    def vendor_cookbooks(path)
+      ::Berkshelf.ui.mute do
+        berksfile = ::Berkshelf::Berksfile.from_file('Berksfile')
+        if berksfile.respond_to?(:vendor)
+          FileUtils.rm_rf(path)
+          berksfile.vendor(path)
+        else
+          berksfile.install(path: path)
+        end
       end
     end
   end
