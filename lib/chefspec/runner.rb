@@ -108,7 +108,14 @@ module ChefSpec
         recipe.from_file(recipe_path)
       end
 
+
+      # Reset the resource collection
       @resources = {}
+
+      # Expand the run_list
+      expand_run_list!
+
+      # Setup the run_context
       @run_context = Chef::RunContext.new(client.node, {}, client.events)
 
       Chef::Runner.new(@run_context).converge
@@ -141,7 +148,10 @@ module ChefSpec
       # Reset the resource collection
       @resources = {}
 
-      client.build_node
+      # Expand the run_list
+      expand_run_list!
+
+      # Setup the run_context
       @run_context = client.setup_run_context
 
       Chef::Runner.new(@run_context).converge
@@ -156,7 +166,7 @@ module ChefSpec
     def node
       return @node if @node
 
-      @node = client.node
+      @node = client.build_node
       @node.instance_variable_set(:@runner, self)
       @node.class.send(:attr_reader, :runner)
       @node
@@ -252,6 +262,14 @@ module ChefSpec
     end
 
     private
+      #
+      # The inferred path from the calling spec.
+      #
+      # @param [Array<String>] kaller
+      #   the calling trace
+      #
+      # @return [String]
+      #
       def calling_cookbook_path(kaller)
         calling_spec = kaller.find { |line| line =~ /\/spec/ }
         bits = calling_spec.split(':', 2).first.split(File::SEPARATOR)
@@ -261,6 +279,10 @@ module ChefSpec
       end
 
       #
+      # The +Chef::Client+ for this runner.
+      #
+      # @return [Chef::Runner]
+      #
       def client
         return @client if @client
 
@@ -269,6 +291,20 @@ module ChefSpec
         @client.load_node
         @client.build_node
         @client
+      end
+
+      #
+      # We really need a way to just expand the run_list, but that's done by
+      # +Chef::Client#build_node+. However, that same method also resets the
+      # automatic attributes, making it impossible to mock them. So we are
+      # stuck +instance_eval+ing against the client and manually expanding
+      # the mode object.
+      #
+      def expand_run_list!
+        client.instance_eval do
+          @run_list_expansion = @node.expand!('disk')
+          @expanded_run_list_with_versions = @run_list_expansion.recipes.with_version_constraints_strings
+        end
       end
   end
 end

@@ -3,12 +3,18 @@ require 'chefspec'
 describe 'attributes::default' do
   let(:chef_run) do
     ChefSpec::Runner.new do |node|
+      node.automatic['ipaddress'] = '500.500.500.500' # Intentionally not a real IP
       node.set['attributes']['message'] = 'The new message is here'
     end.converge(described_recipe)
   end
 
-  it 'uses the overriden node attribute' do
+  it 'uses the overridden node attribute' do
     expect(chef_run).to write_log('The new message is here')
     expect(chef_run).to_not write_log('The old message is here')
+  end
+
+  it 'uses the overridden ohai attribute' do
+    expect(chef_run).to write_log('500.500.500.500')
+    expect(chef_run).to_not write_log('127.0.0.1')
   end
 end
