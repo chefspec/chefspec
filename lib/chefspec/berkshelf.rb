@@ -25,24 +25,17 @@ module ChefSpec
     def setup!
       tmpdir = Dir.mktmpdir
 
-      vendor_cookbooks(tmpdir)
+      ::Berkshelf.ui.mute do
+        if ::Berkshelf::Berksfile.method_defined?(:vendor)
+          FileUtils.rm_rf(tmpdir)
+          ::Berkshelf::Berksfile.from_file('Berksfile').vendor(tmpdir)
+        else
+          ::Berkshelf::Berksfile.from_file('Berksfile').install(path: tmpdir)
+        end
+      end
 
       ::RSpec.configure do |config|
         config.cookbook_path = tmpdir
-      end
-    end
-
-    private
-
-    def vendor_cookbooks(path)
-      ::Berkshelf.ui.mute do
-        berksfile = ::Berkshelf::Berksfile.from_file('Berksfile')
-        if berksfile.respond_to?(:vendor)
-          FileUtils.rm_rf(path)
-          berksfile.vendor(path)
-        else
-          berksfile.install(path: path)
-        end
       end
     end
   end
