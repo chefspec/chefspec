@@ -18,14 +18,13 @@ module ChefSpec
 
     def initialize
       @tmpdir = Dir.mktmpdir
-      setup!
     end
 
     #
     # Setup and install the necessary dependencies in the temporary directory.
     #
     def setup!
-      teardown! # Berkshelf 3.0 requires the directory to be empty
+      FileUtils.rm_rf(@tmpdir) # Berkshelf 3.0 requires the directory to be empty
       FileUtils.mkdir_p(@tmpdir)
 
       ::Berkshelf.ui.mute do
