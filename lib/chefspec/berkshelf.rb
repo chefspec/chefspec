@@ -40,7 +40,7 @@ module ChefSpec
     # Destroy the installed Berkshelf at the temporary directory.
     #
     def teardown!
-      FileUtils.rm_rf(@tmpdir) if File.exists?(@tmpdir)
+      FileUtils.rm_rf(@tmpdir)
     end
   end
 end
