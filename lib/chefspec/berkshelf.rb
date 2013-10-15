@@ -24,11 +24,9 @@ module ChefSpec
     # Setup and install the necessary dependencies in the temporary directory.
     #
     def setup!
-      FileUtils.rm_rf(@tmpdir) # Berkshelf 3.0 requires the directory to be empty
-      FileUtils.mkdir_p(@tmpdir)
-
       ::Berkshelf.ui.mute do
         if ::Berkshelf::Berksfile.method_defined?(:vendor)
+          FileUtils.rm_rf(@tmpdir) # Berksfile#vendor requires that the directory does't exist
           ::Berkshelf::Berksfile.from_file('Berksfile').vendor(@tmpdir)
         else
           ::Berkshelf::Berksfile.from_file('Berksfile').install(path: @tmpdir)
@@ -42,7 +40,7 @@ module ChefSpec
     # Destroy the installed Berkshelf at the temporary directory.
     #
     def teardown!
-      FileUtils.rm_rf(@tmpdir) if File.exists?(@tmpdir)
+      FileUtils.rm_rf(@tmpdir)
     end
   end
 end
