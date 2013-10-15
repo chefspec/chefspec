@@ -51,7 +51,7 @@ module ChefSpec::Matchers
         " action ':#{@expected_action}' to be in Chef run. Other" \
         " #{@resource_name} resources:" \
         "\n\n" \
-        "  " + similar_resources.map(&:to_s).join("\n  ")
+        "  " + similar_resources.map(&:to_s).join("\n  ") + "\n "
       end
     end
 
@@ -107,7 +107,7 @@ module ChefSpec::Matchers
       # @return [Array<Chef::Resource>]
       #
       def similar_resources
-        @_similar_resources ||= @runner.find_resources(@resource_name)
+        @_similar_resources ||= @runner.find_resources(@resource_name).values
       end
 
       #

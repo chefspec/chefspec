@@ -20,13 +20,27 @@ module ChefSpec::Matchers
 
     def failure_message_for_should
       message = "expected Chef run to render '#{@path}'"
-      message << " with:\n\n#{@expected_content}\n\nbut got:\n\n#{@actual_content}" if @expected_content
+      if @expected_content
+        message << " with:"
+        message << "\n\n"
+        message << @expected_content
+        message << "\n\n"
+        message << "but got:"
+        message << "\n\n"
+        message << @actual_content
+        message << "\n "
+      end
       message
     end
 
     def failure_message_for_should_not
       message = "expected file '#{@path}'"
-      message << " with:\n\n#{@expected_content}\n\n" if @expected_content
+      if @expected_content
+        message << " with:"
+        message << "\n\n"
+        message << @expected_content
+        message << "\n\n"
+      end
       message << " to not be in Chef run"
     end
 

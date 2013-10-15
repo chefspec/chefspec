@@ -55,6 +55,7 @@ module ChefSpec::Matchers
       message << ", but did not."
       message << "\n\n"
       message << "Other notifications were:\n#{format_notifications}"
+      message << "\n "
       message
     end
 
