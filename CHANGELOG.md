@@ -57,7 +57,8 @@ Features:
   - Added `stub_node` helper for quickly generating a node object from Fauxhai data
   - Added `ChefSpec::Runner#apply` command to mimic the behavior of `chef-apply` (use with caution)
   - Share the `ChefSpec::Runner` object with the Node object
-  - Add `chefspec/berkshelf` for easily integrating specs with Berkshelf
+  - Add `chefspec/berkshelf` for easily integrating specs with Berkshelf (2 & 3)
+  - Add `.at_compile_time` and `.at_converge_time` matchers for asserting what part of the Chef run a resource should be run
 
 Improvements:
   - Move to inline documentation (Yard)
