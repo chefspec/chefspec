@@ -177,6 +177,26 @@ expect(chef_run).to render_file('/etc/foo').with_content('This is content')
 expect(chef_run).to render_file('/etc/foo').with_content(/regex works too.+/)
 ```
 
+Additionally, it is possible to assert which [Chef phase of execution](http://docs.opscode.com/essentials_nodes_chef_run.html) a resouce is created. Given a resource that is installed at compile time using `run_action`:
+
+```ruby
+package('apache2').run_action(:install)
+```
+
+You can assert that this package is installed during runtime using the `.at_compile_time` predicate on the resource matcher:
+
+```ruby
+expect(chef_run).to install_package('apache2').at_compile_time
+```
+
+Simiarly, you can assert that a resource is executed during convergence time:
+
+```ruby
+expect(chef_run).to install_package('apache2').at_converge_time
+```
+
+Since "converge time" is the default behavior for all recipes, this test might be redundant and the predicate could be dropped depending on your situation.
+
 **For more complex examples, please see the [examples directory](https://github.com/acrmp/chefspec/tree/master/examples) or the [Yard documentation](http://rubydoc.info/github/acrmp/chefspec).**
 
 

@@ -11,6 +11,18 @@ module ChefSpec::Matchers
       self
     end
 
+    def at_compile_time
+      raise ArgumentError, 'Cannot specify both .at_converge_time and .at_compile_time!' if @converge_time
+      @compile_time = true
+      self
+    end
+
+    def at_converge_time
+      raise ArgumentError, 'Cannot specify both .at_compile_time and .at_converge_time!' if @compile_time
+      @converge_time = true
+      self
+    end
+
     #
     # Allow users to specify fancy #with matchers.
     #
@@ -27,7 +39,7 @@ module ChefSpec::Matchers
       @runner = runner
 
       if resource
-        resource_actions.include?(@expected_action) && unmatched_parameters.empty?
+        resource_actions.include?(@expected_action) && unmatched_parameters.empty? && correct_phase?
       else
         false
       end
@@ -36,12 +48,19 @@ module ChefSpec::Matchers
     def failure_message_for_should
       if resource
         if resource_actions.include?(@expected_action)
-          "expected '#{resource.to_s}' to have parameters:" \
-          "\n\n" \
-          "  " + unmatched_parameters.collect { |parameter, h|
-            "#{parameter} #{h[:expected].inspect}, was #{h[:actual].inspect}"
-          }.join("\n  ")
-
+          if unmatched_parameters.empty?
+            if @compile_time
+              "expected '#{resource.to_s}' to be run at compile time, but was converge time"
+            else
+              "expected '#{resource.to_s}' to be run at converge time, but was compile time"
+            end
+          else
+            "expected '#{resource.to_s}' to have parameters:" \
+            "\n\n" \
+            "  " + unmatched_parameters.collect { |parameter, h|
+              "#{parameter} #{h[:expected].inspect}, was #{h[:actual].inspect}"
+            }.join("\n  ")
+          end
         else
           "expected '#{resource.to_s}' actions #{resource_actions.inspect}" \
           " to include ':#{@expected_action}'"
@@ -57,10 +76,14 @@ module ChefSpec::Matchers
 
     def failure_message_for_should_not
       if resource
-        "expected '#{resource.to_s}' actions #{resource_actions.inspect} to not exist"
+        message = "expected '#{resource.to_s}' actions #{resource_actions.inspect} to not exist"
       else
-        "expected '#{resource.to_s}' to not exist"
+        message = "expected '#{resource.to_s}' to not exist"
       end
+
+      message << " at compile time" if @compile_time
+      message << " at converge time" if @converge_time
+      message
     end
 
     def description
@@ -91,6 +114,16 @@ module ChefSpec::Matchers
           Array(expected) == Array(safe_send(parameter))
         else
           expected === safe_send(parameter)
+        end
+      end
+
+      def correct_phase?
+        if @compile_time
+          resource.compile_time?
+        elsif @converge_time
+          !resource.compile_time?
+        else
+          true
         end
       end
 

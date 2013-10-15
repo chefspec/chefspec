@@ -100,6 +100,9 @@ module ChefSpec
     #   A reference to the calling Runner (for chaining purposes)
     #
     def apply(*recipe_names)
+      # Start compiling
+      @compiling = true
+
       recipe_names.each do |recipe_name|
         cookbook, recipe = Chef::Recipe.parse_recipe_name(recipe_name)
         recipe_path = File.join(Dir.pwd, 'recipes', "#{recipe}.rb")
@@ -107,7 +110,6 @@ module ChefSpec
         recipe = Chef::Recipe.new(cookbook, recipe, run_context)
         recipe.from_file(recipe_path)
       end
-
 
       # Reset the resource collection
       @resources = {}
@@ -117,6 +119,9 @@ module ChefSpec
 
       # Setup the run_context
       @run_context = Chef::RunContext.new(client.node, {}, client.events)
+
+      # We are done compiling now
+      @compiling = false
 
       Chef::Runner.new(@run_context).converge
       self
@@ -140,6 +145,9 @@ module ChefSpec
     #   A reference to the calling Runner (for chaining purposes)
     #
     def converge(*recipe_names)
+      # Start compiling
+      @compiling = true
+
       node.run_list.reset!
       recipe_names.each { |recipe_name| node.run_list.add(recipe_name) }
 
@@ -153,6 +161,9 @@ module ChefSpec
 
       # Setup the run_context
       @run_context = client.setup_run_context
+
+      # We are done compiling now
+      @compiling = false
 
       Chef::Runner.new(@run_context).converge
       self
@@ -243,9 +254,21 @@ module ChefSpec
     end
 
     #
+    # Boolean method to determine if the Runner is still compiling recipes.
+    # This is used by the +Resource+ class to determine if a resource was
+    # invoked at compile-time or converge-time.
+    #
+    # @return [Boolean]
+    #
+    def compiling?
+      !!@compiling
+    end
+
+    #
     # This runner as a string.
     #
-    # @return [String] Currently includes the run_list. Format of the string may change between versions of this gem.
+    # @return [String] Currently includes the run_list. Format of the string
+    # may change between versions of this gem.
     #
     def to_s
       return "chef_run: #{node.run_list.to_s}" unless node.run_list.empty?
