@@ -121,7 +121,7 @@ module ChefSpec::Matchers
         if @compile_time
           resource.performed_action(@expected_action)[:compile_time]
         elsif @converge_time
-          !resource.performed_action(@expected_action)[:compile_time]
+          resource.performed_action(@expected_action)[:converge_time]
         else
           true
         end
