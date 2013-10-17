@@ -23,11 +23,11 @@ module ChefSpec::Matchers
       if @expected_content
         message << " with:"
         message << "\n\n"
-        message << @expected_content
+        message << @expected_content.to_s
         message << "\n\n"
         message << "but got:"
         message << "\n\n"
-        message << @actual_content
+        message << @actual_content.to_s
         message << "\n "
       end
       message
@@ -38,7 +38,7 @@ module ChefSpec::Matchers
       if @expected_content
         message << " with:"
         message << "\n\n"
-        message << @expected_content
+        message << @expected_content.to_s
         message << "\n\n"
       end
       message << " to not be in Chef run"
