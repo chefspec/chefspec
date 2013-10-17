@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ChefSpec::Matchers::LinkToMatcher do
   let(:path) { '/var/www' }
-  let(:link) { double('link', to: path, to_s: "link[#{path}]", is_a?: true) }
+  let(:link) { double('link', to: path, to_s: "link[#{path}]", is_a?: true, performed_action?: true) }
   subject { described_class.new(path) }
 
   describe '#failure_message_for_should' do

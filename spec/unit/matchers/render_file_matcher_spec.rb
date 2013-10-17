@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ChefSpec::Matchers::RenderFileMatcher do
   let(:path) { '/tmp/thing' }
-  let(:file) { double('file', to: path, to_s: "file[#{path}]", action: :create) }
+  let(:file) { double('file', to: path, to_s: "file[#{path}]", performed_action?: true) }
   let(:chef_run) { double('chef run', find_resource: file) }
   subject { described_class.new(path) }
 

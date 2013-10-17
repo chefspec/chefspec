@@ -2,24 +2,17 @@ require 'chefspec'
 
 describe 'multiple_run_action::default' do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
-  let(:actions) { chef_run.template('/tmp/resource').action }
-
-  it 'returns an array of symbols' do
-    expect(actions).to be_a(Array)
-    Array(actions).each do |action|
-      expect(action).to be_a(Symbol)
-    end
-  end
 
   it 'includes the action explicitly given to the resource' do
-    expect(actions).to include(:create)
+    expect(chef_run).to create_template('/tmp/resource')
   end
 
   it 'includes an action specific called in #run_action' do
-    expect(actions).to include(:touch)
+    expect(chef_run).to touch_template('/tmp/resource')
   end
 
   it 'does not include something random' do
-    expect(actions).to_not include(:bacon)
+    template = chef_run.template('/tmp/resource')
+    expect(template.performed_actions).to_not include(:bacon)
   end
 end

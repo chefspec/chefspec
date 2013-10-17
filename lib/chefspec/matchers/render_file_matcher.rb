@@ -59,7 +59,7 @@ module ChefSpec::Matchers
       # @return [Boolean]
       #
       def has_create_action?
-        !([:create, :create_if_missing] & Array(resource.action).map(&:to_sym)).empty?
+        [:create, :create_if_missing].any? { |action| resource.performed_action?(action) }
       end
 
       #

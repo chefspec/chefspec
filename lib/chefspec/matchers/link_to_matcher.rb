@@ -6,7 +6,10 @@ module ChefSpec::Matchers
 
     def matches?(link)
       @link = link
-      @link.is_a?(Chef::Resource::Link) && @path === @link.to
+
+      @link.is_a?(Chef::Resource::Link) &&
+      @link.performed_action?(:create) &&
+      @path === @link.to
     end
 
     def description

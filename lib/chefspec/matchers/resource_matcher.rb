@@ -39,7 +39,7 @@ module ChefSpec::Matchers
       @runner = runner
 
       if resource
-        resource_actions.include?(@expected_action) && unmatched_parameters.empty? && correct_phase?
+        resource.performed_action?(@expected_action) && unmatched_parameters.empty? && correct_phase?
       else
         false
       end
@@ -47,7 +47,7 @@ module ChefSpec::Matchers
 
     def failure_message_for_should
       if resource
-        if resource_actions.include?(@expected_action)
+        if resource.performed_action?(@expected_action)
           if unmatched_parameters.empty?
             if @compile_time
               "expected '#{resource.to_s}' to be run at compile time, but was converge time"
@@ -62,7 +62,7 @@ module ChefSpec::Matchers
             }.join("\n  ")
           end
         else
-          "expected '#{resource.to_s}' actions #{resource_actions.inspect}" \
+          "expected '#{resource.to_s}' actions #{resource.performed_actions.inspect}" \
           " to include ':#{@expected_action}'"
         end
       else
@@ -76,7 +76,7 @@ module ChefSpec::Matchers
 
     def failure_message_for_should_not
       if resource
-        message = "expected '#{resource.to_s}' actions #{resource_actions.inspect} to not exist"
+        message = "expected '#{resource.to_s}' actions #{resource.performed_actions.inspect} to not exist"
       else
         message = "expected '#{resource.to_s}' to not exist"
       end
@@ -119,9 +119,9 @@ module ChefSpec::Matchers
 
       def correct_phase?
         if @compile_time
-          resource.compile_time?
+          resource.performed_action(@expected_action)[:compile_time]
         elsif @converge_time
-          !resource.compile_time?
+          !resource.performed_action(@expected_action)[:compile_time]
         else
           true
         end
@@ -140,7 +140,7 @@ module ChefSpec::Matchers
       # @return [Array<Chef::Resource>]
       #
       def similar_resources
-        @_similar_resources ||= @runner.find_resources(@resource_name).values
+        @_similar_resources ||= @runner.find_resources(@resource_name)
       end
 
       #
@@ -153,15 +153,6 @@ module ChefSpec::Matchers
       #
       def resource
         @_resource ||= @runner.find_resource(@resource_name, @expected_identity)
-      end
-
-      #
-      # The list of actions on this resource.
-      #
-      # @return [Array<Symbol>]
-      #
-      def resource_actions
-        @_resource_actions ||= Array(resource.action).map(&:to_sym)
       end
 
       #

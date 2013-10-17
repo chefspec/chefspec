@@ -9,18 +9,20 @@ module ChefSpec::Matchers
     def matches?(resource)
       @resource = resource
 
-      block = Proc.new do |notified|
-        notified.resource.resource_name.to_s == @expected_resource_type &&
-        (@expected_resource_name === notified.resource.identity.to_s || @expected_resource_name === notified.resource.name.to_s) &&
-        matches_action?(notified)
-      end
+      if @resource
+        block = Proc.new do |notified|
+          notified.resource.resource_name.to_s == @expected_resource_type &&
+          (@expected_resource_name === notified.resource.identity.to_s || @expected_resource_name === notified.resource.name.to_s) &&
+          matches_action?(notified)
+        end
 
-      if @immediately
-        immediate_notifications.any?(&block)
-      elsif @delayed
-        delayed_notifications.any?(&block)
-      else
-        all_notifications.any?(&block)
+        if @immediately
+          immediate_notifications.any?(&block)
+        elsif @delayed
+          delayed_notifications.any?(&block)
+        else
+          all_notifications.any?(&block)
+        end
       end
     end
 
@@ -48,15 +50,29 @@ module ChefSpec::Matchers
     end
 
     def failure_message_for_should
-      message = "expected '#{@resource.resource_name}[#{@resource.name}]' to notify '#{@expected_resource_type}[#{@expected_resource_name}]'"
-      message << " with action #{@action.inspect}" if @action
-      message << " immediately" if @immediately
-      message << " delayed" if @delayed
-      message << ", but did not."
-      message << "\n\n"
-      message << "Other notifications were:\n#{format_notifications}"
-      message << "\n "
-      message
+      if @resource
+        message = "expected '#{@resource.resource_name}[#{@resource.name}]' to notify '#{@expected_resource_type}[#{@expected_resource_name}]'"
+        message << " with action #{@action.inspect}" if @action
+        message << " immediately" if @immediately
+        message << " delayed" if @delayed
+        message << ", but did not."
+        message << "\n\n"
+        message << "Other notifications were:\n\n#{format_notifications}"
+        message << "\n "
+        message
+      else
+        message = "expected _something_ to notify '#{@expected_resource_type}[#{@expected_resource_name}]"
+        message << " with action #{@action.inspect}" if @action
+        message << " immediately" if @immediately
+        message << " delayed" if @delayed
+        message << ", but the _something_ you gave me was nil! If you are running a test like:"
+        message << "\n\n"
+        message << "  expect(_something_).to notify('...')"
+        message << "\n\n"
+        message << "Make sure that `_something_` exists, because I got nil"
+        message << "\n "
+        message
+      end
     end
 
     private
@@ -78,10 +94,11 @@ module ChefSpec::Matchers
       end
 
       def format_notification(notification)
+        notifying_resource = notification.notifying_resource
         resource = notification.resource
         type = notification.notifying_resource.immediate_notifications.include?(notification) ? :immediately : :delayed
 
-        "notifies :#{notification.action}, '#{resource.resource_name}[#{resource.name}]', :#{type}"
+        "  #{notifying_resource.to_s} notifies '#{resource.resource_name}[#{resource.name}]' to :#{notification.action}, :#{type}"
       end
 
       def format_notifications

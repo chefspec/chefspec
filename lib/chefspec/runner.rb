@@ -74,10 +74,11 @@ module ChefSpec
       Chef::Config.reset!
       Chef::Config.formatters.clear
       Chef::Config.add_formatter('chefspec')
-      Chef::Config[:cache_type]    = 'Memory'
-      Chef::Config[:cookbook_path] = Array(options[:cookbook_path])
-      Chef::Config[:force_logger]  = true
-      Chef::Config[:solo]          = true
+      Chef::Config[:cache_type]     = 'Memory'
+      Chef::Config[:event_handlers] = ChefSpec::Reporter.new
+      Chef::Config[:cookbook_path]  = Array(options[:cookbook_path])
+      Chef::Config[:force_logger]   = true
+      Chef::Config[:solo]           = true
 
       yield node if block_given?
     end
@@ -100,9 +101,6 @@ module ChefSpec
     #   A reference to the calling Runner (for chaining purposes)
     #
     def apply(*recipe_names)
-      # Start compiling
-      @compiling = true
-
       recipe_names.each do |recipe_name|
         cookbook, recipe = Chef::Recipe.parse_recipe_name(recipe_name)
         recipe_path = File.join(Dir.pwd, 'recipes', "#{recipe}.rb")
@@ -111,19 +109,13 @@ module ChefSpec
         recipe.from_file(recipe_path)
       end
 
-      # Reset the resource collection
-      @resources = {}
-
       # Expand the run_list
       expand_run_list!
 
       # Setup the run_context
       @run_context = Chef::RunContext.new(client.node, {}, client.events)
 
-      # We are done compiling now
-      @compiling = false
-
-      Chef::Runner.new(@run_context).converge
+      @client.converge(@run_context)
       self
     end
 
@@ -145,16 +137,10 @@ module ChefSpec
     #   A reference to the calling Runner (for chaining purposes)
     #
     def converge(*recipe_names)
-      # Start compiling
-      @compiling = true
-
       node.run_list.reset!
       recipe_names.each { |recipe_name| node.run_list.add(recipe_name) }
 
       return self if dry_run?
-
-      # Reset the resource collection
-      @resources = {}
 
       # Expand the run_list
       expand_run_list!
@@ -162,10 +148,7 @@ module ChefSpec
       # Setup the run_context
       @run_context = client.setup_run_context
 
-      # We are done compiling now
-      @compiling = false
-
-      Chef::Runner.new(@run_context).converge
+      @client.converge(@run_context)
       self
     end
 
@@ -188,8 +171,8 @@ module ChefSpec
     #
     # @return [Hash<String, Chef::Resource>]
     #
-    def resources
-      @resources ||= {}
+    def resource_collection
+      @resource_collection ||= @run_context.resource_collection
     end
 
     #
@@ -209,9 +192,11 @@ module ChefSpec
     #   The matching resource, or nil if one is not found
     #
     def find_resource(type, name)
-      return resources["#{type}[#{name}]"] if resources["#{type}[#{name}]"]
+      begin
+        return resource_collection.lookup("#{type}[#{name}]")
+      rescue Chef::Exceptions::ResourceNotFound; end
 
-      resources.values.find do |resource|
+      resource_collection.all_resources.find do |resource|
         resource.resource_name.to_sym == type && (name === resource.identity || name === resource.name)
       end
     end
@@ -230,7 +215,7 @@ module ChefSpec
     #   The matching resources
     #
     def find_resources(type)
-      resources.select do |_, resource|
+      resource_collection.all_resources.select do |resource|
         resource.resource_name.to_s == type.to_s
       end
     end
@@ -251,17 +236,6 @@ module ChefSpec
     #
     def dry_run?
       !!options[:dry_run]
-    end
-
-    #
-    # Boolean method to determine if the Runner is still compiling recipes.
-    # This is used by the +Resource+ class to determine if a resource was
-    # invoked at compile-time or converge-time.
-    #
-    # @return [Boolean]
-    #
-    def compiling?
-      !!@compiling
     end
 
     #
