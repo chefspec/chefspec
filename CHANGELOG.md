@@ -27,6 +27,8 @@ Breaking:
   - Separate file/cookbook_file/template matchers. In prior versions of ChefSpec, the `file` matcher would match on `file`, `cookbook_file`, and `template`. This is not ideal because it doesn't verify the correct message was sent. Now, `file`, `cookbook_file`, and `template` matchers will _only_ match resources of that type. For generic file checking, please use the new `render_file` matcher.
   - Guards are now evaluated by default. If a shell guard is executed, it must first be stubbed with the `stub_command` macro.
   - `Runner#resources` converted from an Array to a Hash. This is to ensure that all resource actions are added (when multiple calls to run_action exist (#201)). This also drastically improves resource lookup times.
+  - `#run_action` monkey patches have moved into the provider so that resource chaining and notifications occur as expected.
+  - `Resource#actions` is no longer maniuplated. Instead, a new method `Resource#performed_actions` now keeps track of the actions taken on a resource (as well as the phase in which they were taken), preserving the original state of the resource.
 
 Features:
   - Added a new `render_file` action to replace `create_file_with_content`. This matcher will render the contents of any file to a string and then optionally compare the result if given a `with` chainable.
@@ -58,7 +60,7 @@ Features:
   - Added `ChefSpec::Runner#apply` command to mimic the behavior of `chef-apply` (use with caution)
   - Share the `ChefSpec::Runner` object with the Node object
   - Add `chefspec/berkshelf` for easily integrating specs with Berkshelf (2 & 3)
-  - Add `.at_compile_time` and `.at_converge_time` matchers for asserting what part of the Chef run a resource should be run
+  - Add `.at_compile_time` and `.at_converge_time` matchers for asserting which phase of the Chef run a resource should be run
 
 Improvements:
   - Move to inline documentation (Yard)
@@ -69,6 +71,7 @@ Improvements:
   - Infer the `cookbook_path` from the calling spec
   - Directly set node attributes with Fauxhai (formerly this was an O(n) operation)
   - Refactored ExpectExpectation to work without stubbing
+  - Use Chef's `resource_collection` to identify resources instead of our own custom proxy
 
 
 ## 2.0.1 (August 28, 2013)
