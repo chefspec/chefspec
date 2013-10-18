@@ -87,7 +87,7 @@ module ChefSpec::Matchers
     end
 
     def description
-      "#{@expected_action} #{@resource_name}"
+      "#{@expected_action} #{@resource_name} '#{@expected_identity}'"
     end
 
     private
