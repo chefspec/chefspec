@@ -75,7 +75,6 @@ module ChefSpec
       Chef::Config.formatters.clear
       Chef::Config.add_formatter('chefspec')
       Chef::Config[:cache_type]     = 'Memory'
-      Chef::Config[:event_handlers] = ChefSpec::Reporter.new
       Chef::Config[:cookbook_path]  = Array(options[:cookbook_path])
       Chef::Config[:force_logger]   = true
       Chef::Config[:solo]           = true
@@ -115,6 +114,7 @@ module ChefSpec
       # Setup the run_context
       @run_context = Chef::RunContext.new(client.node, {}, client.events)
 
+      @converging = true
       @client.converge(@run_context)
       self
     end
@@ -148,6 +148,7 @@ module ChefSpec
       # Setup the run_context
       @run_context = client.setup_run_context
 
+      @converging = true
       @client.converge(@run_context)
       self
     end
@@ -221,12 +222,28 @@ module ChefSpec
     end
 
     #
-    # The list of LWRPs to step into and evaluate.
+    # Boolean method to determine the current phase of the Chef run (compiling
+    # or converging)
     #
-    # @return [Array<String>]
+    # @return [Boolean]
     #
-    def step_into
-      @step_into ||= Array(options[:step_into] || [])
+    def compiling?
+      !@converging
+    end
+
+    #
+    # Determines if the runner should step into the given resource. The
+    # +step_into+ option takes a string, but this method coerces everything
+    # to symbols for safety.
+    #
+    # @param [Chef::Resource] resource
+    #   the Chef resource to try and step in to
+    #
+    # @return [Boolean]
+    #
+    def step_into?(resource)
+      key = resource.resource_name.to_sym
+      Array(options[:step_into]).map(&:to_sym).include?(key)
     end
 
     #
