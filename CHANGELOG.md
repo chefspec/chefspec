@@ -27,7 +27,6 @@ Breaking:
   - Separate file/cookbook_file/template matchers. In prior versions of ChefSpec, the `file` matcher would match on `file`, `cookbook_file`, and `template`. This is not ideal because it doesn't verify the correct message was sent. Now, `file`, `cookbook_file`, and `template` matchers will _only_ match resources of that type. For generic file checking, please use the new `render_file` matcher.
   - Guards are now evaluated by default. If a shell guard is executed, it must first be stubbed with the `stub_command` macro.
   - `Runner#resources` converted from an Array to a Hash. This is to ensure that all resource actions are added (when multiple calls to run_action exist (#201)). This also drastically improves resource lookup times.
-  - `#run_action` monkey patches have moved into the provider so that resource chaining and notifications occur as expected.
   - `Resource#actions` is no longer maniuplated. Instead, a new method `Resource#performed_actions` now keeps track of the actions taken on a resource (as well as the phase in which they were taken), preserving the original state of the resource.
 
 Features:
