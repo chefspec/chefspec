@@ -75,6 +75,7 @@ module ChefSpec
       Chef::Config.formatters.clear
       Chef::Config.add_formatter('chefspec')
       Chef::Config[:cache_type]     = 'Memory'
+      Chef::Config[:client_key]     = nil
       Chef::Config[:cookbook_path]  = Array(options[:cookbook_path])
       Chef::Config[:force_logger]   = true
       Chef::Config[:solo]           = true
