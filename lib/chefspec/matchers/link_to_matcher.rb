@@ -13,19 +13,19 @@ module ChefSpec::Matchers
     end
 
     def description
-      "link to '#{@path}'"
+      %Q{link to "#{@path}"}
     end
 
     def failure_message_for_should
       if @link.nil?
-        "expected 'link[#{@path}]' with action ':create' to be in Chef run"
+        %Q{expected "link[#{@path}]" with action :create to be in Chef run}
       else
-        "expected '#{@link}' to link to '#{@path}' but was '#{@link.to}'"
+        %Q{expected "#{@link}" to link to "#{@path}" but was "#{@link.to}"}
       end
     end
 
     def failure_message_for_should_not
-      "expected '#{@link}' to not link to '#{@path}'"
+      %Q{expected "#{@link}" to not link to "#{@path}"}
     end
   end
 end

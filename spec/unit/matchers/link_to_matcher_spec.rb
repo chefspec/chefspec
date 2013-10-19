@@ -9,7 +9,7 @@ describe ChefSpec::Matchers::LinkToMatcher do
     it 'has the right value' do
       subject.matches?(link)
       expect(subject.failure_message_for_should)
-        .to eq(%Q(expected 'link[#{path}]' to link to '#{path}' but was '#{path}'))
+        .to eq(%Q(expected "link[#{path}]" to link to "#{path}" but was "#{path}"))
     end
   end
 
@@ -17,14 +17,14 @@ describe ChefSpec::Matchers::LinkToMatcher do
     it 'has the right value' do
       subject.matches?(link)
       expect(subject.failure_message_for_should_not)
-        .to eq(%Q(expected 'link[#{path}]' to not link to '#{path}'))
+        .to eq(%Q(expected "link[#{path}]" to not link to "#{path}"))
     end
   end
 
   describe '#description' do
     it 'has the right value' do
       subject.matches?(link)
-      expect(subject.description).to eq(%Q(link to '#{path}'))
+      expect(subject.description).to eq(%Q(link to "#{path}"))
     end
   end
 

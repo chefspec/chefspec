@@ -15,11 +15,19 @@ module ChefSpec::Matchers
     end
 
     def description
-      "render file '#{@path}'"
+      message = %Q{render file "#{@path}"}
+      if @expected_content
+        if @expected_content.include?("\n")
+          message << " with content <suppressed>"
+        else
+          message << " with content #{@expected_content.inspect}"
+        end
+      end
+      message
     end
 
     def failure_message_for_should
-      message = "expected Chef run to render '#{@path}'"
+      message = %Q{expected Chef run to render "#{@path}"}
       if @expected_content
         message << " with:"
         message << "\n\n"
@@ -34,7 +42,7 @@ module ChefSpec::Matchers
     end
 
     def failure_message_for_should_not
-      message = "expected file '#{@path}'"
+      message = %Q{expected file "#{@path}"}
       if @expected_content
         message << " with:"
         message << "\n\n"
@@ -42,6 +50,7 @@ module ChefSpec::Matchers
         message << "\n\n"
       end
       message << " to not be in Chef run"
+      message
     end
 
     private

@@ -35,6 +35,10 @@ module ChefSpec::Matchers
       end
     end
 
+    def description
+      %Q{#{@expected_action} #{@resource_name} "#{@expected_identity}"}
+    end
+
     def matches?(runner)
       @runner = runner
 
@@ -50,24 +54,24 @@ module ChefSpec::Matchers
         if resource.performed_action?(@expected_action)
           if unmatched_parameters.empty?
             if @compile_time
-              "expected '#{resource.to_s}' to be run at compile time, but was converge time"
+              %Q{expected "#{resource.to_s}" to be run at compile time}
             else
-              "expected '#{resource.to_s}' to be run at converge time, but was compile time"
+              %Q{expected "#{resource.to_s}" to be run at converge time}
             end
           else
-            "expected '#{resource.to_s}' to have parameters:" \
+            %Q{expected "#{resource.to_s}" to have parameters:} \
             "\n\n" \
             "  " + unmatched_parameters.collect { |parameter, h|
               "#{parameter} #{h[:expected].inspect}, was #{h[:actual].inspect}"
             }.join("\n  ")
           end
         else
-          "expected '#{resource.to_s}' actions #{resource.performed_actions.inspect}" \
-          " to include ':#{@expected_action}'"
+          %Q{expected "#{resource.to_s}" actions #{resource.performed_actions.inspect}} \
+          " to include :#{@expected_action}"
         end
       else
-        "expected '#{@resource_name}[#{@expected_identity}]' with" \
-        " action ':#{@expected_action}' to be in Chef run. Other" \
+        %Q{expected "#{@resource_name}[#{@expected_identity}] with"} \
+        " action :#{@expected_action} to be in Chef run. Other" \
         " #{@resource_name} resources:" \
         "\n\n" \
         "  " + similar_resources.map(&:to_s).join("\n  ") + "\n "
@@ -76,18 +80,14 @@ module ChefSpec::Matchers
 
     def failure_message_for_should_not
       if resource
-        message = "expected '#{resource.to_s}' actions #{resource.performed_actions.inspect} to not exist"
+        message = %Q{expected "#{resource.to_s}" actions #{resource.performed_actions.inspect} to not exist}
       else
-        message = "expected '#{resource.to_s}' to not exist"
+        message = %Q{expected "#{resource.to_s}" to not exist}
       end
 
-      message << " at compile time" if @compile_time
+      message << " at compile time"  if @compile_time
       message << " at converge time" if @converge_time
       message
-    end
-
-    def description
-      "#{@expected_action} #{@resource_name} '#{@expected_identity}'"
     end
 
     private

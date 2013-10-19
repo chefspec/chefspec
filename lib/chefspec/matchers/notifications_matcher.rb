@@ -42,8 +42,8 @@ module ChefSpec::Matchers
     end
 
     def description
-      message = "notify #{@expected_resource_type}[#{@expected_resource_name}]"
-      message << " with action #{@action.inspect}" if @action
+      message = %Q{notify "#{@expected_resource_type}[#{@expected_resource_name}]"}
+      message << " with action :#{@action}" if @action
       message << " immediately" if @immediately
       message << " delayed" if @delayed
       message
@@ -51,8 +51,8 @@ module ChefSpec::Matchers
 
     def failure_message_for_should
       if @resource
-        message = "expected '#{@resource.resource_name}[#{@resource.name}]' to notify '#{@expected_resource_type}[#{@expected_resource_name}]'"
-        message << " with action #{@action.inspect}" if @action
+        message = %Q{expected "#{@resource.resource_name}[#{@resource.name}]" to notify "#{@expected_resource_type}[#{@expected_resource_name}]"}
+        message << " with action :#{@action}" if @action
         message << " immediately" if @immediately
         message << " delayed" if @delayed
         message << ", but did not."
@@ -61,8 +61,8 @@ module ChefSpec::Matchers
         message << "\n "
         message
       else
-        message = "expected _something_ to notify '#{@expected_resource_type}[#{@expected_resource_name}]"
-        message << " with action #{@action.inspect}" if @action
+        message = %Q{expected _something_ to notify "#{@expected_resource_type}[#{@expected_resource_name}]"}
+        message << " with action :#{@action}" if @action
         message << " immediately" if @immediately
         message << " delayed" if @delayed
         message << ", but the _something_ you gave me was nil! If you are running a test like:"
@@ -98,7 +98,7 @@ module ChefSpec::Matchers
         resource = notification.resource
         type = notification.notifying_resource.immediate_notifications.include?(notification) ? :immediately : :delayed
 
-        "  #{notifying_resource.to_s} notifies '#{resource.resource_name}[#{resource.name}]' to :#{notification.action}, :#{type}"
+        %Q{  "#{notifying_resource.to_s}" notifies "#{resource.resource_name}[#{resource.name}]" to :#{notification.action}, :#{type}}
       end
 
       def format_notifications

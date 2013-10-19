@@ -10,7 +10,7 @@ describe ChefSpec::Matchers::RenderFileMatcher do
     it 'has the right value' do
       subject.matches?(chef_run)
       expect(subject.failure_message_for_should)
-        .to eq(%Q(expected Chef run to render '#{path}'))
+        .to eq(%Q(expected Chef run to render "#{path}"))
     end
   end
 
@@ -18,14 +18,14 @@ describe ChefSpec::Matchers::RenderFileMatcher do
     it 'has the right value' do
       subject.matches?(chef_run)
       expect(subject.failure_message_for_should_not)
-        .to eq(%Q(expected file '#{path}' to not be in Chef run))
+        .to eq(%Q(expected file "#{path}" to not be in Chef run))
     end
   end
 
   describe '#description' do
     it 'has the right value' do
       subject.matches?(chef_run)
-      expect(subject.description).to eq(%Q(render file '#{path}'))
+      expect(subject.description).to eq(%Q(render file "#{path}"))
     end
   end
 

@@ -8,7 +8,7 @@ describe ChefSpec::Matchers::IncludeRecipeMatcher do
     it 'has the right value' do
       subject.matches?(chef_run)
       expect(subject.failure_message_for_should)
-        .to eq(%q(expected ["one::default", "two::default", "three::default"] to include 'one::default'))
+        .to eq(%q(expected ["one::default", "two::default", "three::default"] to include "one::default"))
     end
   end
 
@@ -16,14 +16,14 @@ describe ChefSpec::Matchers::IncludeRecipeMatcher do
     it 'has the right value' do
       subject.matches?(chef_run)
       expect(subject.failure_message_for_should_not)
-        .to eq(%q(expected 'one::default' to not be included))
+        .to eq(%q(expected "one::default" to not be included))
     end
   end
 
   describe '#description' do
     it 'has the right value' do
       subject.matches?(chef_run)
-      expect(subject.description).to eq(%q(include recipe 'one::default'))
+      expect(subject.description).to eq(%q(include recipe "one::default"))
     end
   end
 

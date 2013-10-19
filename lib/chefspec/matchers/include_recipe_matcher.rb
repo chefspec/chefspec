@@ -10,15 +10,15 @@ module ChefSpec::Matchers
     end
 
     def description
-      "include recipe '#{@recipe_name}'"
+      %Q{include recipe "#{@recipe_name}"}
     end
 
     def failure_message_for_should
-      "expected #{loaded_recipes} to include '#{@recipe_name}'"
+      %Q{expected #{loaded_recipes.inspect} to include "#{@recipe_name}"}
     end
 
     def failure_message_for_should_not
-      "expected '#{@recipe_name}' to not be included"
+      %Q{expected "#{@recipe_name}" to not be included}
     end
 
     private
