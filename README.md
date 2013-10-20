@@ -609,6 +609,27 @@ end
 ChefSpec::Runner.new(role_path: '/var/my/roles') # local setting
 ```
 
+Using Chef Zero
+---------------
+**Warning:** This is not an officially supported pathway at this time. Please use at your own risk:
+
+[ChefZero](https://github.com/jkeiser/chef-zero) is an in-memory chef server from Jon Keiser. With ChefZero you can completely bypass the search and data bag stubbing requirements, as now it provides a full Chef Server in memory. You should _only_ create one instance of a Chef Zero server, so it's best to do so in your `spec_helper.rb`:
+
+```ruby
+require 'chefspec'
+
+require 'chef_zero/server'
+server = ChefZero::Server.new(port: 4000)
+server.start_background
+
+at_exit do
+  server.stop if server.running?
+end
+
+```
+
+You can also populate pre-baked node data (for example all the nodes from staging environment) which in turn will dictate the outcome of your `search` calls. This will be slower than the first two methods and also requires more memory. See the [ChefZero](https://github.com/jkeiser/chef-zero) documentation for more details.
+
 
 Videos
 ------
