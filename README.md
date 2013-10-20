@@ -479,6 +479,20 @@ expect(chef_run).to write_motd_message('my message')
 **Don't forget to include documentation in your cookbook's README noting the custom matcher and it's API!**
 
 
+Writing Custom Matchers
+-----------------------
+If you are testing a cookbook that does not package it's LWRP matchers, you can create your own following the same pattern as above. Create a file at `spec/support/matchers.rb` and add your resource matchers:
+
+```ruby
+# spec/support/matchers.rb
+def my_custom_matcher(resource_name)
+  ChefSpec::Matchers::ResourceMatcher.new(:resource, :action, resource_name)
+end
+```
+
+Please use this as a _temporary_ solution. Consider sending a Pull Request to the LWRP author(s) packaging the custom resource matchers (see previous section).
+
+
 Expecting Exceptions
 --------------------
 In Chef 11, custom formatters were introduced and ChefSpec uses a custom formatter to supress Chef Client output. In the event of a convergence failure, ChefSpec will output the error message from the run to help you debug:
