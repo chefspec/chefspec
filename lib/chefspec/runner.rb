@@ -63,6 +63,7 @@ module ChefSpec
     def initialize(options = {}, &block)
       @options = options = {
         cookbook_path: RSpec.configuration.cookbook_path || calling_cookbook_path(caller),
+        role_path:     RSpec.configuration.role_path || default_role_path,
         log_level:     RSpec.configuration.log_level,
         path:          RSpec.configuration.path,
         platform:      RSpec.configuration.platform,
@@ -77,6 +78,7 @@ module ChefSpec
       Chef::Config[:cache_type]     = 'Memory'
       Chef::Config[:client_key]     = nil
       Chef::Config[:cookbook_path]  = Array(options[:cookbook_path])
+      Chef::Config[:role_path]      = Array(options[:role_path])
       Chef::Config[:force_logger]   = true
       Chef::Config[:solo]           = true
 
@@ -291,6 +293,20 @@ module ChefSpec
         spec_dir = bits.index('spec') || 0
 
         File.expand_path(File.join(bits.slice(0, spec_dir), '..'))
+      end
+
+      #
+      # The inferred path to roles.
+      #
+      # @return [String, nil]
+      #
+      def default_role_path
+        Pathname.new(Dir.pwd).ascend do |path|
+          possible = File.join(path, 'roles')
+          return possible if File.exists?(possible)
+        end
+
+        nil
       end
 
       #

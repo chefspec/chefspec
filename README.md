@@ -61,6 +61,9 @@ RSpec.configure do |config|
   # the location of the calling spec file])
   config.cookbook_path = '/var/cookbooks'
 
+  # Specify the path for Chef Solo to find roles (default: [ascending search])
+  config.cookbook_path = '/var/cookbooks'
+
   # Specify the Chef log_level (default: :warn)
   config.log_level = :debug
 
@@ -85,7 +88,7 @@ ChefSpec::Runner.new(version: '10.04')
 ChefSpec::Runner.new(platform: 'centos', version: '5.4')
 
 # Specify a different cookbook_path
-ChefSpec::Runner.new(cookbook_path: '/var/my/other/path')
+ChefSpec::Runner.new(cookbook_path: '/var/my/other/path', role_path: '/var/my/roles')
 
 # Add debug log output
 ChefSpec::Runner.new(log_level: :debug).converge(described_recipe)
@@ -110,6 +113,7 @@ Requiring this file will:
 
 ### Librarian
 _There is not currently librarian integration, but we would welcome a community patch!_
+
 
 Making Assertions
 -----------------
@@ -543,6 +547,66 @@ it 'raises an error' do
     chef_run
   }.to raise_error(RuntimeError)
 end
+```
+
+Testing Roles
+-------------
+Even though ChefSpec is cookbook-centric, you can still converge multiple recipes and roles in a single `ChefSpec::Runner` instance. Given a cookbook "bacon" with a default recipe:
+
+```ruby
+# cookbooks/bacon/recipes/default.rb
+package 'foo'
+```
+
+and a default attributes file:
+
+```ruby
+# cookbooks/bacon/attributes/default.rb
+default['bacon']['temperature'] = 200
+```
+
+and a role "breakfast":
+
+```ruby
+# roles/breakfast.rb
+default_attributes(
+  'bacon' => {
+    'temperature' => 150 # NOTE: This is different from the default value
+  }
+)
+run_list([
+  'recipe[bacon::default]'
+])
+```
+
+You can test that the role is appropriately applied by telling the `ChefSpec::Runner` to converge on the _role_ instead of a recipe:
+
+```ruby
+let(:chef_run) { ChefSpec::Runner.new.converge('role[breakfast]') }
+```
+
+Assert that the run_list is properly expanded:
+
+```ruby
+expect(chef_run).to include_recipe('bacon::default')
+```
+
+Assert that the correct attribute is used:
+
+```ruby
+expect(runner.node['bacon']['temperature']).to eq(150)
+```
+
+**NOTE:** If your roles live somewhere outside of the expected path, you must set `RSpec.config.role_path` to point to the directory containing your roles **before** invoking the `#converge` method!
+
+```ruby
+RSpec.configure do |config|
+  config.role_path = '/var/my/roles' # global setting
+end
+
+# - OR -
+
+ChefSpec::Runner.new(role_path: '/var/my/roles') # local setting
 ```
 
 
