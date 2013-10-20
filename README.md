@@ -433,7 +433,7 @@ end
     2. The action that resource should receive.
     3. The value of the name attribute of the resource to find. (This is typically proxied as the value from the matcher definition.)
 
-ChefSpec's built-in `ResourceMatcher` _should_ satisfy most common use cases for custom LWRPs and matchers. However, if your cookbook is extending Chef core or is outside of the scope of traditional resource testing, you may need to create a custom matcher. For more information on custom matchers in RSpec, please [watch the Railscast on Custom Matchers](http://railscasts.com/episodes/157-rspec-matchers-macros) or look at some of the custom matchers in ChefSpec's source code.
+ChefSpec's built-in `ResourceMatcher` _should_ satisfy most common use cases for packaging a custom matcher with your LWRPs. However, if your cookbook is extending Chef core or is outside of the scope of a traditional "resource", you may need to create a custom matcher. For more information on custom matchers in RSpec, please [watch the Railscast on Custom Matchers](http://railscasts.com/episodes/157-rspec-matchers-macros) or look at some of the other custom matchers in ChefSpec's source code.
 
 #### Example
 Suppose I have a cookbook named "motd" with a resource/provider "message".
