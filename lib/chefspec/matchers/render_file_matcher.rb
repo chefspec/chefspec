@@ -17,7 +17,7 @@ module ChefSpec::Matchers
     def description
       message = %Q{render file "#{@path}"}
       if @expected_content
-        if @expected_content.include?("\n")
+        if @expected_content.to_s.include?("\n")
           message << " with content <suppressed>"
         else
           message << " with content #{@expected_content.inspect}"
