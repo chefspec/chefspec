@@ -62,7 +62,7 @@ RSpec.configure do |config|
   config.cookbook_path = '/var/cookbooks'
 
   # Specify the path for Chef Solo to find roles (default: [ascending search])
-  config.cookbook_path = '/var/cookbooks'
+  config.role_path = '/var/roles'
 
   # Specify the Chef log_level (default: :warn)
   config.log_level = :debug
