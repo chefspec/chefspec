@@ -3,6 +3,7 @@ CHANGELOG for ChefSpec
 
 ## 3.0.0 (October 20, 2013)
 Breaking:
+  - Dropped support for Chef 9 & 10
   - Renamed `ChefSpec::ChefRunner` to `ChefSpec::Runner` to better reflect what happens in Chef Core. Using `ChefRunner` will throw deprecation errors for now and will be removed in a future release.
   - Removed MiniTest Chef Handler examples/matchers
   - No longer load default cookbook paths:
