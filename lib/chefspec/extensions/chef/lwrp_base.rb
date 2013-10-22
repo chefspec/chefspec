@@ -7,21 +7,24 @@ class Chef
         alias_method :old_build_from_file, :build_from_file
 
         #
-        # Override Opscode provider to remove any existing LWRP
+        # Override Opscode provider to remove any existing LWRPs to suppress
+        # constant re-definition warnings.
         #
         # @param [String] cookbook_name
-        #   The name of the cookbook
+        #   the name of the cookbook
         # @param [String] filename
-        #   File to load as a LWRP
+        #   file to load as a LWRP
         # @param [Chef::RunContext] run_context
-        #   Context of a Chef Run
+        #   context of a Chef Run
         #
         # @return [Chef::Provider]
         #
-        def build_from_file(*args)
-          cookbook_name, filename = args[0,2]
-          remove_existing_lwrp(convert_to_class_name(filename_to_qualified_string(cookbook_name, filename)))
-          old_build_from_file(*args)
+        def build_from_file(cookbook_name, filename, run_context)
+          provider_name = filename_to_qualified_string(cookbook_name, filename)
+          class_name    = convert_to_class_name(provider_name)
+
+          remove_existing_lwrp(class_name)
+          old_build_from_file(cookbook_name, filename, run_context)
         end
 
         #
@@ -37,7 +40,23 @@ class Chef
             end
           end
         end
+      end
 
+      module InlineResources
+        module ClassMethods
+          #
+          # For LWRPs that call +use_inline_resources+, do not create another
+          # +resource_collection+ so that everything is added to the parent
+          # +resource_collection+.
+          #
+          # @param [String] name
+          #
+          # @override Chef::Provider::LWRPBase::InlineResources::ClassMethods#action
+          #
+          def action(name, &block)
+            define_method("action_#{name}", &block)
+          end
+        end
       end
     end
   end
