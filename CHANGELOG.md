@@ -1,6 +1,15 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 3.0.1 (October 22, 2013)
+Bugfixes:
+  - Fix an issue where LWRPs were not properly stepped into when `use_inline_resources` was specified ([#244](https://github.com/acrmp/chefspec/issues/244))
+  - Coerce `render_file` `@expected_content` to a string before asserting if content is included ([#243](https://github.com/acrmp/chefspec/issues/243))
+
+Improvements:
+  - Miscellaneous documentation fixes and additions ([#245](https://github.com/acrmp/chefspec/issues/245), [#241](https://github.com/acrmp/chefspec/issues/241), [#238](https://github.com/acrmp/chefspec/issues/238))
+
+
 ## 3.0.0 (October 20, 2013)
 Breaking:
   - Dropped support for Chef 9 & 10
