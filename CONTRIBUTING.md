@@ -12,14 +12,14 @@ Also, please be patient as not all items will be tested or reviewed immediately 
 
 Pleas be receptive and responsive to feedback about your additions or changes. The core team and/or other community members may make suggestions or ask questions about your change. This is part of the review process, and helps everyone to understand what is happening, why it is happening, and potentially optimizes your code.
 
-If you're looking to contribute but aren't sure where to start, check ou the [open issues](https://github.com/acrmp/chefspec/issues?state=open).
+If you're looking to contribute but aren't sure where to start, check ou the [open issues](https://github.com/sethvargo/chefspec/issues?state=open).
 
 
 Will Not Merge
 --------------
 This section details, specifically, Pull Requests or features that will _not_ be merged:
 
-1. Machers for non-Chef core resources. ChefSpec 3.0 introduced a way for cookbook maintiners to [package matchers _with_ their cookbooks](https://github.com/acrmp/chefspec/tree/unify_matchers#packaging-lwrp-matchers) at distribution time.
+1. Machers for non-Chef core resources. ChefSpec 3.0 introduced a way for cookbook maintiners to [package matchers _with_ their cookbooks](https://github.com/sethvargo/chefspec/tree/unify_matchers#packaging-lwrp-matchers) at distribution time.
 2. New features without accompanying unit tests, cucumber tests, and documentation.
 
 
@@ -39,7 +39,7 @@ Whether your pull request is a bug fix or introduces new classes or methods to t
 
 We understand that not all users submitting pull requests will be proficient with RSpec. The maintainers and community as a whole are a helpful group and can help you with writing tests. The [Better Specs](http://betterspecs.org/) site should provide some helpful resources to get you started.
 
-ChefSpec is tested on [Travis CI](https://travis-ci.org/acrmp/chefspec) against multiple Chef Versions and Ruby Versions. **Your patches must work for all Chef and Ruby Versions on Travis.** This is in an effort to maintain backward compatibility as long as possible. For more information on which Chef and Ruby versions to support, checkout the [`.travis.yml`](https://github.com/acrmp/chefspec/blob/master/.travis.yml) file.
+ChefSpec is tested on [Travis CI](https://travis-ci.org/sethvargo/chefspec) against multiple Chef Versions and Ruby Versions. **Your patches must work for all Chef and Ruby Versions on Travis.** This is in an effort to maintain backward compatibility as long as possible. For more information on which Chef and Ruby versions to support, checkout the [`.travis.yml`](https://github.com/sethvargo/chefspec/blob/master/.travis.yml) file.
 
 
 Documentation

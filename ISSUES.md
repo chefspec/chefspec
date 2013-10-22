@@ -37,4 +37,4 @@ Here's a snippet you can copy-paste into the issue and fill out:
     ```
 ```
 
-[Create a ticket](https://github.com/acrmp/chefspec/issues/new) describing your problem and include the information above.
+[Create a ticket](https://github.com/sethvargo/chefspec/issues/new) describing your problem and include the information above.

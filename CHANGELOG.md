@@ -3,11 +3,11 @@ CHANGELOG for ChefSpec
 
 ## 3.0.1 (October 22, 2013)
 Bugfixes:
-  - Fix an issue where LWRPs were not properly stepped into when `use_inline_resources` was specified ([#244](https://github.com/acrmp/chefspec/issues/244))
-  - Coerce `render_file` `@expected_content` to a string before asserting if content is included ([#243](https://github.com/acrmp/chefspec/issues/243))
+  - Fix an issue where LWRPs were not properly stepped into when `use_inline_resources` was specified ([#244](https://github.com/sethvargo/chefspec/issues/244))
+  - Coerce `render_file` `@expected_content` to a string before asserting if content is included ([#243](https://github.com/sethvargo/chefspec/issues/243))
 
 Improvements:
-  - Miscellaneous documentation fixes and additions ([#245](https://github.com/acrmp/chefspec/issues/245), [#241](https://github.com/acrmp/chefspec/issues/241), [#238](https://github.com/acrmp/chefspec/issues/238))
+  - Miscellaneous documentation fixes and additions ([#245](https://github.com/sethvargo/chefspec/issues/245), [#241](https://github.com/sethvargo/chefspec/issues/241), [#238](https://github.com/sethvargo/chefspec/issues/238))
 
 
 ## 3.0.0 (October 20, 2013)
@@ -226,7 +226,7 @@ Features:
 
   - LWRP support added (#40). You can now make assertions about the resources
     created by a provider by telling chefspec to [step into a provider
-    implementation](https://github.com/acrmp/chefspec/tree/v0.8.0#writing-examples-for-lwrps).
+    implementation](https://github.com/sethvargo/chefspec/tree/v0.8.0#writing-examples-for-lwrps).
     Thanks to Augusto Becciu for implementing this feature.
   - Updated for compatibility with Chef 10.14. Thanks Augusto Becciu.
 
@@ -304,8 +304,8 @@ Bugfixes:
 
 Features:
 
-  - [Added new matcher](https://www.relishapp.com/acrmp/chefspec/docs/write-examples-for-templates) `create_file_with_content` for verifying Chef `template` resource generated content.
-  - [Knife plugin](https://www.relishapp.com/acrmp/chefspec/docs/generate-placeholder-examples) added to generate placeholder examples.
+  - [Added new matcher](https://www.relishapp.com/sethvargo/chefspec/docs/write-examples-for-templates) `create_file_with_content` for verifying Chef `template` resource generated content.
+  - [Knife plugin](https://www.relishapp.com/sethvargo/chefspec/docs/generate-placeholder-examples) added to generate placeholder examples.
 
 ## 0.2.1 (September 21, 2011)
 Bugfixes:

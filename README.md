@@ -1,9 +1,9 @@
 ChefSpec
 ========
-[![Built on Travis](https://secure.travis-ci.org/acrmp/chefspec.png?branch=master)](http://travis-ci.org/acrmp/chefspec)
+[![Built on Travis](https://secure.travis-ci.org/sethvargo/chefspec.png?branch=master)](http://travis-ci.org/sethvargo/chefspec)
 [![Gem Version](https://badge.fury.io/rb/chefspec.png)](http://badge.fury.io/rb/chefspec)
-[![Dependency Status](https://gemnasium.com/acrmp/chefspec.png)](https://gemnasium.com/acrmp/chefspec)
-[![Code Climate](https://codeclimate.com/github/acrmp/chefspec.png)](https://codeclimate.com/github/acrmp/chefspec)
+[![Dependency Status](https://gemnasium.com/sethvargo/chefspec.png)](https://gemnasium.com/sethvargo/chefspec)
+[![Code Climate](https://codeclimate.com/github/sethvargo/chefspec.png)](https://codeclimate.com/github/sethvargo/chefspec)
 
 ChefSpec is a unit testing framework for testing Chef cookbooks. ChefSpec makes it easy to write examples and get fast feedback on cookbook changes without the need for virtual machines or cloud servers.
 
@@ -17,7 +17,7 @@ Important Notes
 ---------------
 - **ChefSpec 3 requires Chef 11+! Please use the 2.x series for Chef 9 & 10 compatability.**
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version' documentation!**
-- **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/acrmp/chefspec) and has a corresponding aruba test from the [examples directory](https://github.com/acrmp/chefspec/tree/master/examples).**
+- **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding aruba test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).**
 - **ChefSpec 3.0 requires Ruby 1.9 or higher!**
 
 
@@ -154,9 +154,9 @@ end
 
 This test is asserting that the Chef run will have a _package_ resource with the name _apache2_ with an action of _install_.
 
-ChefSpec includes matchers for all of Chef's core resources using the above schema. Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/acrmp/chefspec) and has a corresponding cucumber test from the [examples directory](https://github.com/acrmp/chefspec/tree/master/examples).
+ChefSpec includes matchers for all of Chef's core resources using the above schema. Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding cucumber test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).
 
-Additionally, ChefSpec includes the following helpful matchers. They are also [documented in Yard](http://rubydoc.info/github/acrmp/chefspec), but they are included here because they do not follow the "general pattern".
+Additionally, ChefSpec includes the following helpful matchers. They are also [documented in Yard](http://rubydoc.info/github/sethvargo/chefspec), but they are included here because they do not follow the "general pattern".
 
 ##### include_recipe
 Assert that the Chef run included a recipe from another cookbook
@@ -202,7 +202,7 @@ expect(chef_run).to install_package('apache2').at_converge_time
 
 Since "converge time" is the default behavior for all recipes, this test might be redundant and the predicate could be dropped depending on your situation.
 
-**For more complex examples, please see the [examples directory](https://github.com/acrmp/chefspec/tree/master/examples) or the [Yard documentation](http://rubydoc.info/github/acrmp/chefspec).**
+**For more complex examples, please see the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples) or the [Yard documentation](http://rubydoc.info/github/sethvargo/chefspec).**
 
 
 Setting node Attributes
@@ -655,11 +655,11 @@ Development
 7. Push your changes to GitHub
 8. Open a Pull Request
 
-ChefSpec is on [Travis CI](http://travis-ci.org/acrmp/chefspec) which tests against multiple Chef and Ruby versions.
+ChefSpec is on [Travis CI](http://travis-ci.org/sethvargo/chefspec) which tests against multiple Chef and Ruby versions.
 
-If you are contributing, please see the [Contributing Guidelines](https://github.com/acrmp/chefspec/blob/master/CONTRIBUTING.md) for more information.
+If you are contributing, please see the [Contributing Guidelines](https://github.com/sethvargo/chefspec/blob/master/CONTRIBUTING.md) for more information.
 
 
 License
 -------
-MIT - see the accompanying [LICENSE](https://github.com/acrmp/chefspec/blob/master/LICENSE) file for details.
+MIT - see the accompanying [LICENSE](https://github.com/sethvargo/chefspec/blob/master/LICENSE) file for details.
