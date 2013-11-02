@@ -24,5 +24,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'yard',      '~> 0.8'
 
   # Testing Dependencies
-  s.add_development_dependency 'aruba',     '~> 0.5'
+  s.add_development_dependency 'aruba', '~> 0.5'
+  s.add_development_dependency 'oj',    '~> 2.1'
 end
