@@ -23,6 +23,8 @@ Important Notes
 
 Writing a Cookbook Example
 --------------------------
+If you want `knife` to automatically generate spec stubs for you, install [knife-spec](https://github.com/sethvargo/knife-spec).
+
 Given an extremely basic Chef recipe that just installs an operating system package:
 
 ```ruby
