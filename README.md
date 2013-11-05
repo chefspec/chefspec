@@ -13,6 +13,11 @@ ChefSpec runs your cookbook locally using Chef Solo without actually converging 
 - Your tests can vary node attributes, operating systems, and search results to assert behavior under varying conditions.
 
 
+What people are saying
+----------------------
+> I just wanted to drop you a line to say "HELL YES!" to ChefSpec. - [Joe Goggins](https://twitter.com/jgoggins)
+
+
 Important Notes
 ---------------
 - **ChefSpec 3 requires Chef 11+! Please use the 2.x series for Chef 9 & 10 compatability.**
