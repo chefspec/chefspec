@@ -239,13 +239,17 @@ module ChefSpec
     # +step_into+ option takes a string, but this method coerces everything
     # to symbols for safety.
     #
+    # This method also substitutes any dashes (+-+) with underscores (+_+),
+    # because that's what Chef does under the hood. (See GitHub issue #254
+    # for more background)
+    #
     # @param [Chef::Resource] resource
     #   the Chef resource to try and step in to
     #
     # @return [Boolean]
     #
     def step_into?(resource)
-      key = resource.resource_name.to_sym
+      key = resource.resource_name.to_s.gsub('-', '_').to_sym
       Array(options[:step_into]).map(&:to_sym).include?(key)
     end
 
