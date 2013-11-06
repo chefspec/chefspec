@@ -1,6 +1,21 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 3.0.2 (November 6, 2013)
+Bugfixes:
+  - Update links to point at new repository location
+  - Deleted relish docs to remove confusion
+  - Bump fauxhai dependency to 2.0 (removing the HTTParty transitive dependency)
+  - Convert resource names with dashes to underscores when stepping into them
+
+Improvements:
+  - Added a "what people are saying" section to the README - if you have something cool to say about ChefSpec, let me know!
+  - Add a link to [`knife-spec`](https://github.com/sethvargo/knife-spec)
+  - Test against Chef 11.8
+  - New matcher: `have_state_attrs` for testing custom LWRP state attributes
+  - Run tests in a sandboxed parent instead of tmp (makes Travis happier)
+
+
 ## 3.0.1 (October 22, 2013)
 Bugfixes:
   - Fix an issue where LWRPs were not properly stepped into when `use_inline_resources` was specified ([#244](https://github.com/sethvargo/chefspec/issues/244))
