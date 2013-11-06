@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.files = Dir['lib/**/*.rb']
 
   s.add_dependency 'chef',    '~> 11.0'
-  s.add_dependency 'fauxhai', '~> 1.1'
+  s.add_dependency 'fauxhai', '~> 2.0'
   s.add_dependency 'rspec',   '~> 2.14'
 
   # Development Dependencies
