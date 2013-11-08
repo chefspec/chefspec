@@ -415,8 +415,6 @@ describe 'foo::default' do
 end
 ```
 
-**Please read the caveats on custom LWRPs in the wiki before testing your LWRPs!**
-
 **You should never `step_into` an LWRP unless you are testing it. Never `step_into` an LWRP from another cookbook!**
 
 
