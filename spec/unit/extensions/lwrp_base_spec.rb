@@ -4,19 +4,36 @@ require 'spec_helper'
 if Chef::VERSION >= '11.0.0'
 
   module ChefSpec
-    module MonkeyPatches
+    module Extensions
       describe :LWRPBase do
+
         describe '#remove_existing_lwrp' do
-          it 'removes the provider if it already exists' do
-            Chef::Provider::LWRPBase.const_set(:MysqlDatabase, nil)
-            Chef::Provider::LWRPBase.remove_existing_lwrp('MysqlDatabase')
-            expect(Chef::Provider::LWRPBase.constants).to_not include(:MysqlDatabase)
+          def run_check(container, remover)
+            const_name = :MysqlDatabase
+            sense = container == remover ? :to_not : :to
+            containing_class = Chef.const_get(container)::LWRPBase
+            removing_class = Chef.const_get(remover)::LWRPBase
+
+            containing_class.const_set(const_name, nil)
+            removing_class.remove_existing_lwrp(const_name.to_s)
+            expect(containing_class.constants).send(sense, include(const_name))
+            containing_class.send(:remove_const, const_name) if container != remover
           end
 
-          it 'removes the resource if it already exists' do
-            Chef::Resource::LWRPBase.const_set(:MysqlDatabase, nil)
-            Chef::Provider::LWRPBase.remove_existing_lwrp('MysqlDatabase')
-            expect(Chef::Resource::LWRPBase.constants).to_not include(:MysqlDatabase)
+          it 'when called in Provider, removes the provider if it already exists' do
+            run_check(:Provider, :Provider)
+          end
+
+          it 'when called in Provider, does not remove resource' do
+            run_check(:Resource, :Provider)
+          end
+
+          it 'when called in Resource, removes the resource if it already exists' do
+            run_check(:Resource, :Resource)
+          end
+
+          it 'when called in Resource, does not remove the provider' do
+            run_check(:Provider, :Resource)
           end
 
           it 'does not throw an error if the resource does not already exist' do
@@ -28,8 +45,14 @@ if Chef::VERSION >= '11.0.0'
       end
 
       describe '#build_from_file' do
-        it 'wraps the existing chef build_from_file method' do
-          expect(Chef::Provider::LWRPBase.methods.map(&:to_sym)).to include(:old_build_from_file)
+        %w{Resource Provider}.each do |m|
+          it "in #{m}, wraps the existing chef build_from_file method" do
+            args = %w{mycookbook thisfile context}
+            klass = Chef.const_get(m)::LWRPBase
+            allow(klass).to receive(:old_build_from_file)
+            expect(klass).to receive(:old_build_from_file).with(*args)
+            klass.build_from_file(*args)
+          end
         end
       end
     end
