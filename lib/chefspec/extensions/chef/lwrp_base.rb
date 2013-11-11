@@ -37,7 +37,8 @@ class Chef
     #
     def remove_existing_lwrp(class_name)
       [self, superclass].each do |resource_holder|
-        if resource_holder.const_defined? class_name, false
+        look_in_parents = false
+        if resource_holder.const_defined?(class_name, look_in_parents)
           resource_holder.send(:remove_const, class_name)
         end
       end
