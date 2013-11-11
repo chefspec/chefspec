@@ -49,8 +49,8 @@ if Chef::VERSION >= '11.0.0'
           it "in #{m}, wraps the existing chef build_from_file method" do
             args = %w{mycookbook thisfile context}
             klass = Chef.const_get(m)::LWRPBase
-            allow(klass).to receive(:old_build_from_file)
-            expect(klass).to receive(:old_build_from_file).with(*args)
+            allow(klass).to receive(:build_from_file_without_removal)
+            expect(klass).to receive(:build_from_file_without_removal).with(*args)
             klass.build_from_file(*args)
           end
         end

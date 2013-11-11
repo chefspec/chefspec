@@ -3,8 +3,8 @@ class Chef
   module RemoveExistingLWRP
     def self.extended(klass)
       class << klass
-        alias_method :old_build_from_file, :build_from_file
-        remove_method :build_from_file
+        alias_method :build_from_file_without_removal, :build_from_file
+        alias_method :build_from_file, :build_from_file_with_removal
       end
     end
 
@@ -21,12 +21,12 @@ class Chef
     #
     # @return [Chef::Provider]
     #
-    def build_from_file(cookbook_name, filename, run_context)
+    def build_from_file_with_removal(cookbook_name, filename, run_context)
       provider_name = filename_to_qualified_string(cookbook_name, filename)
       class_name    = convert_to_class_name(provider_name)
 
       remove_existing_lwrp(class_name)
-      old_build_from_file(cookbook_name, filename, run_context)
+      build_from_file_without_removal(cookbook_name, filename, run_context)
     end
 
     #
