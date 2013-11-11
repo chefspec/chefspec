@@ -34,7 +34,7 @@ class Chef
         #   The class name. Must be a valid constant name.
         #
         def remove_existing_lwrp(class_name)
-          [Chef::Provider::LWRPBase, Chef::Provider].each do |resource_holder|
+          [self, superclass].each do |resource_holder|
             if resource_holder.const_defined? class_name, false
               resource_holder.send(:remove_const, class_name)
             end
@@ -95,7 +95,7 @@ class Chef
         #   The class name. Must be a valid constant name.
         #
         def remove_existing_lwrp(class_name)
-          [Chef::Resource::LWRPBase, Chef::Resource].each do |resource_holder|
+          [self, superclass].each do |resource_holder|
             if resource_holder.const_defined? class_name, false
               resource_holder.send(:remove_const, class_name)
             end
