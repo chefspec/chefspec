@@ -63,17 +63,27 @@ if Chef::VERSION >= '11.0.0'
       end
 
       describe '#build_from_file' do
-        %w{Resource Provider}.each do |m|
-          it "in #{m}, wraps the existing chef build_from_file method" do
-            args = %w{mycookbook thisfile context}
-            klass = Chef.const_get(m)::LWRPBase
+        let(:args){ %w{mycookbook thisfile context} }
+
+        shared_context "wrapping" do
+          it 'wraps the existing chef build_from_file method' do
+            klass = mod::LWRPBase
             allow(klass).to receive(:build_from_file_without_removal)
             expect(klass).to receive(:build_from_file_without_removal).with(*args)
             klass.build_from_file(*args)
           end
         end
+
+        context Chef::Provider do
+          let(:mod){ Chef::Provider }
+          include_context "wrapping"
+        end
+
+        context Chef::Resource do
+          let(:mod){ Chef::Resource }
+          include_context "wrapping"
+        end
       end
     end
   end
-
 end
