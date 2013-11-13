@@ -6,6 +6,8 @@ end
 
 module ChefSpec
   class Renderer
+    include ChefSpec::Normalize
+
     # @return [Chef::Runner]
     attr_reader :chef_run
 
@@ -34,12 +36,12 @@ module ChefSpec
     #   does not contain or respond to a content renderer.
     #
     def content
-      case resource.resource_name.to_s
-      when 'template'
+      case resource_name(resource)
+      when :template
         content_from_template(chef_run, resource)
-      when 'file'
+      when :file
         content_from_file(chef_run, resource)
-      when 'cookbook_file'
+      when :cookbook_file
         content_from_cookbook_file(chef_run, resource)
       else
         nil

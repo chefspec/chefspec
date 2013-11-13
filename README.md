@@ -399,6 +399,8 @@ end
 
 Testing LWRPs
 -------------
+**WARNING** Cookbooks with dashes (hyphens) are difficult to test with ChefSpec because of how Chef classifies objects. We recommend naming cookbooks with underscores (`_`) instead of dashes (`-`).
+
 ChefSpec overrides all providers to take no action (otherwise it would actually converge your system). This means that the steps inside your LWRP are not actually executed. If an LWRP performs actions, those actions are never executed or added to the resource collection.
 
 In order to run the actions exposed by your LWRP, you have to explicitly tell the `Runner` to step into it:

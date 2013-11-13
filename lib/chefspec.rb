@@ -7,6 +7,8 @@ require_relative 'chefspec/extensions/chef/lwrp_base'
 require_relative 'chefspec/extensions/chef/resource'
 require_relative 'chefspec/extensions/chef/securable'
 
+require_relative 'chefspec/mixins/normalize'
+
 require_relative 'chefspec/stubs/command_registry'
 require_relative 'chefspec/stubs/command_stub'
 require_relative 'chefspec/stubs/data_bag_item_registry'

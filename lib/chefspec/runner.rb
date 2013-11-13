@@ -6,6 +6,8 @@ require 'chef/resources'
 
 module ChefSpec
   class Runner
+    include ChefSpec::Normalize
+
     #
     # Defines a new runner method on the +ChefSpec::Runner+.
     #
@@ -201,7 +203,7 @@ module ChefSpec
       rescue Chef::Exceptions::ResourceNotFound; end
 
       resource_collection.all_resources.find do |resource|
-        resource.resource_name.to_sym == type && (name === resource.identity || name === resource.name)
+        resource_name(resource) == type && (name === resource.identity || name === resource.name)
       end
     end
 
@@ -209,7 +211,7 @@ module ChefSpec
     # Find the resource with the declared type.
     #
     # @example Find all template resources
-    #   chef_run.find_resources('template') #=> [#<Chef::Resource::Template>, #...]
+    #   chef_run.find_resources(:template) #=> [#<Chef::Resource::Template>, #...]
     #
     #
     # @param [Symbol] type
@@ -220,7 +222,7 @@ module ChefSpec
     #
     def find_resources(type)
       resource_collection.all_resources.select do |resource|
-        resource.resource_name.to_s == type.to_s
+        resource_name(resource) == type.to_sym
       end
     end
 
@@ -249,7 +251,7 @@ module ChefSpec
     # @return [Boolean]
     #
     def step_into?(resource)
-      key = resource.resource_name.to_s.gsub('-', '_').to_sym
+      key = resource_name(resource)
       Array(options[:step_into]).map(&:to_sym).include?(key)
     end
 

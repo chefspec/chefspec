@@ -1,5 +1,7 @@
 module ChefSpec::Matchers
   class NotificationsMatcher
+    include ChefSpec::Normalize
+
     def initialize(signature)
       signature.match(/^([^\[]*)\[(.*)\]$/)
       @expected_resource_type = $1
@@ -11,7 +13,7 @@ module ChefSpec::Matchers
 
       if @resource
         block = Proc.new do |notified|
-          notified.resource.resource_name.to_s == @expected_resource_type &&
+          resource_name(notified.resource).to_s == @expected_resource_type &&
           (@expected_resource_name === notified.resource.identity.to_s || @expected_resource_name === notified.resource.name.to_s) &&
           matches_action?(notified)
         end
@@ -51,7 +53,7 @@ module ChefSpec::Matchers
 
     def failure_message_for_should
       if @resource
-        message = %Q{expected "#{@resource.resource_name}[#{@resource.name}]" to notify "#{@expected_resource_type}[#{@expected_resource_name}]"}
+        message = %Q{expected "#{resource_name(@resource)}[#{@resource.name}]" to notify "#{@expected_resource_type}[#{@expected_resource_name}]"}
         message << " with action :#{@action}" if @action
         message << " immediately" if @immediately
         message << " delayed" if @delayed
@@ -98,7 +100,7 @@ module ChefSpec::Matchers
         resource = notification.resource
         type = notification.notifying_resource.immediate_notifications.include?(notification) ? :immediately : :delayed
 
-        %Q{  "#{notifying_resource.to_s}" notifies "#{resource.resource_name}[#{resource.name}]" to :#{notification.action}, :#{type}}
+        %Q{  "#{notifying_resource.to_s}" notifies "#{resource_name(resource)}[#{resource.name}]" to :#{notification.action}, :#{type}}
       end
 
       def format_notifications
