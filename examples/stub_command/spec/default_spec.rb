@@ -14,6 +14,7 @@ describe 'stub_command::default' do
   context 'as a String' do
     it 'does not raise an exception' do
       stub_command('test -f "/tmp/file"').and_return(true)
+      stub_command('test -f "/tmp/other_file"').and_return(true)
       expect { chef_run }.to_not raise_error
     end
   end
