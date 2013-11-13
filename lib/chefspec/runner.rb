@@ -252,7 +252,7 @@ module ChefSpec
     #
     def step_into?(resource)
       key = resource_name(resource)
-      Array(options[:step_into]).map(&:to_sym).include?(key)
+      Array(options[:step_into]).map(&method(:resource_name)).include?(key)
     end
 
     #
