@@ -119,14 +119,14 @@ Requiring this file will:
 - Download all the dependencies listed in your `Berksfile` into the temporary directory
 - Set ChefSpec's `cookbook_path` to the temporary directory
 
-### Librarian-Chef
+### Librarian
 
-If you are using Librarian-Chef, simply require `chefspec/librarian_chef` in your `spec_helper` after requiring `chefspec`:
+If you are using Librarian, simply require `chefspec/librarian` in your `spec_helper` after requiring `chefspec`:
 
 ```ruby
 # spec_helper.rb
 require 'chefspec'
-require 'chefspec/librarian_chef'
+require 'chefspec/librarian'
 ```
 
 Requiring this file will:
