@@ -119,9 +119,21 @@ Requiring this file will:
 - Download all the dependencies listed in your `Berksfile` into the temporary directory
 - Set ChefSpec's `cookbook_path` to the temporary directory
 
-### Librarian
-_There is not currently librarian integration, but we would welcome a community patch!_
+### Librarian-Chef
 
+If you are using Librarian-Chef, simply require `chefspec/librarian_chef` in your `spec_helper` after requiring `chefspec`:
+
+```ruby
+# spec_helper.rb
+require 'chefspec'
+require 'chefspec/librarian_chef'
+```
+
+Requiring this file will:
+
+- Create a temporary working directory
+- Download all the dependencies listed in your `Cheffile` into the temporary directory
+- Set ChefSpec's `cookbook_path` to the temporary directory
 
 Making Assertions
 -----------------
