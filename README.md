@@ -493,13 +493,19 @@ expect(chef_run).to write_motd_message('my message')
 
 Writing Custom Matchers
 -----------------------
-If you are testing a cookbook that does not package it's LWRP matchers, you can create your own following the same pattern as above. Create a file at `spec/support/matchers.rb` and add your resource matchers:
+If you are testing a cookbook that does not package it's LWRP matchers, you can create your own following the same pattern as the "Packaging Custom Matchers" section. Simply, create a file at `spec/support/matchers.rb` and add your resource matchers:
 
 ```ruby
 # spec/support/matchers.rb
 def my_custom_matcher(resource_name)
   ChefSpec::Matchers::ResourceMatcher.new(:resource, :action, resource_name)
 end
+```
+
+Then require this file in your `spec_helper.rb` so the matcher can be used:
+
+```ruby
+require_relative 'support/matchers'
 ```
 
 Please use this as a _temporary_ solution. Consider sending a Pull Request to the LWRP author(s) packaging the custom resource matchers (see previous section).
