@@ -26,8 +26,8 @@ module ChefSpec
     # Setup and install the necessary dependencies in the temporary directory.
     #
     def setup!
-      env = ::Librarian::Chef::Environment.new(:project_path => Dir.pwd)
-      env.config_db.local["path"] = @tmpdir
+      env = ::Librarian::Chef::Environment.new(project_path: Dir.pwd)
+      env.config_db.local['path'] = @tmpdir
       ::Librarian::Action::Resolve.new(env).run
       ::Librarian::Action::Install.new(env).run
 
