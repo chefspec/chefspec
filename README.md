@@ -135,6 +135,16 @@ Requiring this file will:
 - Download all the dependencies listed in your `Cheffile` into the temporary directory
 - Set ChefSpec's `cookbook_path` to the temporary directory
 
+Note that in order to test the cookbook in the current working directory, you
+have to write your `Cheffile` like this:
+
+```ruby
+# Cheffile
+site 'http://community.opscode.com/api/v1'
+
+cookbook 'name_of_your_cookbook', path: '.'
+```
+
 Making Assertions
 -----------------
 ChefSpec asserts that resource actions have been performed. In general, ChefSpec follows the following pattern:
