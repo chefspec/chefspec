@@ -120,8 +120,30 @@ Requiring this file will:
 - Set ChefSpec's `cookbook_path` to the temporary directory
 
 ### Librarian
-_There is not currently librarian integration, but we would welcome a community patch!_
 
+If you are using Librarian, simply require `chefspec/librarian` in your `spec_helper` after requiring `chefspec`:
+
+```ruby
+# spec_helper.rb
+require 'chefspec'
+require 'chefspec/librarian'
+```
+
+Requiring this file will:
+
+- Create a temporary working directory
+- Download all the dependencies listed in your `Cheffile` into the temporary directory
+- Set ChefSpec's `cookbook_path` to the temporary directory
+
+Note that in order to test the cookbook in the current working directory, you
+have to write your `Cheffile` like this:
+
+```ruby
+# Cheffile
+site 'http://community.opscode.com/api/v1'
+
+cookbook 'name_of_your_cookbook', path: '.'
+```
 
 Making Assertions
 -----------------
