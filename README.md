@@ -17,6 +17,8 @@ What people are saying
 ----------------------
 > I just wanted to drop you a line to say "HELL YES!" to ChefSpec. - [Joe Goggins](https://twitter.com/jgoggins)
 
+> OK chefspec is my new best friend. Delightful few hours working with it. - [Michael Ivey](https://twitter.com/ivey)
+
 
 Important Notes
 ---------------
