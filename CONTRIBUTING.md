@@ -10,16 +10,16 @@ All contributions are welcome to be submitted for review for inclusion, but befo
 
 Also, please be patient as not all items will be tested or reviewed immediately by the core team.
 
-Pleas be receptive and responsive to feedback about your additions or changes. The core team and/or other community members may make suggestions or ask questions about your change. This is part of the review process, and helps everyone to understand what is happening, why it is happening, and potentially optimizes your code.
+Please be receptive and responsive to feedback about your additions or changes. The core team and/or other community members may make suggestions or ask questions about your change. This is part of the review process, and helps everyone to understand what is happening, why it is happening, and potentially optimizes your code.
 
-If you're looking to contribute but aren't sure where to start, check ou the [open issues](https://github.com/sethvargo/chefspec/issues?state=open).
+If you're looking to contribute but aren't sure where to start, check out the [open issues](https://github.com/sethvargo/chefspec/issues?state=open).
 
 
 Will Not Merge
 --------------
 This section details, specifically, Pull Requests or features that will _not_ be merged:
 
-1. Machers for non-Chef core resources. ChefSpec 3.0 introduced a way for cookbook maintiners to [package matchers _with_ their cookbooks](https://github.com/sethvargo/chefspec/tree/unify_matchers#packaging-lwrp-matchers) at distribution time.
+1. Matchers for non-Chef core resources. ChefSpec 3.0 introduced a way for cookbook maintainers to [package matchers _with_ their cookbooks](https://github.com/sethvargo/chefspec/tree/unify_matchers#packaging-lwrp-matchers) at distribution time.
 2. New features without accompanying unit tests, cucumber tests, and documentation.
 
 
