@@ -22,7 +22,7 @@ What people are saying
 
 Important Notes
 ---------------
-- **ChefSpec 3 requires Chef 11+! Please use the 2.x series for Chef 9 & 10 compatability.**
+- **ChefSpec 3 requires Chef 11+! Please use the 2.x series for Chef 9 & 10 compatibility.**
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version' documentation!**
 - **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding aruba test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).**
 - **ChefSpec 3.0 requires Ruby 1.9 or higher!**
