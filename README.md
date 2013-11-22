@@ -88,7 +88,7 @@ RSpec.configure do |config|
 end
 ```
 
-Values specified at the initalization of the `Runner` merge and take precedence over the global settings:
+Values specified at the initialization of the `Runner` merge and take precedence over the global settings:
 
 ```ruby
 # Override only the operating system version (platform is still "ubuntu" from above)
@@ -213,7 +213,7 @@ expect(chef_run).to render_file('/etc/foo').with_content('This is content')
 expect(chef_run).to render_file('/etc/foo').with_content(/regex works too.+/)
 ```
 
-Additionally, it is possible to assert which [Chef phase of execution](http://docs.opscode.com/essentials_nodes_chef_run.html) a resouce is created. Given a resource that is installed at compile time using `run_action`:
+Additionally, it is possible to assert which [Chef phase of execution](http://docs.opscode.com/essentials_nodes_chef_run.html) a resource is created. Given a resource that is installed at compile time using `run_action`:
 
 ```ruby
 package('apache2').run_action(:install)
@@ -225,7 +225,7 @@ You can assert that this package is installed during runtime using the `.at_comp
 expect(chef_run).to install_package('apache2').at_compile_time
 ```
 
-Simiarly, you can assert that a resource is executed during convergence time:
+Similarly, you can assert that a resource is executed during convergence time:
 
 ```ruby
 expect(chef_run).to install_package('apache2').at_converge_time
@@ -243,7 +243,7 @@ Node attribute can be set when creating the `Runner`. The initializer yields a b
 ```ruby
 describe 'example::default' do
   let(:chef_run) do
-    ChefSpec::ChefRunner.new do |node|
+    ChefSpec::Runner.new do |node|
       node.set['cookbook']['attribute'] = 'hello'
     end.converge(described_recipe)
   end
@@ -256,7 +256,7 @@ To set an attribute within a specific test, set the attribute in the `it` block 
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new } # Notice we don't converge here
+  let(:chef_run) { ChefSpec::Runner.new } # Notice we don't converge here
 
   it 'performs the action' do
     chef_run.node.set['cookbook']['attribute'] = 'hello'
@@ -295,7 +295,7 @@ Just like the error message says, you must stub the command result. This can be 
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::Runner.new }
 
   before do
     stub_command("grep /tmp/foo.txt text").and_return(true)
@@ -305,7 +305,7 @@ end
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::Runner.new }
 
   before do
     stub_command("grep /tmp/foo.txt text") { rand(50)%2 == 0 }
@@ -338,7 +338,7 @@ Just like the error message says, you must stub the result of the `data_bag` cal
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::Runner.new }
 
   before do
     stub_data_bag('users').and_return([])
@@ -348,7 +348,7 @@ end
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::Runner.new }
 
   before do
     stub_data_bag('users').and_return([
@@ -379,7 +379,7 @@ Just like the error message says, you must stub the search result. This can be d
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::Runner.new }
 
   before do
     stub_search(:node, 'name:hello').and_return([])
@@ -389,7 +389,7 @@ end
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::Runner.new }
 
   before do
     stub_search(:node, 'name:hello') { (ruby_code) }
@@ -537,7 +537,7 @@ Please use this as a _temporary_ solution. Consider sending a Pull Request to th
 
 Expecting Exceptions
 --------------------
-In Chef 11, custom formatters were introduced and ChefSpec uses a custom formatter to supress Chef Client output. In the event of a convergence failure, ChefSpec will output the error message from the run to help you debug:
+In Chef 11, custom formatters were introduced and ChefSpec uses a custom formatter to suppress Chef Client output. In the event of a convergence failure, ChefSpec will output the error message from the run to help you debug:
 
 ```text
 ================================================================================
@@ -687,7 +687,7 @@ Development
         $ git checkout -b my_bug_fix
 
 4. **Write tests**
-5. Make your changes/patches/fixes, committing appropiately
+5. Make your changes/patches/fixes, committing appropriately
 6. Run the tests: `bundle exec rake`
 7. Push your changes to GitHub
 8. Open a Pull Request
