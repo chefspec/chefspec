@@ -243,7 +243,7 @@ Node attribute can be set when creating the `Runner`. The initializer yields a b
 ```ruby
 describe 'example::default' do
   let(:chef_run) do
-    ChefSpec::ChefRunner.new do |node|
+    ChefSpec::Runner.new do |node|
       node.set['cookbook']['attribute'] = 'hello'
     end.converge(described_recipe)
   end
@@ -256,7 +256,7 @@ To set an attribute within a specific test, set the attribute in the `it` block 
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new } # Notice we don't converge here
+  let(:chef_run) { ChefSpec::Runner.new } # Notice we don't converge here
 
   it 'performs the action' do
     chef_run.node.set['cookbook']['attribute'] = 'hello'
@@ -295,7 +295,7 @@ Just like the error message says, you must stub the command result. This can be 
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::Runner.new }
 
   before do
     stub_command("grep /tmp/foo.txt text").and_return(true)
@@ -305,7 +305,7 @@ end
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::Runner.new }
 
   before do
     stub_command("grep /tmp/foo.txt text") { rand(50)%2 == 0 }
@@ -338,7 +338,7 @@ Just like the error message says, you must stub the result of the `data_bag` cal
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::Runner.new }
 
   before do
     stub_data_bag('users').and_return([])
@@ -348,7 +348,7 @@ end
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::Runner.new }
 
   before do
     stub_data_bag('users').and_return([
@@ -379,7 +379,7 @@ Just like the error message says, you must stub the search result. This can be d
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::Runner.new }
 
   before do
     stub_search(:node, 'name:hello').and_return([])
@@ -389,7 +389,7 @@ end
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ChefRunner.new }
+  let(:chef_run) { ChefSpec::Runner.new }
 
   before do
     stub_search(:node, 'name:hello') { (ruby_code) }
