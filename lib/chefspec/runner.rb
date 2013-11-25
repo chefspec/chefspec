@@ -153,6 +153,9 @@ module ChefSpec
       # Setup the run_context
       @run_context = client.setup_run_context
 
+      # Allow stubbing/mocking after the cookbook has been compiled but before the converge
+      yield if block_given?
+
       @converging = true
       @client.converge(@run_context)
       self
