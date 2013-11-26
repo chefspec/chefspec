@@ -147,6 +147,24 @@ site 'http://community.opscode.com/api/v1'
 cookbook 'name_of_your_cookbook', path: '.'
 ```
 
+
+Running Specs
+-------------
+ChefSpec is actually a very large RSpec extension, so you can run your tests using the RSpec CLI:
+
+```bash
+$ rspec
+```
+
+You can also specify a specific spec to run and various RSpec command line options:
+
+```bash
+$ rspec spec/unit/recipes/default_spec.rb --color
+```
+
+For more information on the RSpec CLI, please see the [documentation](https://relishapp.com/rspec/rspec-core/docs/command-line).
+
+
 Making Assertions
 -----------------
 ChefSpec asserts that resource actions have been performed. In general, ChefSpec follows the following pattern:
