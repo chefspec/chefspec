@@ -19,6 +19,8 @@ What people are saying
 
 > OK chefspec is my new best friend. Delightful few hours working with it. - [Michael Ivey](https://twitter.com/ivey)
 
+**Chat with us - [#chefspec](irc://irc.freenode.net/chefspec) on Freenode**
+
 
 Important Notes
 ---------------
