@@ -50,6 +50,9 @@ module ChefSpec
 end
 
 module ChefSpec::API
+  #
+  # @todo Remove in v4.0.0
+  #
   module DeprecatedMatchers
     def be_owned_by(user, group)
       deprecated "The `be_owned_by` matcher is deprecated. Please use:" \

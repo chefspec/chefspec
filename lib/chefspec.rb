@@ -30,7 +30,3 @@ require_relative 'chefspec/renderer'
 require_relative 'chefspec/rspec'
 require_relative 'chefspec/runner'
 require_relative 'chefspec/version'
-
-# Load deprecations module last, so it can monkey patch and print out nasty
-# deprecation warnings for us :)
-require_relative 'chefspec/deprecations'
