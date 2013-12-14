@@ -4,6 +4,14 @@ rvm:
 branches:
   only:
     - master
+notifications:
+  irc:
+    channels:
+      - "chat.freenode.net#chefspec"
+    use_notice: true
+    skip_join: true
+    template:
+      - "%{message} (%{author}): %{build_url}"
 gemfile:
   - gemfiles/chef-11.0.0.gemfile
   - gemfiles/chef-11.2.0.gemfile
