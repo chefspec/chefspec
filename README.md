@@ -699,6 +699,34 @@ end
 You can also populate pre-baked node data (for example all the nodes from staging environment) which in turn will dictate the outcome of your `search` calls. This will be slower than the first two methods and also requires more memory. See the [ChefZero](https://github.com/jkeiser/chef-zero) documentation for more details.
 
 
+Faster Specs
+------------
+ChefSpec aims to provide the easiest and simplest path for new users to write RSpec examples for Chef cookbooks. In doing so, it makes some sacrifies in terms of speed and agility of execution. In other words, ChefSpec favors "speed to develop" over "speed to execute". Many of these decisions are directly related to the way Chef dynamically loads resources at runtime.
+
+If you understand how RSpec works and would like to see some significant speed improvements in your specs, you can use the `ChefSpec::Cacher` module inspired by [Juri Timošin](https://github.com/DracoAter). First, you must require and include the module in your `spec_helper.rb`:
+
+```ruby
+# spec_helper.rb
+require 'chefspec/cacher'
+
+RSpec.configure do |config|
+  config.extend(ChefSpec::Cacher)
+end
+```
+
+Next, convert all your `let` blocks to `cached`:
+
+```ruby
+# before
+let(:chef_run) { ChefSpec::Runer.new }
+
+# after
+cached(:chef_run) { ChefSpec::Runner.new }
+```
+
+Everything else should work the same. Be advised, as the method name suggests, this will cache the results of your Chef Client Run for the **entire RSpec example**. This makes stubbing more of a challenge, since the node is already converged. For more information, please see [Juri Timošin's blog post on faster specs](http://dracoater.blogspot.com/2013/12/testing-chef-cookbooks-part-25-speeding.html) as well as the discussion in [#275](https://github.com/sethvargo/chefspec/issues/275).
+
+
 Videos
 ------
 - Jim Hopp's excellent [Test Driven Development for Chef Practitioners](http://www.youtube.com/watch?v=o2e0aZUAVGw)
