@@ -14,6 +14,8 @@ class Chef::Resource
 
     Chef::Log.info("Processing #{self} action #{action} (#{defined_at})")
 
+    ChefSpec::Coverage.add(self)
+
     unless should_skip?(action)
       if node.runner.step_into?(self)
         instance_eval { @not_if = []; @only_if = [] }

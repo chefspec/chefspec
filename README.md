@@ -427,6 +427,40 @@ describe 'example::default' do
 end
 ```
 
+Reporting
+---------
+ChefSpec attempts to generate a report of resources read over resources tested. Please note, this feature is currently in beta phases and may not be 100% accurate. That being said, it's currently the only code coverage tool available for Chef recipes.
+
+To generate the coverage report, add the following the the **very end** of your `spec_helper.rb`:
+
+```ruby
+# Existing things...
+
+at_exit { ChefSpec::Coverage.report! }
+```
+
+By default, that method will output helpful information to standard out:
+
+```text
+ChefSpec Coverage report generated at '.coverage/results.json':
+
+  Total Resources:   6
+  Touched Resources: 1
+  Touch Coverage:    16.67%
+
+Untouched Resources:
+
+  package[git]: bacon/recipes/default.rb:2
+  package[build-essential]: bacon/recipes/default.rb:3
+  package[apache2]: bacon/recipes/default.rb:4
+  package[libvrt]: bacon/recipes/default.rb:5
+  package[core]: bacon/recipes/default.rb:6
+```
+
+It also outputs a machine-parsable JSON file at `.coverage/results.json`. This file can be read by your CI server to determine changes in code coverage. We recommend adding the `.coverage` directory to your `.gitignore` to avoid committing it to git.
+
+You can configure both the announcing behavior and JSON file. Please see the YARD documentaion for more information.
+
 
 Mocking Out Environments
 ------------------------

@@ -43,6 +43,7 @@ module ChefSpec::Matchers
       @runner = runner
 
       if resource
+        ChefSpec::Coverage.cover!(resource)
         resource.performed_action?(@expected_action) && unmatched_parameters.empty? && correct_phase?
       else
         false
