@@ -727,10 +727,15 @@ cached(:chef_run) { ChefSpec::Runner.new }
 Everything else should work the same. Be advised, as the method name suggests, this will cache the results of your Chef Client Run for the **entire RSpec example**. This makes stubbing more of a challenge, since the node is already converged. For more information, please see [Juri Timošin's blog post on faster specs](http://dracoater.blogspot.com/2013/12/testing-chef-cookbooks-part-25-speeding.html) as well as the discussion in [#275](https://github.com/sethvargo/chefspec/issues/275).
 
 
-Videos
-------
-- Jim Hopp's excellent [Test Driven Development for Chef Practitioners](http://www.youtube.com/watch?v=o2e0aZUAVGw)
-- Seth Vargo's [TDDing tmux talk](http://www.confreaks.com/videos/2364-mwrc2013-tdding-tmux) Using ChefSpec with Guard.
+Media & Third-party Tutorials
+-----------------------------
+- [CustomInk's Testing Chef Cookbooks](http://technology.customink.com/blog/2012/08/03/testing-chef-cookbooks/)
+- [Jake Vanderdray's Practical ChefSpec](http://files.meetup.com/1780846/ChefSpec.pdf)
+- [Jim Hopp's excellent Test Driven Development for Chef Practitioners](http://www.youtube.com/watch?v=o2e0aZUAVGw)
+- [Joshua Timberman's Starting ChefSpec Examples](http://jtimberman.housepub.org/blog/2013/05/09/starting-chefspec-example/)
+- [Juri Timošin's post on faster specs](http://dracoater.blogspot.com/2013/12/testing-chef-cookbooks-part-25-speeding.html)
+- [Seth Vargo's TDDing tmux talk](http://www.confreaks.com/videos/2364-mwrc2013-tdding-tmux)
+- [Stephen Nelson Smith's Test-Driven Infrastructure with Chef](http://shop.oreilly.com/product/0636920030973.do)
 
 
 Development
