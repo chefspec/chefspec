@@ -20,6 +20,7 @@ gemfile:
   - gemfiles/chef-11.8.0.gemfile
   - gemfiles/chef-master.gemfile
 matrix:
+  fast_finish: true
   allow_failures:
     - gemfile: gemfiles/chef-master.gemfile
   exclude:
