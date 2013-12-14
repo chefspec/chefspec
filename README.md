@@ -29,6 +29,16 @@ Important Notes
 - **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding aruba test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).**
 - **ChefSpec 3.0 requires Ruby 1.9 or higher!**
 
+If you are migrating from ChefSpec v2.0.0, you should require the deprecations module after requiring `chefspec`:
+
+```ruby
+# spec_helper.rb
+require 'chefspec'
+require 'chefspec/deprecations'
+```
+
+After you have converted your specs, you can safely remove the deprecations module.
+
 
 Writing a Cookbook Example
 --------------------------
