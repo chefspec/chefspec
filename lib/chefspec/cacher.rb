@@ -11,10 +11,7 @@ module ChefSpec
   # and why this approach is faster.
   #
   # @example Using the Cacher module
-  #   First, require and extend RSpec with the Cacher module in the RSpec
-  #   configuration:
-  #
-  #     require 'chefspec/cacher'
+  #   First, require the Cacher module in your +spec_helper.rb+:
   #
   #     RSpec.configure do |config|
   #       config.extend(ChefSpec::Cacher)
@@ -52,4 +49,8 @@ module ChefSpec
       before { send(name) }
     end
   end
+end
+
+RSpec.configure do |config|
+  config.extend(ChefSpec::Cacher)
 end

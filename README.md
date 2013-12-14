@@ -703,15 +703,11 @@ Faster Specs
 ------------
 ChefSpec aims to provide the easiest and simplest path for new users to write RSpec examples for Chef cookbooks. In doing so, it makes some sacrifies in terms of speed and agility of execution. In other words, ChefSpec favors "speed to develop" over "speed to execute". Many of these decisions are directly related to the way Chef dynamically loads resources at runtime.
 
-If you understand how RSpec works and would like to see some significant speed improvements in your specs, you can use the `ChefSpec::Cacher` module inspired by [Juri Timošin](https://github.com/DracoAter). First, you must require and include the module in your `spec_helper.rb`:
+If you understand how RSpec works and would like to see some significant speed improvements in your specs, you can use the `ChefSpec::Cacher` module inspired by [Juri Timošin](https://github.com/DracoAter). Just require the cacher module in your spec helper.
 
 ```ruby
 # spec_helper.rb
 require 'chefspec/cacher'
-
-RSpec.configure do |config|
-  config.extend(ChefSpec::Cacher)
-end
 ```
 
 Next, convert all your `let` blocks to `cached`:
