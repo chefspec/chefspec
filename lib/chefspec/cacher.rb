@@ -33,13 +33,16 @@ module ChefSpec
   #
   module Cacher
     @@cache = {}
-
+    FINALIZER = lambda {|id| @@cache.delete id }
+    
     def cached(name, &block)
       location = ancestors.first.metadata[:example_group][:location]
 
       define_method(name) do
         key = [location, name.to_s].join('.')
-        @@cache[key] ||= instance_eval(&block)
+        ObjectSpace.define_finalizer( Thread.current, FINALIZER ) unless @@cache.has_key? Thread.current.object_id
+        @@cache[Thread.current.object_id] ||= {}
+        @@cache[Thread.current.object_id][key] ||= instance_eval(&block)
       end
     end
 
