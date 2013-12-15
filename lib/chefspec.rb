@@ -21,6 +21,7 @@ require_relative 'chefspec/stubs/search_registry'
 require_relative 'chefspec/stubs/search_stub'
 
 require_relative 'chefspec/api'
+require_relative 'chefspec/coverage'
 require_relative 'chefspec/errors'
 require_relative 'chefspec/expect_exception'
 require_relative 'chefspec/formatter'
