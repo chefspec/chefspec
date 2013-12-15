@@ -24,8 +24,6 @@ module ChefSpec
   #   Finally, celebrate!
   #
   # @warn
-  #   This strategy is _not_ threadsafe!
-  # @warn
   #   This strategy is only recommended for advanced users, as it makes
   #   stubbing slightly more difficult and indirect!
   #
@@ -40,7 +38,9 @@ module ChefSpec
 
       define_method(name) do
         key = [location, name.to_s].join('.')
-        ObjectSpace.define_finalizer( Thread.current, FINALIZER ) unless @@cache.has_key? Thread.current.object_id
+        unless @@cache.has_key?(Thread.current.object_id)
+          ObjectSpace.define_finalizer(Thread.current, FINALIZER)
+        end
         @@cache[Thread.current.object_id] ||= {}
         @@cache[Thread.current.object_id][key] ||= instance_eval(&block)
       end

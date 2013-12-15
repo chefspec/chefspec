@@ -32,10 +32,10 @@ describe ChefSpec::Cacher do
     end
     
     context 'when multithreaded environment' do
-      it "is thread safe" do
+      it 'is thread safe' do
         (1..2).each do |n|
           Thread.new do
-            klass.cached(:chef_run){ n }
+            klass.cached(:chef_run) { n }
             expect(klass.new.chef_run).to eq(n)
           end.join
         end
