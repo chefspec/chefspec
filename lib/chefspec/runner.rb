@@ -151,6 +151,7 @@ module ChefSpec
       expand_run_list!
 
       # Setup the run_context
+      client.register unless Chef::Config[:solo]
       @run_context = client.setup_run_context
 
       # Allow stubbing/mocking after the cookbook has been compiled but before the converge

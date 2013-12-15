@@ -116,7 +116,7 @@ ChefSpec::Runner.new(cookbook_path: '/var/my/other/path', role_path: '/var/my/ro
 ChefSpec::Runner.new(log_level: :debug).converge(described_recipe)
 ```
 
-**Note:** You do not _need_ to specify a platform and version. However, some cookbooks may rely on [Ohai](http://github.com/opscode/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/customink/fauxhai).
+**NOTE** You do not _need_ to specify a platform and version. However, some cookbooks may rely on [Ohai](http://github.com/opscode/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/customink/fauxhai).
 
 ### Berkshelf
 If you are using Berkshelf, simply require `chefspec/berkshelf` in your `spec_helper` after requiring `chefspec`:
@@ -149,7 +149,7 @@ Requiring this file will:
 - Download all the dependencies listed in your `Cheffile` into the temporary directory
 - Set ChefSpec's `cookbook_path` to the temporary directory
 
-Note that in order to test the cookbook in the current working directory, you
+**NOTE** In order to test the cookbook in the current working directory, you
 have to write your `Cheffile` like this:
 
 ```ruby
@@ -298,6 +298,63 @@ end
 ```
 
 
+Using Chef Zero
+---------------
+By default, ChefSpec runs in Chef Solo mode. As of ChefSpec v3.1.0, you can ask ChefSpec to create an in-memory Chef Server during testing using [ChefZero](https://github.com/jkeiser/chef-zero). This is especially helpful if you need to support searching or data bags.
+
+To use the ChefSpec server, simply require the module in your `spec_helper`:
+
+```ruby
+# spec_helper.rb
+require 'chefspec'
+require 'chefspec/server'
+```
+
+This will automatically create a Chef server, synchronize all the cookbooks in your `cookbook_path`, and wire all the internals of Chef together. Recipe calls to `search`, `data_bag` and `data_bag_item` will now query the ChefSpec server.
+
+### DSL
+The ChefSpec server includes a collection of helpful DSL methods for populating data into the Chef Server.
+
+Create a client:
+
+```ruby
+ChefSpec::Server.create_client('my_client', { admin: true })
+```
+
+Create a data bag (and items):
+
+```ruby
+ChefSpec::Server.create_data_bag('my_data_bag', {
+  'item_1' => {
+    'password' => 'abc123'
+  },
+  'item_2' => {
+    'password' => 'def456'
+  }
+})
+```
+
+Create an environment:
+
+```ruby
+ChefSpec::Server.create_environment('my_environment', { description: '...' })
+```
+
+Create a node:
+
+```ruby
+ChefSpec::Server.create_node('my_node', { run_list: ['...'] })
+```
+
+Create a role:
+
+```ruby
+ChefSpec::Server.create_role('my_role', { default_attributes: {} })
+```
+
+**NOTE** The ChefSpec server is empty at the start of each example to avoid interdependent tests. You can use `before` blocks to load data before each test.
+
+
 Stubbing
 --------
 ### Command
@@ -344,6 +401,8 @@ end
 ```
 
 ### Data Bag & Data Bag Item
+**NOTE** This is not required if you are using a ChefSpec server.
+
 Given a recipe that executes a `data_bag` method:
 
 ```ruby
@@ -393,6 +452,8 @@ end
 ```
 
 ### Search
+**NOTE** This is not required if you are using a ChefSpec server.
+
 Because ChecSpec is a unit-testing framework, it is recommended that all third-party API calls be mocked or stubbed. ChefSpec exposes a helpful RSpec macro for stubbing search results in your tests. If you converge a Chef recipe that implements a `search` call, ChefSpec will throw an error like:
 
 ```text
@@ -699,7 +760,7 @@ Assert that the correct attribute is used:
 expect(runner.node['bacon']['temperature']).to eq(150)
 ```
 
-**NOTE:** If your roles live somewhere outside of the expected path, you must set `RSpec.config.role_path` to point to the directory containing your roles **before** invoking the `#converge` method!
+**NOTE** If your roles live somewhere outside of the expected path, you must set `RSpec.config.role_path` to point to the directory containing your roles **before** invoking the `#converge` method!
 
 ```ruby
 RSpec.configure do |config|
@@ -710,27 +771,6 @@ end
 
 ChefSpec::Runner.new(role_path: '/var/my/roles') # local setting
 ```
-
-Using Chef Zero
----------------
-**Warning:** This is not an officially supported pathway at this time. Please use at your own risk:
-
-[ChefZero](https://github.com/jkeiser/chef-zero) is an in-memory chef server from Jon Keiser. With ChefZero you can completely bypass the search and data bag stubbing requirements, as now it provides a full Chef Server in memory. You should _only_ create one instance of a Chef Zero server, so it's best to do so in your `spec_helper.rb`:
-
-```ruby
-require 'chefspec'
-
-require 'chef_zero/server'
-server = ChefZero::Server.new(port: 4000)
-server.start_background
-
-at_exit do
-  server.stop if server.running?
-end
-
-```
-
-You can also populate pre-baked node data (for example all the nodes from staging environment) which in turn will dictate the outcome of your `search` calls. This will be slower than the first two methods and also requires more memory. See the [ChefZero](https://github.com/jkeiser/chef-zero) documentation for more details.
 
 
 Faster Specs
