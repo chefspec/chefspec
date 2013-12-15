@@ -33,7 +33,7 @@ module ChefSpec
   #
   module Cacher
     @@cache = {}
-    FINALIZER = lambda {|id| @@cache.delete id }
+    FINALIZER = lambda { |id| @@cache.delete(id) }
     
     def cached(name, &block)
       location = ancestors.first.metadata[:example_group][:location]
