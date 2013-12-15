@@ -27,8 +27,19 @@ describe ChefSpec::Cacher do
       klass.cached(:chef_run) { runner }
       klass.new.chef_run
 
-      expect(cache).to have_key('spec.chef_run')
-      expect(cache['spec.chef_run']).to eq(runner)
+      expect(cache[Thread.current.object_id]).to have_key('spec.chef_run')
+      expect(cache[Thread.current.object_id]['spec.chef_run']).to eq(runner)
+    end
+
+    context 'when multithreaded environment' do
+      it 'is thread safe' do
+        (1..2).each do |n|
+          Thread.new do
+            klass.cached(:chef_run) { n }
+            expect(klass.new.chef_run).to eq(n)
+          end.join
+        end
+      end
     end
   end
 
