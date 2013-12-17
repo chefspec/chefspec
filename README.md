@@ -522,6 +522,12 @@ It also outputs a machine-parsable JSON file at `.coverage/results.json`. This f
 
 You can configure both the announcing behavior and JSON file. Please see the YARD documentaion for more information.
 
+If you want to restrict coverage reporting only against certain cookbook directories, you can do it using filters. For example, to include only the site-cookbooks directory for coverage reporting, add the following line in your ```spec/spec_helper.rb```
+
+```ruby
+ ChefSpec::Coverage.filters << File.expand_path('../../site-cookbooks', __FILE__)
+```
+
 
 Mocking Out Environments
 ------------------------
