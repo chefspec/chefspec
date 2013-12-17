@@ -1,10 +1,7 @@
 begin
   require 'berkshelf'
 rescue LoadError
-  raise RuntimeError, "Berkshelf not found! You must have the berkshelf" \
-    " installed on your system before requiring chefspec/berkshelf. Install" \
-    " berkshelf by running:\n\n  gem install berkshelf\n\nor add Berkshelf" \
-    " to your Gemfile:\n\n  gem 'berkshelf'\n\n"
+  raise ChefSpec::Error::GemLoadError.new(gem: 'berkshelf', name: 'Berkshelf')
 end
 
 module ChefSpec

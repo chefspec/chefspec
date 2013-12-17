@@ -1,10 +1,7 @@
 begin
   require 'chef_zero/server'
 rescue LoadError
-  raise RuntimeError, "chef-zero not found! You must have the chef-zero gem" \
-    " installed on your system before requiring chefspec/server. Install" \
-    " Chef Zero by running:\n\n  gem install chef-zero\n\nor add Chef Zero" \
-    " to your Gemfile:\n\n  gem 'chef-zero'\n\n"
+  raise ChefSpec::Error::GemLoadError.new(gem: 'chef-zero', name: 'Chef Zero')
 end
 
 require 'chef/cookbook_loader'

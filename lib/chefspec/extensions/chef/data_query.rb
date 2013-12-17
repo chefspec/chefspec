@@ -9,7 +9,10 @@ module Chef::DSL::DataQuery
     type  = args[0]
     query = args[1] || '*:*'
     stub = ChefSpec::Stubs::SearchRegistry.stub_for(type, query)
-    raise ChefSpec::SearchNotStubbedError.new(type, query) if stub.nil?
+
+    if stub.nil?
+      raise ChefSpec::Error::SearchNotStubbed.new(args: [type, query])
+    end
 
     stub.result
   end
@@ -20,7 +23,10 @@ module Chef::DSL::DataQuery
     return old_data_bag(bag) unless Chef::Config[:solo]
 
     stub = ChefSpec::Stubs::DataBagRegistry.stub_for(bag)
-    raise ChefSpec::DataBagNotStubbedError.new(bag) if stub.nil?
+
+    if stub.nil?
+      raise ChefSpec::Error::DataBagNotStubbed.new(args: [bag])
+    end
 
     stub.result
   end
@@ -31,7 +37,10 @@ module Chef::DSL::DataQuery
     return old_data_bag_item(bag, id) unless Chef::Config[:solo]
 
     stub = ChefSpec::Stubs::DataBagItemRegistry.stub_for(bag, id)
-    raise ChefSpec::DataBagItemNotStubbedError.new(bag, id) if stub.nil?
+
+    if stub.nil?
+      raise ChefSpec::Error::DataBagItemNotStubbed.new(args: [bag, id])
+    end
 
     stub.result
   end
