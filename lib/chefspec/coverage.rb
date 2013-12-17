@@ -1,8 +1,11 @@
 module ChefSpec
   class Coverage
+
+    attr_accessor :filters
+
     class << self
       extend Forwardable
-      def_delegators :instance, :add, :cover!, :report!
+      def_delegators :instance, :add, :cover!, :report!, :filters
     end
 
     include Singleton
@@ -12,6 +15,7 @@ module ChefSpec
     #
     def initialize
       @collection = {}
+      @filters = []
     end
 
     #
@@ -20,7 +24,7 @@ module ChefSpec
     # @param [Chef::Resource] resource
     #
     def add(resource)
-      @collection[resource.to_s] = ResourceWrapper.new(resource)
+      @collection[resource.to_s] = ResourceWrapper.new(resource) if filtered?(resource)
     end
 
     #
@@ -29,9 +33,18 @@ module ChefSpec
     # @param [Chef::Resource] resource
     #
     def cover!(resource)
-      if wrapper = find(resource)
+      if filtered?(resource) && (wrapper = find(resource))
         wrapper.touch!
       end
+    end
+
+    #
+    # Called to check if a resource belongs to a cookbook from the specified directories
+    #
+    # @param [Chef::Resource] resource
+    #
+    def filtered?(resource)
+      filters.empty? || filters.any? { |f| resource.source_line =~/^#{f}/ }
     end
 
     #
