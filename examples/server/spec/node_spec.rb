@@ -14,4 +14,9 @@ describe 'server::node' do
     expect(chef_run).to write_log('nodes')
       .with_message('node[bacon], node[chefspec]')
   end
+
+  it 'searches for nodes with fqdn' do
+    expect(chef_run).to write_log('nodenames')
+      .with_message(/chefspec.local/)
+  end
 end
