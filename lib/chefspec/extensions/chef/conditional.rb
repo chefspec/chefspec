@@ -4,7 +4,10 @@ class Chef::Resource::Conditional
   # @see Chef::Resource::Conditional#evaluate_command
   def evaluate_command
     stub = ChefSpec::Stubs::CommandRegistry.stub_for(@command)
-    raise ChefSpec::CommandNotStubbedError.new(@command) if stub.nil?
+
+    if stub.nil?
+      raise ChefSpec::Error::CommandNotStubbed.new(args: [@command])
+    end
 
     stub.result
   end

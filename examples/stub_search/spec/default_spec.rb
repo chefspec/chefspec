@@ -7,7 +7,7 @@ describe 'stub_search::default' do
     it 'raises an exception' do
       expect {
         chef_run
-      }.to raise_error(ChefSpec::SearchNotStubbedError)
+      }.to raise_error(ChefSpec::Error::SearchNotStubbed)
     end
   end
 
