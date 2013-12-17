@@ -299,6 +299,9 @@ module ChefSpec
       #
       def calling_cookbook_path(kaller)
         calling_spec = kaller.find { |line| line =~ /\/spec/ }
+        if calling_spec.nil?
+          raise Error, "Can't find cookbook_path. (You should put spec files under 'spec' directory or set RSpec.configuration.cookbook_path)"
+        end
         bits = calling_spec.split(':', 2).first.split(File::SEPARATOR)
         spec_dir = bits.index('spec') || 0
 
