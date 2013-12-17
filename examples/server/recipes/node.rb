@@ -6,5 +6,5 @@ log 'nodes' do
 end
 
 log 'nodenames' do
-  message nodesearch.map{|n| '"' + n[:nodename].to_s + ',' + n[:fqdn].to_s + ',' + n['fqdn'].to_s + '"'}.sort.join(', ') #each { |n| n[:fqdn].to_s }
+  message nodesearch.map{|n| '"' + n[:id].to_s + ',' + n[:fqdn].to_s + ',' + n['fqdn'].to_s + '"'}.sort.join(', ') #each { |n| n[:fqdn].to_s }
 end
