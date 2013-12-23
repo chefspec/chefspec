@@ -572,7 +572,7 @@ describe 'foo::default' do
 end
 ```
 
-**You should never `step_into` an LWRP unless you are testing it. Never `step_into` an LWRP from another cookbook!**
+**NOTE:** If your cookbook exposes LWRPs, it is highly recommended you also create a `libraries/matchers.rb` file as outlined below in the "Packaging Custom Matchers" section. **You should never `step_into` an LWRP unless you are testing it. Never `step_into` an LWRP from another cookbook!**
 
 
 Packaging Custom Matchers
