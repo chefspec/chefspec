@@ -626,10 +626,10 @@ Chef will dynamically build the `motd_message` LWRP at runtime that can be used 
 motd_message 'my message'
 ```
 
-You can package a custom ChefSpec matcher with the motd cookbook by including the following code in `libraries/matcher.rb`:
+You can package a custom ChefSpec matcher with the motd cookbook by including the following code in `libraries/matchers.rb`:
 
 ```ruby
-# motd/libraries/matcher.rb
+# motd/libraries/matchers.rb
 if defined?(ChefSpec)
   def write_motd_message(message)
     ChefSpec::Matchers::ResourceMatcher.new(:motd_message, :write, message)
