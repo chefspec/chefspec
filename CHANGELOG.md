@@ -391,7 +391,7 @@ Initial version.
 [@eliaslevy]: <https://github.com/eliaslevy> "eliaslevy's GitHub"
 [@jimhopp]: <https://github.com/jimhopp> "Jim Hopp's GitHub"
 [@mapleoin]: <https://github.com/mapleoin> "Ionuț Arțăriși's GitHub"
-[@mlafeldt]: <https://github.com/@mlafeldt> "Mathias Lafeldt's GitHub"
+[@mlafeldt]: <https://github.com/mlafeldt> "Mathias Lafeldt's GitHub"
 [@phoolish]: <https://github.com/phoolish> "phoolish's GitHub"
 [@ranjib]: <https://github.com/ranjib> "Ranjib Dey's GitHub"
 [@ryotarai]: <https://github.com/ryotarai> "Ryota Arai's GitHub"
