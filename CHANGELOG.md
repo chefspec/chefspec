@@ -1,7 +1,7 @@
 CHANGELOG for ChefSpec
 ======================
 
-## 3.1.0 (unreleased)
+## 3.1.0
 Bugfixes:
   - Only remove existing LWRP resources and providers when a new one is encountered ([@student][])
   - Attempt to coerce dashes to underscores in LWRPs
@@ -12,12 +12,14 @@ Improvements:
   - Add examples for stubbing commands across recipes
   - Yield a block after cookbooks are compiled but before they are converged ([@rteabeault][])
   - Add IRC Channel #chefspec
+  - Raise a nice error when `cookbook_path` cannot be determined ([@ryotarai][])
 
 Features:
   - Add support for Librarian ([@mlafeldt][])
   - Add Cacher module for caching runner results ([@sethvargo][] & [@DracoAter][])
   - Add Chef Zero (server) mode ([@sethvargo][])
-  - Add basic resource reporting (coverage) ([@sethvargo][])
+  - Add basic resource reporting (Chef recipe code coverage) ([@sethvargo][])
+  - Use i18n (internationalization) ([@sethvargo][])
 
 ## 3.0.2 (November 6, 2013)
 Bugfixes:
@@ -392,6 +394,7 @@ Initial version.
 [@mlafeldt]: <https://github.com/@mlafeldt> "Mathias Lafeldt's GitHub"
 [@phoolish]: <https://github.com/phoolish> "phoolish's GitHub"
 [@ranjib]: <https://github.com/ranjib> "Ranjib Dey's GitHub"
+[@ryotarai]: <https://github.com/ryotarai> "Ryota Arai's GitHub"
 [@rteabeault]: <https://github.com/rteabeault> "rteabeault's GitHub"
 [@sethvargo]: <https://github.com/sethvargo> "Seth Vargo GitHub"
 [@ssimeonov]: <https://github.com/ssimeonov> "Simeon Simeonov's GitHub"
