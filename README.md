@@ -346,6 +346,19 @@ Create a node:
 ChefSpec::Server.create_node('my_node', { run_list: ['...'] })
 ```
 
+You may also be interested in the `stub_node` macro, which will create a new `Chef::Node` object and accepts the same parameters as the Chef Runner and a Fauxhai object:
+
+```ruby
+www = stub_node(platform: 'ubuntu', version: '12.04') do |node|
+        node['fqdn'] = 'www1.example.com'
+      end
+
+# `www` is now a local Chef::Node object you can use in your test. To push this
+# node to the server, call `create_node`:
+
+ChefSpec::Server.create_node('www', www)
+```
+
 Create a role:
 
 ```ruby

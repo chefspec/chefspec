@@ -24,7 +24,7 @@ module ChefSpec
     #
     # Convert an underscored string to it's camelcase equivalent constant.
     #
-    # @param [String]
+    # @param [String] string
     #   the string to convert
     #
     # @return [String]

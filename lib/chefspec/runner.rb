@@ -88,43 +88,6 @@ module ChefSpec
     end
 
     #
-    # Execute the specified recipes on the node, without actually converging
-    # the node. This is the equivalent of `chef-apply`.
-    #
-    # @example Converging a single recipe
-    #   chef_run.apply('example::default')
-    #
-    # @example Converging multiple recipes
-    #   chef_run.apply('example::default', 'example::secondary')
-    #
-    #
-    # @param [Array] recipe_names
-    #   The names of the recipe or recipes to apply
-    #
-    # @return [ChefSpec::Runner]
-    #   A reference to the calling Runner (for chaining purposes)
-    #
-    def apply(*recipe_names)
-      recipe_names.each do |recipe_name|
-        cookbook, recipe = Chef::Recipe.parse_recipe_name(recipe_name)
-        recipe_path = File.join(Dir.pwd, 'recipes', "#{recipe}.rb")
-
-        recipe = Chef::Recipe.new(cookbook, recipe, run_context)
-        recipe.from_file(recipe_path)
-      end
-
-      # Expand the run_list
-      expand_run_list!
-
-      # Setup the run_context
-      @run_context = Chef::RunContext.new(client.node, {}, client.events)
-
-      @converging = true
-      @client.converge(@run_context)
-      self
-    end
-
-    #
     # Execute the given `run_list` on the node, without actually converging
     # the node.
     #
@@ -150,8 +113,13 @@ module ChefSpec
       # Expand the run_list
       expand_run_list!
 
+      # Save the node back to the server for searching purposes
+      unless Chef::Config[:solo]
+        client.register
+        node.save
+      end
+
       # Setup the run_context
-      client.register unless Chef::Config[:solo]
       @run_context = client.setup_run_context
 
       # Allow stubbing/mocking after the cookbook has been compiled but before the converge
@@ -333,6 +301,7 @@ module ChefSpec
         @client.ohai.data = Mash.from_hash(Fauxhai.mock(options).data)
         @client.load_node
         @client.build_node
+        @client.save_updated_node
         @client
       end
 
