@@ -823,6 +823,7 @@ Media & Third-party Tutorials
 - [Jim Hopp's excellent Test Driven Development for Chef Practitioners](http://www.youtube.com/watch?v=o2e0aZUAVGw)
 - [Joshua Timberman's Starting ChefSpec Examples](http://jtimberman.housepub.org/blog/2013/05/09/starting-chefspec-example/)
 - [Juri Timošin's post on faster specs](http://dracoater.blogspot.com/2013/12/testing-chef-cookbooks-part-25-speeding.html)
+- [Seth Vargo's Chef recipe code coverage](https://sethvargo.com/chef-recipe-code-coverage/)
 - [Seth Vargo's TDDing tmux talk](http://www.confreaks.com/videos/2364-mwrc2013-tdding-tmux)
 - [Stephen Nelson Smith's Test-Driven Infrastructure with Chef](http://shop.oreilly.com/product/0636920030973.do)
 
