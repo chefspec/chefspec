@@ -1,6 +1,10 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 3.1.2
+Bugfixes:
+  - Require i18n 0.6.9 or higher (but less than 1.0.0) ([#289](https://github.com/sethvargo/chefspec/issues/245))
+
 ## 3.1.1
 Bugfixes:
   - Handle duplicate resources in the coverage reporter
