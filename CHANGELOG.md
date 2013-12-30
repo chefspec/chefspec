@@ -1,6 +1,10 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 3.1.1
+Bugfixes:
+  - Handle duplicate resources in the coverage reporter
+
 ## 3.1.0
 Bugfixes:
   - Only remove existing LWRP resources and providers when a new one is encountered ([@student][])
