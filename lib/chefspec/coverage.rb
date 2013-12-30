@@ -19,12 +19,16 @@ module ChefSpec
     end
 
     #
-    # Add a resource to the resource collection.
+    # Add a resource to the resource collection. Only new resources are added
+    # and only resources that match the given filter are covered (which is *
+    # by default).
     #
     # @param [Chef::Resource] resource
     #
     def add(resource)
-      @collection[resource.to_s] = ResourceWrapper.new(resource) if filtered?(resource)
+      if !exists?(resource) && filtered?(resource)
+        @collection[resource.to_s] = ResourceWrapper.new(resource)
+      end
     end
 
     #
@@ -39,7 +43,8 @@ module ChefSpec
     end
 
     #
-    # Called to check if a resource belongs to a cookbook from the specified directories
+    # Called to check if a resource belongs to a cookbook from the specified
+    # directories.
     #
     # @param [Chef::Resource] resource
     #
@@ -115,6 +120,10 @@ module ChefSpec
 
       def find(resource)
         @collection[resource.to_s]
+      end
+
+      def exists?(resource)
+        !find(resource).nil?
       end
 
       class ResourceWrapper
