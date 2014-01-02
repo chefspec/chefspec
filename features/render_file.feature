@@ -8,3 +8,9 @@ Feature: The render_file matcher
   Examples:
     | Matcher |
     | default |
+  @not_chef_11_0_0
+  @not_chef_11_2_0
+  @not_chef_11_4_4
+  Examples:
+    | Matcher          |
+    | template_helpers |
