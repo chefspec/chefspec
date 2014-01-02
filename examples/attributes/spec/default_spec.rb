@@ -10,7 +10,7 @@ describe 'attributes::default' do
 
   it 'uses the overridden node attribute' do
     expect(chef_run).to write_log('The new message is here')
-    expect(chef_run).to_not write_log('The old message is here')
+    expect(chef_run).to_not write_log('This is the default message')
   end
 
   it 'uses the overridden ohai attribute' do
