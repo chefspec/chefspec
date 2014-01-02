@@ -69,6 +69,11 @@ module ChefSpec
             :node => chef_run.node,
             :template_finder => template_finder(chef_run, cookbook_name),
           }.merge(template.variables))
+          if template.respond_to?(:helper_modules)
+            template.helper_modules.each do |helper_module|
+              template_context.extend(helper_module)
+            end
+          end
           template_context.render_template(template_location)
         else
           template.provider.new(template, chef_run.run_context).send(:render_with_context, template_location) do |file|
