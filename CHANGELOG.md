@@ -1,6 +1,15 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 3.1.3
+Bugfixes:
+  - Fix broken deprecations module
+  - Update a broken test ([@bknowles][])
+
+Improvements:
+  - Better gem description on GitHub and Rubygems
+  - Helper support for template rendering (Chef 11.4+) ([@geraud][])
+
 ## 3.1.2
 Bugfixes:
   - Require i18n 0.6.9 or higher (but less than 1.0.0) ([#289](https://github.com/sethvargo/chefspec/issues/245))
@@ -394,10 +403,12 @@ Initial version.
 - - -
 [@acrmp]: <https://github.com/acrmp> "Andrew Crump GitHub"
 [@andrewgross]: <https://github.com/andrewgross> "Andrew Gross's GitHub"
+[@bknowles]: <https://github.com/bknowles> "Brad Knowles's GitHub"
 [@dafyddcrosby]: <https://github.com/dafyddcrosby> "Dafydd Crosby's GitHub"
 [@DracoAter]: <https://github.com/DracoAter> "Juri Timošin's GitHub"
 [@eliaslevy]: <https://github.com/eliaslevy> "eliaslevy's GitHub"
 [@jimhopp]: <https://github.com/jimhopp> "Jim Hopp's GitHub"
+[@geraud]: <https://github.com/geraud> "Geraud Boyer's GitHub"
 [@mapleoin]: <https://github.com/mapleoin> "Ionuț Arțăriși's GitHub"
 [@mlafeldt]: <https://github.com/mlafeldt> "Mathias Lafeldt's GitHub"
 [@phoolish]: <https://github.com/phoolish> "phoolish's GitHub"
