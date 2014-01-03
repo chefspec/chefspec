@@ -314,7 +314,7 @@ module ChefSpec
       #
       def expand_run_list!
         client.instance_eval do
-          @run_list_expansion = @node.expand!('disk')
+          @run_list_expansion = expand_run_list
           @expanded_run_list_with_versions = @run_list_expansion.recipes.with_version_constraints_strings
         end
       end
