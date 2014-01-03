@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.homepage     = 'http://code.sethvargo.com/chefspec'
   s.license      = 'MIT'
   s.require_path = 'lib'
-  s.files        = Dir['lib/**/*.rb']
+  s.files        = Dir['lib/**/*.rb', 'locales/**/*.yml']
 
   # ChefSpec requires Ruby 1.9+
   s.required_ruby_version = '>= 1.9'
