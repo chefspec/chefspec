@@ -363,6 +363,10 @@ Create a role:
 
 ```ruby
 ChefSpec::Server.create_role('my_role', { default_attributes: {} })
+
+# The role now exists on the Chef Server, you can add it to a node's run_list
+# by adding it to the `converge` block:
+let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe, 'role[my_role]') }
 ```
 
 **NOTE** The ChefSpec server is empty at the start of each example to avoid interdependent tests. You can use `before` blocks to load data before each test.
