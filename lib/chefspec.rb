@@ -6,6 +6,7 @@ require_relative 'chefspec/extensions/chef/data_query'
 require_relative 'chefspec/extensions/chef/lwrp_base'
 require_relative 'chefspec/extensions/chef/resource'
 require_relative 'chefspec/extensions/chef/securable'
+require_relative 'chefspec/extensions/chef/cookbook_version'
 
 require_relative 'chefspec/mixins/normalize'
 
