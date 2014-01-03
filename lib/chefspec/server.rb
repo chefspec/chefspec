@@ -99,7 +99,14 @@ module ChefSpec
     def self.entity(method, klass, key)
       class_eval <<-EOH, __FILE__, __LINE__ + 1
         def create_#{method}(name, data = {})
-          data = JSON.fast_generate(data) unless '#{key}' == 'data'
+          unless '#{key}' == 'data'
+            # Automatically set the "name" if no explicit one was given
+            data[:name] ||= name
+
+            # Convert it to JSON
+            data = JSON.fast_generate(data)
+          end
+
           @server.load_data('#{key}' => { name => data })
         end
 
