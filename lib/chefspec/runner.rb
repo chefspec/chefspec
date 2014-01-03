@@ -30,6 +30,9 @@ module ChefSpec
     # @return [Chef::RunContext]
     attr_reader :run_context
 
+    # @return [Hash]
+    attr_reader :virtual_recipes
+
     #
     # Instantiate a new Runner to run examples with.
     #
@@ -71,6 +74,8 @@ module ChefSpec
         platform:      RSpec.configuration.platform,
         version:       RSpec.configuration.version,
       }.merge(options)
+
+      @virtual_recipes = {}
 
       Chef::Log.level = options[:log_level]
 
@@ -128,6 +133,18 @@ module ChefSpec
       @converging = true
       @client.converge(@run_context)
       self
+    end
+
+    def define_recipe(name, &block)
+      raise ArgumentError, 'define_recipe must follow cookbook::recipe_name format' unless name.include?('::')
+      @virtual_recipes[name] = block
+      self
+    end
+
+    def converge_virtual_recipe(name, &block)
+      name = "#{name}::chefspec-inlined-#{rand(1_000_000)}" unless name.include? '::'
+      define_recipe(name, &block)
+      converge(name)
     end
 
     #
