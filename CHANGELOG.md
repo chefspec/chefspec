@@ -1,6 +1,15 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 3.1.4
+Bugfixes:
+  - Correctly expand the node's run_list in server mode
+  - Actually package i18n translations with the cookbook
+
+Improvements:
+  - Document setting a node's role
+  - Add examples and features for `stub_node`
+
 ## 3.1.3
 Bugfixes:
   - Fix broken deprecations module
