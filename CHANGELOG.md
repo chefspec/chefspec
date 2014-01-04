@@ -1,7 +1,7 @@
 CHANGELOG for ChefSpec
 ======================
 
-## 3.1.4
+## 3.1.4 (January 3, 2014)
 Bugfixes:
   - Correctly expand the node's run_list in server mode
   - Actually package i18n translations with the cookbook
@@ -10,7 +10,7 @@ Improvements:
   - Document setting a node's role
   - Add examples and features for `stub_node`
 
-## 3.1.3
+## 3.1.3 (January 2, 2014)
 Bugfixes:
   - Fix broken deprecations module
   - Update a broken test ([@bknowles][])
@@ -19,15 +19,15 @@ Improvements:
   - Better gem description on GitHub and Rubygems
   - Helper support for template rendering (Chef 11.4+) ([@geraud][])
 
-## 3.1.2
+## 3.1.2 (December 30, 2013)
 Bugfixes:
   - Require i18n 0.6.9 or higher (but less than 1.0.0) ([#289](https://github.com/sethvargo/chefspec/issues/245))
 
-## 3.1.1
+## 3.1.1 (December 29, 2013)
 Bugfixes:
   - Handle duplicate resources in the coverage reporter
 
-## 3.1.0
+## 3.1.0 (December 29, 2013)
 Bugfixes:
   - Only remove existing LWRP resources and providers when a new one is encountered ([@student][])
   - Attempt to coerce dashes to underscores in LWRPs
