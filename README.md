@@ -471,7 +471,7 @@ end
 ### Search
 **NOTE** This is not required if you are using a ChefSpec server.
 
-Because ChecSpec is a unit-testing framework, it is recommended that all third-party API calls be mocked or stubbed. ChefSpec exposes a helpful RSpec macro for stubbing search results in your tests. If you converge a Chef recipe that implements a `search` call, ChefSpec will throw an error like:
+Because ChefSpec is a unit-testing framework, it is recommended that all third-party API calls be mocked or stubbed. ChefSpec exposes a helpful RSpec macro for stubbing search results in your tests. If you converge a Chef recipe that implements a `search` call, ChefSpec will throw an error like:
 
 ```text
 Real searches are disabled. Unregistered search: search(:node, 'name:hello')
