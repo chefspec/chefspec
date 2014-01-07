@@ -7,7 +7,7 @@ describe 'stub_command::default' do
     it 'raises an exception' do
       expect {
         chef_run
-      }.to raise_error(ChefSpec::CommandNotStubbedError)
+      }.to raise_error(ChefSpec::Error::CommandNotStubbed)
     end
   end
 

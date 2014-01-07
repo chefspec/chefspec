@@ -30,4 +30,23 @@ require_relative 'chefspec/matchers'
 require_relative 'chefspec/renderer'
 require_relative 'chefspec/rspec'
 require_relative 'chefspec/runner'
+require_relative 'chefspec/util'
 require_relative 'chefspec/version'
+
+module ChefSpec
+  extend self
+
+  #
+  # The source root of the ChefSpec gem. This is useful when requiring files
+  # that are relative to the root of the project.
+  #
+  # @return [Pathname]
+  #
+  def root
+    @root ||= Pathname.new(File.expand_path('../../', __FILE__))
+  end
+end
+
+require 'i18n'
+I18n.enforce_available_locales = false
+I18n.load_path << Dir[ChefSpec.root.join('locales', '*.yml').to_s]

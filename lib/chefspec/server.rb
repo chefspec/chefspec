@@ -1,10 +1,7 @@
 begin
   require 'chef_zero/server'
 rescue LoadError
-  raise RuntimeError, "chef-zero not found! You must have the chef-zero gem" \
-    " installed on your system before requiring chefspec/server. Install" \
-    " Chef Zero by running:\n\n  gem install chef-zero\n\nor add Chef Zero" \
-    " to your Gemfile:\n\n  gem 'chef-zero'\n\n"
+  raise ChefSpec::Error::GemLoadError.new(gem: 'chef-zero', name: 'Chef Zero')
 end
 
 require 'chef/cookbook_loader'
@@ -64,6 +61,80 @@ module ChefSpec
       instance.send(m, *args, &block)
     end
 
+    #
+    # @macro entity
+    #   @method create_$1(name, data = {})
+    #     Create a new $1 on the Chef Server
+    #
+    #     @param [String] name
+    #       the name of the $1
+    #     @param [Hash] data
+    #       the list of data to load
+    #
+    #
+    #   @method $1(name)
+    #     Find a $1 at the given name
+    #
+    #     @param [String] name
+    #       the name of the $1
+    #
+    #     @return [$2, nil]
+    #
+    #
+    #   @method $3
+    #     The list of $1 on the Chef Server
+    #
+    #     @return [Array<Hash>]
+    #       all the $1 on the Chef Server
+    #
+    #
+    #   @method has_$1?(name)
+    #     Determine if the Chef Server has the given $1
+    #
+    #     @param [String] name
+    #       the name of the $1 to find
+    #
+    #     @return [Boolean]
+    #
+    def self.entity(method, klass, key)
+      class_eval <<-EOH, __FILE__, __LINE__ + 1
+        def create_#{method}(name, data = {})
+          unless '#{key}' == 'data'
+            # Automatically set the "name" if no explicit one was given
+            data[:name] ||= name
+
+            # Convert it to JSON
+            data = JSON.fast_generate(data)
+          end
+
+          @server.load_data('#{key}' => { name => data })
+        end
+
+        def #{method}(name)
+          data = @server.data_store.get(['#{key}', name])
+          json = JSON.parse(data)
+
+          if #{klass}.respond_to?(:json_create)
+            #{klass}.json_create(json)
+          else
+            #{klass}.new(json)
+          end
+        rescue ChefZero::DataStore::DataNotFoundError
+          nil
+        end
+
+        def #{key}
+          @server.data_store.list(['#{key}'])
+        end
+
+        def has_#{method}?(name)
+          !@server.data_store.get(['#{key}', name]).nil?
+        rescue ChefZero::DataStore::DataNotFoundError
+          false
+        end
+      EOH
+    end
+
     include Singleton
 
     attr_reader :server
@@ -77,6 +148,12 @@ module ChefSpec
         log_level:  RSpec.configuration.log_level || :warn,
       )
     end
+
+    entity :client,      Chef::Client, 'clients'
+    entity :data_bag,    Chef::DataBag, 'data'
+    entity :environment, Chef::Environment, 'environments'
+    entity :node,        Chef::Node, 'nodes'
+    entity :role,        Chef::Role, 'roles'
 
     #
     # The path to the insecure Chef Zero private key on disk. Because Chef
@@ -120,45 +197,6 @@ module ChefSpec
     def stop!
       @server.stop if @server.running?
       FileUtils.rm_rf(cache_dir)
-    end
-
-    #
-    # Create a client on the Chef Server.
-    #
-    def create_client(name, data = {})
-      load_data(:clients, name, data)
-    end
-
-    #
-    # Create a data_bag on the Chef Server.
-    #
-    def create_data_bag(name, data = {})
-      @server.load_data('data' => { name => data })
-    end
-
-    #
-    # Create an environment on the Chef Server.
-    #
-    def create_environment(name, data = {})
-      load_data(:environments, name, data)
-    end
-
-    #
-    # Create a node on the Chef Server.
-    #
-    # @note
-    #   The current node (chefspec) is automatically registered and added to
-    #   the Chef Server
-    #
-    def create_node(name, data = {})
-      load_data(:nodes, name, data)
-    end
-
-    #
-    # Create a role on the Chef Server.
-    #
-    def create_role(name, data = {})
-      load_data(:roles, name, data)
     end
 
     private

@@ -7,7 +7,7 @@ describe 'stub_data_bag::default' do
     it 'raises an exception' do
       expect {
         chef_run
-      }.to raise_error(ChefSpec::DataBagNotStubbedError)
+      }.to raise_error(ChefSpec::Error::DataBagNotStubbed)
     end
   end
 

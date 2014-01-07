@@ -346,10 +346,27 @@ Create a node:
 ChefSpec::Server.create_node('my_node', { run_list: ['...'] })
 ```
 
+You may also be interested in the `stub_node` macro, which will create a new `Chef::Node` object and accepts the same parameters as the Chef Runner and a Fauxhai object:
+
+```ruby
+www = stub_node(platform: 'ubuntu', version: '12.04') do |node|
+        node['fqdn'] = 'www1.example.com'
+      end
+
+# `www` is now a local Chef::Node object you can use in your test. To push this
+# node to the server, call `create_node`:
+
+ChefSpec::Server.create_node('www', www)
+```
+
 Create a role:
 
 ```ruby
 ChefSpec::Server.create_role('my_role', { default_attributes: {} })
+
+# The role now exists on the Chef Server, you can add it to a node's run_list
+# by adding it to the `converge` block:
+let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe, 'role[my_role]') }
 ```
 
 **NOTE** The ChefSpec server is empty at the start of each example to avoid interdependent tests. You can use `before` blocks to load data before each test.
@@ -454,7 +471,7 @@ end
 ### Search
 **NOTE** This is not required if you are using a ChefSpec server.
 
-Because ChecSpec is a unit-testing framework, it is recommended that all third-party API calls be mocked or stubbed. ChefSpec exposes a helpful RSpec macro for stubbing search results in your tests. If you converge a Chef recipe that implements a `search` call, ChefSpec will throw an error like:
+Because ChefSpec is a unit-testing framework, it is recommended that all third-party API calls be mocked or stubbed. ChefSpec exposes a helpful RSpec macro for stubbing search results in your tests. If you converge a Chef recipe that implements a `search` call, ChefSpec will throw an error like:
 
 ```text
 Real searches are disabled. Unregistered search: search(:node, 'name:hello')
@@ -522,6 +539,12 @@ It also outputs a machine-parsable JSON file at `.coverage/results.json`. This f
 
 You can configure both the announcing behavior and JSON file. Please see the YARD documentaion for more information.
 
+If you want to restrict coverage reporting only against certain cookbook directories, you can do it using filters. For example, to include only the site-cookbooks directory for coverage reporting, add the following line in your ```spec/spec_helper.rb```
+
+```ruby
+ ChefSpec::Coverage.filters << File.expand_path('../../site-cookbooks', __FILE__)
+```
+
 
 Mocking Out Environments
 ------------------------
@@ -566,7 +589,7 @@ describe 'foo::default' do
 end
 ```
 
-**You should never `step_into` an LWRP unless you are testing it. Never `step_into` an LWRP from another cookbook!**
+**NOTE:** If your cookbook exposes LWRPs, it is highly recommended you also create a `libraries/matchers.rb` file as outlined below in the "Packaging Custom Matchers" section. **You should never `step_into` an LWRP unless you are testing it. Never `step_into` an LWRP from another cookbook!**
 
 
 Packaging Custom Matchers
@@ -620,10 +643,10 @@ Chef will dynamically build the `motd_message` LWRP at runtime that can be used 
 motd_message 'my message'
 ```
 
-You can package a custom ChefSpec matcher with the motd cookbook by including the following code in `libraries/matcher.rb`:
+You can package a custom ChefSpec matcher with the motd cookbook by including the following code in `libraries/matchers.rb`:
 
 ```ruby
-# motd/libraries/matcher.rb
+# motd/libraries/matchers.rb
 if defined?(ChefSpec)
   def write_motd_message(message)
     ChefSpec::Matchers::ResourceMatcher.new(:motd_message, :write, message)
@@ -804,6 +827,7 @@ Media & Third-party Tutorials
 - [Jim Hopp's excellent Test Driven Development for Chef Practitioners](http://www.youtube.com/watch?v=o2e0aZUAVGw)
 - [Joshua Timberman's Starting ChefSpec Examples](http://jtimberman.housepub.org/blog/2013/05/09/starting-chefspec-example/)
 - [Juri Timošin's post on faster specs](http://dracoater.blogspot.com/2013/12/testing-chef-cookbooks-part-25-speeding.html)
+- [Seth Vargo's Chef recipe code coverage](https://sethvargo.com/chef-recipe-code-coverage/)
 - [Seth Vargo's TDDing tmux talk](http://www.confreaks.com/videos/2364-mwrc2013-tdding-tmux)
 - [Stephen Nelson Smith's Test-Driven Infrastructure with Chef](http://shop.oreilly.com/product/0636920030973.do)
 

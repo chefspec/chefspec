@@ -141,8 +141,8 @@ module ChefSpec::API
   end
 end
 
-module ChefSpec
-  class NoConversionError < Error
+module ChefSpec::Error
+  class NoConversionError < ChefSpecError
     def initialize(matcher)
       message = "I cannot convert `#{matcher}` to use a new matcher format!" \
         " Please see the ChefSpec documentation and CHANGELOG for details" \

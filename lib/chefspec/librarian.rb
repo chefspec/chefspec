@@ -3,10 +3,8 @@ begin
   require 'librarian/action/resolve'
   require 'librarian/action/install'
 rescue LoadError
-  raise RuntimeError, "Librarian not found! You must have the librarian-chef" \
-    " gem installed on your system before requiring chefspec/librarian." \
-    " Install it by running:\n\n  gem install librarian-chef\n\nor add" \
-    " Librarian to your Gemfile:\n\n  gem 'librarian-chef'\n\n"
+  raise ChefSpec::Error::GemLoadError.new(
+    gem: 'librarian-chef', name: 'Librarian')
 end
 
 module ChefSpec

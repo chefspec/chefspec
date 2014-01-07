@@ -167,6 +167,8 @@ module ChefSpec
     # @option options [Hash] :ohai
     #   a Hash of Ohai attributes to mock on the node
     #
+    # @return [Chef::Node]
+    #
     def stub_node(name = 'node.example', options = {}, &block)
       fauxhai = Fauxhai.mock(options).data
       fauxhai = fauxhai.merge(options[:ohai] || {})

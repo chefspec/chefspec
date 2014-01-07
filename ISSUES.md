@@ -7,6 +7,7 @@ Reporting
 When you report an issue, please include the following information:
 
 - What you're trying to accomplish
+- An [SSCCE](http://sscce.org/)
 - The command you ran
 - What you expected to happen
 - What actually happened
