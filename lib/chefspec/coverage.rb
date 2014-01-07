@@ -74,6 +74,12 @@ module ChefSpec
       report = {}
 
       report[:total] = @collection.size
+
+      if report[:total] == 0
+        puts "No resources found, skipping coverage calculation"
+        return
+      end
+
       report[:touched] = @collection.count { |_, resource| resource.touched? }
       report[:untouched] = report[:total] - report[:touched]
       report[:coverage] = ((report[:touched].to_f/report[:total].to_f)*100).round(2)
