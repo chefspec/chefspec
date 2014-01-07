@@ -31,7 +31,7 @@ describe 'server::node' do
           platform: 'debian',
           version: '7.1',
           ohai: { fqdn:'ham.example.com' }
-        )
+        ).to_hash
       )
       ChefSpec::Server.create_node(
         'bacon',
@@ -39,8 +39,8 @@ describe 'server::node' do
           'bacon',
           platform: 'ubuntu',
           version: '12.04',
-          ohai: { fqdn:'bacon.example.com' }
-        )
+          ohai: { 'fqdn' => 'bacon.example.com' }
+        ).to_hash
       )
     end
 
