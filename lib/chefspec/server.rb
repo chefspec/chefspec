@@ -101,7 +101,7 @@ module ChefSpec
         def create_#{method}(name, data = {})
           unless '#{key}' == 'data'
             # Automatically set the "name" if no explicit one was given
-            data[:name] ||= name
+            #data[:name] ||= name
 
             # Convert it to JSON
             data = JSON.fast_generate(data)
