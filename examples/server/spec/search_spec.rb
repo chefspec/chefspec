@@ -1,7 +1,7 @@
 require 'chefspec'
 require 'chefspec/server'
 
-describe 'server_search::default' do
+describe 'server::search' do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
 
   let(:node_1) do
