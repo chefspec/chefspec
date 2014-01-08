@@ -13,14 +13,14 @@ describe 'stub_data_bag::default' do
 
   context 'as a String' do
     it 'does not raise an exception' do
-      stub_data_bag(:users).and_return([ { id: 'svargo' } ])
+      stub_data_bag('users').and_return([ { id: 'svargo' } ])
       expect { chef_run }.to_not raise_error
     end
   end
 
   context 'as a Symbol' do
     it 'does not raise an exception' do
-      stub_data_bag('users').and_return([ { id: 'svargo' } ])
+      stub_data_bag(:users).and_return([ { id: 'svargo' } ])
       expect { chef_run }.to_not raise_error
     end
   end
