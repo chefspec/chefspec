@@ -18,3 +18,4 @@ Feature: The ChefSpec server
     | environment |
     | node        |
     | role        |
+    | search      |

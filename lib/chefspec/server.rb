@@ -99,13 +99,11 @@ module ChefSpec
     def self.entity(method, klass, key)
       class_eval <<-EOH, __FILE__, __LINE__ + 1
         def create_#{method}(name, data = {})
-          unless '#{key}' == 'data'
-            # Automatically set the "name" if no explicit one was given
-            data[:name] ||= name
+          # Automatically set the "name" if no explicit one was given
+          data[:name] ||= name
 
-            # Convert it to JSON
-            data = JSON.fast_generate(data)
-          end
+          # Convert it to JSON
+          data = JSON.fast_generate(data)
 
           @server.load_data('#{key}' => { name => data })
         end
@@ -154,6 +152,53 @@ module ChefSpec
     entity :environment, Chef::Environment, 'environments'
     entity :node,        Chef::Node, 'nodes'
     entity :role,        Chef::Role, 'roles'
+
+    #
+    # Create a new data_bag on the Chef Server. This overrides the method
+    # created by {entity}
+    #
+    # @param [String] name
+    #   the name of the data bag
+    # @param [Hash] data
+    #   the data to load into the data bag
+    #
+    def create_data_bag(name, data = {})
+      @server.load_data('data' => { name => data })
+    end
+
+    #
+    # Create a new node on the Chef Server. This overrides the method created
+    # by {entity}, permitting users to pass a raw +Chef::Node+ object in
+    # addition to a hash.
+    #
+    # @example Create a node from a hash
+    #
+    #   create_node('bacon', attribute: 'value')
+    #
+    # @example Create a node from a +Chef::Node+ object
+    #
+    #   node = stub_node('bacon', platform: 'ubuntu', version: '12.04')
+    #   create_node(node)
+    #
+    # @param [String, Chef::Node] object
+    #   the object to create; this can be the name of the node, or an actual
+    #   +Chef::Node+ object
+    # @param [Hash] data
+    #   the list of data to populate the node with; this is ignored if an
+    #   actual node object is given
+    #
+    def create_node(object, data = {})
+      if object.is_a?(Chef::Node)
+        name = object.name
+        data = object.to_json
+      else
+        name = object.to_s
+        data[:name] ||= name
+        data = JSON.fast_generate(data)
+      end
+
+      @server.load_data('nodes' => { name => data })
+    end
 
     #
     # The path to the insecure Chef Zero private key on disk. Because Chef
