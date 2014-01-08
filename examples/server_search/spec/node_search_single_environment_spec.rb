@@ -1,7 +1,7 @@
 require 'chefspec'
 require 'chefspec/server'
 
-describe 'server_search::foo' do
+describe 'node_search_single_environment' do
 
   before do
     ## totally not working...
@@ -46,7 +46,7 @@ describe 'server_search::foo' do
     # Should create another node 'tomato' without attributes and recipes
   end
 
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::Runner.new.converge('server_search::foo') }
 
   context 'searches for all nodes with recipe bar' do
     it 'finds nodes bacon and ham' do
