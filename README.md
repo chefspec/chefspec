@@ -215,6 +215,22 @@ end
 
 This test is asserting that the Chef run will have a _package_ resource with the name _apache2_ with an action of _install_.
 
+To test that a resource action is performed with a specific set of attributes, you can call `with(ATTRIBUTES_HASH)` on the expectation, per the following example:
+
+```ruby
+require 'chefspec'
+
+describe 'example::default' do
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
+  it 'does something' do
+    expect(chef_run).to modify_group('docker').with(members: ['vagrant'])
+  end
+end
+```
+
+This test is asserting that the Chef run will have a _group_ resource with the name _docker_, an action of _modify_, and an attributes hash including `{ members: ['vagrant'] }`.
+
 ChefSpec includes matchers for all of Chef's core resources using the above schema. Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding cucumber test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).
 
 Additionally, ChefSpec includes the following helpful matchers. They are also [documented in Yard](http://rubydoc.info/github/sethvargo/chefspec), but they are included here because they do not follow the "general pattern".
