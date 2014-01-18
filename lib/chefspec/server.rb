@@ -143,7 +143,7 @@ module ChefSpec
     #
     def initialize
       @server = ChefZero::Server.new(
-        log_level:  RSpec.configuration.log_level || :warn,
+        log_level: RSpec.configuration.log_level || :warn,
       )
     end
 
