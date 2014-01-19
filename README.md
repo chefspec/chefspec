@@ -525,7 +525,7 @@ Reporting
 ---------
 ChefSpec attempts to generate a report of resources read over resources tested. Please note, this feature is currently in beta phases and may not be 100% accurate. That being said, it's currently the only code coverage tool available for Chef recipes.
 
-To generate the coverage report, add the following the the **very end** of your `spec_helper.rb`:
+To generate the coverage report, add the following to the **very end** of your `spec_helper.rb`:
 
 ```ruby
 # Existing things...
@@ -553,7 +553,7 @@ Untouched Resources:
 
 It also outputs a machine-parsable JSON file at `.coverage/results.json`. This file can be read by your CI server to determine changes in code coverage. We recommend adding the `.coverage` directory to your `.gitignore` to avoid committing it to git.
 
-You can configure both the announcing behavior and JSON file. Please see the YARD documentaion for more information.
+You can configure both the announcing behavior and JSON file. Please see the YARD documentation for more information.
 
 If you want to restrict coverage reporting only against certain cookbook directories, you can do it using filters. For example, to include only the site-cookbooks directory for coverage reporting, add the following line in your ```spec/spec_helper.rb```
 
@@ -814,7 +814,7 @@ ChefSpec::Runner.new(role_path: '/var/my/roles') # local setting
 
 Faster Specs
 ------------
-ChefSpec aims to provide the easiest and simplest path for new users to write RSpec examples for Chef cookbooks. In doing so, it makes some sacrifies in terms of speed and agility of execution. In other words, ChefSpec favors "speed to develop" over "speed to execute". Many of these decisions are directly related to the way Chef dynamically loads resources at runtime.
+ChefSpec aims to provide the easiest and simplest path for new users to write RSpec examples for Chef cookbooks. In doing so, it makes some sacrifices in terms of speed and agility of execution. In other words, ChefSpec favors "speed to develop" over "speed to execute". Many of these decisions are directly related to the way Chef dynamically loads resources at runtime.
 
 If you understand how RSpec works and would like to see some significant speed improvements in your specs, you can use the `ChefSpec::Cacher` module inspired by [Juri Timošin](https://github.com/DracoAter). Just require the cacher module in your spec helper.
 
