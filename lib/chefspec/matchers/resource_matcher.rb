@@ -71,9 +71,9 @@ module ChefSpec::Matchers
           " to include :#{@expected_action}"
         end
       else
-        %Q{expected "#{@resource_name}[#{@expected_identity}] with"} \
-        " action :#{@expected_action} to be in Chef run. Other" \
-        " #{@resource_name} resources:" \
+        %Q{expected "#{@resource_name}[#{@expected_identity}]"} \
+        " with action :#{@expected_action} to be in Chef run." \
+        " Other #{@resource_name} resources:" \
         "\n\n" \
         "  " + similar_resources.map(&:to_s).join("\n  ") + "\n "
       end
