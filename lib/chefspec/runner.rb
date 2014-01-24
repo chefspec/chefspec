@@ -312,10 +312,24 @@ module ChefSpec
       # stuck +instance_eval+ing against the client and manually expanding
       # the mode object.
       #
+      # @todo Remove in Chef 13
+      #
       def expand_run_list!
-        client.instance_eval do
-          @run_list_expansion = expand_run_list
-          @expanded_run_list_with_versions = @run_list_expansion.recipes.with_version_constraints_strings
+        # Recent versions of Chef include a method to expand the +run_list+,
+        # setting the correct instance variables on the policy builder. We use
+        # that, unless the user is running an older version of Chef which
+        # doesn't include this method.
+        if client.respond_to?(:expanded_run_list)
+          client.expanded_run_list
+        else
+          # Sadly, if we got this far, it means that the current Chef version
+          # does not include the +expanded_run_list+ method, so we need to
+          # manually expand the +run_list+. The following code has been known
+          # to make kittens cry, so please read with extreme caution.
+          client.instance_eval do
+            @run_list_expansion = expand_run_list
+            @expanded_run_list_with_versions = @run_list_expansion.recipes.with_version_constraints_strings
+          end
         end
       end
   end

@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'chef', :github => 'opscode/chef'
+gem 'chef', :github => 'opscode/chef', :branch => 'CHEF-4983'
 
 gemspec :path => '..'
