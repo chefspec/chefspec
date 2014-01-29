@@ -484,6 +484,16 @@ describe 'example::default' do
 end
 ```
 
+If you are using **Encrypted Data Bag Items**, you'll need to dive into the RSpec layer and stub that class method instead:
+
+```ruby
+describe 'example::default' do
+  before do
+    Chef::EncryptedDataBagItem.stub(:load).with('users', 'svargo').and_return(...)
+  end
+end
+```
+
 ### Search
 **NOTE** This is not required if you are using a ChefSpec server.
 
