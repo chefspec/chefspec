@@ -1,6 +1,20 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 3.2.0 (January 31, 2014)
+Bugfixes:
+  - Fix coverage calculation when there are no resources in the collection
+  - Fix misplaced quote in matcher output
+  - Include all files in generated gem
+  - Ensure compatability with Chef HEAD
+
+Improvements:
+  - Test Ruby 2.1 on Travis
+  - Miscellaneous README typos
+  - Add `subscribe_to` matchers
+  - Add documentation for the `with` matcher
+  - Add support for passing a `node` object directly to the server `create_node` method
+
 ## 3.1.4 (January 3, 2014)
 Bugfixes:
   - Correctly expand the node's run_list in server mode
