@@ -247,7 +247,7 @@ Assert that a resource notifies another in the Chef run
 
 ```ruby
 resource = chef_run.template('/etc/foo')
-expect(resource).to notify('service[apache2]').to(:restart)
+expect(resource).to notify('service[apache2]').to(:restart).immediately
 ```
 
 ##### subscribes
