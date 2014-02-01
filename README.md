@@ -250,6 +250,14 @@ resource = chef_run.template('/etc/foo')
 expect(resource).to notify('service[apache2]').to(:restart)
 ```
 
+##### subscribes
+Assert that a resource subscribes to another in the Chef run
+
+```ruby
+resource = chef_run.service('apache2')
+expect(resource).to subscribe_to('template[/etc/foo]').on(:create).delayed
+```
+
 ##### render_file
 Assert that the Chef run renders a file (with optional content); this will match `cookbook_file`, `file`, and `template` resources and can also check the resulting content
 
