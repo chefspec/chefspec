@@ -255,16 +255,16 @@ module ChefSpec
     def msg(message); end
 
     private
-      def file_load_failed(path, exception)
-        expecting_exception(exception) do
-          description = Chef::Formatters::ErrorMapper.file_load_failed(path, exception)
-          display_error(description)
-        end
-      end
 
-      def expecting_exception(exception, &block)
-        yield unless ChefSpec::ExpectException.new(exception).expected?
+    def file_load_failed(path, exception)
+      expecting_exception(exception) do
+        description = Chef::Formatters::ErrorMapper.file_load_failed(path, exception)
+        display_error(description)
       end
+    end
 
+    def expecting_exception(exception, &block)
+      yield unless ChefSpec::ExpectException.new(exception).expected?
+    end
   end
 end

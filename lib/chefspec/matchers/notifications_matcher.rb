@@ -78,35 +78,36 @@ module ChefSpec::Matchers
     end
 
     private
-      def all_notifications
-        immediate_notifications + delayed_notifications
-      end
 
-      def immediate_notifications
-        @resource.immediate_notifications
-      end
+    def all_notifications
+      immediate_notifications + delayed_notifications
+    end
 
-      def delayed_notifications
-        @resource.delayed_notifications
-      end
+    def immediate_notifications
+      @resource.immediate_notifications
+    end
 
-      def matches_action?(notification)
-        return true if @action.nil?
-        @action == notification.action.to_sym
-      end
+    def delayed_notifications
+      @resource.delayed_notifications
+    end
 
-      def format_notification(notification)
-        notifying_resource = notification.notifying_resource
-        resource = notification.resource
-        type = notification.notifying_resource.immediate_notifications.include?(notification) ? :immediately : :delayed
+    def matches_action?(notification)
+      return true if @action.nil?
+      @action == notification.action.to_sym
+    end
 
-        %Q{  "#{notifying_resource.to_s}" notifies "#{resource_name(resource)}[#{resource.name}]" to :#{notification.action}, :#{type}}
-      end
+    def format_notification(notification)
+      notifying_resource = notification.notifying_resource
+      resource = notification.resource
+      type = notification.notifying_resource.immediate_notifications.include?(notification) ? :immediately : :delayed
 
-      def format_notifications
-        all_notifications.map do |notification|
-          '  ' + format_notification(notification)
-        end.join("\n")
-      end
+      %Q{  "#{notifying_resource.to_s}" notifies "#{resource_name(resource)}[#{resource.name}]" to :#{notification.action}, :#{type}}
+    end
+
+    def format_notifications
+      all_notifications.map do |notification|
+        '  ' + format_notification(notification)
+      end.join("\n")
+    end
   end
 end

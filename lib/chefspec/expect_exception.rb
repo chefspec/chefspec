@@ -26,20 +26,21 @@ module ChefSpec
     end
 
     private
-      def exception_matched?
-        @formatter_exception == @matcher.expected_error ||
-        @matcher.expected_error === @formatter_exception
-      end
 
-      def message_matched?
-        case @formatter_message
-        when nil
-          true
-        when Regexp
-          @matcher.expected_message =~ @formatter_message
-        else
-          @matcher.expected_message == @formatter_message
-        end
+    def exception_matched?
+      @formatter_exception == @matcher.expected_error ||
+      @matcher.expected_error === @formatter_exception
+    end
+
+    def message_matched?
+      case @formatter_message
+      when nil
+        true
+      when Regexp
+        @matcher.expected_message =~ @formatter_message
+      else
+        @matcher.expected_message == @formatter_message
       end
+    end
   end
 end

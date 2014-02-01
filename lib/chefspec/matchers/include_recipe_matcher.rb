@@ -22,24 +22,25 @@ module ChefSpec::Matchers
     end
 
     private
-      #
-      # Automatically appends "+::default+" to recipes that need them.
-      #
-      # @param [String] name
-      #
-      # @return [String]
-      #
-      def with_default(name)
-        name.include?('::') ? name : "#{name}::default"
-      end
 
-      #
-      # The list of loaded recipes on the Chef run (normalized)
-      #
-      # @return [Array<String>]
-      #
-      def loaded_recipes
-        @runner.run_context.loaded_recipes.map { |name| with_default(name) }
-      end
+    #
+    # Automatically appends "+::default+" to recipes that need them.
+    #
+    # @param [String] name
+    #
+    # @return [String]
+    #
+    def with_default(name)
+      name.include?('::') ? name : "#{name}::default"
+    end
+
+    #
+    # The list of loaded recipes on the Chef run (normalized)
+    #
+    # @return [Array<String>]
+    #
+    def loaded_recipes
+      @runner.run_context.loaded_recipes.map { |name| with_default(name) }
+    end
   end
 end

@@ -257,80 +257,81 @@ module ChefSpec
     end
 
     private
-      #
-      # The inferred path from the calling spec.
-      #
-      # @param [Array<String>] kaller
-      #   the calling trace
-      #
-      # @return [String]
-      #
-      def calling_cookbook_path(kaller)
-        calling_spec = kaller.find { |line| line =~ /\/spec/ }
-        raise Error::CookbookPathNotFound if calling_spec.nil?
 
-        bits = calling_spec.split(':', 2).first.split(File::SEPARATOR)
-        spec_dir = bits.index('spec') || 0
+    #
+    # The inferred path from the calling spec.
+    #
+    # @param [Array<String>] kaller
+    #   the calling trace
+    #
+    # @return [String]
+    #
+    def calling_cookbook_path(kaller)
+      calling_spec = kaller.find { |line| line =~ /\/spec/ }
+      raise Error::CookbookPathNotFound if calling_spec.nil?
 
-        File.expand_path(File.join(bits.slice(0, spec_dir), '..'))
+      bits = calling_spec.split(':', 2).first.split(File::SEPARATOR)
+      spec_dir = bits.index('spec') || 0
+
+      File.expand_path(File.join(bits.slice(0, spec_dir), '..'))
+    end
+
+    #
+    # The inferred path to roles.
+    #
+    # @return [String, nil]
+    #
+    def default_role_path
+      Pathname.new(Dir.pwd).ascend do |path|
+        possible = File.join(path, 'roles')
+        return possible if File.exists?(possible)
       end
 
-      #
-      # The inferred path to roles.
-      #
-      # @return [String, nil]
-      #
-      def default_role_path
-        Pathname.new(Dir.pwd).ascend do |path|
-          possible = File.join(path, 'roles')
-          return possible if File.exists?(possible)
+      nil
+    end
+
+    #
+    # The +Chef::Client+ for this runner.
+    #
+    # @return [Chef::Runner]
+    #
+    def client
+      return @client if @client
+
+      @client = Chef::Client.new
+      @client.ohai.data = Mash.from_hash(Fauxhai.mock(options).data)
+      @client.load_node
+      @client.build_node
+      @client.save_updated_node
+      @client
+    end
+
+    #
+    # We really need a way to just expand the run_list, but that's done by
+    # +Chef::Client#build_node+. However, that same method also resets the
+    # automatic attributes, making it impossible to mock them. So we are
+    # stuck +instance_eval+ing against the client and manually expanding
+    # the mode object.
+    #
+    # @todo Remove in Chef 13
+    #
+    def expand_run_list!
+      # Recent versions of Chef include a method to expand the +run_list+,
+      # setting the correct instance variables on the policy builder. We use
+      # that, unless the user is running an older version of Chef which
+      # doesn't include this method.
+      if client.respond_to?(:expanded_run_list)
+        client.expanded_run_list
+      else
+        # Sadly, if we got this far, it means that the current Chef version
+        # does not include the +expanded_run_list+ method, so we need to
+        # manually expand the +run_list+. The following code has been known
+        # to make kittens cry, so please read with extreme caution.
+        client.instance_eval do
+          @run_list_expansion = expand_run_list
+          @expanded_run_list_with_versions = @run_list_expansion.recipes.with_version_constraints_strings
         end
-
-        nil
       end
-
-      #
-      # The +Chef::Client+ for this runner.
-      #
-      # @return [Chef::Runner]
-      #
-      def client
-        return @client if @client
-
-        @client = Chef::Client.new
-        @client.ohai.data = Mash.from_hash(Fauxhai.mock(options).data)
-        @client.load_node
-        @client.build_node
-        @client.save_updated_node
-        @client
-      end
-
-      #
-      # We really need a way to just expand the run_list, but that's done by
-      # +Chef::Client#build_node+. However, that same method also resets the
-      # automatic attributes, making it impossible to mock them. So we are
-      # stuck +instance_eval+ing against the client and manually expanding
-      # the mode object.
-      #
-      # @todo Remove in Chef 13
-      #
-      def expand_run_list!
-        # Recent versions of Chef include a method to expand the +run_list+,
-        # setting the correct instance variables on the policy builder. We use
-        # that, unless the user is running an older version of Chef which
-        # doesn't include this method.
-        if client.respond_to?(:expanded_run_list)
-          client.expanded_run_list
-        else
-          # Sadly, if we got this far, it means that the current Chef version
-          # does not include the +expanded_run_list+ method, so we need to
-          # manually expand the +run_list+. The following code has been known
-          # to make kittens cry, so please read with extreme caution.
-          client.instance_eval do
-            @run_list_expansion = expand_run_list
-            @expanded_run_list_with_versions = @run_list_expansion.recipes.with_version_constraints_strings
-          end
-        end
-      end
+    end
   end
 end

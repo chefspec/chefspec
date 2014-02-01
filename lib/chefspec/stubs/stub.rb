@@ -22,16 +22,17 @@ module ChefSpec
       end
 
       private
-        def recursively_mashify(thing)
-          case thing
-          when Array
-            thing.collect { |item| recursively_mashify(item) }
-          when Hash
-            Mash.from_hash(thing)
-          else
-            thing
-          end
+
+      def recursively_mashify(thing)
+        case thing
+        when Array
+          thing.collect { |item| recursively_mashify(item) }
+        when Hash
+          Mash.from_hash(thing)
+        else
+          thing
         end
+      end
     end
   end
 end

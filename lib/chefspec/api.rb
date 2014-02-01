@@ -11,17 +11,18 @@ module ChefSpec
     end
 
     private
-      #
-      # WARNING: This is metaprogramming madness. Find all modules who are
-      # nested beneath this module.
-      #
-      # @return [Array<Module>]
-      #
-      def submodules
-        self.constants
-          .map { |name| const_get(name) }
-          .select { |const| const.class == Module }
-      end
+
+    #
+    # WARNING: This is metaprogramming madness. Find all modules who are
+    # nested beneath this module.
+    #
+    # @return [Array<Module>]
+    #
+    def submodules
+      self.constants
+        .map { |name| const_get(name) }
+        .select { |const| const.class == Module }
+    end
   end
 end
 

@@ -54,42 +54,43 @@ module ChefSpec::Matchers
     end
 
     private
-      def resource
-        @resource ||= @runner.find_resource(:cookbook_file, @path) ||
-                      @runner.find_resource(:file, @path) ||
-                      @runner.find_resource(:template, @path)
+
+    def resource
+      @resource ||= @runner.find_resource(:cookbook_file, @path) ||
+                    @runner.find_resource(:file, @path) ||
+                    @runner.find_resource(:template, @path)
+    end
+
+    #
+    # Determines if the given resource has a create-like action.
+    #
+    # @param [Chef::Resource] resource
+    #
+    # @return [Boolean]
+    #
+    def has_create_action?
+      [:create, :create_if_missing].any? { |action| resource.performed_action?(action) }
+    end
+
+    #
+    # Determines if the resources content matches the expected content.
+    #
+    # @param [Chef::Resource] resource
+    #
+    # @return [Boolean]
+    #
+    def matches_content?
+      return true if @expected_content.nil?
+
+      @actual_content = ChefSpec::Renderer.new(@runner, resource).content
+
+      return false if @actual_content.nil?
+
+      if @expected_content.is_a?(Regexp)
+        @actual_content =~ @expected_content
+      else
+        @actual_content.include?(@expected_content)
       end
-
-      #
-      # Determines if the given resource has a create-like action.
-      #
-      # @param [Chef::Resource] resource
-      #
-      # @return [Boolean]
-      #
-      def has_create_action?
-        [:create, :create_if_missing].any? { |action| resource.performed_action?(action) }
-      end
-
-      #
-      # Determines if the resources content matches the expected content.
-      #
-      # @param [Chef::Resource] resource
-      #
-      # @return [Boolean]
-      #
-      def matches_content?
-        return true if @expected_content.nil?
-
-        @actual_content = ChefSpec::Renderer.new(@runner, resource).content
-
-        return false if @actual_content.nil?
-
-        if @expected_content.is_a?(Regexp)
-          @actual_content =~ @expected_content
-        else
-          @actual_content.include?(@expected_content)
-        end
-      end
+    end
   end
 end
