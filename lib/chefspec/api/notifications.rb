@@ -5,12 +5,12 @@ module ChefSpec::API
     # Assert that a resource notifies another. Given a Chef Recipe that
     # notifies a template resource to restart apache:
     #
-    #     ifconfig '10.0.0.1' do
-    #       action :add
+    #     template '/etc/apache2/config' do
+    #       notifies :restart, 'service[apache2]'
     #     end
     #
     # The Examples section demonstrates the different ways to test an
-    # +ifconfig+ resource with ChefSpec.
+    # notifications on a resource with ChefSpec.
     #
     # @example Assert the template notifies apache of something
     #   template = chef_run.template('/etc/apache2.conf')

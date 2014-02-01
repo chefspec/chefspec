@@ -92,77 +92,78 @@ module ChefSpec::Matchers
     end
 
     private
-      def unmatched_parameters
-        return @_unmatched_parameters if @_unmatched_parameters
 
-        @_unmatched_parameters = {}
+    def unmatched_parameters
+      return @_unmatched_parameters if @_unmatched_parameters
 
-        params.each do |parameter, expected|
-          unless matches_parameter?(parameter, expected)
-            @_unmatched_parameters[parameter] = {
-              expected: expected,
-              actual:   safe_send(parameter),
-            }
-          end
-        end
+      @_unmatched_parameters = {}
 
-        @_unmatched_parameters
-      end
-
-      def matches_parameter?(parameter, expected)
-        # Chef 11+ stores the source parameter internally as an Array
-        if parameter == :source
-          Array(expected) == Array(safe_send(parameter))
-        else
-          expected === safe_send(parameter)
+      params.each do |parameter, expected|
+        unless matches_parameter?(parameter, expected)
+          @_unmatched_parameters[parameter] = {
+            expected: expected,
+            actual:   safe_send(parameter),
+          }
         end
       end
 
-      def correct_phase?
-        if @compile_time
-          resource.performed_action(@expected_action)[:compile_time]
-        elsif @converge_time
-          resource.performed_action(@expected_action)[:converge_time]
-        else
-          true
-        end
-      end
+      @_unmatched_parameters
+    end
 
-      def safe_send(parameter)
-        resource.send(parameter)
-      rescue NoMethodError
-        nil
+    def matches_parameter?(parameter, expected)
+      # Chef 11+ stores the source parameter internally as an Array
+      if parameter == :source
+        Array(expected) == Array(safe_send(parameter))
+      else
+        expected === safe_send(parameter)
       end
+    end
 
-      #
-      # Any other resources in the Chef run that have the same resource
-      # type. Used by {failure_message} to be ultra helpful.
-      #
-      # @return [Array<Chef::Resource>]
-      #
-      def similar_resources
-        @_similar_resources ||= @runner.find_resources(@resource_name)
+    def correct_phase?
+      if @compile_time
+        resource.performed_action(@expected_action)[:compile_time]
+      elsif @converge_time
+        resource.performed_action(@expected_action)[:converge_time]
+      else
+        true
       end
+    end
 
-      #
-      # Find the resource in the Chef run by the given class name and
-      # resource identity/name.
-      #
-      # @see ChefSpec::Runner#find_resource
-      #
-      # @return [Chef::Resource, nil]
-      #
-      def resource
-        @_resource ||= @runner.find_resource(@resource_name, @expected_identity)
-      end
+    def safe_send(parameter)
+      resource.send(parameter)
+    rescue NoMethodError
+      nil
+    end
 
-      #
-      # The list of parameters passed to the {with} matcher.
-      #
-      # @return [Hash]
-      #
-      def params
-        @_params ||= {}
-      end
+    #
+    # Any other resources in the Chef run that have the same resource
+    # type. Used by {failure_message} to be ultra helpful.
+    #
+    # @return [Array<Chef::Resource>]
+    #
+    def similar_resources
+      @_similar_resources ||= @runner.find_resources(@resource_name)
+    end
+
+    #
+    # Find the resource in the Chef run by the given class name and
+    # resource identity/name.
+    #
+    # @see ChefSpec::Runner#find_resource
+    #
+    # @return [Chef::Resource, nil]
+    #
+    def resource
+      @_resource ||= @runner.find_resource(@resource_name, @expected_identity)
+    end
+
+    #
+    # The list of parameters passed to the {with} matcher.
+    #
+    # @return [Hash]
+    #
+    def params
+      @_params ||= {}
+    end
   end
 end

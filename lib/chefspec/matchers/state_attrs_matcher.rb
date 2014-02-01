@@ -48,23 +48,24 @@ module ChefSpec::Matchers
     end
 
     private
-      #
-      # Determine if all the expected state attributes are present on the
-      # given resource.
-      #
-      # @return [Boolean]
-      #
-      def matches_state_attrs?
-        @expected_attrs == state_attrs
-      end
 
-      #
-      # The list of state attributes declared on the given resource.
-      #
-      # @return [Array<Symbol>]
-      #
-      def state_attrs
-        @resource.class.state_attrs.map(&:to_sym)
-      end
+    #
+    # Determine if all the expected state attributes are present on the
+    # given resource.
+    #
+    # @return [Boolean]
+    #
+    def matches_state_attrs?
+      @expected_attrs == state_attrs
+    end
+
+    #
+    # The list of state attributes declared on the given resource.
+    #
+    # @return [Array<Symbol>]
+    #
+    def state_attrs
+      @resource.class.state_attrs.map(&:to_sym)
+    end
   end
 end

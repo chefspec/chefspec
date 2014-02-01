@@ -11,17 +11,18 @@ module ChefSpec
     end
 
     private
-      #
-      # WARNING: This is metaprogramming madness. Find all modules who are
-      # nested beneath this module.
-      #
-      # @return [Array<Module>]
-      #
-      def submodules
-        self.constants
-          .map { |name| const_get(name) }
-          .select { |const| const.class == Module }
-      end
+
+    #
+    # WARNING: This is metaprogramming madness. Find all modules who are
+    # nested beneath this module.
+    #
+    # @return [Array<Module>]
+    #
+    def submodules
+      self.constants
+        .map { |name| const_get(name) }
+        .select { |const| const.class == Module }
+    end
   end
 end
 
@@ -69,6 +70,7 @@ require_relative 'api/service'
 require_relative 'api/smartos_package'
 require_relative 'api/solaris_package'
 require_relative 'api/state_attrs'
+require_relative 'api/subscriptions'
 require_relative 'api/subversion'
 require_relative 'api/template'
 require_relative 'api/user'

@@ -40,16 +40,16 @@ class ChefSpec::Runner
 
   private
 
-    #
-    # Upload the cookbooks to the Chef Server.
-    #
-    def upload_cookbooks!
-      loader = Chef::CookbookLoader.new(Chef::Config[:cookbook_path])
-      loader.load_cookbooks
+  #
+  # Upload the cookbooks to the Chef Server.
+  #
+  def upload_cookbooks!
+    loader = Chef::CookbookLoader.new(Chef::Config[:cookbook_path])
+    loader.load_cookbooks
 
-      uploader = Chef::CookbookUploader.new(loader.cookbooks, loader.cookbook_paths)
-      uploader.upload_cookbooks
-    end
+    uploader = Chef::CookbookUploader.new(loader.cookbooks, loader.cookbook_paths)
+    uploader.upload_cookbooks
+  end
 end
 
 module ChefSpec
@@ -246,31 +246,31 @@ module ChefSpec
 
     private
 
-      #
-      # The directory where any cache information (such as private keys) should
-      # be stored. This cache is destroyed at the end of the run.
-      #
-      # @return [String]
-      #   the path to the cache directory on disk
-      #
-      def cache_dir
-        @cache_dir ||= Dir.mktmpdir(['chefspec', 'cache'])
-      end
+    #
+    # The directory where any cache information (such as private keys) should
+    # be stored. This cache is destroyed at the end of the run.
+    #
+    # @return [String]
+    #   the path to the cache directory on disk
+    #
+    def cache_dir
+      @cache_dir ||= Dir.mktmpdir(['chefspec', 'cache'])
+    end
 
-      #
-      # Shortcut method for loading data into Chef Zero.
-      #
-      # @param [String, Symbol] key
-      #   the key to load
-      # @param [String] name
-      #   the name or id of the item to load
-      # @param [Hash] data
-      #   the data for the object, which will be converted to JSON and uploaded
-      #   to the server
-      #
-      def load_data(key, name, data = {})
-        @server.load_data(key.to_s => { name => JSON.fast_generate(data) })
-      end
+    #
+    # Shortcut method for loading data into Chef Zero.
+    #
+    # @param [String, Symbol] key
+    #   the key to load
+    # @param [String] name
+    #   the name or id of the item to load
+    # @param [Hash] data
+    #   the data for the object, which will be converted to JSON and uploaded
+    #   to the server
+    #
+    def load_data(key, name, data = {})
+      @server.load_data(key.to_s => { name => JSON.fast_generate(data) })
+    end
   end
 end
 

@@ -124,49 +124,49 @@ module ChefSpec
 
     private
 
-      def find(resource)
-        @collection[resource.to_s]
+    def find(resource)
+      @collection[resource.to_s]
+    end
+
+    def exists?(resource)
+      !find(resource).nil?
+    end
+
+    class ResourceWrapper
+      attr_reader :resource
+
+      def initialize(resource = nil)
+        @resource = resource
       end
 
-      def exists?(resource)
-        !find(resource).nil?
+      def to_s
+        @resource.to_s
       end
 
-      class ResourceWrapper
-        attr_reader :resource
+      def source
+        return {} unless @resource.source_line
+        file, line, *_ = @resource.source_line.split(':')
 
-        def initialize(resource = nil)
-          @resource = resource
-        end
-
-        def to_s
-          @resource.to_s
-        end
-
-        def source
-          return {} unless @resource.source_line
-          file, line, *_ = @resource.source_line.split(':')
-
-          {
-            file: file,
-            line: line.to_i,
-          }
-        end
-
-        def to_hash
-          {
-            source: source,
-            touched: touched?,
-          }
-        end
-
-        def touch!
-          @touched = true
-        end
-
-        def touched?
-          !!@touched
-        end
+        {
+          file: file,
+          line: line.to_i,
+        }
       end
+
+      def to_hash
+        {
+          source: source,
+          touched: touched?,
+        }
+      end
+
+      def touch!
+        @touched = true
+      end
+
+      def touched?
+        !!@touched
+      end
+    end
   end
 end
