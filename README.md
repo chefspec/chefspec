@@ -380,7 +380,7 @@ www = stub_node(platform: 'ubuntu', version: '12.04') do |node|
 # `www` is now a local Chef::Node object you can use in your test. To push this
 # node to the server, call `create_node`:
 
-ChefSpec::Server.create_node('www', www)
+ChefSpec::Server.create_node(www)
 ```
 
 Create a role:
