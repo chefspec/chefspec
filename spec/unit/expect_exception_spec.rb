@@ -14,7 +14,7 @@ describe ChefSpec::ExpectException do
     subject { described_class.new(RuntimeError) }
 
     it 'does not match' do
-      last_error = double('last error', expected_error: ArgumentError)
+      last_error = double('last error', last_error_for_chefspec: ArgumentError)
       RSpec::Matchers::BuiltIn::RaiseError.stub(:last_run).and_return(last_error)
       expect(subject.expected?).to be_false
     end
@@ -24,7 +24,7 @@ describe ChefSpec::ExpectException do
     subject { described_class.new(RuntimeError) }
 
     it 'does not match' do
-      last_error = double('last error', expected_error: RuntimeError)
+      last_error = double('last error', last_error_for_chefspec: RuntimeError)
       RSpec::Matchers::BuiltIn::RaiseError.stub(:last_run).and_return(last_error)
       expect(subject.expected?).to be_true
     end

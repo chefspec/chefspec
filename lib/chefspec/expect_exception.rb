@@ -3,7 +3,11 @@ class RSpec::Matchers::BuiltIn::RaiseError
     attr_accessor :last_run
   end
 
-  attr_reader :expected_error, :expected_message
+  attr_reader :expected_message
+
+  def last_error_for_chefspec 
+    @expected_error
+  end
 
   alias_method :old_matches?, :matches?
   def matches?(*args)
@@ -28,8 +32,8 @@ module ChefSpec
     private
 
     def exception_matched?
-      @formatter_exception == @matcher.expected_error ||
-      @matcher.expected_error === @formatter_exception
+      @formatter_exception == @matcher.last_error_for_chefspec ||
+      @matcher.last_error_for_chefspec === @formatter_exception
     end
 
     def message_matched?
