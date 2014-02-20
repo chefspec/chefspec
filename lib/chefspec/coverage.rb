@@ -1,6 +1,9 @@
 module ChefSpec
   class Coverage
 
+    EXIT_FAILURE = 1
+    EXIT_SUCCESS = 0
+
     attr_accessor :filters
 
     class << self
@@ -71,6 +74,16 @@ module ChefSpec
     #   print the results to standard out
     #
     def report!(output = '.coverage/results.json', announce = true)
+      # Borrowed from simplecov#41
+      #
+      # If an exception is thrown that isn't a "SystemExit", we need to capture
+      # that error and re-raise.
+      if $!
+        exit_status = $!.is_a?(SystemExit) ? $!.status : EXIT_FAILURE
+      else
+        exit_status = EXIT_SUCCESS
+      end
+
       report = {}
 
       report[:total] = @collection.size
@@ -120,6 +133,9 @@ module ChefSpec
 
         EOH
       end
+
+      # Ensure we exit correctly (#351)
+      exit(exit_status)
     end
 
     private
