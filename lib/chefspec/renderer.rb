@@ -64,23 +64,17 @@ module ChefSpec
       cookbook_name = template.cookbook || template.cookbook_name
       template_location = cookbook_collection(chef_run.node)[cookbook_name].preferred_filename_on_disk_location(chef_run.node, :templates, template.source)
 
-      if Chef::Mixin::Template.const_defined?(:TemplateContext) # Chef 11+
-        template_context = Chef::Mixin::Template::TemplateContext.new([])
-        template_context.update({
-          :node => chef_run.node,
-          :template_finder => template_finder(chef_run, cookbook_name),
-        }.merge(template.variables))
-        if template.respond_to?(:helper_modules) # Chef 11.4+
-          template.helper_modules.each do |helper_module|
-            template_context.extend(helper_module)
-          end
-        end
-        template_context.render_template(template_location)
-      else
-        template.provider.new(template, chef_run.run_context).send(:render_with_context, template_location) do |file|
-          File.read(file.path)
+      template_context = Chef::Mixin::Template::TemplateContext.new([])
+      template_context.update({
+        :node => chef_run.node,
+        :template_finder => template_finder(chef_run, cookbook_name),
+      }.merge(template.variables))
+      if template.respond_to?(:helper_modules) # Chef 11.4+
+        template.helper_modules.each do |helper_module|
+          template_context.extend(helper_module)
         end
       end
+      template_context.render_template(template_location)
     end
 
     #
