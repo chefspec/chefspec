@@ -459,7 +459,7 @@ Real data_bags are disabled. Unregistered data_bag: data_bag(:users)
 
 You can stub this data_bag with:
 
-  stub_data_bag("users").and_return({})
+  stub_data_bag("users").and_return([])
 
 ============================================================
 ```
@@ -481,10 +481,7 @@ describe 'example::default' do
   let(:chef_run) { ChefSpec::Runner.new }
 
   before do
-    stub_data_bag('users').and_return([
-      { id: 'svargo' },
-      { id: 'francis' }
-    ])
+    stub_data_bag('users').and_return(['svargo', 'francis'])
 
     stub_data_bag_item('users', 'svargo').and_return({ ... })
     stub_data_bag_item('users', 'francis') { (ruby code) }
