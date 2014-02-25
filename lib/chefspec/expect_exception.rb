@@ -1,3 +1,5 @@
+require 'rspec/matchers/built_in/raise_error'
+
 class RSpec::Matchers::BuiltIn::RaiseError
   class << self
     attr_accessor :last_run
@@ -5,7 +7,7 @@ class RSpec::Matchers::BuiltIn::RaiseError
 
   attr_reader :expected_message
 
-  def last_error_for_chefspec 
+  def last_error_for_chefspec
     @expected_error
   end
 
