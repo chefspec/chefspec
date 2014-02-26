@@ -11,6 +11,8 @@ module ChefSpec
       def_delegators :instance, :setup!, :teardown!
     end
 
+    attr_reader :tmpdir
+
     include Singleton
 
     def initialize
