@@ -304,6 +304,19 @@ describe 'example::default' do
 end
 ```
 
+### Automatic attributes
+ChefSpec provides mocked automatic Ohai data using [fauxhai](https://github.com/customink/fauxhai). To mock out `automatic` attributes, you must use the `automatic` key:
+
+```ruby
+describe 'example::default' do
+  let(:chef_run) do
+    ChefSpec::Runner.new do |node|
+      node.automatic['memory']['total'] = '512kB'
+    end.converge(described_recipe)
+  end
+end
+```
+
 The `node` that is returned is actually a [`Chef::Node`](http://docs.opscode.com/essentials_node_object.html) object.
 
 To set an attribute within a specific test, set the attribute in the `it` block and then **(re-)converge the node**:
@@ -315,25 +328,6 @@ describe 'example::default' do
   it 'performs the action' do
     chef_run.node.set['cookbook']['attribute'] = 'hello'
     chef_run.converge(described_recipe) # The converge happens inside the test
-
-    expect(chef_run).to do_something
-  end
-end
-```
-
-### Automatic attributes ###
-
-On a real node Ohai will provide the node's 'automatic'
-attributes, which in ChefSpec are provided through [fauxhai](https://github.com/customink/fauxhai)
-with `node.automatic`. For example, we can mock the amount of node total memory with:
-
-```ruby
-describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new } 
-
-  it 'performs the action' do
-    chef_run.node.automatic['memory']['total'] = '512kB'
-    chef_run.converge(described_recipe)
 
     expect(chef_run).to do_something
   end
