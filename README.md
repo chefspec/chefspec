@@ -332,7 +332,7 @@ describe 'example::default' do
   let(:chef_run) { ChefSpec::Runner.new } 
 
   it 'performs the action' do
-    chef_run.node.automatice['memory']['total'] = '512kB'
+    chef_run.node.automatic['memory']['total'] = '512kB'
     chef_run.converge(described_recipe)
 
     expect(chef_run).to do_something
