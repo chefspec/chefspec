@@ -321,6 +321,24 @@ describe 'example::default' do
 end
 ```
 
+### Automatic attributes ###
+
+On a real node Ohai will provide the node's 'automatic'
+attributes, which in ChefSpec are provided through [fauxhai](https://github.com/customink/fauxhai)
+with `node.automatic`. For example, we can mock the amount of node total memory with:
+
+```ruby
+describe 'example::default' do
+  let(:chef_run) { ChefSpec::Runner.new } 
+
+  it 'performs the action' do
+    chef_run.node.automatice['memory']['total'] = '512kB'
+    chef_run.converge(described_recipe)
+
+    expect(chef_run).to do_something
+  end
+end
+```
 
 Using Chef Zero
 ---------------
