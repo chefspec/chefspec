@@ -169,7 +169,10 @@ module ChefSpec
     #
     # @return [Chef::Node]
     #
-    def stub_node(name = 'node.example', options = {}, &block)
+    def stub_node(*args, &block)
+      options = args.last.is_a?(Hash) ? args.pop : {}
+      name    = args.first || 'node.example'
+
       fauxhai = Fauxhai.mock(options).data
       fauxhai = fauxhai.merge(options[:ohai] || {})
       fauxhai = Mash.new(fauxhai)

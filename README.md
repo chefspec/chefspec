@@ -386,7 +386,7 @@ You may also be interested in the `stub_node` macro, which will create a new `Ch
 
 ```ruby
 www = stub_node(platform: 'ubuntu', version: '12.04') do |node|
-        node['fqdn'] = 'www1.example.com'
+        node.set['attribute'] = 'value'
       end
 
 # `www` is now a local Chef::Node object you can use in your test. To push this
