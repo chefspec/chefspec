@@ -25,6 +25,7 @@ module ChefSpec
     #
     def setup!
       env = ::Librarian::Chef::Environment.new(project_path: Dir.pwd)
+      @original_path = env.config_db.local['path']
       env.config_db.local['path'] = @tmpdir
       ::Librarian::Action::Resolve.new(env).run
       ::Librarian::Action::Install.new(env).run
@@ -37,6 +38,8 @@ module ChefSpec
     #
     def teardown!
       FileUtils.rm_rf(@tmpdir) if File.exists?(@tmpdir)
+      env = ::Librarian::Chef::Environment.new(project_path: Dir.pwd)
+      env.config_db.local['path'] = @original_path
     end
   end
 end
