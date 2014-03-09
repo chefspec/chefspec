@@ -211,7 +211,7 @@ module ChefSpec
         file, line, *_ = @resource.source_line.split(':')
 
         {
-          file: file,
+          file: shortname(file),
           line: line.to_i,
         }
       end
@@ -229,6 +229,18 @@ module ChefSpec
 
       def touched?
         !!@touched
+      end
+
+      private
+
+      def shortname(file)
+        if file.include?(Dir.pwd)
+          file.split(Dir.pwd, 2).last
+        elsif file.include?('cookbooks')
+          file.split('cookbooks/', 2).last
+        else
+          file
+        end
       end
     end
   end
