@@ -1,24 +1,71 @@
+require_relative 'coverage/filters'
+
 module ChefSpec
   class Coverage
-
     EXIT_FAILURE = 1
     EXIT_SUCCESS = 0
 
-    attr_accessor :filters
-
     class << self
-      extend Forwardable
-      def_delegators :instance, :add, :cover!, :report!, :filters
+      def method_added(name)
+        # Only delegate public methods
+        if method_defined?(name)
+          instance_eval <<-EOH, __FILE__, __LINE__ + 1
+            def #{name}(*args, &block)
+              instance.public_send(:#{name}, *args, &block)
+            end
+          EOH
+        end
+      end
     end
 
     include Singleton
+
+    attr_reader :filters
 
     #
     # Create a new coverage object singleton.
     #
     def initialize
       @collection = {}
-      @filters = []
+      @filters    = {}
+    end
+
+    #
+    # Start the coverage reporting analysis. This method also adds the the
+    # +at_exit+ handler for printing the coverage report.
+    #
+    def start!(*args, &block)
+      instance_eval(&block) if block
+      at_exit { ChefSpec::Coverage.report!(*args) }
+    end
+
+    #
+    # Add a filter to the converage analysis.
+    #
+    # @param [Filter, String, Regexp] filter
+    #   the filter to add
+    # @param [Proc] block
+    #   the block to use as a filter
+    #
+    # @return [true]
+    #
+    def add_filter(filter = nil, &block)
+      id = "#{filter.inspect}/#{block.inspect}".hash
+
+      @filters[id] = if filter.kind_of?(Filter)
+                       filter
+                     elsif filter.kind_of?(String)
+                       StringFilter.new(filter)
+                     elsif filter.kind_of?(Regexp)
+                       RegexpFilter.new(filter)
+                     elsif block
+                       BlockFilter.new(block)
+                     else
+                       raise ArgumentError, 'Please specify either a string, ' \
+                         'filter, or block to filter source files with!'
+                     end
+
+      true
     end
 
     #
@@ -29,7 +76,7 @@ module ChefSpec
     # @param [Chef::Resource] resource
     #
     def add(resource)
-      if !exists?(resource) && filtered?(resource)
+      if !exists?(resource) && !filtered?(resource)
         @collection[resource.to_s] = ResourceWrapper.new(resource)
       end
     end
@@ -40,7 +87,7 @@ module ChefSpec
     # @param [Chef::Resource] resource
     #
     def cover!(resource)
-      if filtered?(resource) && (wrapper = find(resource))
+      if wrapper = find(resource)
         wrapper.touch!
       end
     end
@@ -52,7 +99,7 @@ module ChefSpec
     # @param [Chef::Resource] resource
     #
     def filtered?(resource)
-      filters.empty? || filters.any? { |f| resource.source_line =~/^#{f}/ }
+      filters.any? { |_, filter| filter.matches?(resource) }
     end
 
     #
@@ -61,11 +108,11 @@ module ChefSpec
     #
     # @example Generating a report
     #
-    #   at_exit { ChefSpec::Coverage.report! }
+    #   ChefSpec::Coverage.report!
     #
     # @example Generating a custom report without announcing
     #
-    #   at_exit { ChefSpec::Coverage.report!('/custom/path', false) }
+    #   ChefSpec::Coverage.report!('/custom/path', false)
     #
     #
     # @param [String] output
@@ -125,7 +172,7 @@ module ChefSpec
               .select { |_, resource| !resource[:touched] }
               .sort_by { |_, resource| [resource[:source][:file], resource[:source][:line]] }
               .map do |name, resource|
-                "  #{name} #{resource[:source][:file]}:#{resource[:source][:line]}"
+                "  #{name.ljust(32)} #{resource[:source][:file]}:#{resource[:source][:line]}"
               end
               .flatten
               .join("\n")

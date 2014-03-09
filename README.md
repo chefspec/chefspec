@@ -550,14 +550,15 @@ end
 
 Reporting
 ---------
-ChefSpec attempts to generate a report of resources read over resources tested. Please note, this feature is currently in beta phases and may not be 100% accurate. That being said, it's currently the only code coverage tool available for Chef recipes.
+ChefSpec can generate a report of resources read over resources tested. Please note, this feature is currently in beta phases and may not be 100% accurate. That being said, it is currently the only code coverage tool available for Chef recipes.
 
-To generate the coverage report, add the following to the **very end** of your `spec_helper.rb`:
+To generate the coverage report, add the following to your `spec_helper.rb` before you require any "Chef" code:
 
 ```ruby
-# Existing things...
+require 'chefspec'
+ChefSpec::Coverage.start!
 
-at_exit { ChefSpec::Coverage.report! }
+# Existing spec_helper contents...
 ```
 
 By default, that method will output helpful information to standard out:
@@ -582,10 +583,62 @@ It also outputs a machine-parsable JSON file at `.coverage/results.json`. This f
 
 You can configure both the announcing behavior and JSON file. Please see the YARD documentation for more information.
 
-If you want to restrict coverage reporting only against certain cookbook directories, you can do it using filters. For example, to include only the site-cookbooks directory for coverage reporting, add the following line in your ```spec/spec_helper.rb```
+By default, ChefSpec will test all cookbooks that are loaded as part of the Chef Client run. If you have a cookbook with many dependencies, this may be less than desireable. To restrict coverage reporting against certain cookbooks, `ChefSpec::Coverage` yields a block:
 
 ```ruby
- ChefSpec::Coverage.filters << File.expand_path('../../site-cookbooks', __FILE__)
+ChefSpec::Coverage.start! do
+  add_filter 'vendor/cookbooks'
+end
+```
+
+The `add_filter` method accepts a variety of objects. For example:
+
+```ruby
+ChefSpec::Coverage.start! do
+  # Strings are interpreted as file paths, with a forward anchor
+  add_filter 'vendor/cookbooks'
+
+  # Regular expressions must be escaped, but provide a nicer API for negative
+  # back tracking
+  add_filter /cookbooks\/(?!omnibus)//
+
+  # Custom block filters yield a {Chef::Resource} object - if the block
+  # evaluates to true, it will be filtered
+  add_filter do |resource|
+    # Bob's cookbook's are completely untested! Ignore them until he gets his
+    # shit together.
+    resource.source_file =~ /cookbooks\/bob-(.+)/
+  end
+end
+```
+
+For more complex scenarios, you can create a custom `Filter` object that inherits from `ChefSpec::Coverage::Filter` and implements the `matches?` method.
+
+```ruby
+class CustomFilter < ChefSpec::Coverage::Filter
+  def initialize(arg1, arg2, &block)
+    # Create a custom initialization method, do some magic, etc.
+  end
+
+  def matches?(resource)
+    # Custom matching logic in here - anything that evaluates to "true" will be
+    # filtered.
+  end
+end
+
+ChefSpec::Converage.start! do
+  add_filter CustomFilter.new('foo', :bar)
+end
+```
+
+If you are using ChefSpec's Berkshelf plugin, a filter is automatically created for you. If you would like to ignore that filter, you can `clear` all the filters before defining your own:
+
+```ruby
+ChefSpec::Coverage.start! do
+  filters.clear
+
+  # Add your custom filters now
+end
 ```
 
 

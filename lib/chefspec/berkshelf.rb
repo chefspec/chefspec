@@ -21,14 +21,19 @@ module ChefSpec
     # Setup and install the necessary dependencies in the temporary directory.
     #
     def setup!
+      berksfile = ::Berkshelf::Berksfile.from_file('Berksfile')
+
       ::Berkshelf.ui.mute do
         if ::Berkshelf::Berksfile.method_defined?(:vendor)
           FileUtils.rm_rf(@tmpdir) # Berkshelf 3.0 requires the directory to not exist
-          ::Berkshelf::Berksfile.from_file('Berksfile').vendor(@tmpdir)
+          berksfile.vendor(@tmpdir)
         else
-          ::Berkshelf::Berksfile.from_file('Berksfile').install(path: @tmpdir)
+          berksfile.install(path: @tmpdir)
         end
       end
+
+      filter = Coverage::BerkshelfFilter.new(berksfile)
+      Coverage.add_filter(filter)
 
       ::RSpec.configure { |config| config.cookbook_path = @tmpdir }
     end
