@@ -572,11 +572,11 @@ ChefSpec Coverage report generated at '.coverage/results.json':
 
 Untouched Resources:
 
-  package[git]: bacon/recipes/default.rb:2
-  package[build-essential]: bacon/recipes/default.rb:3
-  package[apache2]: bacon/recipes/default.rb:4
-  package[libvrt]: bacon/recipes/default.rb:5
-  package[core]: bacon/recipes/default.rb:6
+  package[git]               bacon/recipes/default.rb:2
+  package[build-essential]   bacon/recipes/default.rb:3
+  package[apache2]           bacon/recipes/default.rb:4
+  package[libvrt]            bacon/recipes/default.rb:5
+  package[core]              bacon/recipes/default.rb:6
 ```
 
 It also outputs a machine-parsable JSON file at `.coverage/results.json`. This file can be read by your CI server to determine changes in code coverage. We recommend adding the `.coverage` directory to your `.gitignore` to avoid committing it to git.
