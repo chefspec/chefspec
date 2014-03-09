@@ -1,6 +1,16 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 3.3.0 (March 9, 2014)
+Bugfixes:
+  - Update documentation for setting `automatic` attributes
+  - Update documentation for stubbing data_bags
+  - Use a non-internal RSpec variable name for expecting exceptions
+  - Fix the airity of the `stub_node` method
+
+Improvements:
+  - Better filtering protocols for resource coverage
+
 ## 3.2.0 (January 31, 2014)
 Bugfixes:
   - Fix coverage calculation when there are no resources in the collection
