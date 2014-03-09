@@ -600,7 +600,7 @@ ChefSpec::Coverage.start! do
 
   # Regular expressions must be escaped, but provide a nicer API for negative
   # back tracking
-  add_filter /cookbooks\/(?!omnibus)//
+  add_filter /cookbooks\/(?!omnibus)/
 
   # Custom block filters yield a {Chef::Resource} object - if the block
   # evaluates to true, it will be filtered
