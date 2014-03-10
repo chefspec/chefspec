@@ -6,7 +6,7 @@ module ChefSpec
       end
 
       def matches?
-
+        raise RuntimeError, "Must override Filter#matches?"
       end
     end
 
@@ -50,7 +50,17 @@ module ChefSpec
     class BerkshelfFilter < Filter
       def initialize(berksfile)
         @berksfile = berksfile
-        @metadatas = berksfile.dependencies.select(&:metadata?).map(&:name)
+
+        @metadatas = if berksfile.respond_to?(:dependencies)
+          berksfile.dependencies
+            .select(&:metadata?)
+            .map(&:name)
+        else
+          berksfile.sources.select(&:location)
+            .map(&:location)
+            .select(&:metadata?)
+            .map(&:name)
+        end
       end
 
       def matches?(resource)

@@ -22,20 +22,24 @@ module ChefSpec
     #
     def setup!
       berksfile = ::Berkshelf::Berksfile.from_file('Berksfile')
+      # Grab a handle to tmpdir, since Berkshelf 2 modifies it a bit
+      tmpdir    = @tmpdir
 
       ::Berkshelf.ui.mute do
         if ::Berkshelf::Berksfile.method_defined?(:vendor)
-          FileUtils.rm_rf(@tmpdir) # Berkshelf 3.0 requires the directory to not exist
-          berksfile.vendor(@tmpdir)
+          # Berkshelf 3.0 requires the directory to not exist
+          FileUtils.rm_rf(tmpdir)
+          berksfile.vendor(tmpdir)
         else
-          berksfile.install(path: @tmpdir)
+          tmpdir = File.join(@tmpdir, 'cookbooks')
+          berksfile.install(path: tmpdir)
         end
       end
 
       filter = Coverage::BerkshelfFilter.new(berksfile)
       Coverage.add_filter(filter)
 
-      ::RSpec.configure { |config| config.cookbook_path = @tmpdir }
+      ::RSpec.configure { |config| config.cookbook_path = tmpdir }
     end
 
     #
