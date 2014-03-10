@@ -6,7 +6,7 @@ module ChefSpec
       end
 
       def matches?
-
+        raise RuntimeError, "Must override Filter#matches?"
       end
     end
 
