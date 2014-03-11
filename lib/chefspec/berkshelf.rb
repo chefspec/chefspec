@@ -22,8 +22,9 @@ module ChefSpec
     #
     def setup!
       berksfile = ::Berkshelf::Berksfile.from_file('Berksfile')
+
       # Grab a handle to tmpdir, since Berkshelf 2 modifies it a bit
-      tmpdir    = @tmpdir
+      tmpdir = File.join(@tmpdir, 'cookbooks')
 
       ::Berkshelf.ui.mute do
         if ::Berkshelf::Berksfile.method_defined?(:vendor)
@@ -31,7 +32,6 @@ module ChefSpec
           FileUtils.rm_rf(tmpdir)
           berksfile.vendor(tmpdir)
         else
-          tmpdir = File.join(@tmpdir, 'cookbooks')
           berksfile.install(path: tmpdir)
         end
       end
