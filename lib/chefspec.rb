@@ -46,7 +46,3 @@ module ChefSpec
     @root ||= Pathname.new(File.expand_path('../../', __FILE__))
   end
 end
-
-require 'i18n'
-I18n.enforce_available_locales = false
-I18n.load_path << Dir[ChefSpec.root.join('locales', '*.yml').to_s]

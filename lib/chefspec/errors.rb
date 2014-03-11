@@ -3,9 +3,11 @@ module ChefSpec
     class ChefSpecError < StandardError
       def initialize(options = {})
         class_name = self.class.to_s.split('::').last
-        error_key  = options[:_error_key] || Util.underscore(class_name)
+        filename   = options.delete(:_template) || Util.underscore(class_name)
+        template   = ChefSpec.root.join('templates', 'errors', "#{filename}.erb")
 
-        super I18n.t("chefspec.errors.#{error_key}", options)
+        erb = Erubis::Eruby.new(File.read(template))
+        super erb.evaluate(options)
       end
     end
 
@@ -19,10 +21,10 @@ module ChefSpec
         signature = "#{type}(#{options[:args].map(&:inspect).join(', ')})"
 
         super({
-          type:       type,
-          signature:  signature,
-          stub:       stub,
-          _error_key: :not_stubbed,
+          type:      type,
+          signature: signature,
+          stub:      stub,
+          _template: :not_stubbed,
         }.merge(options))
       end
     end
