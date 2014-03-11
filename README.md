@@ -876,7 +876,7 @@ expect(chef_run).to include_recipe('bacon::default')
 Assert that the correct attribute is used:
 
 ```ruby
-expect(runner.node['bacon']['temperature']).to eq(150)
+expect(chef_run.node['bacon']['temperature']).to eq(150)
 ```
 
 **NOTE** If your roles live somewhere outside of the expected path, you must set `RSpec.config.role_path` to point to the directory containing your roles **before** invoking the `#converge` method!
