@@ -131,54 +131,27 @@ module ChefSpec
         exit_status = EXIT_SUCCESS
       end
 
-      report = {}
-
-      report[:total] = @collection.size
-
-      if report[:total] == 0
-        puts 'No resources found, skipping coverage calculation'
-        return
+      report = {}.tap do |h|
+        h[:total]     = @collection.size
+        h[:touched]   = @collection.count { |_, resource| resource.touched? }
+        h[:coverage]  = ((h[:touched]/h[:total].to_f)*100).round(2)
       end
 
-      report[:touched] = @collection.count { |_, resource| resource.touched? }
-      report[:untouched] = report[:total] - report[:touched]
-      report[:coverage] = ((report[:touched].to_f/report[:total].to_f)*100).round(2)
+      report[:untouched_resources] = @collection.collect do |_, resource|
+        resource unless resource.touched?
+      end.compact
 
-      report[:detailed] = Hash[*@collection.map do |name, wrapper|
-        [name, wrapper.to_hash]
-      end.flatten]
+      template = ChefSpec.root.join('templates', 'coverage', 'human.erb')
+      erb = Erubis::Eruby.new(File.read(template))
+      puts erb.evaluate(report)
+
+      return
+
 
       output = File.expand_path(output)
       FileUtils.mkdir_p(File.dirname(output))
       File.open(File.join(output), 'w') do |f|
         f.write(JSON.pretty_generate(report) + "\n")
-      end
-
-      if announce
-        puts <<-EOH.gsub(/^ {10}/, '')
-
-          WARNING: ChefSpec Coverage reporting is in beta. Please use with caution.
-
-          ChefSpec Coverage report generated at '#{output}':
-
-            Total Resources:   #{report[:total]}
-            Touched Resources: #{report[:touched]}
-            Touch Coverage:    #{report[:coverage]}%
-
-          Untouched Resources:
-
-          #{
-            report[:detailed]
-              .select { |_, resource| !resource[:touched] }
-              .sort_by { |_, resource| [resource[:source][:file], resource[:source][:line]] }
-              .map do |name, resource|
-                "  #{name.ljust(32)} #{resource[:source][:file]}:#{resource[:source][:line]}"
-              end
-              .flatten
-              .join("\n")
-          }
-
-        EOH
       end
 
       # Ensure we exit correctly (#351)
@@ -206,21 +179,12 @@ module ChefSpec
         @resource.to_s
       end
 
-      def source
-        return {} unless @resource.source_line
-        file, line, *_ = @resource.source_line.split(':')
-
-        {
-          file: shortname(file),
-          line: line.to_i,
-        }
+      def source_file
+        @source_file ||= shortname(@resource.source_line.split(':').first)
       end
 
-      def to_hash
-        {
-          source: source,
-          touched: touched?,
-        }
+      def source_line
+        @source_line ||= @resource.source_line.split(':', 2).last.to_i
       end
 
       def touch!
