@@ -56,10 +56,14 @@ module ChefSpec
             .select(&:metadata?)
             .map(&:name)
         else
-          berksfile.sources.select(&:location)
-            .map(&:location)
-            .select(&:metadata?)
-            .map(&:name)
+          berksfile.sources.collect do |source|
+            location = source.location
+            if location.respond_to?(:metadata?) && location.metadata?
+              source
+            else
+              nil
+            end
+          end.compact.map(&:name)
         end
       end
 
