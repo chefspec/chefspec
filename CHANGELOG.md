@@ -1,6 +1,17 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 3.3.1 (March 11, 2014)
+Bugfixes:
+  - Various typographical fixes in the README
+  - Remove unused JSON report
+  - Restore coverage reporting for Berkshelf 2 users
+  - Minor formatting changes for errors
+
+Improvements:
+  - Remove dependency on i18n and use native ERB instead
+  - Vendor Berkshelf/Librarian in a "cookbooks" directory so we can shorten the pathname during coverage reporting
+
 ## 3.3.0 (March 9, 2014)
 Bugfixes:
   - Update documentation for setting `automatic` attributes
