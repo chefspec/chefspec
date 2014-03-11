@@ -34,9 +34,9 @@ module ChefSpec
     # Start the coverage reporting analysis. This method also adds the the
     # +at_exit+ handler for printing the coverage report.
     #
-    def start!(*args, &block)
+    def start!(&block)
       instance_eval(&block) if block
-      at_exit { ChefSpec::Coverage.report!(*args) }
+      at_exit { ChefSpec::Coverage.report! }
     end
 
     #

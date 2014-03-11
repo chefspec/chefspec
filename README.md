@@ -550,7 +550,7 @@ end
 
 Reporting
 ---------
-ChefSpec can generate a report of resources read over resources tested. Please note, this feature is currently in beta phases and may not be 100% accurate. That being said, it is currently the only code coverage tool available for Chef recipes.
+ChefSpec can generate a report of resources read over resources tested.
 
 To generate the coverage report, add the following to your `spec_helper.rb` before you require any "Chef" code:
 
@@ -564,7 +564,7 @@ ChefSpec::Coverage.start!
 By default, that method will output helpful information to standard out:
 
 ```text
-ChefSpec Coverage report generated at '.coverage/results.json':
+ChefSpec Coverage report generated...
 
   Total Resources:   6
   Touched Resources: 1
