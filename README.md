@@ -579,10 +579,6 @@ Untouched Resources:
   package[core]              bacon/recipes/default.rb:6
 ```
 
-It also outputs a machine-parsable JSON file at `.coverage/results.json`. This file can be read by your CI server to determine changes in code coverage. We recommend adding the `.coverage` directory to your `.gitignore` to avoid committing it to git.
-
-You can configure both the announcing behavior and JSON file. Please see the YARD documentation for more information.
-
 By default, ChefSpec will test all cookbooks that are loaded as part of the Chef Client run. If you have a cookbook with many dependencies, this may be less than desireable. To restrict coverage reporting against certain cookbooks, `ChefSpec::Coverage` yields a block:
 
 ```ruby

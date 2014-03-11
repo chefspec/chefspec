@@ -110,17 +110,7 @@ module ChefSpec
     #
     #   ChefSpec::Coverage.report!
     #
-    # @example Generating a custom report without announcing
-    #
-    #   ChefSpec::Coverage.report!('/custom/path', false)
-    #
-    #
-    # @param [String] output
-    #   the path to output the report on disk (default: '.coverage/results.json')
-    # @param [Boolean] announce
-    #   print the results to standard out
-    #
-    def report!(output = '.coverage/results.json', announce = true)
+    def report!
       # Borrowed from simplecov#41
       #
       # If an exception is thrown that isn't a "SystemExit", we need to capture
@@ -144,15 +134,6 @@ module ChefSpec
       template = ChefSpec.root.join('templates', 'coverage', 'human.erb')
       erb = Erubis::Eruby.new(File.read(template))
       puts erb.evaluate(report)
-
-      return
-
-
-      output = File.expand_path(output)
-      FileUtils.mkdir_p(File.dirname(output))
-      File.open(File.join(output), 'w') do |f|
-        f.write(JSON.pretty_generate(report) + "\n")
-      end
 
       # Ensure we exit correctly (#351)
       exit(exit_status)
