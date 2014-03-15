@@ -55,5 +55,9 @@ module ChefSpec::Matchers
     def failure_message_for_should
       @instance.failure_message_for_should
     end
+
+    def failure_message_for_should_not
+      @instance.failure_message_for_should_not
+    end
   end
 end
