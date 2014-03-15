@@ -53,7 +53,7 @@ module ChefSpec::Matchers
 
     def failure_message_for_should
       if @resource
-        message = %Q{expected "#{resource_name(@resource)}[#{@resource.name}]" to notify "#{@expected_resource_type}[#{@expected_resource_name}]"}
+        message = %Q{expected "#{@resource}" to notify "#{@expected_resource_type}[#{@expected_resource_name}]"}
         message << " with action :#{@action}" if @action
         message << " immediately" if @immediately
         message << " delayed" if @delayed
@@ -73,6 +73,14 @@ module ChefSpec::Matchers
         message << "\n\n"
         message << "Make sure that `_something_` exists, because I got nil"
         message << "\n "
+        message
+      end
+    end
+
+    def failure_message_for_should_not
+      if @resource
+        message = %Q{expected "#{@resource}" to not notify "#{@expected_resource_type}[#{@expected_resource_name}]"}
+        message << ", but it did."
         message
       end
     end
