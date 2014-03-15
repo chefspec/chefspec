@@ -287,6 +287,14 @@ expect(chef_run).to install_package('apache2').at_converge_time
 
 Since "converge time" is the default behavior for all recipes, this test might be redundant and the predicate could be dropped depending on your situation.
 
+##### do_nothing
+Assert that a resource performs no action
+
+```ruby
+resource = chef_run.execute('install')
+expect(resource).to do_nothing
+```
+
 **For more complex examples, please see the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples) or the [Yard documentation](http://rubydoc.info/github/sethvargo/chefspec).**
 
 
