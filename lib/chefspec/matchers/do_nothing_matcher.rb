@@ -2,7 +2,13 @@ module ChefSpec::Matchers
   class DoNothingMatcher
     def matches?(resource)
       @resource = resource
-      @resource && @resource.performed_actions.empty?
+
+      if @resource
+        actions = @resource.performed_actions
+        actions.empty? || actions == [:nothing]
+      else
+        false
+      end
     end
 
     def description
