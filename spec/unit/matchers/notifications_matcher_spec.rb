@@ -1,5 +1,39 @@
 require 'spec_helper'
 
 describe ChefSpec::Matchers::NotificationsMatcher do
-  pending
+  subject { described_class.new('execute[install]') }
+  let(:package) do
+    double('package',
+      name: 'package',
+      to_s: 'package[foo]',
+      is_a?: true,
+      performed_action?: true,
+      immediate_notifications: [],
+      delayed_notifications: [],
+    )
+  end
+
+  describe '#failure_message_for_should' do
+    it 'has the right value' do
+      subject.matches?(package)
+      expect(subject.failure_message_for_should)
+        .to include %|expected "package[foo]" to notify "execute[install]", but did not.|
+    end
+  end
+
+  describe '#failure_message_for_should_not' do
+    it 'has the right value' do
+      subject.matches?(package)
+      expect(subject.failure_message_for_should_not)
+        .to eq %|expected "package[foo]" to not notify "execute[install]", but it did.|
+    end
+  end
+
+  describe '#description' do
+    it 'has the right value' do
+      subject.matches?(package)
+      expect(subject.description)
+        .to eq %|notify "execute[install]"|
+    end
+  end
 end
