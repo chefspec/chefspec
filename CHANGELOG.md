@@ -1,7 +1,7 @@
 CHANGELOG for ChefSpec
 ======================
 
-## 3.3.2 (March 16, 2014)
+## 3.4.0 (March 16, 2014)
 Bugfixes:
   - Restore Berkshelf 2 support (missing edge case)
   - Add negative failure message for subscribes/notifies matchers
