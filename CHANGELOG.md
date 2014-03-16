@@ -1,6 +1,18 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 3.3.2 (March 16, 2014)
+Bugfixes:
+  - Restore Berkshelf 2 support (missing edge case)
+  - Add negative failure message for subscribes/notifies matchers
+
+Features:
+  - Added `do_nothing` matcher for asserting a resource performed no actions
+
+Improvements:
+  - Increased spec coverage for matchers
+  - Support RSpec matchers in `with_content`
+
 ## 3.3.1 (March 11, 2014)
 Bugfixes:
   - Various typographical fixes in the README
