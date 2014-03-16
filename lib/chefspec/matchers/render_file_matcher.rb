@@ -29,9 +29,9 @@ module ChefSpec::Matchers
     def failure_message_for_should
       message = %Q{expected Chef run to render "#{@path}"}
       if @expected_content
-        message << " with:"
+        message << " matching:"
         message << "\n\n"
-        message << @expected_content.to_s
+        message << expected_content_message
         message << "\n\n"
         message << "but got:"
         message << "\n\n"
@@ -44,9 +44,9 @@ module ChefSpec::Matchers
     def failure_message_for_should_not
       message = %Q{expected file "#{@path}"}
       if @expected_content
-        message << " with:"
+        message << " matching:"
         message << "\n\n"
-        message << @expected_content.to_s
+        message << expected_content_message
         message << "\n\n"
       end
       message << " to not be in Chef run"
@@ -54,6 +54,14 @@ module ChefSpec::Matchers
     end
 
     private
+
+    def expected_content_message
+      if RSpec::Matchers.is_a_matcher?(@expected_content) && @expected_content.respond_to?(:description)
+        @expected_content.description
+      else
+        @expected_content.to_s
+      end
+    end
 
     def resource
       @resource ||= @runner.find_resource(:cookbook_file, @path) ||
@@ -88,6 +96,8 @@ module ChefSpec::Matchers
 
       if @expected_content.is_a?(Regexp)
         @actual_content =~ @expected_content
+      elsif RSpec::Matchers.is_a_matcher?(@expected_content)
+        @expected_content.matches?(@actual_content)
       else
         @actual_content.include?(@expected_content)
       end
