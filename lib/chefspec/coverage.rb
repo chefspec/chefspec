@@ -161,11 +161,19 @@ module ChefSpec
       end
 
       def source_file
-        @source_file ||= shortname(@resource.source_line.split(':').first)
+        @source_file ||= if @resource.source_line
+          shortname(@resource.source_line.split(':').first)
+        else
+          'Unknown'
+        end
       end
 
       def source_line
-        @source_line ||= @resource.source_line.split(':', 2).last.to_i
+        @source_line ||= if @resource.source_line
+          @resource.source_line.split(':', 2).last.to_i
+        else
+          'Unknown'
+        end
       end
 
       def touch!
