@@ -8,3 +8,4 @@ Feature: The ruby_block matcher
   Examples:
     | Matcher |
     | run     |
+    | create  |
