@@ -137,7 +137,7 @@ Requiring this file will:
 
 ```ruby
 RSpec.configure do |config|
-    config.berksfile = 'Berksfile.test'
+  config.berksfile = 'Berksfile.test'
 end
 ```
 
