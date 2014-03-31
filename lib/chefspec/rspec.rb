@@ -15,5 +15,5 @@ RSpec.configure do |config|
   config.add_setting :path
   config.add_setting :platform
   config.add_setting :version
-  config.add_setting :berksfile
+  config.add_setting :berksfile_path
 end
