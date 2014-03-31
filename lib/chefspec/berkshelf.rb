@@ -15,13 +15,14 @@ module ChefSpec
 
     def initialize
       @tmpdir = Dir.mktmpdir
+      @berksfile_path = RSpec.configuration.berksfile_path || 'Berksfile'
     end
 
     #
     # Setup and install the necessary dependencies in the temporary directory.
     #
     def setup!
-      berksfile = ::Berkshelf::Berksfile.from_file('Berksfile')
+      berksfile = ::Berkshelf::Berksfile.from_file(@berksfile_path)
 
       # Grab a handle to tmpdir, since Berkshelf 2 modifies it a bit
       tmpdir = File.join(@tmpdir, 'cookbooks')
