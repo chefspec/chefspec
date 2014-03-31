@@ -133,6 +133,14 @@ Requiring this file will:
 - Download all the dependencies listed in your `Berksfile` into the temporary directory
 - Set ChefSpec's `cookbook_path` to the temporary directory
 
+**NOTE:** If you want to specify a custom `Berksfile` path, you can set `Rspec.config.berkshelf`.
+
+```ruby
+RSpec.configure do |config|
+    config.berksfile = 'Berksfile.test'
+end
+```
+
 ### Librarian
 
 If you are using Librarian, simply require `chefspec/librarian` in your `spec_helper` after requiring `chefspec`:
