@@ -788,6 +788,24 @@ require_relative 'support/matchers'
 
 Please use this as a _temporary_ solution. Consider sending a Pull Request to the LWRP author(s) packaging the custom resource matchers (see previous section).
 
+ChefSpec also provides a helper method to define a method on the Chef runner for locating a resource in the collection. This is helpful while asserting against custom resource notifications.
+
+```ruby
+# matchers.rb
+ChefSpec::Runner.define_runner_method :my_custom_resource
+```
+
+And then in your spec suite, you can obtain the custom resource for assertions:
+
+```ruby
+let(:chef_run) { ChefSpec::Runner.new('...') }
+
+it 'notifies the thing' do
+  custom = chef_run.my_custom_resource('name')
+  expect(custom).to notify('service[apache2]').to(:restart).immediately
+end
+```
+
 
 Expecting Exceptions
 --------------------
