@@ -786,8 +786,18 @@ Then require this file in your `spec_helper.rb` so the matcher can be used:
 require_relative 'support/matchers'
 ```
 
+
 Please use this as a _temporary_ solution. Consider sending a Pull Request to the LWRP author(s) packaging the custom resource matchers (see previous section).
 
+ChefSpec also provides a helper method `define_runner_method` to obtain a custom resource from the run list. This is helpful while asserting against resource notifications.
+
+```ruby
+# define the helper method helper
+ChefSpec::Runner.define_runner_method(:my_custom_resource)
+# in your spec suite, now you can obtain the custom resource to assert for notification
+resource = my_custom_resource('foobar'))
+expect(resource).to notify('service[apache2]').to(:restart).immediately
+```
 
 Expecting Exceptions
 --------------------
