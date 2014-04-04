@@ -1,6 +1,11 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 3.4.1 (April 3, 2014)
+Bugfixes:
+  - Fix issue with inferring path from calling spec on Windows returning
+    drive root.
+
 ## 3.4.0 (March 16, 2014)
 Bugfixes:
   - Restore Berkshelf 2 support (missing edge case)
