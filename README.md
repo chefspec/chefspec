@@ -1,9 +1,16 @@
 ChefSpec
 ========
-[![Built on Travis](https://secure.travis-ci.org/sethvargo/chefspec.png?branch=master)](http://travis-ci.org/sethvargo/chefspec)
-[![Gem Version](https://badge.fury.io/rb/chefspec.png)](http://badge.fury.io/rb/chefspec)
-[![Dependency Status](https://gemnasium.com/sethvargo/chefspec.png)](https://gemnasium.com/sethvargo/chefspec)
-[![Code Climate](https://codeclimate.com/github/sethvargo/chefspec.png)](https://codeclimate.com/github/sethvargo/chefspec)
+[![Gem Version](http://img.shields.io/gem/v/chefspec.svg)][gem]
+[![Build Status](http://img.shields.io/travis/sethvargo/chefspec.svg)][travis]
+[![Dependency Status](http://img.shields.io/gemnasium/sethvargo/chefspec.svg)][gemnasium]
+[![Code Climate](http://img.shields.io/codeclimate/github/sethvargo/chefspec.svg)][codeclimate]
+[![Gittip](http://img.shields.io/gittip/sethvargo.svg)][gittip]
+
+[gem]: https://rubygems.org/gemschefspec
+[travis]: http://travis-ci.org/sethvargo/berkshelf
+[gemnasium]: https://gemnasium.com/sethvargo/berkshelf
+[codeclimate]: https://codeclimate.com/githubsethvargo/chefspec
+[gittip]: https://www.gittip.com/sethvargo
 
 ChefSpec is a unit testing framework for testing Chef cookbooks. ChefSpec makes it easy to write examples and get fast feedback on cookbook changes without the need for virtual machines or cloud servers.
 
