@@ -7,6 +7,24 @@ describe ChefSpec::Runner do
 
   describe '#initialize' do
     subject {} # need to explicitly control the creation
+    let(:windows_caller_stack) {
+      ["C:/cookbooks/Temp/spec/test_spec.rb:11:in `block (2 levels) in <top (required)>'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example.rb:114:in `instance_eval'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example.rb:114:in `block in run'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example.rb:254:in `with_around_each_hooks'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example.rb:111:in `run'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example_group.rb:390:in `block in run_examples'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example_group.rb:386:in `map'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example_group.rb:386:in `run_examples'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example_group.rb:371:in `run'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/command_line.rb:28:in `block (2 levels) in run'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/command_line.rb:28:in `map'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/command_line.rb:28:in `block in run'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/reporter.rb:58:in `report'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/command_line.rb:25:in `run'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/runner.rb:80:in `run'",
+       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/runner.rb:17:in `block in autorun'"]
+    }
 
     it 'defaults the log level to :warn' do
       described_class.new
@@ -21,6 +39,17 @@ describe ChefSpec::Runner do
     it 'defaults the cookbook_path to the calling spec' do
       described_class.new
       expect(Chef::Config.cookbook_path).to eq([File.expand_path('../../../..', __FILE__)])
+    end
+
+    it 'defaults the cookbook_path to the calling spec when using windows paths' do
+      runner = described_class.new
+      windows_path = runner.instance_exec(windows_caller_stack) { |callstack|
+        calling_cookbook_path(callstack)
+      }
+      # There's got to be a better way to do this the File.expand_path returns
+      # something like /home/user/repos/chefspec/C:/cookbooks" which is less
+      # than ideal as a robust test
+      expect(windows_path).to end_with("C:/cookbooks")
     end
 
     it 'sets the cookbook path' do
