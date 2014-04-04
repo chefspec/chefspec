@@ -270,7 +270,7 @@ module ChefSpec
       calling_spec = kaller.find { |line| line =~ /\/spec/ }
       raise Error::CookbookPathNotFound if calling_spec.nil?
 
-      bits = calling_spec.split(':', 2).first.split(File::SEPARATOR)
+      bits = calling_spec.split(/:[0-9]/, 2).first.split(File::SEPARATOR)
       spec_dir = bits.index('spec') || 0
 
       File.expand_path(File.join(bits.slice(0, spec_dir), '..'))
