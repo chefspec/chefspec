@@ -1,8 +1,6 @@
 module ChefSpec::API
   # @since 1.0.0
   module ScriptMatchers
-    ChefSpec::Runner.define_runner_method :script
-
     #
     # Assert that a +bash+ resource exists in the Chef run with the
     # action +:run+. Given a Chef Recipe that runs "command" using
@@ -39,6 +37,8 @@ module ChefSpec::API
     def run_bash(resource_name)
       ChefSpec::Matchers::ResourceMatcher.new(:bash, :run, resource_name)
     end
+
+    ChefSpec::Runner.define_runner_method :bash
 
     #
     # Assert that a +csh+ resource exists in the Chef run with the
@@ -77,6 +77,8 @@ module ChefSpec::API
       ChefSpec::Matchers::ResourceMatcher.new(:csh, :run, resource_name)
     end
 
+    ChefSpec::Runner.define_runner_method :csh
+
     #
     # Assert that a +perl+ resource exists in the Chef run with the
     # action +:run+. Given a Chef Recipe that runs "command" using
@@ -113,6 +115,8 @@ module ChefSpec::API
     def run_perl(resource_name)
       ChefSpec::Matchers::ResourceMatcher.new(:perl, :run, resource_name)
     end
+
+    ChefSpec::Runner.define_runner_method :perl
 
     #
     # Assert that a +python+ resource exists in the Chef run with the
@@ -151,6 +155,8 @@ module ChefSpec::API
       ChefSpec::Matchers::ResourceMatcher.new(:python, :run, resource_name)
     end
 
+    ChefSpec::Runner.define_runner_method :python
+
     #
     # Assert that a +ruby+ resource exists in the Chef run with the
     # action +:run+. Given a Chef Recipe that runs "command" using
@@ -188,6 +194,8 @@ module ChefSpec::API
       ChefSpec::Matchers::ResourceMatcher.new(:ruby, :run, resource_name)
     end
 
+    ChefSpec::Runner.define_runner_method :ruby
+
     #
     # Assert that a +script+ resource exists in the Chef run with the
     # action +:run+. Given a Chef Recipe that runs "command" using
@@ -224,5 +232,8 @@ module ChefSpec::API
     def run_script(resource_name)
       ChefSpec::Matchers::ResourceMatcher.new(:script, :run, resource_name)
     end
+
+
+    ChefSpec::Runner.define_runner_method :script
   end
 end
