@@ -7,9 +7,15 @@ module ChefSpec::Matchers
     def matches?(link)
       @link = link
 
-      @link.is_a?(Chef::Resource::Link) &&
-      @link.performed_action?(:create) &&
-      @path === @link.to
+      if @link
+        ChefSpec::Coverage.cover!(@link)
+
+        @link.is_a?(Chef::Resource::Link) &&
+        @link.performed_action?(:create) &&
+        @path === @link.to
+      else
+        false
+      end
     end
 
     def description
