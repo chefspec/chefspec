@@ -29,13 +29,22 @@ describe ChefSpec::Matchers::RenderFileMatcher do
     end
   end
 
-  it 'matches when the file is correct' do
-    expect(subject.matches?(chef_run)).to be_true
+  context 'when the file is correct' do
+    it 'matches' do
+      expect(subject.matches?(chef_run)).to be_true
+    end
+
+    it 'adds the resource to the coverage report' do
+      expect(ChefSpec::Coverage).to receive(:cover!).with(file)
+      subject.matches?(chef_run)
+    end
   end
 
-  it 'does not match when the file is incorrect' do
-    chef_run.stub(:find_resource).and_return(nil)
-    failure = described_class.new('nope')
-    expect(failure.matches?(chef_run)).to be_false
+  context 'when the file is not correct' do
+    it 'does not match' do
+      chef_run.stub(:find_resource).and_return(nil)
+      failure = described_class.new('nope')
+      expect(failure.matches?(chef_run)).to be_false
+    end
   end
 end

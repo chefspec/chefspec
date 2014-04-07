@@ -4,6 +4,8 @@ module ChefSpec::Matchers
       @resource = resource
 
       if @resource
+        ChefSpec::Coverage.cover!(@resource)
+
         actions = @resource.performed_actions
         actions.empty? || actions == [:nothing]
       else

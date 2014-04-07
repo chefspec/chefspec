@@ -6,7 +6,13 @@ module ChefSpec::Matchers
 
     def matches?(runner)
       @runner = runner
-      resource && has_create_action? && matches_content?
+
+      if resource
+        ChefSpec::Coverage.cover!(resource)
+        has_create_action? && matches_content?
+      else
+        false
+      end
     end
 
     def with_content(expected_content)
