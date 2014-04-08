@@ -40,6 +40,12 @@ module ChefSpec::API
 
     ChefSpec::Runner.define_runner_method :bash
 
+    def run_bash_code(code)
+      ChefSpec::Matchers::ResourceMatcherByKeyValue.new(:bash, :run, :code, code)
+    end
+
+    ChefSpec::Runner.define_runner_method :bash
+
     #
     # Assert that a +csh+ resource exists in the Chef run with the
     # action +:run+. Given a Chef Recipe that runs "command" using

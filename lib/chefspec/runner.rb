@@ -180,6 +180,31 @@ module ChefSpec
     end
 
     #
+    # Find the resource with the declared type and resource key/value.
+    #
+    # @example Find bash resource by code `ls`
+    #   chef_run.find_resource_by(:bash, 'code', 'ls') #=> #<Chef::Resource::Bash>
+    #
+    #
+    # @param [Symbol] type
+    #   The type of resource (sometimes called `resource_name`) such as `file`
+    #   or `directory`.
+    # @param [String] key
+    #   The name of the attribute to lookup on the resource.
+    # @param [String, Regexp] value
+    #   The value of the 'key' attribute to lookup on the resource.
+    #
+    # @return [Chef::Resource, nil]
+    #   The matching resource, or nil if one is not found
+    #
+
+    def find_resource_by_key(type, key, value)
+      resource_collection.all_resources.find do |resource|
+        resource_name(resource) == type && value === resource.send(key)
+      end
+    end
+
+    #
     # Find the resource with the declared type.
     #
     # @example Find all template resources
