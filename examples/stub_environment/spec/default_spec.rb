@@ -7,7 +7,7 @@ describe 'stub_environment::default' do
     it 'raises an exception' do
       expect {
         chef_run
-      }.to raise_error(Chef::Exceptions::EnvironmentNotFound)
+      }.to raise_error(StandardError, 'Environment not stubbed')
     end
   end
 

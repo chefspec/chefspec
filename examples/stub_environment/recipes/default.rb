@@ -7,5 +7,5 @@ rescue
 end
 
 if node.environment == '_default' || node.chef_environment == '_default'
-  raise Chef::Exceptions::EnvironmentNotFound
+  raise StandardError, 'Environment not stubbed'
 end
