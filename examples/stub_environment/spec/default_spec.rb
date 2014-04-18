@@ -69,4 +69,26 @@ describe 'stub_environment::default' do
       expect(chef_run).to write_log('node.chef_environment=development')
     end
   end
+
+  context 'when passing a block to stub_environment' do
+    let(:chef_run) { 
+      ChefSpec::Runner.new do |node|
+        stub_environment('development') do
+          self.default_attributes({ 'foo' => 'bar' })
+        end
+      end.converge(described_recipe)
+    }
+    it 'does not raise an exception' do
+      expect { chef_run }.to_not raise_error
+    end
+    it 'should set node.environment' do
+      expect(chef_run).to write_log('node.environment=development')
+    end
+    it 'should set node.chef_environment' do
+      expect(chef_run).to write_log('node.chef_environment=development')
+    end
+    it 'should set node.foo' do
+      expect(chef_run).to write_log('node.foo=bar')
+    end
+  end
 end
