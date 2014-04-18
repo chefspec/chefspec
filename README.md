@@ -661,26 +661,54 @@ end
 
 Mocking Out Environments
 ------------------------
-If you want to mock out `node.chef_environment`, you'll need to use RSpec mocks/stubs twice:
+If you want to mock out `node.chef_environment`, just use `stub_environment('name')`:
 
 ```ruby
 let(:chef_run) do
   ChefSpec::Runner.new do |node|
-    # Create a new environment (you could also use a different :let block or :before block)
-    env = Chef::Environment.new
-    env.name 'staging'
-
-    # Stub the node to return this environment
-    node.stub(:chef_environment).and_return(env.name)
-
-    # Stub any calls to Environment.load to return this environment
-    Chef::Environment.stub(:load).and_return(env)
+    stub_environment 'staging'
   end.converge('cookbook::recipe')
 end
 ```
 
-**There is probably a better/easier way to do this. If you have a better solution, please open an issue or Pull Request so we can make this less painful :)**
+You may also mock out the environment attributes using the methods of [`Chef::Environment`](http://www.rubydoc.info/github/opscode/chef/master/Chef/Environment):
 
+
+```ruby
+# spec/stub_environment_spec.rb
+
+context 'when passing a block to stub_environment' do
+  let(:chef_run) { 
+    ChefSpec::Runner.new do |node|
+      stub_environment('development') do
+        default_attributes({ 'foo' => 'bar' })
+      end
+    end.converge(described_recipe)
+  }
+
+  it 'should set node.foo' do
+    expect(chef_run).to write_log('node.foo=bar')
+  end
+
+  it 'should set node.environment' do
+    expect(chef_run).to write_log('node.environment=development')
+  end
+  it 'should set node.chef_environment' do
+    expect(chef_run).to write_log('node.chef_environment=development')
+  end
+end
+```
+
+```ruby
+# recipes/stub_environment.rb
+log "node.environment=#{node.environment}"
+log "node.chef_environment=#{node.chef_environment}"
+
+begin
+  log "node.foo=#{node.foo}"
+rescue
+end
+```
 
 Testing LWRPs
 -------------
