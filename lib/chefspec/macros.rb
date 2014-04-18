@@ -218,5 +218,29 @@ module ChefSpec
     def stub_search(type, query = '*:*', &block)
       Stubs::SearchRegistry.register(Stubs::SearchStub.new(type, query, &block))
     end
+
+    #
+    # Creates a fake Chef::Environment for use in testing.
+    #
+    # @example mocking a simple environment
+    #   stub_environment('development')
+    #
+    # @return [Chef::Environment]
+    #
+    def stub_environment(name)
+        # Create a new environment (you could also use a different :let block or :before block)
+        env = Chef::Environment.new
+        env.name name.to_s
+
+        # Stub any instance of Chef::Node to return this environment
+        Chef::Node.any_instance.stub(:chef_environment).and_return env.name
+        Chef::Node.any_instance.stub(:environment).and_return env.name
+
+        # Stub any calls to Environment.load to return this environment
+        Chef::Environment.stub(:load).and_return env
+
+        env.instance_eval(&block) if block_given?
+        env
+    end
   end
 end
