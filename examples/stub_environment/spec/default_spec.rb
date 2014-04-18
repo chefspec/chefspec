@@ -74,7 +74,7 @@ describe 'stub_environment::default' do
     let(:chef_run) { 
       ChefSpec::Runner.new do |node|
         stub_environment('development') do
-          self.default_attributes({ 'foo' => 'bar' })
+          default_attributes({ 'foo' => 'bar' })
         end
       end.converge(described_recipe)
     }
