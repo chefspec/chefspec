@@ -710,6 +710,8 @@ rescue
 end
 ```
 
+For more example use cases, please see the [examples/stub_environment directory](https://github.com/sethvargo/chefspec/tree/master/examples/stub_environment).
+
 Testing LWRPs
 -------------
 **WARNING** Cookbooks with dashes (hyphens) are difficult to test with ChefSpec because of how Chef classifies objects. We recommend naming cookbooks with underscores (`_`) instead of dashes (`-`).
