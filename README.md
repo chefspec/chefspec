@@ -678,13 +678,13 @@ You may also mock out the environment attributes using the methods of [`Chef::En
 # spec/stub_environment_spec.rb
 
 context 'when passing a block to stub_environment' do
-  let(:chef_run) { 
+  let(:chef_run) do
     ChefSpec::Runner.new do |node|
       stub_environment('development') do
         default_attributes({ 'foo' => 'bar' })
       end
     end.converge(described_recipe)
-  }
+  end
 
   it 'should set node.foo' do
     expect(chef_run).to write_log('node.foo=bar')
@@ -704,10 +704,7 @@ end
 log "node.environment=#{node.environment}"
 log "node.chef_environment=#{node.chef_environment}"
 
-begin
-  log "node.foo=#{node.foo}"
-rescue
-end
+log "node.foo=#{node.foo}" unless node['foo'].nil?
 ```
 
 For more example use cases, please see the [examples/stub_environment directory](https://github.com/sethvargo/chefspec/tree/master/examples/stub_environment).

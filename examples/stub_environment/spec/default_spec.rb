@@ -5,27 +5,27 @@ describe 'stub_environment::default' do
   context 'when the chef_environment is not stubbed' do
     let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
     it 'raises an exception' do
-      expect {
+      expect do
         chef_run
-      }.to raise_error(StandardError, 'Environment not stubbed')
+      end.to raise_error(StandardError, 'Environment not stubbed')
     end
   end
 
   context 'as a String' do
-    let(:chef_run) { 
+    let(:chef_run) do
       stub_environment('development')
       ChefSpec::Runner.new.converge(described_recipe)
-    }
+    end
     it 'does not raise an exception' do
       expect { chef_run }.to_not raise_error
     end
   end
 
   context 'as a Symbol' do
-    let(:chef_run) { 
+    let(:chef_run) do
       stub_environment(:development)
       ChefSpec::Runner.new.converge(described_recipe)
-    }
+    end
     it 'does not raise an exception' do
       expect { chef_run }.to_not raise_error
     end
@@ -54,11 +54,11 @@ describe 'stub_environment::default' do
   end
 
   context 'within the ChefSpec::Runner block' do
-    let(:chef_run) { 
+    let(:chef_run) do
       ChefSpec::Runner.new do |node|
         stub_environment('development')
       end.converge(described_recipe)
-    }
+    end
     it 'does not raise an exception' do
       expect { chef_run }.to_not raise_error
     end
@@ -71,13 +71,13 @@ describe 'stub_environment::default' do
   end
 
   context 'when passing a block to stub_environment' do
-    let(:chef_run) { 
+    let(:chef_run) do
       ChefSpec::Runner.new do |node|
         stub_environment('development') do
-          default_attributes({ 'foo' => 'bar' })
+          default_attributes('foo' => 'bar')
         end
       end.converge(described_recipe)
-    }
+    end
     it 'does not raise an exception' do
       expect { chef_run }.to_not raise_error
     end
