@@ -643,7 +643,7 @@ class CustomFilter < ChefSpec::Coverage::Filter
   end
 end
 
-ChefSpec::Converage.start! do
+ChefSpec::Coverage.start! do
   add_filter CustomFilter.new('foo', :bar)
 end
 ```
