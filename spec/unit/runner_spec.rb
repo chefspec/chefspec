@@ -72,7 +72,7 @@ describe ChefSpec::Runner do
 
       it 'sets the default attributes' do
         expect(hash['os']).to eq('chefspec')
-        expect(hash['languages']['ruby']).to eq('/usr/somewhere')
+        expect(hash['languages']['ruby']['bin_dir']).to eq('/usr/local/bin')
         expect(hash['os_version']).to eq('0.6.1')
         expect(hash['fqdn']).to eq('chefspec.local')
         expect(hash['domain']).to eq('local')
