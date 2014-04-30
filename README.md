@@ -942,7 +942,7 @@ Next, convert all your `let` blocks to `cached`:
 
 ```ruby
 # before
-let(:chef_run) { ChefSpec::Runer.new }
+let(:chef_run) { ChefSpec::Runner.new }
 
 # after
 cached(:chef_run) { ChefSpec::Runner.new }
