@@ -643,7 +643,7 @@ class CustomFilter < ChefSpec::Coverage::Filter
   end
 end
 
-ChefSpec::Converage.start! do
+ChefSpec::Coverage.start! do
   add_filter CustomFilter.new('foo', :bar)
 end
 ```
@@ -942,7 +942,7 @@ Next, convert all your `let` blocks to `cached`:
 
 ```ruby
 # before
-let(:chef_run) { ChefSpec::Runer.new }
+let(:chef_run) { ChefSpec::Runner.new }
 
 # after
 cached(:chef_run) { ChefSpec::Runner.new }
