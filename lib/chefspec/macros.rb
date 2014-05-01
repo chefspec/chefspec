@@ -180,7 +180,7 @@ module ChefSpec
       node = Chef::Node.new
       node.name(name)
       node.automatic_attrs = fauxhai
-      node.instance_eval(&block) if block_given?
+      node.instance_eval(&block) if block
       node
     end
 
