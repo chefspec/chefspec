@@ -39,7 +39,11 @@ class Chef
       [self, superclass].each do |resource_holder|
         look_in_parents = false
         if resource_holder.const_defined?(class_name, look_in_parents)
-          resource_holder.send(:remove_const, class_name)
+          old_class = resource_holder.send(:remove_const, class_name)
+
+          if resource_holder.respond_to?(:resource_classes)
+            resource_holder.resource_classes.delete(old_class)
+          end
         end
       end
     end
