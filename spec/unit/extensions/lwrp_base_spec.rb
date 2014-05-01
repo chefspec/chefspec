@@ -50,8 +50,10 @@ if Chef::VERSION >= '11.0.0'
               expect(Chef::Resource.constants).to_not include(:MysqlDatabase)
             end
 
-            it 'removes the resource from Chef::Resource.resource_classes' do
-              expect(Chef::Resource.resource_classes).to_not include(resource_class)
+            if Chef::Resource.respond_to?(:resource_classes)
+              it 'removes the resource from Chef::Resource.resource_classes' do
+                expect(Chef::Resource.resource_classes).to_not include(resource_class)
+              end
             end
 
             it 'does not remove the provider'  do
