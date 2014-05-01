@@ -9,7 +9,7 @@ if Chef::VERSION >= '11.0.0'
         describe '#remove_existing_lwrp' do
           before do
             Chef::Provider::MysqlDatabase = nil
-            Chef::Resource::MysqlDatabase = nil
+            Chef::Resource::MysqlDatabase = Class.new(Chef::Resource)
           end
 
           after do
@@ -40,12 +40,18 @@ if Chef::VERSION >= '11.0.0'
           end
 
           context Chef::Resource do
+            let!(:resource_class) { Chef::Resource::MysqlDatabase }
+
             before do
               Chef::Resource::LWRPBase.remove_existing_lwrp('MysqlDatabase')
             end
 
             it 'removes the resource if it already exists' do
               expect(Chef::Resource.constants).to_not include(:MysqlDatabase)
+            end
+
+            it 'removes the resource from Chef::Resource.resource_classes' do
+              expect(Chef::Resource.resource_classes).to_not include(resource_class)
             end
 
             it 'does not remove the provider'  do
