@@ -72,11 +72,10 @@ describe 'stub_environment::default' do
 
   context 'when passing a block to stub_environment' do
     let(:chef_run) do
-      ChefSpec::Runner.new do |node|
-        stub_environment('development') do
-          default_attributes('foo' => 'bar')
-        end
-      end.converge(described_recipe)
+      stub_environment('development') do
+        default_attributes('foo' => 'bar')
+      end
+      ChefSpec::Runner.new.converge(described_recipe)
     end
     it 'does not raise an exception' do
       expect { chef_run }.to_not raise_error
