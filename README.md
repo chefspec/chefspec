@@ -707,7 +707,6 @@ log "node.chef_environment=#{node.chef_environment}"
 log "node.foo=#{node.foo}" unless node['foo'].nil?
 ```
 
-For more example use cases, please see the [examples/stub_environment directory](https://github.com/sethvargo/chefspec/tree/master/examples/stub_environment).
 
 Testing LWRPs
 -------------
