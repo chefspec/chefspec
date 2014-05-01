@@ -4,6 +4,7 @@ describe 'stub_environment::default' do
 
   context 'when the chef_environment is not stubbed' do
     let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
     it 'raises an exception' do
       expect do
         chef_run
@@ -16,6 +17,7 @@ describe 'stub_environment::default' do
       stub_environment('development')
       ChefSpec::Runner.new.converge(described_recipe)
     end
+
     it 'does not raise an exception' do
       expect { chef_run }.to_not raise_error
     end
@@ -26,6 +28,7 @@ describe 'stub_environment::default' do
       stub_environment(:development)
       ChefSpec::Runner.new.converge(described_recipe)
     end
+
     it 'does not raise an exception' do
       expect { chef_run }.to_not raise_error
     end
@@ -39,6 +42,7 @@ describe 'stub_environment::default' do
 
   context 'within an it block' do
     let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
     it 'does not raise an exception' do
       stub_environment('development')
       expect { chef_run }.to_not raise_error
@@ -59,6 +63,7 @@ describe 'stub_environment::default' do
         stub_environment('development')
       end.converge(described_recipe)
     end
+
     it 'does not raise an exception' do
       expect { chef_run }.to_not raise_error
     end
@@ -77,6 +82,7 @@ describe 'stub_environment::default' do
       end
       ChefSpec::Runner.new.converge(described_recipe)
     end
+
     it 'does not raise an exception' do
       expect { chef_run }.to_not raise_error
     end
