@@ -1,22 +1,37 @@
 
-<% if @total == 0 %>
-  No Chef resources found, skipping coverage calculation...
+<% if not @has_results %>
+  No Chef resources or recipes found, skipping coverage calculation...
 <% else %>
 ChefSpec Coverage report generated...
 
-  Total Resources:   <%= @total %>
-  Touched Resources: <%= @touched %>
-  Touch Coverage:    <%= @coverage %>%
+  Resource Total:    <%= @resource_total %>
+  Resources Touched: <%= @resource_touched %>
+  Resource Coverage: <%= @resource_coverage %>%
 
-<% if @untouched_resources.empty? %>
+<% if @recipe_reported %>
+  Recipe Total:      <%= @recipe_total %>
+  Recipes Touched:   <%= @recipe_touched %>
+  Recipe Coverage:   <%= @recipe_coverage %>%
+<% end %>
+
+<% if @full_coverage %>
 You are awesome and so is your test coverage! Have a fantastic day!
 
 <% else %>
+<% if @resource_untouched.any? %>
 Untouched Resources:
 
-<% @untouched_resources.each do |resource| %>
+<% @resource_untouched.each do |resource| %>
   <%= resource.to_s.ljust(32) %>   <%= resource.source_file %>:<%= resource.source_line %>
 <% end %>
+<% end %>
 
+<% if @recipe_reported and @recipe_untouched.any? %>
+Untouched Recipes:
+
+<% @recipe_untouched.each do |recipe| %>
+  <%= recipe.to_s %>
+<% end %>
+<% end %>
 <% end %>
 <% end %>
