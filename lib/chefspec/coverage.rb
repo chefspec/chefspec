@@ -28,6 +28,7 @@ module ChefSpec
     def initialize
       @collection = {}
       @filters    = {}
+      @should_report_untested_recipes = false
     end
 
     #
@@ -66,6 +67,16 @@ module ChefSpec
                      end
 
       true
+    end
+
+    #
+    # Enable/Disable showing untested recipes in the coverage report
+    #
+    # @param [Bool] switch
+    #   should the coverage report show untested recipes?
+    #
+    def report_untouched_recipes(switch = true)
+      @should_report_untested_recipes = switch
     end
 
     #
@@ -122,14 +133,43 @@ module ChefSpec
       end
 
       report = {}.tap do |h|
-        h[:total]     = @collection.size
-        h[:touched]   = @collection.count { |_, resource| resource.touched? }
-        h[:coverage]  = ((h[:touched]/h[:total].to_f)*100).round(2)
+        h[:resource_total]     = @collection.size
+        h[:resource_touched]   = @collection.count { |_, resource| resource.touched? }
+        h[:resource_coverage]  = ((h[:resource_touched]/h[:resource_total].to_f)*100).round(2)
+        h[:recipe_reported]    = @should_report_untested_recipes
       end
 
-      report[:untouched_resources] = @collection.collect do |_, resource|
+      report[:resource_untouched] = @collection.collect do |_, resource|
         resource unless resource.touched?
       end.compact
+
+      if @should_report_untested_recipes
+        all_recipes = []
+        Chef::Config.cookbook_path.each do |path|
+          all_recipes += Dir[path + "/*/recipes/*.rb"]
+        end
+
+        all_recipes.map! do |recipe|
+          "/" + recipe
+        end
+
+        report[:recipe_untouched] = all_recipes.select do |recipe|
+          recipe unless @collection.find do |_, resource|
+            resource.source_file == recipe
+          end
+        end
+
+        report[:recipe_total] = all_recipes.size
+        report[:recipe_touched] = report[:recipe_total] - report[:recipe_untouched].size
+        report[:recipe_coverage] = ((report[:recipe_touched]/report[:recipe_total].to_f)*100).round(2)
+        report[:full_coverage] = report[:recipe_untouched].empty? and report[:resource_untouched].empty?
+        report[:has_results] = report[:recipe_total] or report[:resource_total]
+      else
+        report[:full_covarege] = report[:resource_untouched].empty?
+        report[:has_results] = report[:resource_total]
+      end
+
+
 
       template = ChefSpec.root.join('templates', 'coverage', 'human.erb')
       erb = Erubis::Eruby.new(File.read(template))
