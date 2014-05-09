@@ -25,7 +25,7 @@ module ChefSpec
     #
     def setup!
       env = ::Librarian::Chef::Environment.new(project_path: Dir.pwd)
-      env.config_db.local['path'] = @tmpdir
+      @originalpath, env.config_db.local['path'] = env.config_db.local['path'], @tmpdir
       ::Librarian::Action::Resolve.new(env).run
       ::Librarian::Action::Install.new(env).run
 
@@ -33,9 +33,12 @@ module ChefSpec
     end
 
     #
-    # Remove the temporary directory.
+    # Remove the temporary directory and restore the librarian-chef cookbook path.
     #
     def teardown!
+      env = ::Librarian::Chef::Environment.new(project_path: Dir.pwd)
+      env.config_db.local['path'] = @originalpath
+      
       FileUtils.rm_rf(@tmpdir) if File.exists?(@tmpdir)
     end
   end
