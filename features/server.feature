@@ -12,10 +12,11 @@ Feature: The ChefSpec server
     * I successfully run `rspec spec/<Compontent>_spec.rb`
     * the output should contain "0 failures"
   Examples:
-    | Compontent  |
-    | client      |
-    | data_bag    |
-    | environment |
-    | node        |
-    | role        |
-    | search      |
+    | Compontent         |
+    | client             |
+    | data_bag           |
+    | environment        |
+    | node               |
+    | render_with_cached |
+    | role               |
+    | search             |
