@@ -30,13 +30,10 @@ module ChefSpec
   # @see http://dracoater.blogspot.com/2013/12/testing-chef-cookbooks-part-25-speeding.html
   #
   module Cacher
-    Chef::Config[:no_lazy_load] = true
-
     @@cache = {}
     FINALIZER = lambda { |id| @@cache.delete(id) }
 
     def cached(name, &block)
-
       location = ancestors.first.metadata[:example_group][:location]
 
       define_method(name) do

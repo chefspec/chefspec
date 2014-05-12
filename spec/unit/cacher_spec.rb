@@ -16,10 +16,6 @@ describe ChefSpec::Cacher do
 
   before(:each) { described_class.class_variable_set(:@@cache, {}) }
 
-  it 'disables lazy loading' do
-    expect(Chef::Config[:no_lazy_load]).to be_true
-  end
-
   describe 'cached' do
     it 'lazily defines the results for the cache' do
       klass.cached(:chef_run)
