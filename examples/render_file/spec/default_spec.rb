@@ -30,28 +30,43 @@ describe 'render_file::default' do
   end
 
   context 'cookbook_file' do
-    it 'renders the file' do
-      expect(chef_run).to render_file('/tmp/cookbook_file')
-      expect(chef_run).to_not render_file('/tmp/not_cookbook_file')
+    shared_examples 'renders file' do
+      it 'renders the file' do
+        expect(chef_run).to render_file('/tmp/cookbook_file')
+        expect(chef_run).to_not render_file('/tmp/not_cookbook_file')
+      end
+
+      it 'renders the file with content' do
+        expect(chef_run).to render_file('/tmp/cookbook_file').with_content('This is content!')
+        expect(chef_run).to_not render_file('/tmp/cookbook_file').with_content('This is not content!')
+      end
+
+      it 'renders the file with matching content' do
+        expect(chef_run).to render_file('/tmp/cookbook_file').with_content(/^This(.+)$/)
+        expect(chef_run).to_not render_file('/tmp/cookbook_file').with_content(/^Not(.+)$/)
+      end
+
+      it 'renders the file with content matching arbitrary matcher' do
+        expect(chef_run).to render_file('/tmp/cookbook_file').with_content(
+          start_with('This')
+        )
+        expect(chef_run).to_not render_file('/tmp/cookbook_file').with_content(
+          end_with('not')
+        )
+      end
     end
 
-    it 'renders the file with content' do
-      expect(chef_run).to render_file('/tmp/cookbook_file').with_content('This is content!')
-      expect(chef_run).to_not render_file('/tmp/cookbook_file').with_content('This is not content!')
+    context 'with a pristine filesystem' do
+      it_behaves_like 'renders file'
     end
 
-    it 'renders the file with matching content' do
-      expect(chef_run).to render_file('/tmp/cookbook_file').with_content(/^This(.+)$/)
-      expect(chef_run).to_not render_file('/tmp/cookbook_file').with_content(/^Not(.+)$/)
-    end
+    context 'with a same rendered file on filesystem' do
+      before do
+        File.stub(:read).and_call_original
+        File.stub(:read).with('/tmp/cookbook_file', 'rb').and_yield('This is content!')
+      end
 
-    it 'renders the file with content matching arbitrary matcher' do
-      expect(chef_run).to render_file('/tmp/cookbook_file').with_content(
-        start_with('This')
-      )
-      expect(chef_run).to_not render_file('/tmp/cookbook_file').with_content(
-        end_with('not')
-      )
+      it_behaves_like 'renders file'
     end
   end
 
