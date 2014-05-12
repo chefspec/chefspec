@@ -80,6 +80,7 @@ module ChefSpec
       Chef::Config[:cache_type]     = 'Memory'
       Chef::Config[:client_key]     = nil
       Chef::Config[:cookbook_path]  = Array(options[:cookbook_path])
+      Chef::Config[:no_lazy_load]   = true
       Chef::Config[:role_path]      = Array(options[:role_path])
       Chef::Config[:force_logger]   = true
       Chef::Config[:solo]           = true

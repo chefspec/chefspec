@@ -60,6 +60,7 @@ describe ChefSpec::Runner do
     it 'sets the Chef::Config' do
       expect(Chef::Config.cache_type).to eq('Memory')
       expect(Chef::Config.force_logger).to be_true
+      expect(Chef::Config.no_lazy_load).to be_true
       expect(Chef::Config.solo).to be_true
     end
 
