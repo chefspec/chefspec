@@ -134,6 +134,24 @@ describe ChefSpec::Runner do
     end
   end
 
+  describe '#node=' do
+    it 'raises an exception if a non-node object is passed' do
+      expect { subject.node = nil }.to raise_error
+    end
+    
+    it 'properly associates runner to node' do
+      subject.node = Chef::Node.new
+      expect(subject.node.methods).to include(:runner)
+      expect(subject.node.runner).to be(subject)
+    end
+
+    it 'properly associates node to runner' do
+      node = Chef::Node.new
+      subject.node = node
+      expect(node.runner).to be(subject)
+    end
+  end
+
   describe '#to_s' do
     it 'overrides the default string representation to something readable' do
       expect(subject.converge('apache2::default').to_s).to eq('chef_run: recipe[apache2::default]')

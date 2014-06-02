@@ -139,10 +139,20 @@ module ChefSpec
     def node
       return @node if @node
 
-      @node = client.build_node
-      @node.instance_variable_set(:@runner, self)
-      @node.class.send(:attr_reader, :runner)
-      @node
+      self.node = client.build_node
+    end
+
+    #
+    # Set the node for this runner
+    #
+    # @param [Chef::Node]
+    # 
+    def node=(target)
+      raise unless target.is_a?(Chef::Node)
+      
+      @node = target
+      target.instance_variable_set(:@runner, self)
+      target.class.send(:attr_reader, :runner)
     end
 
     #
