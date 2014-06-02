@@ -11,18 +11,18 @@ describe ChefSpec::Matchers::LinkToMatcher do
   end
   subject { described_class.new(to) }
 
-  describe '#failure_message_for_should' do
+  describe '#failure_message' do
     it 'has the right value' do
       subject.matches?(link)
-      expect(subject.failure_message_for_should)
+      expect(subject.failure_message)
         .to eq(%Q(expected "link[#{from}]" to link to "#{to}" but was "#{to}"))
     end
   end
 
-  describe '#failure_message_for_should_not' do
+  describe '#failure_message_when_negated' do
     it 'has the right value' do
       subject.matches?(link)
-      expect(subject.failure_message_for_should_not)
+      expect(subject.failure_message_when_negated)
         .to eq(%Q(expected "link[#{from}]" to not link to "#{to}"))
     end
   end
@@ -36,7 +36,7 @@ describe ChefSpec::Matchers::LinkToMatcher do
 
   context 'when the link is correct' do
     it 'matches' do
-      expect(subject.matches?(link)).to be_true
+      expect(subject.matches?(link)).to be_truthy
     end
 
     it 'adds the link to the coverage report' do
@@ -49,7 +49,7 @@ describe ChefSpec::Matchers::LinkToMatcher do
     subject { described_class.new('/nope/bad/path/bro') }
 
     it 'does not match' do
-      expect(subject.matches?(link)).to be_false
+      expect(subject.matches?(link)).to be_falsy
     end
   end
 end

@@ -5,7 +5,7 @@ describe ChefSpec::Macros do
     let(:command_stub) { double('command') }
 
     it 'adds the command to the command registry' do
-      ChefSpec::Stubs::CommandStub.stub(:new).and_return(command_stub)
+      allow(ChefSpec::Stubs::CommandStub).to receive(:new).and_return(command_stub)
       described_class.stub_command('echo "hello"')
 
       expect(ChefSpec::Stubs::CommandRegistry.stubs).to include(command_stub)
@@ -16,7 +16,7 @@ describe ChefSpec::Macros do
     let(:search_stub) { double('search') }
 
     it 'adds the query to the search registry' do
-      ChefSpec::Stubs::SearchStub.stub(:new).and_return(search_stub)
+      allow(ChefSpec::Stubs::SearchStub).to receive(:new).and_return(search_stub)
       described_class.stub_search(:node, '*:*')
 
       expect(ChefSpec::Stubs::SearchRegistry.stubs).to include(search_stub)
@@ -27,7 +27,7 @@ describe ChefSpec::Macros do
     let(:data_bag_stub) { double('data_bag') }
 
     it 'adds the query to the data_bag registry' do
-      ChefSpec::Stubs::DataBagStub.stub(:new).and_return(data_bag_stub)
+      allow(ChefSpec::Stubs::DataBagStub).to receive(:new).and_return(data_bag_stub)
       described_class.stub_data_bag(:users)
 
       expect(ChefSpec::Stubs::DataBagRegistry.stubs).to include(data_bag_stub)
@@ -38,7 +38,7 @@ describe ChefSpec::Macros do
     let(:data_bag_item_stub) { double('data_bag_item') }
 
     it 'adds the query to the data_bag_item registry' do
-      ChefSpec::Stubs::DataBagItemStub.stub(:new).and_return(data_bag_item_stub)
+      allow(ChefSpec::Stubs::DataBagItemStub).to receive(:new).and_return(data_bag_item_stub)
       described_class.stub_data_bag_item(:users, 'id')
 
       expect(ChefSpec::Stubs::DataBagItemRegistry.stubs).to include(data_bag_item_stub)
@@ -76,8 +76,8 @@ describe ChefSpec::Macros do
     end
 
     it 'sets the automatic attributes from a JSON data path' do
-      File.stub(:exists?).with('/path/to/json').and_return(true)
-      File.stub(:read).with('/path/to/json').and_return('{ "ipaddress": "1.2.3.4" }')
+      allow(File).to receive(:exists?).with('/path/to/json').and_return(true)
+      allow(File).to receive(:read).with('/path/to/json').and_return('{ "ipaddress": "1.2.3.4" }')
       node = described_class.stub_node('node.example', path: '/path/to/json')
       expect(node['ipaddress']).to eq('1.2.3.4')
     end

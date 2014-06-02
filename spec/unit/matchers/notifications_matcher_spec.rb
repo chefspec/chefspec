@@ -13,18 +13,18 @@ describe ChefSpec::Matchers::NotificationsMatcher do
     )
   end
 
-  describe '#failure_message_for_should' do
+  describe '#failure_message' do
     it 'has the right value' do
       subject.matches?(package)
-      expect(subject.failure_message_for_should)
+      expect(subject.failure_message)
         .to include %|expected "package[foo]" to notify "execute[install]", but did not.|
     end
   end
 
-  describe '#failure_message_for_should_not' do
+  describe '#failure_message_when_negated' do
     it 'has the right value' do
       subject.matches?(package)
-      expect(subject.failure_message_for_should_not)
+      expect(subject.failure_message_when_negated)
         .to eq %|expected "package[foo]" to not notify "execute[install]", but it did.|
     end
   end

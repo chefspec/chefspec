@@ -1,5 +1,3 @@
-require 'rspec/matchers/built_in/raise_error'
-
 class RSpec::Matchers::BuiltIn::RaiseError
   class << self
     attr_accessor :last_run

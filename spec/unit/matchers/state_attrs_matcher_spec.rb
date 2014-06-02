@@ -11,26 +11,26 @@ describe ChefSpec::Matchers::StateAttrsMatcher do
       expect(subject).to_not be_matches(resource)
     end
 
-    its(:description) { should eq('have state attributes [:a, :b]') }
-
-    its(:failure_message_for_should) do
-      should eq "expected _something_ to have state attributes, but " \
-        "the _something_ you gave me was nil!" \
-        "\n" \
-        "Ensure the resource exists before making assertions:" \
-        "\n\n" \
-        "  expect(resource).to be" \
-        "\n "
+    it 'has the correct description' do
+      expect(subject.description).to eq('have state attributes [:a, :b]')
     end
 
-    its(:failure_message_for_should_not) do
-      should eq "expected _something_ to not have state attributes, but " \
-        "the _something_ you gave me was nil!" \
-        "\n" \
-        "Ensure the resource exists before making assertions:" \
-        "\n\n" \
-        "  expect(resource).to be" \
-        "\n "
+    it 'has the correct failure message for should' do
+      expect(subject.failure_message).to include <<-EOH.gsub(/^ {8}/, '')
+        expected _something_ to have state attributes, but the _something_ you gave me was nil!
+        Ensure the resource exists before making assertions:
+
+          expect(resource).to be
+      EOH
+    end
+
+    it 'has the correct failure message for should not' do
+      expect(subject.failure_message_when_negated).to include <<-EOH.gsub(/^ {8}/, '')
+        expected _something_ to not have state attributes, but the _something_ you gave me was nil!
+        Ensure the resource exists before making assertions:
+
+          expect(resource).to be
+      EOH
     end
   end
 
@@ -39,12 +39,16 @@ describe ChefSpec::Matchers::StateAttrsMatcher do
     let(:resource) { double('resource', class: klass) }
     before { subject.matches?(resource) }
 
-    its(:description) { should eq('have state attributes [:a, :b]') }
-    its(:failure_message_for_should) do
-      should eq('expected [:a, :b] to equal [:a, :b]')
+    it 'has the correct description' do
+      expect(subject.description).to eq('have state attributes [:a, :b]')
     end
-    its(:failure_message_for_should_not) do
-      should eq('expected [:a, :b] to not equal [:a, :b]')
+
+    it 'has the correct failure message for should' do
+      expect(subject.failure_message).to eq('expected [:a, :b] to equal [:a, :b]')
+    end
+
+    it 'has the correct failure message for should not' do
+      expect(subject.failure_message_when_negated).to eq('expected [:a, :b] to not equal [:a, :b]')
     end
 
     it 'matches when the state attributes are correct' do
@@ -52,12 +56,12 @@ describe ChefSpec::Matchers::StateAttrsMatcher do
     end
 
     it 'does not match when the state attributes are incorrect' do
-      klass.stub(:state_attrs).and_return([:c, :d])
+      allow(klass).to receive(:state_attrs).and_return([:c, :d])
       expect(subject).to_not be_matches(resource)
     end
 
     it 'does not match when partial state attribute are incorrect' do
-      klass.stub(:state_attrs).and_return([:b, :c])
+      allow(klass).to receive(:state_attrs).and_return([:b, :c])
       expect(subject).to_not be_matches(resource)
     end
   end

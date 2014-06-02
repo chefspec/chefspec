@@ -50,7 +50,7 @@ module ChefSpec::Matchers
       end
     end
 
-    def failure_message_for_should
+    def failure_message
       if resource
         if resource.performed_action?(@expected_action)
           if unmatched_parameters.empty?
@@ -79,7 +79,7 @@ module ChefSpec::Matchers
       end
     end
 
-    def failure_message_for_should_not
+    def failure_message_when_negated
       if resource
         message = %Q{expected "#{resource.to_s}" actions #{resource.performed_actions.inspect} to not exist}
       else

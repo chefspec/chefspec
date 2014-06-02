@@ -44,11 +44,11 @@ module ChefSpec
       scope = self.is_a?(Class) ? self : self.class
 
       metahash = scope.metadata
-      while metahash.has_key?(:example_group)
-        metahash = metahash[:example_group]
+      while metahash.has_key?(:parent_example_group)
+        metahash = metahash[:parent_example_group]
       end
 
-      metahash[:description_args].first.to_s
+      metahash[:description].to_s
     end
 
     #

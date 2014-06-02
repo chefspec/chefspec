@@ -5,8 +5,8 @@ describe ChefSpec::ExpectException do
     subject { described_class.new(Exception) }
 
     it 'does not match' do
-      RSpec::Matchers::BuiltIn::RaiseError.stub(:last_run).and_return(nil)
-      expect(subject.expected?).to be_false
+      allow(RSpec::Matchers::BuiltIn::RaiseError).to receive(:last_run).and_return(nil)
+      expect(subject.expected?).to be_falsy
     end
   end
 
@@ -15,8 +15,8 @@ describe ChefSpec::ExpectException do
 
     it 'does not match' do
       last_error = double('last error', last_error_for_chefspec: ArgumentError)
-      RSpec::Matchers::BuiltIn::RaiseError.stub(:last_run).and_return(last_error)
-      expect(subject.expected?).to be_false
+      allow(RSpec::Matchers::BuiltIn::RaiseError).to receive(:last_run).and_return(last_error)
+      expect(subject.expected?).to be_falsy
     end
   end
 
@@ -25,8 +25,8 @@ describe ChefSpec::ExpectException do
 
     it 'does not match' do
       last_error = double('last error', last_error_for_chefspec: RuntimeError)
-      RSpec::Matchers::BuiltIn::RaiseError.stub(:last_run).and_return(last_error)
-      expect(subject.expected?).to be_true
+      allow(RSpec::Matchers::BuiltIn::RaiseError).to receive(:last_run).and_return(last_error)
+      expect(subject.expected?).to be_truthy
     end
   end
 end

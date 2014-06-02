@@ -32,7 +32,7 @@ module ChefSpec::Matchers
       message
     end
 
-    def failure_message_for_should
+    def failure_message
       message = %Q{expected Chef run to render "#{@path}"}
       if @expected_content
         message << " matching:"
@@ -47,7 +47,7 @@ module ChefSpec::Matchers
       message
     end
 
-    def failure_message_for_should_not
+    def failure_message_when_negated
       message = %Q{expected file "#{@path}"}
       if @expected_content
         message << " matching:"

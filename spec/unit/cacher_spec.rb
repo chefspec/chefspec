@@ -7,7 +7,7 @@ describe ChefSpec::Cacher do
       extend ChefSpec::Cacher
 
       def self.metadata
-        { example_group: { location: 'spec' } }
+        { parent_example_group: { location: 'spec' } }
       end
     end
   end

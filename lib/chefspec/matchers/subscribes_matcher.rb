@@ -52,12 +52,12 @@ module ChefSpec::Matchers
       @instance.description
     end
 
-    def failure_message_for_should
-      @instance.failure_message_for_should
+    def failure_message
+      @instance.failure_message
     end
 
-    def failure_message_for_should_not
-      @instance.failure_message_for_should_not
+    def failure_message_when_negated
+      @instance.failure_message_when_negated
     end
   end
 end

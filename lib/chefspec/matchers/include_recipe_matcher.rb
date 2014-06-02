@@ -13,11 +13,11 @@ module ChefSpec::Matchers
       %Q{include recipe "#{@recipe_name}"}
     end
 
-    def failure_message_for_should
+    def failure_message
       %Q{expected #{loaded_recipes.inspect} to include "#{@recipe_name}"}
     end
 
-    def failure_message_for_should_not
+    def failure_message_when_negated
       %Q{expected "#{@recipe_name}" to not be included}
     end
 

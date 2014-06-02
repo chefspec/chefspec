@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'chef',    '~> 11.0'
   s.add_dependency 'fauxhai', '~> 2.0'
-  s.add_dependency 'rspec',   '~> 2.14'
+  s.add_dependency 'rspec',   '~> 3.0'
 
   # Development Dependencies
   s.add_development_dependency 'chef-zero', '~> 1.7'

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ChefSpec::Runner do
   before do
-    ChefSpec::Runner.any_instance.stub(:dry_run?).and_return(true)
+    allow_any_instance_of(ChefSpec::Runner).to receive(:dry_run?).and_return(true)
   end
 
   describe '#initialize' do
@@ -59,9 +59,9 @@ describe ChefSpec::Runner do
 
     it 'sets the Chef::Config' do
       expect(Chef::Config.cache_type).to eq('Memory')
-      expect(Chef::Config.force_logger).to be_true
-      expect(Chef::Config.no_lazy_load).to be_true
-      expect(Chef::Config.solo).to be_true
+      expect(Chef::Config.force_logger).to be_truthy
+      expect(Chef::Config.no_lazy_load).to be_truthy
+      expect(Chef::Config.solo).to be_truthy
     end
 
     it 'yields a block to set node attributes' do
@@ -100,11 +100,11 @@ describe ChefSpec::Runner do
 
     context 'RSpec global configuration' do
       before do
-        RSpec.configuration.stub(:cookbook_path).and_return('./path')
-        RSpec.configuration.stub(:log_level).and_return(:fatal)
-        RSpec.configuration.stub(:path).and_return('ohai.json')
-        RSpec.configuration.stub(:platform).and_return('ubuntu')
-        RSpec.configuration.stub(:version).and_return('12.04')
+        allow(RSpec.configuration).to receive(:cookbook_path).and_return('./path')
+        allow(RSpec.configuration).to receive(:log_level).and_return(:fatal)
+        allow(RSpec.configuration).to receive(:path).and_return('ohai.json')
+        allow(RSpec.configuration).to receive(:platform).and_return('ubuntu')
+        allow(RSpec.configuration).to receive(:version).and_return('12.04')
       end
 
       it 'uses the RSpec values' do

@@ -62,6 +62,13 @@ module ChefSpec
     end
 
     #
+    # RSpec 3 checks +respond_to?+ for some odd reason.
+    #
+    def self.respond_to_missing?(m, include_private = false)
+      instance.respond_to?(m, include_private) || super
+    end
+
+    #
     # @macro entity
     #   @method create_$1(name, data = {})
     #     Create a new $1 on the Chef Server

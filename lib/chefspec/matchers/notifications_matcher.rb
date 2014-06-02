@@ -51,7 +51,7 @@ module ChefSpec::Matchers
       message
     end
 
-    def failure_message_for_should
+    def failure_message
       if @resource
         message = %Q{expected "#{@resource}" to notify "#{@expected_resource_type}[#{@expected_resource_name}]"}
         message << " with action :#{@action}" if @action
@@ -77,7 +77,7 @@ module ChefSpec::Matchers
       end
     end
 
-    def failure_message_for_should_not
+    def failure_message_when_negated
       if @resource
         message = %Q{expected "#{@resource}" to not notify "#{@expected_resource_type}[#{@expected_resource_name}]"}
         message << ", but it did."

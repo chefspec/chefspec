@@ -6,18 +6,18 @@ describe ChefSpec::Matchers::RenderFileMatcher do
   let(:chef_run) { double('chef run', find_resource: file) }
   subject { described_class.new(path) }
 
-  describe '#failure_message_for_should' do
+  describe '#failure_message' do
     it 'has the right value' do
       subject.matches?(chef_run)
-      expect(subject.failure_message_for_should)
+      expect(subject.failure_message)
         .to eq(%Q(expected Chef run to render "#{path}"))
     end
   end
 
-  describe '#failure_message_for_should_not' do
+  describe '#failure_message_when_negated' do
     it 'has the right value' do
       subject.matches?(chef_run)
-      expect(subject.failure_message_for_should_not)
+      expect(subject.failure_message_when_negated)
         .to eq(%Q(expected file "#{path}" to not be in Chef run))
     end
   end
@@ -31,7 +31,7 @@ describe ChefSpec::Matchers::RenderFileMatcher do
 
   context 'when the file is correct' do
     it 'matches' do
-      expect(subject.matches?(chef_run)).to be_true
+      expect(subject.matches?(chef_run)).to be_truthy
     end
 
     it 'adds the resource to the coverage report' do
@@ -42,9 +42,9 @@ describe ChefSpec::Matchers::RenderFileMatcher do
 
   context 'when the file is not correct' do
     it 'does not match' do
-      chef_run.stub(:find_resource).and_return(nil)
+      allow(chef_run).to receive(:find_resource).and_return(nil)
       failure = described_class.new('nope')
-      expect(failure.matches?(chef_run)).to be_false
+      expect(failure.matches?(chef_run)).to be_falsy
     end
   end
 end

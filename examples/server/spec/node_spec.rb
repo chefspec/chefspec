@@ -35,6 +35,6 @@ describe 'server::node' do
     expect(ChefSpec::Server).to have_node('chefspec')
 
     node = ChefSpec::Server.node('chefspec')
-    expect(node['breakfast']['bacon']).to be_true
+    expect(node['breakfast']['bacon']).to be_truthy
   end
 end

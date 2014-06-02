@@ -14,10 +14,10 @@ describe ChefSpec::Matchers::SubscribesMatcher do
   end
 
   context 'when no resource is found' do
-    describe '#failure_message_for_should' do
+    describe '#failure_message' do
       it 'has the right value' do
         subject.matches?(package)
-        expect(subject.failure_message_for_should)
+        expect(subject.failure_message)
           .to include %|expected _something_ to notify "package[foo]", but the _something_ you gave me was nil! If you are running a test like:|
       end
     end
@@ -34,21 +34,21 @@ describe ChefSpec::Matchers::SubscribesMatcher do
     end
 
     before do
-      runner.stub(:find_resource).and_return(execute)
+      allow(runner).to receive(:find_resource).and_return(execute)
     end
 
-    describe '#failure_message_for_should' do
+    describe '#failure_message' do
       it 'has the right value' do
         subject.matches?(package)
-        expect(subject.failure_message_for_should)
+        expect(subject.failure_message)
           .to include %|expected "execute[install]" to notify "package[foo]", but did not.|
       end
     end
 
-    describe '#failure_message_for_should_not' do
+    describe '#failure_message_when_negated' do
       it 'has the right value' do
         subject.matches?(package)
-        expect(subject.failure_message_for_should_not)
+        expect(subject.failure_message_when_negated)
           .to eq %|expected "execute[install]" to not notify "package[foo]", but it did.|
       end
     end

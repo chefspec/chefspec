@@ -22,7 +22,7 @@ module ChefSpec::Matchers
       %Q{link to "#{@path}"}
     end
 
-    def failure_message_for_should
+    def failure_message
       if @link.nil?
         %Q{expected "link[#{@path}]" with action :create to be in Chef run}
       else
@@ -30,7 +30,7 @@ module ChefSpec::Matchers
       end
     end
 
-    def failure_message_for_should_not
+    def failure_message_when_negated
       %Q{expected "#{@link}" to not link to "#{@path}"}
     end
   end

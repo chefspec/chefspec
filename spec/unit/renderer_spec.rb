@@ -15,35 +15,35 @@ describe ChefSpec::Renderer do
 
   describe '#content' do
     before do
-      subject.stub(:content_from_cookbook_file).and_return('cookbook_file content')
-      subject.stub(:content_from_file).and_return('file content')
-      subject.stub(:content_from_template).and_return('template content')
+      allow(subject).to receive(:content_from_cookbook_file).and_return('cookbook_file content')
+      allow(subject).to receive(:content_from_file).and_return('file content')
+      allow(subject).to receive(:content_from_template).and_return('template content')
     end
 
     context 'when the resource is a cookbook_file' do
       it 'renders the cookbook_file content' do
-        resource.stub(:resource_name).and_return('cookbook_file')
+        allow(resource).to receive(:resource_name).and_return('cookbook_file')
         expect(subject.content).to eq('cookbook_file content')
       end
     end
 
     context 'when the resource is a file' do
       it 'renders the file content' do
-        resource.stub(:resource_name).and_return('file')
+        allow(resource).to receive(:resource_name).and_return('file')
         expect(subject.content).to eq('file content')
       end
     end
 
     context 'when the resource is a template' do
       it 'renders the template content' do
-        resource.stub(:resource_name).and_return('template')
+        allow(resource).to receive(:resource_name).and_return('template')
         expect(subject.content).to eq('template content')
       end
     end
 
     context 'when the resource is not a file type' do
       it 'returns nil' do
-        resource.stub(:resource_name).and_return('service')
+        allow(resource).to receive(:resource_name).and_return('service')
         expect(subject.content).to be_nil
       end
     end

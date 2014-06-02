@@ -13,6 +13,8 @@ module ChefSpec
     def execute!
       exitstatus = RSpec::Core::Runner.run(@argv, @stderr, @stdout)
       @kernel.exit(exitstatus)
+    ensure
+      RSpec.reset
     end
   end
 end

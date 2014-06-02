@@ -18,7 +18,7 @@ module ChefSpec::Matchers
       %Q{have state attributes #{@expected_attrs.inspect}}
     end
 
-    def failure_message_for_should
+    def failure_message
       if @resource
         "expected #{state_attrs.inspect} to equal #{@expected_attrs.inspect}"
       else
@@ -32,7 +32,7 @@ module ChefSpec::Matchers
       end
     end
 
-    def failure_message_for_should_not
+    def failure_message_when_negated
       if @resource
         "expected #{state_attrs.inspect} to not equal " \
         "#{@expected_attrs.inspect}"

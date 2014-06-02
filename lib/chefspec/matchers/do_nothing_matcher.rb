@@ -17,7 +17,7 @@ module ChefSpec::Matchers
       'do nothing'
     end
 
-    def failure_message_for_should
+    def failure_message
       if @resource
         message =  %|expected #{@resource} to do nothing, but the following |
         message << %|actions were performed:|
@@ -37,7 +37,7 @@ module ChefSpec::Matchers
       end
     end
 
-    def failure_message_for_should_not
+    def failure_message_when_negated
       if @resource
         message =  %|expected #{@resource} to do something, but no actions |
         message << %|were performed.|
