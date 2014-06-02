@@ -530,7 +530,7 @@ If you are using **Encrypted Data Bag Items**, you'll need to dive into the RSpe
 ```ruby
 describe 'example::default' do
   before do
-    Chef::EncryptedDataBagItem.stub(:load).with('users', 'svargo').and_return(...)
+    allow(Chef::EncryptedDataBagItem).to receive(:load).with('users', 'svargo').and_return(...)
   end
 end
 ```
@@ -674,10 +674,10 @@ let(:chef_run) do
     env.name 'staging'
 
     # Stub the node to return this environment
-    node.stub(:chef_environment).and_return(env.name)
+    allow(node).to receive(:chef_environment).and_return(env.name)
 
     # Stub any calls to Environment.load to return this environment
-    Chef::Environment.stub(:load).and_return(env)
+    allow(Chef::Environment).to receive(:load).and_return(env)
   end.converge('cookbook::recipe')
 end
 ```
