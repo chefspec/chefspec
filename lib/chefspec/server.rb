@@ -157,7 +157,13 @@ module ChefSpec
     #
     def initialize
       @server = ChefZero::Server.new(
+        # Set the log level from RSpec, defaulting to warn
         log_level:  RSpec.configuration.log_level || :warn,
+
+        # Set a random port so ChefSpec may be run in multiple jobs
+        port: port,
+
+        # Disable the "old" way - this is actually +multi_tenant: true+
         single_org: false,
       )
     end
@@ -319,6 +325,21 @@ module ChefSpec
     #
     def with_organization(*args)
       ['organizations', organization, *args]
+    end
+
+    #
+    # A randomly assigned, open port for run the Chef Zero server.
+    #
+    # @return [Fixnum]
+    #
+    def port
+      return @port if @port
+
+      @server = TCPServer.new('127.0.0.1', 0)
+      @port   = @server.addr[1].to_i
+      @server.close
+
+      return @port
     end
   end
 end
