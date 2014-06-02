@@ -15,19 +15,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test an
     # +erl_call+ resource with ChefSpec.
     #
-    # @example Assert that an +erl_call+ was runed
+    # @example Assert that an +erl_call+ was run
     #   expect(chef_run).to run_erl_call('net_adm:names()')
     #
-    # @example Assert that an +erl_call+ was runed with predicate matchers
+    # @example Assert that an +erl_call+ was run with predicate matchers
     #   expect(chef_run).to run_erl_call('net_adm:names()').with_node_name('example')
     #
-    # @example Assert that an +erl_call+ was runed with attributes
+    # @example Assert that an +erl_call+ was run with attributes
     #   expect(chef_run).to run_erl_call('net_adm:names()').with(node_name: 'example')
     #
-    # @example Assert that an +erl_call+ was runed using a regex
+    # @example Assert that an +erl_call+ was run using a regex
     #   expect(chef_run).to run_erl_call('net_adm:names()').with(node_name: /[a-z]+/)
     #
-    # @example Assert that an +erl_call+ was _not_ runed
+    # @example Assert that an +erl_call+ was _not_ run
     #   expect(chef_run).to_not run_erl_call('net_adm:names()')
     #
     #

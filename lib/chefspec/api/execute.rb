@@ -15,19 +15,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test an
     # +execute+ resource with ChefSpec.
     #
-    # @example Assert that an +execute+ was runed
+    # @example Assert that an +execute+ was run
     #   expect(chef_run).to run_execute('echo "hello"')
     #
-    # @example Assert that an +execute+ was runed with predicate matchers
+    # @example Assert that an +execute+ was run with predicate matchers
     #   expect(chef_run).to run_execute('echo "hello"').with_user('svargo')
     #
-    # @example Assert that an +execute+ was runed with attributes
+    # @example Assert that an +execute+ was run with attributes
     #   expect(chef_run).to run_execute('echo "hello"').with(user: 'svargo')
     #
-    # @example Assert that an +execute+ was runed using a regex
+    # @example Assert that an +execute+ was run using a regex
     #   expect(chef_run).to run_execute('echo "hello"').with(user: /sva(.+)/)
     #
-    # @example Assert that an +execute+ was _not_ runed
+    # @example Assert that an +execute+ was _not_ run
     #   expect(chef_run).to_not run_execute('echo "hello"')
     #
     #

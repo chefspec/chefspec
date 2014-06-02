@@ -15,19 +15,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test a
     # +powershell_script+ resource with ChefSpec.
     #
-    # @example Assert that a +powershell_script+ was runed
+    # @example Assert that a +powershell_script+ was run
     #   expect(chef_run).to run_powershell_script('/tmp')
     #
-    # @example Assert that a +powershell_script+ was runed with predicate matchers
+    # @example Assert that a +powershell_script+ was run with predicate matchers
     #   expect(chef_run).to run_powershell_script('/tmp').with_user('svargo')
     #
-    # @example Assert that a +powershell_script+ was runed with attributes
+    # @example Assert that a +powershell_script+ was run with attributes
     #   expect(chef_run).to run_powershell_script('/tmp').with(user: 'svargo')
     #
-    # @example Assert that a +powershell_script+ was runed using a regex
+    # @example Assert that a +powershell_script+ was run using a regex
     #   expect(chef_run).to run_powershell_script('/tmp').with(user: /sva(.+)/)
     #
-    # @example Assert that a +powershell_script+ was _not_ runed
+    # @example Assert that a +powershell_script+ was _not_ run
     #   expect(chef_run).to_not run_powershell_script('/tmp')
     #
     #
