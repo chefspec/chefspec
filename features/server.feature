@@ -1,9 +1,6 @@
-# We need to spawn a new process because requiring the server module changes
-# the default behavior of ChefSpec. Additionally, there's a bug in ChefZero
-# that doesn't work with Chef Chef 11.0.0 and 11.2.0.
+# Need to spawn a sub-process; otherwise future tests will fail because the
+# server is running
 @spawn
-@not_chef_11_0_0
-@not_chef_11_2_0
 Feature: The ChefSpec server
   Background:
     * I am using the "server" cookbook

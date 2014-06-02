@@ -90,6 +90,9 @@ RSpec.configure do |config|
   # the location of the calling spec file])
   config.cookbook_path = '/var/cookbooks'
 
+  # Set the organization for Chef Zero (default: 'chefspec')
+  config.organization = 'sweetsauce'
+
   # Specify the path for Chef Solo to find roles (default: [ascending search])
   config.role_path = '/var/roles'
 

@@ -112,11 +112,11 @@ module ChefSpec
           # Convert it to JSON
           data = JSON.fast_generate(data)
 
-          @server.load_data('#{key}' => { name => data })
+          load_data(name, '#{key}', data)
         end
 
         def #{method}(name)
-          data = @server.data_store.get(['#{key}', name])
+          data = get('#{key}', name)
           json = JSON.parse(data)
 
           if #{klass}.respond_to?(:json_create)
@@ -129,29 +129,15 @@ module ChefSpec
         end
 
         def #{key}
-          @server.data_store.list(['#{key}'])
+          get('#{key}')
         end
 
         def has_#{method}?(name)
-          !@server.data_store.get(['#{key}', name]).nil?
+          !get('#{key}', name).nil?
         rescue ChefZero::DataStore::DataNotFoundError
           false
         end
       EOH
-    end
-
-    include Singleton
-
-    attr_reader :server
-
-    #
-    # Create a new instance of the +ChefSpec::Server+ singleton. This method
-    # also starts the Chef Zero server in the background.
-    #
-    def initialize
-      @server = ChefZero::Server.new(
-        log_level:  RSpec.configuration.log_level || :warn,
-      )
     end
 
     entity :client,      Chef::Client, 'clients'
@@ -159,6 +145,22 @@ module ChefSpec
     entity :environment, Chef::Environment, 'environments'
     entity :node,        Chef::Node, 'nodes'
     entity :role,        Chef::Role, 'roles'
+
+    include Singleton
+
+    attr_reader :server
+
+    #
+    # Create a new instance of the +ChefSpec::Server+ singleton. This method
+    # also starts the Chef Zero server in the background under the organization
+    # "chefspec".
+    #
+    def initialize
+      @server = ChefZero::Server.new(
+        log_level:  RSpec.configuration.log_level || :warn,
+        single_org: false,
+      )
+    end
 
     #
     # Create a new data_bag on the Chef Server. This overrides the method
@@ -170,7 +172,7 @@ module ChefSpec
     #   the data to load into the data bag
     #
     def create_data_bag(name, data = {})
-      @server.load_data('data' => { name => data })
+      load_data(name, 'data', data)
     end
 
     #
@@ -204,7 +206,7 @@ module ChefSpec
         data = JSON.fast_generate(data)
       end
 
-      @server.load_data('nodes' => { name => data })
+      load_data(name, 'nodes', data)
     end
 
     #
@@ -225,13 +227,22 @@ module ChefSpec
     end
 
     #
+    # The URL where ChefZero is listening (including the organization).
+    #
+    # @return [String]
+    #
+    def chef_server_url
+      @chef_server_url ||= File.join(@server.url, 'organizations', organization)
+    end
+
+    #
     # Start the Chef Zero server in the background, updating the +Chef::Config+
     # with the proper +chef_server_url+.
     #
     def start!
       unless @server.running?
         @server.start_background
-        Chef::Config[:chef_server_url] = @server.url
+        Chef::Config[:chef_server_url] = chef_server_url
       end
     end
 
@@ -240,6 +251,7 @@ module ChefSpec
     #
     def reset!
       @server.clear_data
+      @server.data_store.create_dir(['organizations'], organization)
     end
 
     #
@@ -252,6 +264,15 @@ module ChefSpec
     end
 
     private
+
+    #
+    # The name of the Chef organization.
+    #
+    # @return [String]
+    #
+    def organization
+      RSpec.configuration.organization
+    end
 
     #
     # The directory where any cache information (such as private keys) should
@@ -267,16 +288,37 @@ module ChefSpec
     #
     # Shortcut method for loading data into Chef Zero.
     #
-    # @param [String, Symbol] key
-    #   the key to load
     # @param [String] name
     #   the name or id of the item to load
+    # @param [String, Symbol] key
+    #   the key to load
     # @param [Hash] data
     #   the data for the object, which will be converted to JSON and uploaded
     #   to the server
     #
-    def load_data(key, name, data = {})
-      @server.load_data(key.to_s => { name => JSON.fast_generate(data) })
+    def load_data(name, key, data = {})
+      @server.load_data({ key => { name => data } }, organization)
+    end
+
+    #
+    # Get the path to an item in the data store.
+    #
+    def get(*args)
+      if args.size == 1
+        @server.data_store.list(with_organization(*args))
+      else
+        @server.data_store.get(with_organization(*args))
+      end
+    end
+
+    #
+    # Prefix the given args with the organization. This is used by the data
+    # store to fetch elements.
+    #
+    # @return [Array<String>]
+    #
+    def with_organization(*args)
+      ['organizations', organization, *args]
     end
   end
 end
@@ -284,7 +326,8 @@ end
 ChefSpec::Server.start!
 
 RSpec.configure do |config|
-  config.after(:each)   { ChefSpec::Server.reset! }
+  config.before(:each) { ChefSpec::Server.reset! }
+  config.after(:each)  { ChefSpec::Server.reset! }
 end
 
 at_exit { ChefSpec::Server.stop! }

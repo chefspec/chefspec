@@ -10,6 +10,7 @@ RSpec.configure do |config|
   end
 
   config.add_setting :cookbook_path
+  config.add_setting :organization, default: 'chefspec'
   config.add_setting :role_path
   config.add_setting :log_level, default: :warn
   config.add_setting :path

@@ -1,6 +1,6 @@
 require 'chefspec'
 require 'chefspec/cacher'
-load 'chefspec/server.rb'
+require 'chefspec/server'
 
 RSpec.configure do |config|
   config.extend(ChefSpec::Cacher)
