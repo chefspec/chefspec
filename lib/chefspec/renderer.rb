@@ -108,7 +108,7 @@ module ChefSpec
     def content_from_cookbook_file(chef_run, cookbook_file)
       cookbook_name = cookbook_file.cookbook || cookbook_file.cookbook_name
       cookbook = cookbook_collection(chef_run.node)[cookbook_name]
-      File.read(cookbook.preferred_filename_on_disk_location(chef_run.node, :files, cookbook_file.source, cookbook_file.path))
+      File.read(cookbook.preferred_filename_on_disk_location(chef_run.node, :files, cookbook_file.source))
     end
 
     # The cookbook collection for the current Chef run context. Handles
