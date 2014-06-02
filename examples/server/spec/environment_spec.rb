@@ -1,5 +1,5 @@
 require 'chefspec'
-load 'chefspec/server.rb'
+require 'chefspec/server'
 
 describe 'server::environment' do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
