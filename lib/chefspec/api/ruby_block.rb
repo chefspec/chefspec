@@ -18,10 +18,10 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test a
     # +ruby_block+ resource with ChefSpec.
     #
-    # @example Assert that a +ruby_block+ was runed
+    # @example Assert that a +ruby_block+ was run
     #   expect(chef_run).to run_ruby_block('do_something')
     #
-    # @example Assert that a +ruby_block+ was _not_ runed
+    # @example Assert that a +ruby_block+ was _not_ run
     #   expect(chef_run).to_not run_ruby_block('do_something')
     #
     #
