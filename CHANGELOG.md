@@ -1,6 +1,37 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 4.0.0 (June 2, 2014)
+Breaking Changes:
+  - **Upgraded to RSpec 3!** RSpec 3 brings many new API changes and syntaxes
+  - **Bump minimum required Chef version to 11.12!** Without this change, Chef Zero will blow up
+
+Bugfixes:
+  - Gracefully fail if a resource does not report it's source line in the reporter
+  - Pull the correct cookbook folder from the stack on Windows (88bfc6)
+  - Cover resources in render_file matchers for reporting
+  - Cover resources in link_to matchers for reporting
+  - Cover resources in do_nothing matchers for reporting
+  - Fix memory leak in LWRP Resource classes
+  - Restore the original `cookbook_path` when using librarian-chef
+  - Documentation fixes
+  - Disable lazy loading of cached resources
+  - Fix a bug that will happen in later Chef versions because FreeBSD is evil (13ff143)
+  - Do not pass local file paths to `preferred_filename_on_disk_location`
+
+Features:
+  - Add runner methods for all the bash, csh, perl, etc resources
+  - Upgraded fauxhai dependency and specs
+  - Upgrade Chef Zero for multi-org support
+
+Improvements:
+  - Improved documentation around the `define_runner_method` method
+  - Update badges to be all SVG
+  - Test on Ruby 2.1
+  - Use a randomly assigned port for Chef Zero
+  - Remove references to `.stub` from documentation
+
+
 ## 3.4.0 (March 16, 2014)
 Bugfixes:
   - Restore Berkshelf 2 support (missing edge case)
