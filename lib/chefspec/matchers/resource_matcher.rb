@@ -111,11 +111,15 @@ module ChefSpec::Matchers
     end
 
     def matches_parameter?(parameter, expected)
-      # Chef 11+ stores the source parameter internally as an Array
+      value = safe_send(parameter)
       if parameter == :source
-        Array(expected) == Array(safe_send(parameter))
+        # Chef 11+ stores the source parameter internally as an Array
+        Array(expected) == Array(value)
+      elsif expected.kind_of?(Class)
+        # Ruby can't compare classes with ===
+        expected == value
       else
-        expected === safe_send(parameter)
+        expected === value
       end
     end
 
