@@ -152,8 +152,7 @@ module ChefSpec
 
     #
     # Create a new instance of the +ChefSpec::Server+ singleton. This method
-    # also starts the Chef Zero server in the background under the organization
-    # "chefspec".
+    # also starts the Chef Zero server in the background.
     #
     def initialize
       @server = ChefZero::Server.new(
@@ -233,12 +232,12 @@ module ChefSpec
     end
 
     #
-    # The URL where ChefZero is listening (including the organization).
+    # The URL where ChefZero is listening.
     #
     # @return [String]
     #
     def chef_server_url
-      @chef_server_url ||= File.join(@server.url, 'organizations', organization)
+      @chef_server_url ||= File.join(@server.url)
     end
 
     #
@@ -257,7 +256,6 @@ module ChefSpec
     #
     def reset!
       @server.clear_data
-      @server.data_store.create_dir(['organizations'], organization)
     end
 
     #
@@ -270,15 +268,6 @@ module ChefSpec
     end
 
     private
-
-    #
-    # The name of the Chef organization.
-    #
-    # @return [String]
-    #
-    def organization
-      RSpec.configuration.organization
-    end
 
     #
     # The directory where any cache information (such as private keys) should
@@ -303,7 +292,7 @@ module ChefSpec
     #   to the server
     #
     def load_data(name, key, data = {})
-      @server.load_data({ key => { name => data } }, organization)
+      @server.load_data({ key => { name => data } })
     end
 
     #
@@ -311,20 +300,10 @@ module ChefSpec
     #
     def get(*args)
       if args.size == 1
-        @server.data_store.list(with_organization(*args))
+        @server.data_store.list(args)
       else
-        @server.data_store.get(with_organization(*args))
+        @server.data_store.get(args)
       end
-    end
-
-    #
-    # Prefix the given args with the organization. This is used by the data
-    # store to fetch elements.
-    #
-    # @return [Array<String>]
-    #
-    def with_organization(*args)
-      ['organizations', organization, *args]
     end
 
     #
