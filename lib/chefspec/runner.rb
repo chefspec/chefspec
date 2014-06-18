@@ -285,7 +285,7 @@ module ChefSpec
     def default_role_path
       Pathname.new(Dir.pwd).ascend do |path|
         possible = File.join(path, 'roles')
-        return possible if File.exists?(possible)
+        return possible if File.exist?(possible)
       end
 
       nil
