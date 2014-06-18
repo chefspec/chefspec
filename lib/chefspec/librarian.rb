@@ -38,8 +38,8 @@ module ChefSpec
     def teardown!
       env = ::Librarian::Chef::Environment.new(project_path: Dir.pwd)
       env.config_db.local['path'] = @originalpath
-      
-      FileUtils.rm_rf(@tmpdir) if File.exists?(@tmpdir)
+
+      FileUtils.rm_rf(@tmpdir) if File.exist?(@tmpdir)
     end
   end
 end
