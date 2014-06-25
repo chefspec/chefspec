@@ -6,10 +6,10 @@ Feature: The ChefSpec server
     * I am using the "server" cookbook
 
   Scenario Outline: Running specs
-    * I successfully run `rspec spec/<Compontent>_spec.rb`
+    * I successfully run `rspec spec/<Component>_spec.rb`
     * the output should contain "0 failures"
   Examples:
-    | Compontent         |
+    | Component         |
     | client             |
     | data_bag           |
     | environment        |
