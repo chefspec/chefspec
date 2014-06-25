@@ -9,7 +9,7 @@ Feature: The ChefSpec server
     * I successfully run `rspec spec/<Component>_spec.rb`
     * the output should contain "0 failures"
   Examples:
-    | Component         |
+    | Component          |
     | client             |
     | data_bag           |
     | environment        |
