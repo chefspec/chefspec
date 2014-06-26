@@ -115,9 +115,6 @@
   <span class="c1"># the location of the calling spec file])</span>
   <span class="n">config</span><span class="o">.</span><span class="n">cookbook_path</span> <span class="o">=</span> <span class="s1">'/var/cookbooks'</span>
 
-  <span class="c1"># Set the organization for Chef Zero (default: 'chefspec')</span>
-  <span class="n">config</span><span class="o">.</span><span class="n">organization</span> <span class="o">=</span> <span class="s1">'sweetsauce'</span>
-
   <span class="c1"># Specify the path for Chef Solo to find roles (default: [ascending search])</span>
   <span class="n">config</span><span class="o">.</span><span class="n">role_path</span> <span class="o">=</span> <span class="s1">'/var/roles'</span>
 
@@ -144,10 +141,10 @@
 <span class="no">ChefSpec</span><span class="o">::</span><span class="no">Runner</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">platform</span><span class="p">:</span> <span class="s1">'centos'</span><span class="p">,</span> <span class="ss">version</span><span class="p">:</span> <span class="s1">'5.4'</span><span class="p">)</span>
 
 <span class="c1"># Specify a different cookbook_path</span>
-<span class="no">ChefSpec</span><span class="o">::</span><span class="no">Runner</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">cookbook_path</span><span class="p">:</span> <span class="s1">'/var/my/other/path'</span><span class="p">,</span> <span class="n">role_path</span><span class="p">:</span> <span class="s1">'/var/my/roles'</span><span class="p">)</span>
+<span class="no">ChefSpec</span><span class="o">::</span><span class="no">Runner</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">cookbook_path</span><span class="p">:</span> <span class="s1">'/var/my/other/path'</span><span class="p">,</span> <span class="ss">role_path</span><span class="p">:</span> <span class="s1">'/var/my/roles'</span><span class="p">)</span>
 
 <span class="c1"># Add debug log output</span>
-<span class="no">ChefSpec</span><span class="o">::</span><span class="no">Runner</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">log_level</span><span class="p">:</span> <span class="ss">:debug</span><span class="p">)</span><span class="o">.</span><span class="n">converge</span><span class="p">(</span><span class="n">described_recipe</span><span class="p">)</span>
+<span class="no">ChefSpec</span><span class="o">::</span><span class="no">Runner</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">log_level</span><span class="p">:</span> <span class="ss">:debug</span><span class="p">)</span><span class="o">.</span><span class="n">converge</span><span class="p">(</span><span class="n">described_recipe</span><span class="p">)</span>
 </pre></div>
 
 <p><strong>NOTE</strong> You do not <em>need</em> to specify a platform and version. However, some cookbooks may rely on <a href="http://github.com/opscode/ohai">Ohai</a> data that ChefSpec cannot not automatically generate. Specifying the <code>platform</code> and <code>version</code> keys instructs ChefSpec to load stubbed Ohai attributes from another platform using <a href="https://github.com/customink/fauxhai">fauxhai</a>.</p>
@@ -423,7 +420,7 @@ have to write your <code>Cheffile</code> like this:</p>
 
 <p>Create a node:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="no">ChefSpec</span><span class="o">::</span><span class="no">Server</span><span class="o">.</span><span class="n">create_node</span><span class="p">(</span><span class="s1">'my_node'</span><span class="p">,</span> <span class="p">{</span> <span class="n">run_list</span><span class="p">:</span> <span class="o">[</span><span class="s1">'...'</span><span class="o">]</span> <span class="p">})</span>
+<div class="highlight highlight-ruby"><pre><span class="no">ChefSpec</span><span class="o">::</span><span class="no">Server</span><span class="o">.</span><span class="n">create_node</span><span class="p">(</span><span class="s1">'my_node'</span><span class="p">,</span> <span class="p">{</span> <span class="ss">run_list</span><span class="p">:</span> <span class="o">[</span><span class="s1">'...'</span><span class="o">]</span> <span class="p">})</span>
 </pre></div>
 
 <p>You may also be interested in the <code>stub_node</code> macro, which will create a new <code>Chef::Node</code> object and accepts the same parameters as the Chef Runner and a Fauxhai object:</p>
@@ -440,7 +437,7 @@ have to write your <code>Cheffile</code> like this:</p>
 
 <p>Create a role:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="no">ChefSpec</span><span class="o">::</span><span class="no">Server</span><span class="o">.</span><span class="n">create_role</span><span class="p">(</span><span class="s1">'my_role'</span><span class="p">,</span> <span class="p">{</span> <span class="n">default_attributes</span><span class="p">:</span> <span class="p">{}</span> <span class="p">})</span>
+<div class="highlight highlight-ruby"><pre><span class="no">ChefSpec</span><span class="o">::</span><span class="no">Server</span><span class="o">.</span><span class="n">create_role</span><span class="p">(</span><span class="s1">'my_role'</span><span class="p">,</span> <span class="p">{</span> <span class="ss">default_attributes</span><span class="p">:</span> <span class="p">{}</span> <span class="p">})</span>
 
 <span class="c1"># The role now exists on the Chef Server, you can add it to a node's run_list</span>
 <span class="c1"># by adding it to the `converge` block:</span>
@@ -505,7 +502,7 @@ You can stub this command with:
 <span class="k">end</span>
 </pre></div>
 
-<p>ChefSpec will rails an error like:</p>
+<p>ChefSpec will raise an error like:</p>
 
 <div class="highlight highlight-text"><pre>Real data_bags are disabled. Unregistered data_bag: data_bag(:users)
 
@@ -702,7 +699,7 @@ Untouched Resources:
 <div class="highlight highlight-ruby"><pre><span class="nb">require</span> <span class="s1">'chefspec'</span>
 
 <span class="n">describe</span> <span class="s1">'foo::default'</span> <span class="k">do</span>
-  <span class="n">let</span><span class="p">(</span><span class="ss">:chef_run</span><span class="p">)</span> <span class="p">{</span> <span class="no">ChefSpec</span><span class="o">::</span><span class="no">Runner</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">step_into</span><span class="p">:</span> <span class="o">[</span><span class="s1">'my_lwrp'</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">converge</span><span class="p">(</span><span class="s1">'foo::default'</span><span class="p">)</span> <span class="p">}</span>
+  <span class="n">let</span><span class="p">(</span><span class="ss">:chef_run</span><span class="p">)</span> <span class="p">{</span> <span class="no">ChefSpec</span><span class="o">::</span><span class="no">Runner</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">step_into</span><span class="p">:</span> <span class="o">[</span><span class="s1">'my_lwrp'</span><span class="o">]</span><span class="p">)</span><span class="o">.</span><span class="n">converge</span><span class="p">(</span><span class="s1">'foo::default'</span><span class="p">)</span> <span class="p">}</span>
 
   <span class="n">it</span> <span class="s1">'installs the foo package through my_lwrp'</span> <span class="k">do</span>
     <span class="n">expect</span><span class="p">(</span><span class="n">chef_run</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">install_package</span><span class="p">(</span><span class="s1">'foo'</span><span class="p">)</span>
@@ -754,7 +751,7 @@ Untouched Resources:
 <span class="n">actions</span> <span class="ss">:write</span>
 <span class="n">default_action</span> <span class="ss">:write</span>
 
-<span class="n">attribute</span> <span class="ss">:message</span><span class="p">,</span> <span class="n">name_attribute</span><span class="p">:</span> <span class="kp">true</span>
+<span class="n">attribute</span> <span class="ss">:message</span><span class="p">,</span> <span class="ss">name_attribute</span><span class="p">:</span> <span class="kp">true</span>
 </pre></div>
 
 <div class="highlight highlight-ruby"><pre><span class="c1"># motd/providers/message.rb</span>
@@ -920,7 +917,7 @@ Relevant File Content:
 
 <span class="c1"># - OR -</span>
 
-<span class="no">ChefSpec</span><span class="o">::</span><span class="no">Runner</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">role_path</span><span class="p">:</span> <span class="s1">'/var/my/roles'</span><span class="p">)</span> <span class="c1"># local setting</span>
+<span class="no">ChefSpec</span><span class="o">::</span><span class="no">Runner</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">role_path</span><span class="p">:</span> <span class="s1">'/var/my/roles'</span><span class="p">)</span> <span class="c1"># local setting</span>
 </pre></div>
 
 <h2>
