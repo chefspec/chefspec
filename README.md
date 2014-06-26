@@ -485,7 +485,7 @@ data_bag('users').each do |user|
 end
 ```
 
-ChefSpec will rails an error like:
+ChefSpec will raise an error like:
 
 ```text
 Real data_bags are disabled. Unregistered data_bag: data_bag(:users)
