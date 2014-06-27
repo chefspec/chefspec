@@ -1,6 +1,14 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 4.0.1 (June 27, 2014)
+Bugfixes:
+  - Fix class comparisons
+  - Update ChefZero API to work again
+  - Use proper cookbook in the template_finder
+  - Fix Ruby deprecations
+  - Various documentation updates
+
 ## 4.0.0 (June 2, 2014)
 Breaking Changes:
   - **Upgraded to RSpec 3!** RSpec 3 brings many new API changes and syntaxes
