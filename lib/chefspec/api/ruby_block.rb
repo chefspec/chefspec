@@ -53,7 +53,7 @@ module ChefSpec::API
     #   expect(chef_run).to create_ruby_block('do_something')
     #
     # @example Assert that a +ruby_block+ was _not_ created
-    #   expect(chef_run).to_not created_ruby_block('do_something')
+    #   expect(chef_run).to_not create_ruby_block('do_something')
     #
     #
     # @param [String, Regex] resource_name
