@@ -161,9 +161,6 @@ module ChefSpec
 
         # Set a random port so ChefSpec may be run in multiple jobs
         port: port,
-
-        # Disable the "old" way - this is actually +multi_tenant: true+
-        single_org: false,
       )
     end
 
@@ -299,7 +296,38 @@ module ChefSpec
     # Get the path to an item in the data store.
     #
     def get(*args)
+      # This is a real-life "what in the actual fuck!?". Since some engineers
+      # cannot seem to understand the importance of an unchanging public API,
+      # we have to implement crazy, outlandish checks like this.
+      #
+      # In the 2.0 series of Chef Zero, the DataStore did not prefix values.
+      # In the 2.1+ series, DataStore values are nested under
+      # +organizations/chef+, for some ridiciously reason.
+      #
+      # Oh, and for the record, there was no CHANGELOG entry or anything. They
+      # just decided it would be a good idea to change one of the main APIs in
+      # the system.
+      if ChefZero::VERSION.to_f == 2.0
+        get_without_prefix(*args)
+      else
+        get_with_prefix(*args)
+      end
+    end
+
+    # @see {get}
+    def get_without_prefix(*args)
       if args.size == 1
+        @server.data_store.list(args)
+      else
+        @server.data_store.get(args)
+      end
+    end
+
+    # @see {get}
+    def get_with_prefix(*args)
+      args.unshift('organizations', 'chef')
+
+      if args.size == 3
         @server.data_store.list(args)
       else
         @server.data_store.get(args)
