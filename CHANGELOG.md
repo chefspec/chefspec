@@ -1,6 +1,13 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 4.0.2 (August 13, 2014)
+Bugfixes:
+  - Fix a regression caused by a new version of Chef Zero in single_org mode
+
+Improvements:
+  - Test against Chef 11.14.0 in the Travis matrix
+
 ## 4.0.1 (June 27, 2014)
 Bugfixes:
   - Fix class comparisons
