@@ -206,6 +206,8 @@ where:
 - _RESOURCE_ - the name of the resource (e.g. `package`)
 - _NAME_ - the name attribute for the resource (e.g. `apache2`)
 
+**NOTE** One exception to this rule is the `create_if_missing` action on the `file` resource. In this case the assertion is actually `create_file_if_missing`. Refer to `examples/file/spec/create_if_missing_spec.rb` for some examples.
+
 Here's a more concrete example:
 
 ```ruby
