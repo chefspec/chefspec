@@ -114,7 +114,7 @@ Values specified at the initialization of the `Runner` merge and take precedence
 ChefSpec::Runner.new(version: '10.04')
 
 # Use a different operating system platform and version
-ChefSpec::Runner.new(platform: 'centos', version: '5.4')
+ChefSpec::Runner.new(platform: 'centos', version: '5.10')
 
 # Specify a different cookbook_path
 ChefSpec::Runner.new(cookbook_path: '/var/my/other/path', role_path: '/var/my/roles')
