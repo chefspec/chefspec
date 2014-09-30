@@ -18,17 +18,31 @@ class Chef::CookbookUploader
 end
 
 class ChefSpec::Runner
-  alias_method :old_initialize, :initialize
+  alias_method :solo_initialize, :initialize
 
   #
-  # Override the existing initialize method, setting the appropriate
-  # configuration to use a real Chef Server instead.
+  # Overriding the existing initialize method, providing a switch
+  # to be able to choose whether to create a solo or a server runner.
   #
   # @see ChefSpec::Runner#initialize
   #
   def initialize(options = {}, &block)
-    old_initialize(options, &block)
+    options = {
+      mode: RSpec.configuration.mode
+    }.merge(options)
 
+    solo_initialize(options, &block)
+
+    server_initialize(options, &block) if options[:mode] == :server
+  end
+
+  private
+
+  #
+  # Contructor for the server runner, setting the appropriate
+  # configuration to use a real Chef Server.
+  #
+  def server_initialize(options = {}, &block)
     Chef::Config[:client_key]      = ChefSpec::Server.client_key
     Chef::Config[:client_name]     = 'chefspec'
     Chef::Config[:node_name]       = 'chefspec'
@@ -37,8 +51,6 @@ class ChefSpec::Runner
 
     upload_cookbooks!
   end
-
-  private
 
   #
   # Upload the cookbooks to the Chef Server.
