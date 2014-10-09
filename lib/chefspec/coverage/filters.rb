@@ -16,6 +16,7 @@ module ChefSpec
     #
     class RegexpFilter < Filter
       def matches?(resource)
+        return true if resource.source_line.nil?
         @filter =~ resource.source_line
       end
     end
@@ -39,6 +40,7 @@ module ChefSpec
     #
     class BlockFilter < Filter
       def matches?(resource)
+        return true if resource.source_line.nil?
         @filter.call(resource)
       end
     end
@@ -68,6 +70,7 @@ module ChefSpec
       end
 
       def matches?(resource)
+        return true if resource.source_line.nil?
         resource.source_line =~ /cookbooks\/(?!#{@metadatas.join('|')})/
       end
     end
