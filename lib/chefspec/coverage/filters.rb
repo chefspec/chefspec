@@ -68,7 +68,11 @@ module ChefSpec
       end
 
       def matches?(resource)
-        resource.source_line =~ /cookbooks\/(?!#{@metadatas.join('|')})/
+	     if (resource.source_line.nil?)
+	       return 1
+	     else
+         resource.source_line =~ /cookbooks\/(?!#{@metadatas.join('|')})/
+	     end
       end
     end
   end
