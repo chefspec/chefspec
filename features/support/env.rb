@@ -23,13 +23,6 @@ Before do
   @dirs = [Dir.mktmpdir]
 end
 
-Before('@spawn') do
-  Aruba.process = Aruba::SpawnProcess
-
-  # Raise the timeout
-  @aruba_timeout_seconds = 15
-end
-
 After do
   # Cleanup the test files
   FileUtils.rm_rf(@dirs.first)

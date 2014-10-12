@@ -1,9 +1,6 @@
 require 'chefspec'
-require 'chefspec/server'
 
 describe 'server::search' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
-
   let(:node_1) do
     stub_node('node_1') do |node|
       node.automatic['hostname'] = 'node_1'
@@ -35,11 +32,13 @@ describe 'server::search' do
     end
   end
 
-  before do
-    ChefSpec::Server.create_node(node_1)
-    ChefSpec::Server.create_node(node_2)
-    ChefSpec::Server.create_node(node_3)
-    ChefSpec::Server.create_node(node_4)
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new do |node, server|
+      server.create_node(node_1)
+      server.create_node(node_2)
+      server.create_node(node_3)
+      server.create_node(node_4)
+    end.converge(described_recipe)
   end
 
   it 'finds all nodes with the bar attribute' do

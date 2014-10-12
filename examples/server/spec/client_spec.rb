@@ -1,16 +1,17 @@
 require 'chefspec'
-require 'chefspec/server'
 
 describe 'server::client' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new do |node, server|
+      server.create_client('bacon', { name: 'bacon' })
+    end.converge(described_recipe)
+  end
 
   it 'does not raise an exception' do
     expect { chef_run }.to_not raise_error
   end
 
   it 'searches the Chef Server for clients' do
-    ChefSpec::Server.create_client('bacon', { name: 'bacon' })
-
     expect(chef_run).to write_log('clients')
       .with_message('client[bacon], client[chef-validator], client[chef-webui]')
   end

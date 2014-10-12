@@ -1,6 +1,3 @@
-# Need to spawn a sub-process; otherwise future tests will fail because the
-# server is running
-@spawn
 Feature: The ChefSpec server
   Background:
     * I am using the "server" cookbook
