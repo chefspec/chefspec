@@ -53,7 +53,7 @@ module ChefSpec::Matchers
     # Determine if all the expected state attributes are present on the
     # given resource.
     #
-    # @return [Boolean]
+    # @return [true, false]
     #
     def matches_state_attrs?
       @expected_attrs == state_attrs

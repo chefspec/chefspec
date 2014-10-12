@@ -101,7 +101,7 @@ module ChefSpec
     #     @param [String] name
     #       the name of the $1 to find
     #
-    #     @return [Boolean]
+    #     @return [true, false]
     #
     def self.entity(method, klass, key)
       class_eval <<-EOH, __FILE__, __LINE__ + 1

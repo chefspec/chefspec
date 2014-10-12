@@ -25,7 +25,7 @@ module ChefSpec::API
     #   expect(chef_run).to create_remote_directory('/tmp').with(overwrite: true)
     #
     # @example Assert that a +remote_directory+ was createed using a regex
-    #   expect(chef_run).to create_remote_directory('/tmp').with(overwrite: Boolean)
+    #   expect(chef_run).to create_remote_directory('/tmp').with(overwrite: /true/)
     #
     # @example Assert that a +remote_directory+ was _not_ createed
     #   expect(chef_run).to_not create_remote_directory('/tmp')
@@ -65,7 +65,7 @@ module ChefSpec::API
     #   expect(chef_run).to create_remote_directory_if_missing('/tmp/config').with(overwrite: true)
     #
     # @example Assert that a +remote_directory+ was created if missing using a regex
-    #   expect(chef_run).to create_remote_directory_if_missing('/tmp/config').with(overwrite: Boolean)
+    #   expect(chef_run).to create_remote_directory_if_missing('/tmp/config').with(overwrite: /true/)
     #
     # @example Assert that a +remote_directory+ was _not_ created if missing
     #   expect(chef_run).to_not create_remote_directory('/tmp/config')
@@ -102,7 +102,7 @@ module ChefSpec::API
     #   expect(chef_run).to delete_remote_directory('/tmp').with(overwrite: true)
     #
     # @example Assert that a +remote_directory+ was deleteed using a regex
-    #   expect(chef_run).to delete_remote_directory('/tmp').with(overwrite: Boolean)
+    #   expect(chef_run).to delete_remote_directory('/tmp').with(overwrite: /true/)
     #
     # @example Assert that a +remote_directory+ was _not_ deleteed
     #   expect(chef_run).to_not delete_remote_directory('/tmp')

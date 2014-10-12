@@ -25,7 +25,7 @@ module ChefSpec::API
     #   expect(chef_run).to reload_ohai('reload').with(system: true)
     #
     # @example Assert that an +ohai+ was reloaded using a regex
-    #   expect(chef_run).to reload_ohai('reload').with(system: Boolean)
+    #   expect(chef_run).to reload_ohai('reload').with(system: /true/)
     #
     # @example Assert that an +ohai+ was _not_ reloaded
     #   expect(chef_run).to_not reload_ohai('reload')

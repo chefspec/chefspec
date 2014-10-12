@@ -221,7 +221,7 @@ module ChefSpec
     # @param [Chef::Resource] resource
     #   the Chef resource to try and step in to
     #
-    # @return [Boolean]
+    # @return [true, false]
     #
     def step_into?(resource)
       key = resource_name(resource)
@@ -231,7 +231,7 @@ module ChefSpec
     #
     # Boolean method to determine if this Runner is in `dry_run` mode.
     #
-    # @return [Boolean]
+    # @return [true, false]
     #
     def dry_run?
       !!options[:dry_run]

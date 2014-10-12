@@ -80,7 +80,7 @@ module ChefSpec::Matchers
     #
     # @param [Chef::Resource] resource
     #
-    # @return [Boolean]
+    # @return [true, false]
     #
     def has_create_action?
       [:create, :create_if_missing].any? { |action| resource.performed_action?(action) }
@@ -91,7 +91,7 @@ module ChefSpec::Matchers
     #
     # @param [Chef::Resource] resource
     #
-    # @return [Boolean]
+    # @return [true, false]
     #
     def matches_content?
       return true if @expected_content.nil?
