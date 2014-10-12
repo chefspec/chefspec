@@ -12,7 +12,7 @@ ChefSpec
 
 ChefSpec is a unit testing framework for testing Chef cookbooks. ChefSpec makes it easy to write examples and get fast feedback on cookbook changes without the need for virtual machines or cloud servers.
 
-ChefSpec runs your cookbook locally using Chef Solo without actually converging a node. This has two primary benefits:
+ChefSpec runs your cookbook(s) locally with Chef Solo without actually converging a node. This has two primary benefits:
 
 - It's really fast!
 - Your tests can vary node attributes, operating systems, and search results to assert behavior under varying conditions.
@@ -22,27 +22,17 @@ What people are saying
 ----------------------
 > I just wanted to drop you a line to say "HELL YES!" to ChefSpec. - [Joe Goggins](https://twitter.com/jgoggins)
 
-> OK chefspec is my new best friend. Delightful few hours working with it. - [Michael Ivey](https://twitter.com/ivey)
+> OK ChefSpec is my new best friend. Delightful few hours working with it. - [Michael Ivey](https://twitter.com/ivey)
 
 **Chat with us - [#chefspec](irc://irc.freenode.net/chefspec) on Freenode**
 
 
 Important Notes
 ---------------
-- **ChefSpec 3 requires Chef 11+! Please use the 2.x series for Chef 9 & 10 compatibility.**
-- **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version' documentation!**
+- **ChefSpec 3.0+ requires Ruby 1.9 or higher!**
+- **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version's documentation!**
 - **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding aruba test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).**
-- **ChefSpec 3.0 requires Ruby 1.9 or higher!**
-
-If you are migrating from ChefSpec v2.0.0, you should require the deprecations module after requiring `chefspec`:
-
-```ruby
-# spec_helper.rb
-require 'chefspec'
-require 'chefspec/deprecations'
-```
-
-After you have converted your specs, you can safely remove the deprecations module.
+- **ChefSpec aims to maintain compatability with the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
 
 
 Writing a Cookbook Example
@@ -61,7 +51,7 @@ the associated ChefSpec test might look like:
 require 'chefspec'
 
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'installs foo' do
     expect(chef_run).to install_package('foo')
@@ -105,23 +95,23 @@ RSpec.configure do |config|
 end
 ```
 
-Values specified at the initialization of the `Runner` merge and take precedence over the global settings:
+Values specified at the initialization of a "Runner" merge and take precedence over any global settings:
 
 ```ruby
 # Override only the operating system version (platform is still "ubuntu" from above)
-ChefSpec::Runner.new(version: '10.04')
+ChefSpec::SoloRunner.new(version: '10.04')
 
 # Use a different operating system platform and version
-ChefSpec::Runner.new(platform: 'centos', version: '5.10')
+ChefSpec::SoloRunner.new(platform: 'centos', version: '5.10')
 
 # Specify a different cookbook_path
-ChefSpec::Runner.new(cookbook_path: '/var/my/other/path', role_path: '/var/my/roles')
+ChefSpec::SoloRunner.new(cookbook_path: '/var/my/other/path', role_path: '/var/my/roles')
 
 # Add debug log output
-ChefSpec::Runner.new(log_level: :debug).converge(described_recipe)
+ChefSpec::SoloRunner.new(log_level: :debug).converge(described_recipe)
 ```
 
-**NOTE** You do not _need_ to specify a platform and version. However, some cookbooks may rely on [Ohai](http://github.com/opscode/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/customink/fauxhai).
+**NOTE** You do not _need_ to specify a platform and version to use ChefSpec. However, some cookbooks may rely on [Ohai](http://github.com/opscode/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/customink/fauxhai).
 
 ### Berkshelf
 If you are using Berkshelf, simply require `chefspec/berkshelf` in your `spec_helper` after requiring `chefspec`:
@@ -167,7 +157,7 @@ cookbook 'name_of_your_cookbook', path: '.'
 
 Running Specs
 -------------
-ChefSpec is actually a very large RSpec extension, so you can run your tests using the RSpec CLI:
+ChefSpec is actually an RSpec extension, so you can run your tests using the RSpec CLI:
 
 ```bash
 $ rspec
@@ -190,7 +180,7 @@ ChefSpec asserts that resource actions have been performed. In general, ChefSpec
 require 'chefspec'
 
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'does something' do
     expect(chef_run).to ACTION_RESOURCE(NAME)
@@ -212,7 +202,7 @@ Here's a more concrete example:
 require 'chefspec'
 
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'does something' do
     expect(chef_run).to install_package('apache2')
@@ -228,7 +218,7 @@ To test that a resource action is performed with a specific set of attributes, y
 require 'chefspec'
 
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'does something' do
     expect(chef_run).to modify_group('docker').with(members: ['vagrant'])
@@ -318,7 +308,7 @@ Node attribute can be set when creating the `Runner`. The initializer yields a b
 ```ruby
 describe 'example::default' do
   let(:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       node.set['cookbook']['attribute'] = 'hello'
     end.converge(described_recipe)
   end
@@ -331,7 +321,7 @@ ChefSpec provides mocked automatic Ohai data using [fauxhai](https://github.com/
 ```ruby
 describe 'example::default' do
   let(:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       node.automatic['memory']['total'] = '512kB'
     end.converge(described_recipe)
   end
@@ -344,7 +334,7 @@ To set an attribute within a specific test, set the attribute in the `it` block 
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new } # Notice we don't converge here
+  let(:chef_run) { ChefSpec::SoloRunner.new } # Notice we don't converge here
 
   it 'performs the action' do
     chef_run.node.set['cookbook']['attribute'] = 'hello'
@@ -355,19 +345,20 @@ describe 'example::default' do
 end
 ```
 
-Using Chef Zero
----------------
-By default, ChefSpec runs in Chef Solo mode. As of ChefSpec v3.1.0, you can ask ChefSpec to create an in-memory Chef Server during testing using [ChefZero](https://github.com/jkeiser/chef-zero). This is especially helpful if you need to support searching or data bags.
+Using a Chef Server
+-------------------
+All the examples thus far have used the `ChefSpec::SoloRunner`, which runs ChefSpec in Chef Solo mode. ChefSpec also includes the ability to create in-memory Chef Servers. This server can be populated with fake data and used to test search, data bags, and other "server-only" features.
 
-To use the ChefSpec server, simply require the module in your `spec_helper`:
+To use the ChefSpec server, simply replace `ChefSpec::SoloRunner` with `ChefSpec::ServerRunner`:
 
-```ruby
-# spec_helper.rb
-require 'chefspec'
-require 'chefspec/server'
+```diff
+describe 'example::default' do
+-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
++  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+end
 ```
 
-This will automatically create a Chef server, synchronize all the cookbooks in your `cookbook_path`, and wire all the internals of Chef together. Recipe calls to `search`, `data_bag` and `data_bag_item` will now query the ChefSpec server.
+This will automatically create a Chef Server, synchronize all the cookbooks in your `cookbook_path`, and wire all the internals of Chef together. Recipe calls to `search`, `data_bag` and `data_bag_item` will now query this ChefSpec server.
 
 ### DSL
 The ChefSpec server includes a collection of helpful DSL methods for populating data into the Chef Server.
@@ -375,58 +366,68 @@ The ChefSpec server includes a collection of helpful DSL methods for populating 
 Create a client:
 
 ```ruby
-ChefSpec::Server.create_client('my_client', { admin: true })
+ChefSpec::ServerRunner.new do |node, server|
+  server.create_client('my_client', { admin: true })
+end
 ```
 
 Create a data bag (and items):
 
 ```ruby
-ChefSpec::Server.create_data_bag('my_data_bag', {
-  'item_1' => {
-    'password' => 'abc123'
-  },
-  'item_2' => {
-    'password' => 'def456'
-  }
-})
+ChefSpec::ServerRunner.new do |node, server|
+  server.create_data_bag('my_data_bag', {
+    'item_1' => {
+      'password' => 'abc123'
+    },
+    'item_2' => {
+      'password' => 'def456'
+    }
+  })
+end
 ```
 
 Create an environment:
 
 ```ruby
-ChefSpec::Server.create_environment('my_environment', { description: '...' })
+ChefSpec::ServerRunner.new do |node, server|
+  server.create_environment('my_environment', { description: '...' })
+end
 ```
 
 Create a node:
 
 ```ruby
-ChefSpec::Server.create_node('my_node', { run_list: ['...'] })
+ChefSpec::ServerRunner.new do |node, server|
+  server.create_node('my_node', { run_list: ['...'] })
+end
 ```
 
-You may also be interested in the `stub_node` macro, which will create a new `Chef::Node` object and accepts the same parameters as the Chef Runner and a Fauxhai object:
+Note: the current "node" is always uploaded to the server.
+
+You may also use the `stub_node` macro, which will create a new `Chef::Node` object and accepts the same parameters as the Chef Runner and a Fauxhai object:
 
 ```ruby
 www = stub_node(platform: 'ubuntu', version: '12.04') do |node|
         node.set['attribute'] = 'value'
       end
 
-# `www` is now a local Chef::Node object you can use in your test. To push this
-# node to the server, call `create_node`:
+# `www` is now a local Chef::Node object you can use in your test. To publish
+# this node to the server, call `create_node`:
 
-ChefSpec::Server.create_node(www)
+ChefSpec::ServerRunner.new do |node, server|
+  server.create_node(www)
+end
 ```
 
 Create a role:
 
 ```ruby
-ChefSpec::Server.create_role('my_role', { default_attributes: {} })
-
-# The role now exists on the Chef Server, you can add it to a node's run_list
-# by adding it to the `converge` block:
-let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe, 'role[my_role]') }
+ChefSpec::ServerRunner.new do |node, server|
+  server.create_role('my_role', { default_attributes: {} })
+end
 ```
 
-**NOTE** The ChefSpec server is empty at the start of each example to avoid interdependent tests. You can use `before` blocks to load data before each test.
+**NOTE** The ChefSpec server is empty at the start of each example to avoid interdependent tests.
 
 
 Stubbing
@@ -456,7 +457,7 @@ Just like the error message says, you must stub the command result. This can be 
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new }
+  let(:chef_run) { ChefSpec::SoloRunner.new }
 
   before do
     stub_command("grep /tmp/foo.txt text").and_return(true)
@@ -466,7 +467,7 @@ end
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new }
+  let(:chef_run) { ChefSpec::SoloRunner.new }
 
   before do
     stub_command("grep /tmp/foo.txt text") { rand(50)%2 == 0 }
@@ -501,7 +502,7 @@ Just like the error message says, you must stub the result of the `data_bag` cal
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new }
+  let(:chef_run) { ChefSpec::SoloRunner.new }
 
   before do
     stub_data_bag('users').and_return([])
@@ -511,7 +512,7 @@ end
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new }
+  let(:chef_run) { ChefSpec::SoloRunner.new }
 
   before do
     stub_data_bag('users').and_return(['svargo', 'francis'])
@@ -551,7 +552,7 @@ Just like the error message says, you must stub the search result. This can be d
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new }
+  let(:chef_run) { ChefSpec::SoloRunner.new }
 
   before do
     stub_search(:node, 'name:hello').and_return([])
@@ -561,13 +562,14 @@ end
 
 ```ruby
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::Runner.new }
+  let(:chef_run) { ChefSpec::SoloRunner.new }
 
   before do
     stub_search(:node, 'name:hello') { (ruby_code) }
   end
 end
 ```
+
 
 Reporting
 ---------
@@ -665,7 +667,7 @@ If you want to mock out `node.chef_environment`, you'll need to use RSpec mocks/
 
 ```ruby
 let(:chef_run) do
-  ChefSpec::Runner.new do |node|
+  ChefSpec::SoloRunner.new do |node|
     # Create a new environment (you could also use a different :let block or :before block)
     env = Chef::Environment.new
     env.name 'staging'
@@ -694,7 +696,9 @@ In order to run the actions exposed by your LWRP, you have to explicitly tell th
 require 'chefspec'
 
 describe 'foo::default' do
-  let(:chef_run) { ChefSpec::Runner.new(step_into: ['my_lwrp']).converge('foo::default') }
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new(step_into: ['my_lwrp']).converge('foo::default')
+  end
 
   it 'installs the foo package through my_lwrp' do
     expect(chef_run).to install_package('foo')
@@ -799,13 +803,13 @@ ChefSpec also provides a helper method to define a method on the Chef runner for
 
 ```ruby
 # matchers.rb
-ChefSpec::Runner.define_runner_method :my_custom_resource
+ChefSpec.define_matcher :my_custom_resource
 ```
 
 And then in your spec suite, you can obtain the custom resource for assertions:
 
 ```ruby
-let(:chef_run) { ChefSpec::Runner.new('...') }
+let(:chef_run) { ChefSpec::SoloRunner.converge('...') }
 
 it 'notifies the thing' do
   custom = chef_run.my_custom_resource('name')
@@ -845,7 +849,7 @@ Relevant File Content:
 This output is automatically silenced when using RSpec's `raise_error` matcher:
 
 ```ruby
-let(:chef_run) { ChefSpec::Runner.new.converge('cookbook::recipe') }
+let(:chef_run) { ChefSpec::SoloRunner.converge('cookbook::recipe') }
 
 it 'raises an error' do
   expect {
@@ -857,7 +861,7 @@ end
 You can also assert that a particular error was raised. If the error matches the given type, the output is suppressed. If not, the test fails and the entire stack trace is presented.
 
 ```ruby
-let(:chef_run) { ChefSpec::Runner.new.converge('cookbook::recipe') }
+let(:chef_run) { ChefSpec::SoloRunner.converge('cookbook::recipe') }
 
 it 'raises an error' do
   expect {
@@ -868,7 +872,7 @@ end
 
 Testing Roles
 -------------
-Even though ChefSpec is cookbook-centric, you can still converge multiple recipes and roles in a single `ChefSpec::Runner` instance. Given a cookbook "bacon" with a default recipe:
+Even though ChefSpec is cookbook-centric, you can still converge multiple recipes and roles in a single `ChefSpec::SoloRunner` instance. Given a cookbook "bacon" with a default recipe:
 
 ```ruby
 # cookbooks/bacon/recipes/default.rb
@@ -896,10 +900,10 @@ run_list([
 ])
 ```
 
-You can test that the role is appropriately applied by telling the `ChefSpec::Runner` to converge on the _role_ instead of a recipe:
+You can test that the role is appropriately applied by telling the `ChefSpec::SoloRunner` to converge on the _role_ instead of a recipe:
 
 ```ruby
-let(:chef_run) { ChefSpec::Runner.new.converge('role[breakfast]') }
+let(:chef_run) { ChefSpec::SoloRunner.converge('role[breakfast]') }
 ```
 
 Assert that the run_list is properly expanded:
@@ -923,7 +927,7 @@ end
 
 # - OR -
 
-ChefSpec::Runner.new(role_path: '/var/my/roles') # local setting
+ChefSpec::SoloRunner.new(role_path: '/var/my/roles') # local setting
 ```
 
 
@@ -931,21 +935,14 @@ Faster Specs
 ------------
 ChefSpec aims to provide the easiest and simplest path for new users to write RSpec examples for Chef cookbooks. In doing so, it makes some sacrifices in terms of speed and agility of execution. In other words, ChefSpec favors "speed to develop" over "speed to execute". Many of these decisions are directly related to the way Chef dynamically loads resources at runtime.
 
-If you understand how RSpec works and would like to see some significant speed improvements in your specs, you can use the `ChefSpec::Cacher` module inspired by [Juri Timošin](https://github.com/DracoAter). Just require the cacher module in your spec helper.
-
-```ruby
-# spec_helper.rb
-require 'chefspec/cacher'
-```
-
-Next, convert all your `let` blocks to `cached`:
+If you understand how RSpec works and would like to see some significant speed improvements in your specs, you can use the `ChefSpec::Cacher` module inspired by [Juri Timošin](https://github.com/DracoAter). Simply convert all your `let` blocks to `cached`:
 
 ```ruby
 # before
-let(:chef_run) { ChefSpec::Runner.new }
+let(:chef_run) { ChefSpec::SoloRunner.new }
 
 # after
-cached(:chef_run) { ChefSpec::Runner.new }
+cached(:chef_run) { ChefSpec::SoloRunner.new }
 ```
 
 Everything else should work the same. Be advised, as the method name suggests, this will cache the results of your Chef Client Run for the **entire RSpec example**. This makes stubbing more of a challenge, since the node is already converged. For more information, please see [Juri Timošin's blog post on faster specs](http://dracoater.blogspot.com/2013/12/testing-chef-cookbooks-part-25-speeding.html) as well as the discussion in [#275](https://github.com/sethvargo/chefspec/issues/275).
