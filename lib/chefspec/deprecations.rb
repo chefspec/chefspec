@@ -34,14 +34,17 @@ module ChefSpec
       ChefSpec::SoloRuner.new(*args, &block)
     end
   end
+
+  class Server
+    def self.method_missing(m, *args, &block)
+      deprecated "`ChefSpec::Server.#{m}' is deprecated. There is no longer" \
+        " a global Chef Server instance. Please use a ChefSpec::ServerRunner" \
+        " instead. More documentation can be found in the ChefSpec README."
+      raise NoConversionError
+    end
+  end
 end
 
 module ChefSpec::Error
-  class NoConversionError < ChefSpecError
-    def initialize(matcher)
-      super "I cannot convert `#{matcher}` to use a new matcher format!" \
-        " Please see the ChefSpec documentation and CHANGELOG for details" \
-        " on converting this matcher. Sorry :("
-    end
-  end
+  class NoConversionError < ChefSpecError;  end
 end
