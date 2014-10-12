@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module LogMatchers
-    ChefSpec::Runner.define_runner_method :log
+    ChefSpec.define_matcher :log
 
     #
     # Assert that a +log+ resource exists in the Chef run with the

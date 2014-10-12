@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'portage_package::purge' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'purges a portage_package with an explicit action' do
     expect(chef_run).to purge_portage_package('explicit_action')

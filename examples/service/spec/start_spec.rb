@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'service::start' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'starts a service with an explicit action' do
     expect(chef_run).to start_service('explicit_action')

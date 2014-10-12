@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module YumPackageMatchers
-    ChefSpec::Runner.define_runner_method :yum_package
+    ChefSpec.define_matcher :yum_package
 
     #
     # Assert that a +yum_package+ resource exists in the Chef run with the

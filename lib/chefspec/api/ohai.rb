@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module OhaiMatchers
-    ChefSpec::Runner.define_runner_method :ohai
+    ChefSpec.define_matcher :ohai
 
     #
     # Assert that an +ohai+ resource exists in the Chef run with the

@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module RemoteDirectoryMatchers
-    ChefSpec::Runner.define_runner_method :remote_directory
+    ChefSpec.define_matcher :remote_directory
 
     #
     # Assert that a +remote_directory+ resource exists in the Chef run with the

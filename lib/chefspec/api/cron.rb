@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 0.7.0
   module CronMatchers
-    ChefSpec::Runner.define_runner_method :cron
+    ChefSpec.define_matcher :cron
 
     #
     # Assert that a +cron+ resource exists in the Chef run with the

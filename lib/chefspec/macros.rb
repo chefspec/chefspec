@@ -34,8 +34,8 @@ module ChefSpec
     #
     # The value of +described_recipe+ is "my_cookbook::my_recipe".
     #
-    # @example Using +described_recipe+ in the +ChefSpec::Runner+
-    #   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+    # @example Using +described_recipe+ in the +ChefSpec::SoloRunner+
+    #   let(:chef_run) { ChefSpec::SoloRunner.new.converge(described_recipe) }
     #
     #
     # @return [String]

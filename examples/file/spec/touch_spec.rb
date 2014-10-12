@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'file::touch' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'touches a file with an explicit action' do
     expect(chef_run).to touch_file('/tmp/explicit_action')

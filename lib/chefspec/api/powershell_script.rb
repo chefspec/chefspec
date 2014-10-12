@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module PowershellScriptMatchers
-    ChefSpec::Runner.define_runner_method :powershell_script
+    ChefSpec.define_matcher :powershell_script
 
     #
     # Assert that a +powershell_script+ resource exists in the Chef run with the

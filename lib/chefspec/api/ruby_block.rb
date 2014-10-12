@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 0.5.0
   module RubyBlockMatchers
-    ChefSpec::Runner.define_runner_method :ruby_block
+    ChefSpec.define_matcher :ruby_block
 
     #
     # Assert that a +ruby_block+ resource exists in the Chef run with the

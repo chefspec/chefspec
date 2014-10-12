@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module AptPackageMatchers
-    ChefSpec::Runner.define_runner_method :apt_package
+    ChefSpec.define_matcher :apt_package
 
     #
     # Assert that an +apt_package+ resource exists in the Chef run with the

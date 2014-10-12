@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 0.9.0
   module EnvMatchers
-    ChefSpec::Runner.define_runner_method :env
+    ChefSpec.define_matcher :env
 
     #
     # Assert that an +env+ resource exists in the Chef run with the

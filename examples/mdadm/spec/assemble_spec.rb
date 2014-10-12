@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'mdadm::assemble' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'assembles a mdadm with an explicit action' do
     expect(chef_run).to assemble_mdadm('explicit_action')

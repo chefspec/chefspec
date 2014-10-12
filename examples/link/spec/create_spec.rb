@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'link::create' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'creates a link with the default action' do
     expect(chef_run).to create_link('/tmp/default_action')

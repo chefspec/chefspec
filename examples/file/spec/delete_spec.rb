@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'file::delete' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'deletes a file with an explicit action' do
     expect(chef_run).to delete_file('/tmp/explicit_action')

@@ -1,5 +1,5 @@
 if defined?(ChefSpec)
-  ChefSpec::Runner.define_runner_method :custom_matcher_thing
+  ChefSpec.define_matcher :custom_matcher_thing
 
   #
   # When defining a custom LWRP matcher, you should always add some

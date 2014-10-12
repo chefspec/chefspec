@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module PortagePackageMatchers
-    ChefSpec::Runner.define_runner_method :portage_package
+    ChefSpec.define_matcher :portage_package
 
     #
     # Assert that an +portage_package+ resource exists in the Chef run with the

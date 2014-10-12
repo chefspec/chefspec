@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'notifications::chained' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
   let(:template) { chef_run.template('template') }
   let(:service)  { chef_run.service('service') }
 

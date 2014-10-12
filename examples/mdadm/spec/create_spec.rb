@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'mdadm::create' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'creates a mdadm with the default action' do
     expect(chef_run).to create_mdadm('default_action')

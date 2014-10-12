@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 1.0.0
   module RemoteFileMatchers
-    ChefSpec::Runner.define_runner_method :remote_file
+    ChefSpec.define_matcher :remote_file
 
     #
     # Assert that a +remote_file+ resource exists in the Chef run with the

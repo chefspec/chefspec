@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'attributes::default' do
   let(:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       node.automatic['ipaddress'] = '500.500.500.500' # Intentionally not a real IP
       node.set['attributes']['message'] = 'The new message is here'
     end.converge(described_recipe)

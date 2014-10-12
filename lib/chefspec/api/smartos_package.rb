@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module SmartosPackageMatchers
-    ChefSpec::Runner.define_runner_method :smartos_package
+    ChefSpec.define_matcher :smartos_package
 
     #
     # Assert that a +smartos_package+ resource exists in the Chef run with the

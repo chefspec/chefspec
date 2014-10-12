@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module RpmPackageMatchers
-    ChefSpec::Runner.define_runner_method :rpm_package
+    ChefSpec.define_matcher :rpm_package
 
     #
     # Assert that a +rpm_package+ resource exists in the Chef run with the

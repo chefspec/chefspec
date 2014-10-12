@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'stub_search::default' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   context 'when the search is not stubbed' do
     it 'raises an exception' do

@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'dpkg_package::purge' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'purges a dpkg_package with an explicit action' do
     expect(chef_run).to purge_dpkg_package('explicit_action')

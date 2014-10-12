@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 0.0.1
   module DirectoryMatchers
-    ChefSpec::Runner.define_runner_method :directory
+    ChefSpec.define_matcher :directory
 
     #
     # Assert that a +directory+ resource exists in the Chef run with the

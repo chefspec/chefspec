@@ -1,7 +1,10 @@
 require 'chefspec'
 
 describe 'multiple_actions::sequential' do
-  let(:chef_run) { ChefSpec::Runner.new(log_level: :fatal).converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new(log_level: :fatal)
+      .converge(described_recipe)
+  end
 
   it 'executes both actions' do
     expect(chef_run).to start_service('resource')

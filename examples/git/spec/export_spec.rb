@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'git::export' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'exports a git with an explicit action' do
     expect(chef_run).to export_git('/tmp/explicit_action')

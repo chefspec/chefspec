@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'git::sync' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'syncs a git with the default action' do
     expect(chef_run).to sync_git('/tmp/default_action')

@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 0.3.0
   module UserMatchers
-    ChefSpec::Runner.define_runner_method :user
+    ChefSpec.define_matcher :user
 
     #
     # Assert that a +user+ resource exists in the Chef run with the

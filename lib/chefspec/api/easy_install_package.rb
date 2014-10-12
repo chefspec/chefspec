@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module EasyInstallPackageMatchers
-    ChefSpec::Runner.define_runner_method :easy_install_package
+    ChefSpec.define_matcher :easy_install_package
 
     #
     # Assert that an +easy_install_package+ resource exists in the Chef run

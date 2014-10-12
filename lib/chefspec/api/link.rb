@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 1.1.0
   module LinkMatchers
-    ChefSpec::Runner.define_runner_method :link
+    ChefSpec.define_matcher :link
 
     #
     # Assert that a +link+ resource exists in the Chef run with the

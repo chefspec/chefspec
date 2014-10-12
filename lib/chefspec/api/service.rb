@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 0.0.1
   module ServiceMatchers
-    ChefSpec::Runner.define_runner_method :service
+    ChefSpec.define_matcher :service
 
     #
     # Assert that a +service+ resource exists in the Chef run with the

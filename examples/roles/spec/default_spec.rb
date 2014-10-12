@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'roles' do
-  let(:chef_run) { ChefSpec::Runner.new.converge('role[role]') }
+  let(:chef_run) { ChefSpec::SoloRunner.converge('role[role]') }
 
   it 'expands the run_list' do
     expect(chef_run).to include_recipe('roles::default')

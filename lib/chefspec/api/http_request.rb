@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module HttpRequestMatchers
-    ChefSpec::Runner.define_runner_method :http_request
+    ChefSpec.define_matcher :http_request
 
     #
     # Assert that an +http_request+ resource exists in the Chef run with the

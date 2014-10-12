@@ -1,5 +1,3 @@
-require_relative 'runner'
-
 module ChefSpec
   module API
     extend self

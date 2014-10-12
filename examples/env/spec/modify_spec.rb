@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'env::modify' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'modifies a env with an explicit action' do
     expect(chef_run).to modify_env('explicit_action')

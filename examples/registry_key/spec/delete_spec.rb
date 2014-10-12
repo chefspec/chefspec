@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'registry_key::delete' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'deletes a registry_key with an explicit action' do
     expect(chef_run).to delete_registry_key('HKEY_LOCAL_MACHINE\explicit_action')

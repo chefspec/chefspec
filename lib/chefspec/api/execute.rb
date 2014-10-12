@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 0.0.1
   module ExecuteMatchers
-    ChefSpec::Runner.define_runner_method :execute
+    ChefSpec.define_matcher :execute
 
     #
     # Assert that an +execute+ resource exists in the Chef run with the

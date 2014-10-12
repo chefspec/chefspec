@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module RouteMatchers
-    ChefSpec::Runner.define_runner_method :route
+    ChefSpec.define_matcher :route
 
     #
     # Assert that a +route+ resource exists in the Chef run with the

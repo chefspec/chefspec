@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'ohai::reload' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'reloads a ohai with the default action' do
     expect(chef_run).to reload_ohai('default_action')

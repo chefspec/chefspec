@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module DpkgPackageMatchers
-    ChefSpec::Runner.define_runner_method :dpkg_package
+    ChefSpec.define_matcher :dpkg_package
 
     #
     # Assert that a +dpkg_package+ resource exists in the Chef run with the

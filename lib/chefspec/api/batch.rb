@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module BatchMatchers
-    ChefSpec::Runner.define_runner_method :batch
+    ChefSpec.define_matcher :batch
 
     #
     # Assert that a +batch+ resource exists in the Chef run with the

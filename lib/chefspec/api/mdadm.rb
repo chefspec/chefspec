@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module MdadmMatchers
-    ChefSpec::Runner.define_runner_method :mdadm
+    ChefSpec.define_matcher :mdadm
 
     #
     # Assert that a +mdadm+ resource exists in the Chef run with the

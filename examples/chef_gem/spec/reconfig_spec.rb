@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'chef_gem::reconfig' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'reconfigs a chef_gem with an explicit action' do
     expect(chef_run).to reconfig_chef_gem('explicit_action')

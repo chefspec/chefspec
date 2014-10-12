@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module DeployMatchers
-    ChefSpec::Runner.define_runner_method :deploy
+    ChefSpec.define_matcher :deploy
 
     #
     # Assert that a +deploy+ resource exists in the Chef run with the

@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'smartos_package::install' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'installs a smartos_package with the default action' do
     expect(chef_run).to install_smartos_package('default_action')

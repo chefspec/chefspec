@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 0.0.1
   module CookbookFileMatchers
-    ChefSpec::Runner.define_runner_method :cookbook_file
+    ChefSpec.define_matcher :cookbook_file
 
     #
     # Assert that a +cookbook_file+ resource exists in the Chef run with the

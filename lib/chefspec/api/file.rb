@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 0.0.1
   module FileMatchers
-    ChefSpec::Runner.define_runner_method :file
+    ChefSpec.define_matcher :file
 
     #
     # Assert that a +file+ resource exists in the Chef run with the

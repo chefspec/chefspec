@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'mount::mount' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'mounts a mount with the default action' do
     expect(chef_run).to mount_mount('/tmp/default_action')

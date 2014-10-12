@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'http_request::head' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'heads a http_request with an explicit action' do
     expect(chef_run).to head_http_request('explicit_action')

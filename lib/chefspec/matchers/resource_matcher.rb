@@ -153,7 +153,7 @@ module ChefSpec::Matchers
     # Find the resource in the Chef run by the given class name and
     # resource identity/name.
     #
-    # @see ChefSpec::Runner#find_resource
+    # @see ChefSpec::SoloRunner#find_resource
     #
     # @return [Chef::Resource, nil]
     #

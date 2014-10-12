@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 1.0.0
   module GroupMatchers
-    ChefSpec::Runner.define_runner_method :group
+    ChefSpec.define_matcher :group
 
     #
     # Assert that a +group+ resource exists in the Chef run with the

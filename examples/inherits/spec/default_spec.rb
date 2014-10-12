@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'inherits::default' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'allows use of the `inherits` attribute even on non-Windows' do
     expect {

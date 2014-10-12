@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'remote_file::create_if_missing' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'creates a remote_file with an explicit action' do
     expect(chef_run).to create_remote_file_if_missing('/tmp/explicit_action')

@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'pacman_package::purge' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'purges a pacman_package with an explicit action' do
     expect(chef_run).to purge_pacman_package('explicit_action')

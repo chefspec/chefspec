@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'freebsd_package::remove' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'removes a freebsd_package with an explicit action' do
     expect(chef_run).to remove_freebsd_package('explicit_action')

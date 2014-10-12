@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module FreebsdPackageMatchers
-    ChefSpec::Runner.define_runner_method :freebsd_package
+    ChefSpec.define_matcher :freebsd_package
 
     #
     # Assert that a +freebsd_package+ resource exists in the Chef run with the

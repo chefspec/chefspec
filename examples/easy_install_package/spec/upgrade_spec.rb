@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'easy_install_package::upgrade' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'upgrades a easy_install_package with an explicit action' do
     expect(chef_run).to upgrade_easy_install_package('explicit_action')

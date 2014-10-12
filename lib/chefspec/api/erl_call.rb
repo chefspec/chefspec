@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module ErlCallMatchers
-    ChefSpec::Runner.define_runner_method :erl_call
+    ChefSpec.define_matcher :erl_call
 
     #
     # Assert that an +erl_call+ resource exists in the Chef run with the

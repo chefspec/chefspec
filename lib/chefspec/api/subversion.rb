@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module SubversionMatchers
-    ChefSpec::Runner.define_runner_method :subversion
+    ChefSpec.define_matcher :subversion
 
     #
     # Assert that a +subversion+ resource exists in the Chef run with the

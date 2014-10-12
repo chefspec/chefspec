@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 0.0.1
   module TemplateMatchers
-    ChefSpec::Runner.define_runner_method :template
+    ChefSpec.define_matcher :template
 
     #
     # Assert that a +template+ resource exists in the Chef run with the

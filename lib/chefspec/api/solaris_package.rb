@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module SolarisPackageMatchers
-    ChefSpec::Runner.define_runner_method :solaris_package
+    ChefSpec.define_matcher :solaris_package
 
     #
     # Assert that a +solaris_package+ resource exists in the Chef run with the

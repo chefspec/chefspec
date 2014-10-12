@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'script::run_python' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'runs a python script with the default action' do
     expect(chef_run).to run_python('default_action')

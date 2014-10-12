@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module GitMatchers
-    ChefSpec::Runner.define_runner_method :git
+    ChefSpec.define_matcher :git
 
     #
     # Assert that a +git+ resource exists in the Chef run with the

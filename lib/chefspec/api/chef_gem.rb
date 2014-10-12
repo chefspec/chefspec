@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 0.8.0
   module ChefGemMatchers
-    ChefSpec::Runner.define_runner_method :chef_gem
+    ChefSpec.define_matcher :chef_gem
 
     #
     # Assert that a +chef_gem+ resource exists in the Chef run with the

@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'registry_key::create_if_missing' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'creates a registry_key with an explicit action' do
     expect(chef_run).to create_registry_key_if_missing('HKEY_LOCAL_MACHINE\explicit_action')

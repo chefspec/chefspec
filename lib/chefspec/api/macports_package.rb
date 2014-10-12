@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module MacportsPackageMatchers
-    ChefSpec::Runner.define_runner_method :macports_package
+    ChefSpec.define_matcher :macports_package
 
     #
     # Assert that a +macports_package+ resource exists in the Chef run with the

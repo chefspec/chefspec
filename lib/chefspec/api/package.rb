@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 0.0.1
   module PackageMatchers
-    ChefSpec::Runner.define_runner_method :package
+    ChefSpec.define_matcher :package
 
     #
     # Assert that an +package+ resource exists in the Chef run with the

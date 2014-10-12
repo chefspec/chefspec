@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module IpsPackageMatchers
-    ChefSpec::Runner.define_runner_method :ips_package
+    ChefSpec.define_matcher :ips_package
 
     #
     # Assert that an +ips_package+ resource exists in the Chef run with the

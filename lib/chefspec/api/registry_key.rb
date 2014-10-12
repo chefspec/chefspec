@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module RegistryKeyMatchers
-    ChefSpec::Runner.define_runner_method :registry_key
+    ChefSpec.define_matcher :registry_key
 
     #
     # Assert that a +registry_key+ resource exists in the Chef run with the

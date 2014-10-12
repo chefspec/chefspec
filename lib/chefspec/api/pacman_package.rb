@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module PacmanPackageMatchers
-    ChefSpec::Runner.define_runner_method :pacman_package
+    ChefSpec.define_matcher :pacman_package
 
     #
     # Assert that an +pacman_package+ resource exists in the Chef run with the

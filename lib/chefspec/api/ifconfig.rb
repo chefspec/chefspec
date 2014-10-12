@@ -1,7 +1,7 @@
 module ChefSpec::API
   # @since 3.0.0
   module IfconfigMatchers
-    ChefSpec::Runner.define_runner_method :ifconfig
+    ChefSpec.define_matcher :ifconfig
 
     #
     # Assert that an +ifconfig+ resource exists in the Chef run with the

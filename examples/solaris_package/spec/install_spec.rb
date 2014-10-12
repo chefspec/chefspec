@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'solaris_package::install' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'installs a solaris_package with the default action' do
     expect(chef_run).to install_solaris_package('default_action')

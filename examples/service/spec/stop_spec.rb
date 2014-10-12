@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'service::stop' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'stops a service with an explicit action' do
     expect(chef_run).to stop_service('explicit_action')

@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'http_request::get' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'gets a http_request with the default action' do
     expect(chef_run).to get_http_request('default_action')

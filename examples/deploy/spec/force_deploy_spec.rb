@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'deploy::force_deploy' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'force deploys a deploy with an explicit action' do
     expect(chef_run).to force_deploy_deploy('/tmp/explicit_action')

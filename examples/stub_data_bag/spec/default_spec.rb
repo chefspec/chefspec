@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'stub_data_bag::default' do
-  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   context 'when the data_bag is not stubbed' do
     it 'raises an exception' do
