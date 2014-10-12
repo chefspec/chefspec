@@ -5,24 +5,21 @@ require 'chef/providers'
 require 'chef/resources'
 
 module ChefSpec
-  class Runner
-    include ChefSpec::Normalize
-
+  class SoloRunner
     #
-    # Defines a new runner method on the +ChefSpec::Runner+.
+    # Handy class method for just converging a runner if you do not care about
+    # initializing the runner with custom options.
     #
-    # @param [Symbol] resource_name
-    #   the name of the resource to define a method
+    # @example
+    #   ChefSpec::SoloRunner.converge('cookbook::recipe')
     #
-    # @return [self]
-    #
-    def self.define_runner_method(resource_name)
-      define_method(resource_name) do |identity|
-        find_resource(resource_name, identity)
+    def self.converge(*recipe_names)
+      new.tap do |instance|
+        instance.converge(*recipe_names)
       end
-
-      self
     end
+
+    include ChefSpec::Normalize
 
     # @return [Hash]
     attr_reader :options
@@ -31,19 +28,19 @@ module ChefSpec
     attr_reader :run_context
 
     #
-    # Instantiate a new Runner to run examples with.
+    # Instantiate a new SoloRunner to run examples with.
     #
     # @example Instantiate a new Runner
-    #   ChefSpec::Runner.new
+    #   ChefSpec::SoloRunner.new
     #
     # @example Specifying the platform and version
-    #   ChefSpec::Runner.new(platform: 'ubuntu', version: '12.04')
+    #   ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04')
     #
     # @example Specifying the cookbook path
-    #   ChefSpec::Runner.new(cookbook_path: ['/cookbooks'])
+    #   ChefSpec::SoloRunner.new(cookbook_path: ['/cookbooks'])
     #
     # @example Specifying the log level
-    #   ChefSpec::Runner.new(log_level: :info)
+    #   ChefSpec::SoloRunner.new(log_level: :info)
     #
     #
     # @param [Hash] options
@@ -62,35 +59,32 @@ module ChefSpec
     #
     # @yield [node] Configuration block for Chef::Node
     #
-    def initialize(options = {}, &block)
-      @options = options = {
-        cookbook_path: RSpec.configuration.cookbook_path || calling_cookbook_path(caller),
-        role_path:     RSpec.configuration.role_path || default_role_path,
-        log_level:     RSpec.configuration.log_level,
-        path:          RSpec.configuration.path,
-        platform:      RSpec.configuration.platform,
-        version:       RSpec.configuration.version,
-      }.merge(options)
+    def initialize(options = {})
+      @options = with_default_options(options)
 
-      Chef::Log.level = options[:log_level]
+      Chef::Log.level = @options[:log_level]
 
       Chef::Config.reset!
       Chef::Config.formatters.clear
       Chef::Config.add_formatter('chefspec')
-      Chef::Config[:cache_type]     = 'Memory'
-      Chef::Config[:client_key]     = nil
-      Chef::Config[:cookbook_path]  = Array(options[:cookbook_path])
-      Chef::Config[:no_lazy_load]   = true
-      Chef::Config[:role_path]      = Array(options[:role_path])
-      Chef::Config[:force_logger]   = true
-      Chef::Config[:solo]           = true
+      Chef::Config[:cache_type]      = 'Memory'
+      Chef::Config[:client_key]      = nil
+      Chef::Config[:client_name]     = nil
+      Chef::Config[:node_name]       = nil
+      Chef::Config[:file_cache_path] = file_cache_path
+      Chef::Config[:cookbook_path]   = Array(@options[:cookbook_path])
+      Chef::Config[:no_lazy_load]    = true
+      Chef::Config[:role_path]       = Array(@options[:role_path])
+      Chef::Config[:force_logger]    = true
+      Chef::Config[:solo]            = true
 
       yield node if block_given?
     end
 
     #
     # Execute the given `run_list` on the node, without actually converging
-    # the node.
+    # the node. Each time {#converge} is called, the `run_list` is reset to the
+    # new value (it is **not** additive).
     #
     # @example Converging a single recipe
     #   chef_run.converge('example::default')
@@ -102,7 +96,7 @@ module ChefSpec
     # @param [Array] recipe_names
     #   The names of the recipe or recipes to converge
     #
-    # @return [ChefSpec::Runner]
+    # @return [ChefSpec::SoloRunner]
     #   A reference to the calling Runner (for chaining purposes)
     #
     def converge(*recipe_names)
@@ -203,7 +197,7 @@ module ChefSpec
     # Boolean method to determine the current phase of the Chef run (compiling
     # or converging)
     #
-    # @return [Boolean]
+    # @return [true, false]
     #
     def compiling?
       !@converging
@@ -244,8 +238,7 @@ module ChefSpec
     # may change between versions of this gem.
     #
     def to_s
-      return "chef_run: #{node.run_list.to_s}" unless node.run_list.empty?
-      'chef_run'
+      "#<#{self.class.name} run_list: [#{node.run_list}]>"
     end
 
     #
@@ -254,10 +247,66 @@ module ChefSpec
     # @return [String]
     #
     def inspect
-      "#<#{self.class} options: #{options.inspect}, run_list: '#{node.run_list.to_s}'>"
+      "#<#{self.class.name}" \
+      " options: #{options.inspect}," \
+      " run_list: [#{node.run_list}]>"
+    end
+
+    #
+    # Respond to custom matchers defined by the user.
+    #
+    def method_missing(m, *args, &block)
+      if block = ChefSpec.matchers[resource_name(m.to_sym)]
+        instance_exec(args.first, &block)
+      else
+        super
+      end
+    end
+
+    #
+    # Inform Ruby that we respond to methods that are defined as custom
+    # matchers.
+    #
+    def respond_to_missing?(m, include_private = false)
+      ChefSpec.matchers.key?(m.to_sym) || super
     end
 
     private
+
+    #
+    # The path to cache files on disk. This value is created using
+    # {Dir.mktmpdir}. The method adds a {Kernel.at_exit} handler to ensure the
+    # temporary directory is deleted when the system exits.
+    #
+    # **This method creates a new temporary directory on each call!** As such,
+    # you should cache the result to a variable inside you system.
+    #
+    def file_cache_path
+      path = Dir.mktmpdir
+      at_exit { FileUtils.rm_rf(path) }
+      path
+    end
+
+    #
+    # Set the default options, with the given options taking precedence.
+    #
+    # @param [Hash] options
+    #   the list of options to take precedence
+    #
+    # @return [Hash] options
+    #
+    def with_default_options(options)
+      config = RSpec.configuration
+
+      {
+        cookbook_path: config.cookbook_path || calling_cookbook_path(caller),
+        role_path:     config.role_path || default_role_path,
+        log_level:     config.log_level,
+        path:          config.path,
+        platform:      config.platform,
+        version:       config.version,
+      }.merge(options)
+    end
 
     #
     # The inferred path from the calling spec.

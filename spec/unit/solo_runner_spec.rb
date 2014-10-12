@@ -1,30 +1,33 @@
 require 'spec_helper'
 
-describe ChefSpec::Runner do
+describe ChefSpec::SoloRunner do
   before do
-    allow_any_instance_of(ChefSpec::Runner).to receive(:dry_run?).and_return(true)
+    allow_any_instance_of(ChefSpec::SoloRunner)
+      .to receive(:dry_run?)
+      .and_return(true)
   end
 
   describe '#initialize' do
-    subject {} # need to explicitly control the creation
-    let(:windows_caller_stack) {
-      ["C:/cookbooks/Temp/spec/test_spec.rb:11:in `block (2 levels) in <top (required)>'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example.rb:114:in `instance_eval'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example.rb:114:in `block in run'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example.rb:254:in `with_around_each_hooks'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example.rb:111:in `run'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example_group.rb:390:in `block in run_examples'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example_group.rb:386:in `map'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example_group.rb:386:in `run_examples'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example_group.rb:371:in `run'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/command_line.rb:28:in `block (2 levels) in run'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/command_line.rb:28:in `map'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/command_line.rb:28:in `block in run'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/reporter.rb:58:in `report'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/command_line.rb:25:in `run'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/runner.rb:80:in `run'",
-       "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/runner.rb:17:in `block in autorun'"]
-    }
+    let(:windows_caller_stack) do
+      [
+        "C:/cookbooks/Temp/spec/test_spec.rb:11:in `block (2 levels) in <top (required)>'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example.rb:114:in `instance_eval'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example.rb:114:in `block in run'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example.rb:254:in `with_around_each_hooks'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example.rb:111:in `run'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example_group.rb:390:in `block in run_examples'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example_group.rb:386:in `map'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example_group.rb:386:in `run_examples'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/example_group.rb:371:in `run'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/command_line.rb:28:in `block (2 levels) in run'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/command_line.rb:28:in `map'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/command_line.rb:28:in `block in run'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/reporter.rb:58:in `report'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/command_line.rb:25:in `run'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/runner.rb:80:in `run'",
+        "C:/Ruby193/lib/ruby/gems/1.9.1/gems/rspec-core-2.14.8/lib/rspec/core/runner.rb:17:in `block in autorun'",
+      ]
+    end
 
     it 'defaults the log level to :warn' do
       described_class.new
@@ -136,20 +139,23 @@ describe ChefSpec::Runner do
 
   describe '#to_s' do
     it 'overrides the default string representation to something readable' do
-      expect(subject.converge('apache2::default').to_s).to eq('chef_run: recipe[apache2::default]')
+      expect(subject.converge('apache2::default').to_s)
+        .to eq('#<ChefSpec::SoloRunner run_list: [recipe[apache2::default]]>')
     end
 
     it 'is ok when a convergence has not yet taken place' do
-      expect(subject.to_s).to eq('chef_run')
+      expect(subject.to_s).to eq('#<ChefSpec::SoloRunner run_list: []>')
     end
 
     it 'includes the entire run_list' do
-      expect(subject.converge('apache2::default', 'apache2::mod_ssl').to_s).to eq('chef_run: recipe[apache2::default], recipe[apache2::mod_ssl]')
+      expect(subject.converge('apache2::default', 'apache2::mod_ssl').to_s)
+        .to eq('#<ChefSpec::SoloRunner run_list: [recipe[apache2::default], recipe[apache2::mod_ssl]]>')
     end
 
     it 'has the run_list only for the last convergence' do
       ['mysql::client', 'mysql::server'].each { |recipe| subject.converge(recipe) }
-      expect(subject.to_s).to eq('chef_run: recipe[mysql::server]')
+      expect(subject.to_s)
+        .to eq('#<ChefSpec::SoloRunner run_list: [recipe[mysql::server]]>')
     end
   end
 end
