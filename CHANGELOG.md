@@ -1,6 +1,25 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 4.1.0 (October 12, 2014)
+Bugfixes:
+  - Bump the minimum required version of Chef to 11.14
+  - Filter resources that have no source line in the coverage report - this is related to a bug in Chef where, when cloning a resource, both the clone and the original resource lose their metadata
+
+Improvements:
+  - Allow multiple instances of a Chef Server instance
+  - Separate ChefSpec::Runner into `ChefSpec::SoloRunner` and `ChefSpec::ServerRunner`
+  - Preliminary support for Chef 12 alpha (not 100% complete)
+  - Add `SoloRunner` and `ServerRunner` `.converge` methods for quickly converging if you do not need to customize the runner object
+  - Create isolated Chef Server instances on a per-test or per-suite basis
+  - Deprecate `ChefSpec::Runner.define_runner_method` in favor of `ChefSpec.define_matcher`
+  - Deprecate `ChefSpec::Runner.new` - you should specify if you want a `SoloRunner` or `ServerRunner`
+  - Updated documentation
+
+Breaking changes:
+  - Due to the new `ServerRunner`, the `ChefSpec::Server` singleton object has been deprecated. As much as I would like to provide a backwards-compatible interface, there is no way to do so (as the code now supports multipel Chef Server instances). Sorry :(.
+  - Remove old deprecations - this is not really a breaking change, but the v2.0.0 deprecations have been removed in favor of new ones
+
 ## 4.0.2 (August 13, 2014)
 Bugfixes:
   - Fix a regression caused by a new version of Chef Zero in single_org mode
