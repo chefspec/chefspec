@@ -40,7 +40,7 @@ module ChefSpec
       deprecated "`ChefSpec::Server.#{m}' is deprecated. There is no longer" \
         " a global Chef Server instance. Please use a ChefSpec::ServerRunner" \
         " instead. More documentation can be found in the ChefSpec README."
-      raise NoConversionError
+      raise ChefSpec::Error::NoConversionError
     end
   end
 end
