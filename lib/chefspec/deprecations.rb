@@ -31,7 +31,7 @@ module ChefSpec
       deprecated "`ChefSpec::Runner' is deprecated. Please use" \
         " `ChefSpec::SoloRunner' or `ChefSpec::ServerRunner' instead."
 
-      ChefSpec::SoloRuner.new(*args, &block)
+      ChefSpec::SoloRunner.new(*args, &block)
     end
   end
 
