@@ -44,6 +44,7 @@ end
 
 require_relative 'chefspec/extensions/chef/client'
 require_relative 'chefspec/extensions/chef/conditional'
+require_relative 'chefspec/extensions/chef/cookbook_uploader'
 require_relative 'chefspec/extensions/chef/data_query'
 require_relative 'chefspec/extensions/chef/lwrp_base'
 require_relative 'chefspec/extensions/chef/resource'
