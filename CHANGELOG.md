@@ -1,6 +1,11 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 4.1.1 (October 13, 2014)
+Bugfixes:
+  - Fix total fail on my part with deprecations and add test coverage
+  - Do not validate cookbooks on upload (speed)
+
 ## 4.1.0 (October 12, 2014)
 Bugfixes:
   - Bump the minimum required version of Chef to 11.14
