@@ -77,6 +77,7 @@ module ChefSpec
       Chef::Config[:role_path]       = Array(@options[:role_path])
       Chef::Config[:force_logger]    = true
       Chef::Config[:solo]            = true
+      Chef::Config[:environment_path] = @options[:environment_path]
 
       yield node if block_given?
     end
@@ -301,6 +302,7 @@ module ChefSpec
       {
         cookbook_path: config.cookbook_path || calling_cookbook_path(caller),
         role_path:     config.role_path || default_role_path,
+        environment_path: config.environment_path || default_environment_path,
         log_level:     config.log_level,
         path:          config.path,
         platform:      config.platform,
@@ -334,6 +336,20 @@ module ChefSpec
     def default_role_path
       Pathname.new(Dir.pwd).ascend do |path|
         possible = File.join(path, 'roles')
+        return possible if File.exist?(possible)
+      end
+
+      nil
+    end
+
+    #
+    # The inferred path to environments.
+    #
+    # @return [String, nil]
+    #
+    def default_environment_path
+      Pathname.new(Dir.pwd).ascend do |path|
+        possible = File.join(path, 'environments')
         return possible if File.exist?(possible)
       end
 

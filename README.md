@@ -81,6 +81,9 @@ RSpec.configure do |config|
   # Specify the path for Chef Solo to find roles (default: [ascending search])
   config.role_path = '/var/roles'
 
+  # Specify the path for Chef Solo to find environments (default: [ascending search])
+  config.environment_path = '/var/environments'
+
   # Specify the Chef log_level (default: :warn)
   config.log_level = :debug
 
