@@ -16,6 +16,7 @@ describe ChefSpec::Runner do
     it 'prints a deprecation' do
       expect(ChefSpec::Runner).to receive(:deprecated)
         .with("`ChefSpec::Runner.define_runner_method' is deprecated. "\
+          "It is being used in the my_custom_resource resource matcher." \
           "Please use `ChefSpec.define_matcher' instead.")
       ChefSpec::Runner.define_runner_method(:my_custom_resource)
     end
