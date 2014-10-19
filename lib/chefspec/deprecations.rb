@@ -20,6 +20,7 @@ module ChefSpec
     #   use {ChefSpec.define_runner_method} instead.
     def self.define_runner_method(resource_name)
       deprecated "`ChefSpec::Runner.define_runner_method' is deprecated. " \
+        "It is being used in the #{resource_name} resource matcher." \
         "Please use `ChefSpec.define_matcher' instead."
 
       ChefSpec.define_matcher(resource_name)
