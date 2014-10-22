@@ -6,7 +6,7 @@ if defined?(ChefSpec)
   # documentation indicating how to use the custom matcher.
   #
   # @example This is an example
-  #   expect(chef_run.to install_custom_matcher_thing('foo')
+  #   expect(chef_run).to install_custom_matcher_thing('foo')
   #
   # @param [String] resource_name
   #   the resource name
