@@ -440,18 +440,18 @@ Given a recipe with shell guard:
 
 ```ruby
 template '/tmp/foo.txt' do
-  not_if 'grep /tmp/foo.txt text'
+  not_if 'grep text /tmp/foo.txt'
 end
 ```
 
 ChefSpec will raise an error like:
 
 ```text
-Real commands are disabled. Unregistered command: `grep /tmp/foo.txt text`
+Real commands are disabled. Unregistered command: `grep text /tmp/foo.txt`
 
 You can stub this command with:
 
- stub_command("grep /tmp/foo.txt text").and_return(true)
+ stub_command("grep text /tmp/foo.txt").and_return(true)
 
 ============================================================
 ```
@@ -463,7 +463,7 @@ describe 'example::default' do
   let(:chef_run) { ChefSpec::SoloRunner.new }
 
   before do
-    stub_command("grep /tmp/foo.txt text").and_return(true)
+    stub_command("grep text /tmp/foo.txt").and_return(true)
   end
 end
 ```
@@ -473,7 +473,7 @@ describe 'example::default' do
   let(:chef_run) { ChefSpec::SoloRunner.new }
 
   before do
-    stub_command("grep /tmp/foo.txt text") { rand(50)%2 == 0 }
+    stub_command("grep text /tmp/foo.txt") { rand(50)%2 == 0 }
   end
 end
 ```
