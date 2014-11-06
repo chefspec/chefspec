@@ -21,11 +21,10 @@ bundler_args: --jobs 7
 gemfile:
   - gemfiles/chef-11.14.0.gemfile
   - gemfiles/chef-11.16.0.gemfile
-  - gemfiles/chef-12.0.0.alpha.gemfile
+  - gemfiles/chef-12.0.0.rc.gemfile
   - gemfiles/chef-master.gemfile
 
 matrix:
   fast_finish: true
   allow_failures:
-    - gemfile: gemfiles/chef-12.0.0.alpha.gemfile
     - gemfile: gemfiles/chef-master.gemfile
