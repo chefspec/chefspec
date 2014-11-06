@@ -31,8 +31,8 @@ module ChefSpec
     end
 
     #
-    # Override Opscode provider to remove any existing LWRPs to suppress
-    # constant re-definition warnings.
+    # Override Chef provider to remove any existing LWRPs to suppress constant
+    # re-definition warnings.
     #
     # @param [String] cookbook_name
     #   the name of the cookbook
@@ -72,7 +72,8 @@ module ChefSpec
   end
 end
 
-# Only remove existing LWRPs for older versions of Chef. Newer versions of Chef
-# do not break things as much...
-Chef::Provider.send(:extend, ChefSpec::RemoveExistingLWRP)
-Chef::Resource.send(:extend, ChefSpec::RemoveExistingLWRP)
+
+# Only remove existing LWRPs for older versions of Chef. Newer versions of
+# Chef do not break things as much...
+Chef::Provider::LWRPBase.extend(ChefSpec::RemoveExistingLWRP)
+Chef::Resource::LWRPBase.extend(ChefSpec::RemoveExistingLWRP)
