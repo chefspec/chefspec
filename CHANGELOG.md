@@ -1,6 +1,16 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 4.2.0.beta.1 (November 5, 2014)
+Bugfixes:
+  - Updated README grep examples
+  - Fix various typographical errors
+  - Improved error message when using a deprecated resource matcher
+
+Improvements:
+  - Add support for Chef 12
+  - Added support for environments in Chef Solo
+
 ## 4.1.1 (October 13, 2014)
 Bugfixes:
   - Fix total fail on my part with deprecations and add test coverage
