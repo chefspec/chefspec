@@ -1,8 +1,7 @@
 require 'spec_helper'
 
-# Don't run this test on older versions of Chef
-if Chef::VERSION >= '11.0.0'
-
+# Chef 12 fixed resource inheritance issues
+if Chef::VERSION.to_f < 12.0
   module ChefSpec
     module Extensions
       describe :LWRPBase do

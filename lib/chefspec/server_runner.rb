@@ -38,9 +38,19 @@ module ChefSpec
     def upload_cookbooks!
       loader = Chef::CookbookLoader.new(Chef::Config[:cookbook_path])
       loader.load_cookbooks
+      cookbook_uploader_for(loader).upload_cookbooks
+    end
 
-      uploader = Chef::CookbookUploader.new(loader.cookbooks, loader.cookbook_paths)
-      uploader.upload_cookbooks
+    #
+    # The uploader for the cookbooks.
+    #
+    # @param [Chef::CookbookLoader] loader
+    #   the Chef cookbook loader
+    #
+    # @return [Chef::CookbookUploader]
+    #
+    def cookbook_uploader_for(loader)
+      Chef::CookbookUploader.new(loader.cookbooks)
     end
 
     # @see (SoloRunner#converge)
