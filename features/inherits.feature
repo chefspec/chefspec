@@ -1,3 +1,4 @@
+@not_chef_12_0_0_rc_0
 Feature: The inherits matcher
   Background:
     * I am using the "inherits" cookbook

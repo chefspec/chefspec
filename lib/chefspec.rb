@@ -80,3 +80,4 @@ require_relative 'chefspec/util'
 require_relative 'chefspec/version'
 
 require_relative 'chefspec/deprecations'
+require_relative 'chefspec/chef_backwards_compat' if Chef::VERSION.to_f < 12.0
