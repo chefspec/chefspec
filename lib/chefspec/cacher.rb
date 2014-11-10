@@ -34,7 +34,7 @@ module ChefSpec
     FINALIZER = lambda { |id| @@cache.delete(id) }
 
     def cached(name, &block)
-      location   = ancestors.first.metadata[:location]
+      location   = ancestors.first.metadata[:location] + '_' + ancestors.first.metadata[:description]
       location ||= ancestors.first.metadata[:parent_example_group][:location]
 
       define_method(name) do
