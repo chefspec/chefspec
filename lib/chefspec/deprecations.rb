@@ -16,8 +16,8 @@ end
 
 module ChefSpec
   class Runner
-    # @deprecated {ChefSpec.define_runner_method} is deprecated. Please
-    #   use {ChefSpec.define_runner_method} instead.
+    # @deprecated {ChefSpec::Runner.define_runner_method} is deprecated. Please
+    #   use {ChefSpec.define_matcher} instead.
     def self.define_runner_method(resource_name)
       deprecated "`ChefSpec::Runner.define_runner_method' is deprecated." \
         " It is being used in the #{resource_name} resource matcher." \
