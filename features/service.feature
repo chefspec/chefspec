@@ -13,3 +13,4 @@ Feature: The service matcher
     | restart |
     | start   |
     | stop    |
+    | nothing |
