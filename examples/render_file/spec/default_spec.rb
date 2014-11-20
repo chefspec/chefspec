@@ -76,14 +76,29 @@ describe 'render_file::default' do
       expect(chef_run).to_not render_file('/tmp/not_template')
     end
 
+    it 'renders the config file' do
+      expect(chef_run).to render_file('/tmp/config.ini')
+      expect(chef_run).to_not render_file('/tmp/not_config.ini')
+    end
+
     it 'renders the file with content' do
       expect(chef_run).to render_file('/tmp/template').with_content('This is content!')
       expect(chef_run).to_not render_file('/tmp/template').with_content('This is not content!')
     end
 
+    it 'renders the config file with section_content' do
+      expect(chef_run).to render_file('/tmp/config.ini').with_section_content('section1', 'option1 = value1')
+      expect(chef_run).to_not render_file('/tmp/config.ini').with_section_content('section1', 'option2 = value2')
+    end
+
     it 'renders the file with matching content' do
       expect(chef_run).to render_file('/tmp/template').with_content(/^This(.+)$/)
       expect(chef_run).to_not render_file('/tmp/template').with_content(/^Not(.+)$/)
+    end
+
+    it 'renders the config file with matching content' do
+      expect(chef_run).to render_file('/tmp/config.ini').with_section_content('section1', /^option1(.+)$/)
+      expect(chef_run).to_not render_file('/tmp/config.ini').with_section_content('section1', /^Not(.+)$/)
     end
 
     it 'renders the file with content matching arbitrary matcher' do
@@ -92,6 +107,15 @@ describe 'render_file::default' do
       )
       expect(chef_run).to_not render_file('/tmp/template').with_content(
         end_with('not')
+      )
+    end
+
+    it 'renders the config file with section_content matching arbitrary matcher' do
+      expect(chef_run).to render_file('/tmp/config.ini').with_section_content(
+        'section1', start_with('option1')
+      )
+      expect(chef_run).to_not render_file('/tmp/config.ini').with_content(
+        'section1', end_with('not')
       )
     end
   end

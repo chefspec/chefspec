@@ -20,6 +20,12 @@ module ChefSpec::Matchers
       self
     end
 
+    def with_section_content(section, expected_content)
+      @section = section
+      @expected_content = expected_content
+      self
+    end
+
     def description
       message = %Q{render file "#{@path}"}
       if @expected_content
@@ -97,6 +103,12 @@ module ChefSpec::Matchers
       return true if @expected_content.nil?
 
       @actual_content = ChefSpec::Renderer.new(@runner, resource).content
+
+      unless @actual_content.nil?
+        unless @section.nil?
+          @actual_content = @actual_content[/(^\[#{@section}\]\n[^\[]*)/ms, 1]
+        end
+      end
 
       return false if @actual_content.nil?
 

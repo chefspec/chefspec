@@ -265,12 +265,15 @@ Assert that the Chef run renders a file (with optional content); this will match
 expect(chef_run).to render_file('/etc/foo')
 expect(chef_run).to render_file('/etc/foo').with_content('This is content')
 expect(chef_run).to render_file('/etc/foo').with_content(/regex works too.+/)
+expect(chef_run).to render_file('/etc/foo').with_section_content('section', 'option = value')
+expect(chef_run).to render_file('/etc/foo').with_section_content('section', /regex works too.+/)
 ```
 
 You can use any RSpec content matcher inside of the `with_content` predicate:
 
 ```ruby
 expect(chef_run).to render_file('/etc/foo').with_content(start_with('# First line'))
+expect(chef_run).to render_file('/etc/foo').with_section_content('section', start_with('option'))
 ```
 
 It is possible to assert which [Chef phase of execution](http://docs.opscode.com/essentials_nodes_chef_run.html) a resource is created. Given a resource that is installed at compile time using `run_action`:
