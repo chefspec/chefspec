@@ -10,6 +10,10 @@ template '/tmp/template' do
   source 'template.erb'
 end
 
+template '/tmp/config.ini' do
+  source 'config.ini.erb'
+end
+
 template '/tmp/partial' do
   source 'partial.erb'
 end
