@@ -10,7 +10,7 @@ template '/tmp/template' do
   source 'template.erb'
 end
 
-tempalte '/tmp/config.ini' do
+template '/tmp/config.ini' do
   source 'config.ini.erb'
 end
 

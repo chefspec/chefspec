@@ -114,7 +114,7 @@ describe 'render_file::default' do
       expect(chef_run).to render_file('/tmp/config.ini').with_section_content(
         'section1', start_with('option1')
       )
-      expect(chef_run).to_not render_file('/tmp/config.ini').with_content(
+      expect(chef_run).to_not render_file('/tmp/config.ini').with_section_content(
         'section1', end_with('not')
       )
     end

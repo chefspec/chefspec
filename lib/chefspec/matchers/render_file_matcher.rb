@@ -106,7 +106,7 @@ module ChefSpec::Matchers
 
       unless @actual_content.nil?
         unless @section.nil?
-          @actual_content = @actual_content[/(^\[#{@section}\]\n[^\[]*)/ms, 1]
+          @actual_content = @actual_content[/^\[#{@section}\]\n([^\[]*)/ms, 1]
         end
       end
 
