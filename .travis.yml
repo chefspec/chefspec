@@ -18,7 +18,7 @@ notifications:
     template:
       - "%{message} (%{author}): %{build_url}"
 
-bundler_args: --jobs 7 --retries 3
+bundler_args: --jobs 7 --retry 3
 
 gemfile:
   - gemfiles/chef-11.14.0.gemfile
