@@ -1,3 +1,5 @@
+sudo: false
+
 rvm:
   - 1.9.3
   - 2.0.0
@@ -16,7 +18,7 @@ notifications:
     template:
       - "%{message} (%{author}): %{build_url}"
 
-bundler_args: --jobs 7
+bundler_args: --jobs 7 --retries 3
 
 gemfile:
   - gemfiles/chef-11.14.0.gemfile
