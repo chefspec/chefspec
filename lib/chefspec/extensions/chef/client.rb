@@ -1,3 +1,6 @@
+# Providers has to be included before client... probably a weird
+# include missing in Chef-land, but we can make sure we get it right anyway.
+require 'chef/providers'
 require 'chef/client'
 
 # @private
