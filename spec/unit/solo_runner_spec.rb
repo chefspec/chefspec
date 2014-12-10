@@ -60,6 +60,11 @@ describe ChefSpec::SoloRunner do
       expect(Chef::Config.cookbook_path).to eq(['/tmp/bacon'])
     end
 
+    it 'sets the file cache path' do
+      described_class.new( file_cache_path: '/tmp/pantoa')
+      expect(Chef::Config.file_cache_path).to eq('/tmp/pantoa')
+    end
+
     it 'sets the Chef::Config' do
       expect(Chef::Config.cache_type).to eq('Memory')
       expect(Chef::Config.force_logger).to be_truthy

@@ -110,6 +110,12 @@ ChefSpec::SoloRunner.new(platform: 'centos', version: '5.10')
 # Specify a different cookbook_path
 ChefSpec::SoloRunner.new(cookbook_path: '/var/my/other/path', role_path: '/var/my/roles')
 
+# By default ChefSpec sets a new temporary directory for file caching in every run.
+# This can be overridden by passing the `file_cache_path` option.
+# Note: Resources containing `Chef::Config[:file_cache_path]` in their name or
+# attributes, will fail unless this option is specified.
+ChefSpec::SoloRunner.new(file_cache_path: '/var/chef/cache')
+
 # Add debug log output
 ChefSpec::SoloRunner.new(log_level: :debug).converge(described_recipe)
 ```

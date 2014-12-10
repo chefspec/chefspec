@@ -56,6 +56,8 @@ module ChefSpec
     #   Path of a json file that will be passed to fauxhai as :path option
     # @option options [Array<String>] :step_into
     #   The list of LWRPs to evaluate
+    # @option options String] :file_cache_path
+    #   File caching path, if absent ChefSpec will use a temporary directory generated on the fly
     #
     # @yield [node] Configuration block for Chef::Node
     #
@@ -71,7 +73,7 @@ module ChefSpec
       Chef::Config[:client_key]      = nil
       Chef::Config[:client_name]     = nil
       Chef::Config[:node_name]       = nil
-      Chef::Config[:file_cache_path] = file_cache_path
+      Chef::Config[:file_cache_path] = @options[:file_cache_path] || file_cache_path
       Chef::Config[:cookbook_path]   = Array(@options[:cookbook_path])
       Chef::Config[:no_lazy_load]    = true
       Chef::Config[:role_path]       = Array(@options[:role_path])
