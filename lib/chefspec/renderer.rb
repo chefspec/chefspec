@@ -120,7 +120,7 @@ module ChefSpec
     # @return [Array<Chef::Cookbook>]
     def cookbook_collection(node)
       if node.respond_to?(:run_context)
-        node.run_context.cookbook_collection # Chef 11+
+        chef_run.run_context.cookbook_collection # Chef 11+
       else
         node.cookbook_collection # Chef 10
       end

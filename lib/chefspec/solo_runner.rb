@@ -111,12 +111,6 @@ module ChefSpec
       # Expand the run_list
       expand_run_list!
 
-      # Save the node back to the server for searching purposes
-      unless Chef::Config[:solo]
-        client.register
-        node.save
-      end
-
       # Setup the run_context
       @run_context = client.setup_run_context
 
