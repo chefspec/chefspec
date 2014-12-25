@@ -1,7 +1,6 @@
 sudo: false
 
 rvm:
-  - 1.9.3
   - 2.0.0
   - 2.1
 
@@ -23,7 +22,7 @@ bundler_args: --jobs 7 --retry 3
 gemfile:
   - gemfiles/chef-11.14.0.gemfile
   - gemfiles/chef-11.16.0.gemfile
-  - gemfiles/chef-12.0.0.rc.gemfile
+  - gemfiles/chef-12.0.0.gemfile
   - gemfiles/chef-master.gemfile
 
 matrix:
