@@ -58,6 +58,8 @@ module ChefSpec
       upload_cookbooks!
 
       super do
+        yield if block_given?
+
         # Save the node back to the server for searching purposes
         client.register
         node.save
