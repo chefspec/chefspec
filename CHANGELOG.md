@@ -1,7 +1,7 @@
 CHANGELOG for ChefSpec
 ======================
 
-## 4.2.0.beta.1 (November 5, 2014)
+## 4.2.0 (December 25, 2014)
 Bugfixes:
   - Updated README grep examples
   - Fix various typographical errors
@@ -10,6 +10,9 @@ Bugfixes:
 Improvements:
   - Add support for Chef 12
   - Added support for environments in Chef Solo
+  - Fix location definition for caching
+  - Allow passing `Chef::Config[:file_cache_path]` from outside
+  - Update support for Chef 12
 
 ## 4.1.1 (October 13, 2014)
 Bugfixes:
