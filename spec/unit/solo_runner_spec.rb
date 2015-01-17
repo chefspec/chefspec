@@ -110,6 +110,7 @@ describe ChefSpec::SoloRunner do
       before do
         allow(RSpec.configuration).to receive(:cookbook_path).and_return('./path')
         allow(RSpec.configuration).to receive(:environment_path).and_return('./env-path')
+        allow(RSpec.configuration).to receive(:file_cache_path).and_return('./file-cache-path')
         allow(RSpec.configuration).to receive(:log_level).and_return(:fatal)
         allow(RSpec.configuration).to receive(:path).and_return('ohai.json')
         allow(RSpec.configuration).to receive(:platform).and_return('ubuntu')
@@ -120,6 +121,7 @@ describe ChefSpec::SoloRunner do
         options = described_class.new.options
         expect(options[:cookbook_path]).to eq('./path')
         expect(options[:environment_path]).to eq('./env-path')
+        expect(options[:file_cache_path]).to eq('./file-cache-path')
         expect(options[:log_level]).to eq(:fatal)
         expect(options[:path]).to eq('ohai.json')
         expect(options[:platform]).to eq('ubuntu')

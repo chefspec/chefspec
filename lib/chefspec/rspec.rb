@@ -12,6 +12,7 @@ RSpec.configure do |config|
   config.add_setting :cookbook_path
   config.add_setting :role_path
   config.add_setting :environment_path
+  config.add_setting :file_cache_path
   config.add_setting :log_level, default: :warn
   config.add_setting :path
   config.add_setting :platform
