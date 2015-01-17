@@ -299,6 +299,7 @@ module ChefSpec
         cookbook_path: config.cookbook_path || calling_cookbook_path(caller),
         role_path:     config.role_path || default_role_path,
         environment_path: config.environment_path || default_environment_path,
+        file_cache_path: config.file_cache_path,
         log_level:     config.log_level,
         path:          config.path,
         platform:      config.platform,
