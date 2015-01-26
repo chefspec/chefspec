@@ -42,7 +42,6 @@ module ChefSpec
   module_function :matchers
 end
 
-require_relative 'chefspec/extensions/chef/run_context'
 require_relative 'chefspec/extensions/chef/client'
 require_relative 'chefspec/extensions/chef/conditional'
 require_relative 'chefspec/extensions/chef/cookbook_uploader'
