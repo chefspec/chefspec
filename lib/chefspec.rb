@@ -42,6 +42,7 @@ module ChefSpec
   module_function :matchers
 end
 
+require_relative 'chefspec/extensions/chef/run_context'
 require_relative 'chefspec/extensions/chef/client'
 require_relative 'chefspec/extensions/chef/conditional'
 require_relative 'chefspec/extensions/chef/cookbook_uploader'
@@ -50,6 +51,7 @@ require_relative 'chefspec/extensions/chef/lwrp_base'
 require_relative 'chefspec/extensions/chef/resource'
 require_relative 'chefspec/extensions/chef/securable'
 require_relative 'chefspec/extensions/chef/resource/freebsd_package'
+require_relative 'chefspec/extensions/chef/recipe'
 
 require_relative 'chefspec/mixins/normalize'
 
@@ -63,6 +65,8 @@ require_relative 'chefspec/stubs/registry'
 require_relative 'chefspec/stubs/stub'
 require_relative 'chefspec/stubs/search_registry'
 require_relative 'chefspec/stubs/search_stub'
+require_relative 'chefspec/stubs/include_recipe_registry'
+require_relative 'chefspec/stubs/include_recipe_stub'
 
 require_relative 'chefspec/api'
 require_relative 'chefspec/cacher'
