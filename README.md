@@ -251,6 +251,23 @@ Assert that the Chef run included a recipe from another cookbook
 expect(chef_run).to include_recipe('other_cookbook::recipe')
 ```
 
+Keep the resources from an included recipe from being loaded into the Chef run, but test that the recipe was included
+
+```ruby
+describe 'example::default' do
+  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+
+  before do
+    allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).and_call_original
+    allow_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('other_cookbook::default')
+  end
+
+  it 'includes the other_cookbook' do
+    expect_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('other_cookbook::default')
+  end
+end
+```
+
 ##### notify
 Assert that a resource notifies another in the Chef run
 
