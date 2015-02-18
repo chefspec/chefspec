@@ -264,6 +264,7 @@ describe 'example::default' do
 
   it 'includes the other_cookbook' do
     expect_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('other_cookbook::default')
+    chef_run
   end
 end
 ```
