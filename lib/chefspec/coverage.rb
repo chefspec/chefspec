@@ -136,7 +136,7 @@ module ChefSpec
       puts erb.evaluate(report)
 
       # Ensure we exit correctly (#351)
-      exit(exit_status)
+      Kernel.exit(exit_status) if exit_status && exit_status > 0
     end
 
     private
