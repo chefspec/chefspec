@@ -118,7 +118,10 @@ module ChefSpec
       yield if block_given?
 
       @converging = true
-      @client.converge(@run_context)
+      converge_val = @client.converge(@run_context)
+      if converge_val.is_a?(Exception)
+        raise converge_val
+      end
       self
     end
 
