@@ -24,6 +24,10 @@ describe 'directory::create' do
     )
   end
 
+  it 'creates a directory with windows rights' do
+    expect(chef_run).to create_directory('c:\temp\with_windows_rights').with(rights: [{:permissions=>:read_execute, :principals=>"Users", :applies_to_children=>true}])
+  end
+
   it 'creates a directory when specifying the identity attribute' do
     expect(chef_run).to create_directory('/tmp/identity_attribute')
   end
