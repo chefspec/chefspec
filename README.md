@@ -807,12 +807,12 @@ Other developers can write RSpec tests against your LWRP in their cookbooks:
 expect(chef_run).to write_motd_message('my message')
 ```
 
-**Don't forget to include documentation in your cookbook's README noting the custom matcher and it's API!**
+**Don't forget to include documentation in your cookbook's README noting the custom matcher and its API!**
 
 
 Writing Custom Matchers
 -----------------------
-If you are testing a cookbook that does not package it's LWRP matchers, you can create your own following the same pattern as the "Packaging Custom Matchers" section. Simply, create a file at `spec/support/matchers.rb` and add your resource matchers:
+If you are testing a cookbook that does not package its LWRP matchers, you can create your own following the same pattern as the "Packaging Custom Matchers" section. Simply, create a file at `spec/support/matchers.rb` and add your resource matchers:
 
 ```ruby
 # spec/support/matchers.rb
