@@ -22,7 +22,7 @@ describe 'package::install' do
   end
   
   context 'with fauxhai data provided' do
-    let (: chef_run) {
+    let (:chef_run) {
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04').converge(described_recipe)
     }
     
