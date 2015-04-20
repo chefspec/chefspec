@@ -441,7 +441,7 @@ ChefSpec::ServerRunner.new do |node, server|
 end
 ```
 
-Note: the current "node" is always uploaded to the server. However, due to the way the Chef Client compiles cookbooks, you must add the current node to the server if any attributes are changed:
+Note: the current "node" is always uploaded to the server. However, due to the way the Chef Client compiles cookbooks, you must update the current node on the server if any attributes are changed:
 
 ```ruby
 ChefSpec::ServerRunner.new do |node, server|
