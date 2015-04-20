@@ -1,3 +1,4 @@
+@not_chef_11_14_2
 Feature: The reboot matcher
   Background:
     * I am using the "reboot" cookbook
