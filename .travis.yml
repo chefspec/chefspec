@@ -1,31 +1,36 @@
+language: ruby
+cache: bundler
 sudo: false
 
 rvm:
   - 2.0.0
   - 2.1
+  - 2.2
 
 branches:
   only:
     - master
 
-notifications:
-  irc:
-    channels:
-      - "chat.freenode.net#chefspec"
-    use_notice: true
-    skip_join: true
-    template:
-      - "%{message} (%{author}): %{build_url}"
-
 bundler_args: --jobs 7 --retry 3
 
-gemfile:
-  - gemfiles/chef-11.14.0.gemfile
-  - gemfiles/chef-11.16.0.gemfile
-  - gemfiles/chef-12.0.0.gemfile
-  - gemfiles/chef-master.gemfile
+gemfile: gemfiles/chefspec.gemfile
+
+env:
+  - CHEF_VERSION=master
+  - CHEF_VERSION=12.2.1
+  - CHEF_VERSION=12.1.2
+  - CHEF_VERSION=12.1.1
+  - CHEF_VERSION=12.1.0
+  - CHEF_VERSION=12.0.3
+  - CHEF_VERSION=11.18.6
+  - CHEF_VERSION=11.18.0
+  - CHEF_VERSION=11.16.4
+  - CHEF_VERSION=11.16.2
+  - CHEF_VERSION=11.16.0
+  - CHEF_VERSION=11.14.6
+  - CHEF_VERSION=11.14.2
 
 matrix:
   fast_finish: true
   allow_failures:
-    - gemfile: gemfiles/chef-master.gemfile
+    - env: CHEF_VERSION=master

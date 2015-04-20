@@ -1,3 +1,10 @@
+@not_chef_11_14_2
+@not_chef_11_14_6
+@not_chef_11_16_0
+@not_chef_11_16_2
+@not_chef_11_16_4
+@not_chef_11_18_0
+@not_chef_11_18_6
 Feature: The reboot matcher
   Background:
     * I am using the "reboot" cookbook
