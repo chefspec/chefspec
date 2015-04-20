@@ -20,4 +20,15 @@ describe 'package::install' do
   it 'installs a package when specifying the identity attribute' do
     expect(chef_run).to install_package('identity_attribute')
   end
+  
+  context 'with fauxhai data provided' do
+    let (:chef_run) {
+      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04').converge(described_recipe)
+    }
+    
+    it 'installs a package when specifying the identity attribute too' do
+      expect(chef_run).to install_package('identity_attribute')
+    end
+  end
+
 end
