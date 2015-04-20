@@ -34,11 +34,14 @@ Important Notes
 - **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding aruba test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).**
 - **ChefSpec aims to maintain compatability with the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
 
+
 Notes on Compatability with Chef Versions
 -----------------------------------------
 As a general rule, if it is tested in the Travis CI matrix, it is a supported version. The section below details any specific versions that are _not_ supported and why:
 
 - Chef 12 prior to Chef 12.0.2 is not supported due to the lack of a declared resource type. This was fixed in [Chef 12.0.2](https://github.com/chef/chef/blob/12.0.2/lib/chef/resource.rb#L422-428).
+
+Additionally, if you look at a cucumber feature and see a tag like `@not_chef_x_y_z`, that means that particular functionality is not supported on those versions of Chef.
 
 
 Writing a Cookbook Example
