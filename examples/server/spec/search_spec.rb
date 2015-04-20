@@ -34,6 +34,9 @@ describe 'server::search' do
 
   let(:chef_run) do
     ChefSpec::ServerRunner.new do |node, server|
+      node.set['bar'] = true
+      server.update_node(node)
+
       server.create_node(node_1)
       server.create_node(node_2)
       server.create_node(node_3)
@@ -44,6 +47,7 @@ describe 'server::search' do
   it 'finds all nodes with the bar attribute' do
     expect(chef_run).to write_log('nodes with an attribute')
       .with_message(<<-EOH.gsub(/^ {8}/, '').strip)
+        chefspec, FQDN: chefspec.local, hostname: chefspec
         node_1, FQDN: node_1.example.com, hostname: node_1
         node_2, FQDN: node_2.example.com, hostname: node_2
         node_3, FQDN: node_3.example.com, hostname: node_3

@@ -441,7 +441,19 @@ ChefSpec::ServerRunner.new do |node, server|
 end
 ```
 
-Note: the current "node" is always uploaded to the server.
+Note: the current "node" is always uploaded to the server. However, due to the way the Chef Client compiles cookbooks, you must update the current node on the server if any attributes are changed:
+
+```ruby
+ChefSpec::ServerRunner.new do |node, server|
+  node.set['attribute'] = 'value'
+
+  # At this point, the server already has a copy of the current node object due
+  # to the way Chef compiled the resources. However, that node does not have
+  # this new value. As such, you must "save" the node back to the server to
+  # persist this attribute update.
+  server.update_node(node)
+end
+```
 
 You may also use the `stub_node` macro, which will create a new `Chef::Node` object and accepts the same parameters as the Chef Runner and a Fauxhai object:
 

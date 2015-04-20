@@ -143,6 +143,7 @@ module ChefSpec
 
       load_data(name, 'nodes', data)
     end
+    alias_method :update_node, :create_node
 
     #
     # Shortcut method for loading data into Chef Zero.
