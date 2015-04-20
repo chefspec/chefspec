@@ -15,8 +15,17 @@ module ChefSpec::Matchers
       end
     end
 
-    def with_content(expected_content)
-      @expected_content = expected_content
+    def with_content(expected_content = nil, &block)
+      if expected_content && block
+        raise ArgumentError, "Cannot specify expected content and a block!"
+      elsif expected_content
+        @expected_content = expected_content
+      elsif block
+        @expected_content = block
+      else
+        raise ArgumentError, "Must specify expected content or a block!"
+      end
+
       self
     end
 
@@ -64,6 +73,8 @@ module ChefSpec::Matchers
     def expected_content_message
       if RSpec::Matchers.is_a_matcher?(@expected_content) && @expected_content.respond_to?(:description)
         @expected_content.description
+      elsif @expected_content.is_a?(Proc)
+        "(the result of a proc)"
       else
         @expected_content.to_s
       end
@@ -104,6 +115,12 @@ module ChefSpec::Matchers
         @actual_content =~ @expected_content
       elsif RSpec::Matchers.is_a_matcher?(@expected_content)
         @expected_content.matches?(@actual_content)
+      elsif @expected_content.is_a?(Proc)
+        @expected_content.call(@actual_content)
+        # Weird RSpecish, but that block will return false for a negated check,
+        # so we always return true. The block will raise an exception if the
+        # assertion fails.
+        true
       else
         @actual_content.include?(@expected_content)
       end

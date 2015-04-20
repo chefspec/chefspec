@@ -301,6 +301,10 @@ Assert that the Chef run renders a file (with optional content); this will match
 expect(chef_run).to render_file('/etc/foo')
 expect(chef_run).to render_file('/etc/foo').with_content('This is content')
 expect(chef_run).to render_file('/etc/foo').with_content(/regex works too.+/)
+expect(chef_run).to render_file('/etc/foo').with_content { |content|
+  # Regular RSpec matches work in here
+  expect(content).to include('any RSpec matcher')
+}
 ```
 
 You can use any RSpec content matcher inside of the `with_content` predicate:
