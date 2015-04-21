@@ -166,7 +166,7 @@ have to write your `Cheffile` like this:
 
 ```ruby
 # Cheffile
-site 'http://community.opscode.com/api/v1'
+site 'https://supermarket.chef.io/api/v1'
 
 cookbook 'name_of_your_cookbook', path: '.'
 ```
