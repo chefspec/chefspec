@@ -28,7 +28,7 @@ module ChefSpec::API
     #   expect(chef_run).to disable_windows_service('BITS').with(pattern: 'BI*')
     #
     # @example Assert that a +windows_service+ had its startup configured using a regex
-    #   expect(chef_run).to disable_windows_service('BITS').with(patthen: /(.+)/)
+    #   expect(chef_run).to disable_windows_service('BITS').with(pattern: /(.+)/)
     #
     # @example Assert that a +windows_service+ did _not_ have its startup configured
     #   expect(chef_run).to_not disable_windows_service('BITS')
@@ -68,7 +68,7 @@ module ChefSpec::API
     #   expect(chef_run).to disable_windows_service('BITS').with(pattern: 'BI*')
     #
     # @example Assert that a +windows_service+ was disabled using a regex
-    #   expect(chef_run).to disable_windows_service('BITS').with(patthen: /(.+)/)
+    #   expect(chef_run).to disable_windows_service('BITS').with(pattern: /(.+)/)
     #
     # @example Assert that a +windows_service+ was _not_ disabled
     #   expect(chef_run).to_not disable_windows_service('BITS')
@@ -108,7 +108,7 @@ module ChefSpec::API
     #   expect(chef_run).to enable_windows_service('BITS').with(pattern: 'BI*')
     #
     # @example Assert that a +windows_service+ was enabled using a regex
-    #   expect(chef_run).to enable_windows_service('BITS').with(patthen: /(.+)/)
+    #   expect(chef_run).to enable_windows_service('BITS').with(pattern: /(.+)/)
     #
     # @example Assert that a +windows_service+ was _not_ enabled
     #   expect(chef_run).to_not enable_windows_service('BITS')
@@ -148,7 +148,7 @@ module ChefSpec::API
     #   expect(chef_run).to reload_windows_service('BITS').with(pattern: 'BI*')
     #
     # @example Assert that a +windows_service+ was reload using a regex
-    #   expect(chef_run).to reload_windows_service('BITS').with(patthen: /(.+)/)
+    #   expect(chef_run).to reload_windows_service('BITS').with(pattern: /(.+)/)
     #
     # @example Assert that a +windows_service+ was _not_ reload
     #   expect(chef_run).to_not reload_windows_service('BITS')
@@ -188,7 +188,7 @@ module ChefSpec::API
     #   expect(chef_run).to restart_windows_service('BITS').with(pattern: 'BI*')
     #
     # @example Assert that a +windows_service+ was restarted using a regex
-    #   expect(chef_run).to restart_windows_service('BITS').with(patthen: /(.+)/)
+    #   expect(chef_run).to restart_windows_service('BITS').with(pattern: /(.+)/)
     #
     # @example Assert that a +windows_service+ was _not_ restarted
     #   expect(chef_run).to_not restart_windows_service('BITS')
@@ -228,7 +228,7 @@ module ChefSpec::API
     #   expect(chef_run).to start_windows_service('BITS').with(pattern: 'BI*')
     #
     # @example Assert that a +windows_service+ was started using a regex
-    #   expect(chef_run).to start_windows_service('BITS').with(patthen: /(.+)/)
+    #   expect(chef_run).to start_windows_service('BITS').with(pattern: /(.+)/)
     #
     # @example Assert that a +windows_service+ was _not_ started
     #   expect(chef_run).to_not start_windows_service('BITS')
@@ -268,7 +268,7 @@ module ChefSpec::API
     #   expect(chef_run).to stop_windows_service('BITS').with(pattern: 'BI*')
     #
     # @example Assert that a +windows_service+ was stopped using a regex
-    #   expect(chef_run).to stop_windows_service('BITS').with(patthen: /(.+)/)
+    #   expect(chef_run).to stop_windows_service('BITS').with(pattern: /(.+)/)
     #
     # @example Assert that a +windows_service+ was _not_ stopped
     #   expect(chef_run).to_not stop_windows_service('BITS')
