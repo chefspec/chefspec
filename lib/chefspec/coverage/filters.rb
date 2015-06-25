@@ -71,7 +71,8 @@ module ChefSpec
 
       def matches?(resource)
         return true if resource.source_line.nil?
-        resource.source_line =~ /cookbooks\/(?!#{@metadatas.join('|')})/
+        normalized_source_line = resource.source_line.gsub("\\", "/")
+        normalized_source_line=~ /cookbooks\/(?!#{@metadatas.join('|')})/
       end
     end
   end
