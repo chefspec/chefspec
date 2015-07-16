@@ -1,6 +1,28 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 4.3.0 (July 16, 2015)
+
+Bugfixes:
+  - Improved documentation
+  - Use TemplateContext's `_extend_modules` for passing on template helper
+    modules to nested partial templates
+  - Only exit if the status is a failure [GH-565]
+  - Fix load order on Windows when using the `rights` attributes
+  - Improve testing matrix and remove deprecated Chef versions
+  - Supress chef_gem compile_time warnings
+  - Fix exceptions on converge for Chef 12.1.0 masking
+  - Update Librarian `Cheffile` site URL to supermerket.chef.io
+  - Filter Windows and Unix paths for test coverage report with Berkshelf
+
+Improvements:
+  - Added possibility to specify file_cache_path globally
+  - Added new capabilities for reboot resouce
+  - Use `Chef::Resource#declared_type` first if available (Chef >= 12),
+    otherwise fall back to `Chef::Resource#resource_name` (Chef <= 11)
+  - Extend render_file to yield the content as a block
+  - Add windows_service resource
+
 ## 4.2.0 (December 25, 2014)
 Bugfixes:
   - Updated README grep examples
