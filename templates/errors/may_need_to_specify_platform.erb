@@ -1,0 +1,25 @@
+It appears that Chef could not find the resource on the given platform. As of
+Chef 12.4, Chef conditionally loads resources based on the operating system
+being provisioned. Double-check the error below and ensure you did not make any
+typographical errors, and then continue reading.
+
+The default operating system for ChefSpec is "chefspec", which means Chef will
+not load many resources by default. For example, "dpkg_package" is not a
+resource that is available on the "chefspec" operating system just like
+"freebsd_package" is not available on the Windows operating system. As such,
+you may get a Chef::Exceptions::NoSuchResourceType when using ChefSpec's default
+options.
+
+You can specify the platform and version you would like ChefSpec to act like
+by specifying the platform and version like so:
+
+    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04')
+
+You can read more information in ChefSpec's README or the Fauxhai project:
+
+    https://github.com/sethvargo/chefspec#configuration
+    https://github.com/customink/fauxhai
+
+Here is the original error:
+
+    <%= @original_error %>

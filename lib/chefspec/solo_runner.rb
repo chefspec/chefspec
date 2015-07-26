@@ -111,8 +111,13 @@ module ChefSpec
       # Expand the run_list
       expand_run_list!
 
-      # Setup the run_context
-      @run_context = client.setup_run_context
+      # Setup the run_context, rescuing the exception that happens when a
+      # resource is not defined on a particular platform
+      begin
+        @run_context = client.setup_run_context
+      rescue Chef::Exceptions::NoSuchResourceType => e
+        raise Error::MayNeedToSpecifyPlatform.new(original_error: e.message)
+      end
 
       # Allow stubbing/mocking after the cookbook has been compiled but before the converge
       yield if block_given?
