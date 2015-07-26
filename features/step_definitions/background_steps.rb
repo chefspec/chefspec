@@ -1,4 +1,7 @@
 Given /^I am using the "(.+)" cookbook$/ do |cookbook|
-  FileUtils.cp_r(File.join('examples', cookbook), current_dir)
+  source      = File.join('examples', cookbook)
+  destination = expand_path('.')
+
+  FileUtils.cp_r(source, destination)
   cd(cookbook)
 end

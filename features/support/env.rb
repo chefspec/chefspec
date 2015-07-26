@@ -8,12 +8,13 @@ require 'chefspec'
 require_relative 'executor'
 
 Before do
-  FileUtils.mkdir_p(current_dir)
-  FileUtils.cp_r('examples', current_dir)
+  FileUtils.mkdir_p(expand_path('.'))
 
   # Use InProcess testing by default
-  Aruba::InProcess.main_class = ChefSpec::Executor
-  Aruba.process = Aruba::InProcess
+  Aruba.configure do |config|
+    config.command_launcher = :in_process
+    config.main_class = ChefSpec::Executor
+  end
 
   # Need to reload this on each run because RSpec.reset (called by the
   # RSpec::Runner) removes our configurations :(

@@ -65,7 +65,9 @@ describe ChefSpec::Server do
         " a global Chef Server instance. Please use a ChefSpec::ServerRunner" \
         " instead. More documentation can be found in the ChefSpec README."
       )
-    expect{ChefSpec::Server.any_method}.to raise_error
+    expect {
+      ChefSpec::Server.any_method
+    }.to raise_error(ChefSpec::Error::NoConversionError)
   end
 
   it 'raises non-conversion error for any method called' do

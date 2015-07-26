@@ -1,5 +1,10 @@
 require 'chefspec'
 
+RSpec.configure do |config|
+  config.platform = 'ubuntu'
+  config.version  = '14.04'
+end
+
 describe 'dpkg_package::install' do
   let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 

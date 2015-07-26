@@ -36,5 +36,7 @@ module ChefSpec
 
     class CookbookPathNotFound < ChefSpecError; end
     class GemLoadError < ChefSpecError; end
+
+    class MayNeedToSpecifyPlatform < ChefSpecError; end
   end
 end

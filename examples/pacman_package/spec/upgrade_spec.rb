@@ -1,5 +1,10 @@
 require 'chefspec'
 
+RSpec.configure do |config|
+  config.platform = 'arch'
+  config.version  = '3.10.5-1-ARCH'
+end
+
 describe 'pacman_package::upgrade' do
   let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
