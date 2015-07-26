@@ -9,7 +9,6 @@ require_relative 'executor'
 
 Before do
   FileUtils.mkdir_p(expand_path('.'))
-  FileUtils.cp_r('examples', expand_path('.'))
 
   # Use InProcess testing by default
   Aruba.configure do |config|
