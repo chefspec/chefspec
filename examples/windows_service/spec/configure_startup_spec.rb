@@ -1,5 +1,10 @@
 require 'chefspec'
 
+RSpec.configure do |config|
+  config.platform = 'windows'
+  config.version  = '2012R2'
+end
+
 describe 'windows_service::configure_startup' do
   let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 

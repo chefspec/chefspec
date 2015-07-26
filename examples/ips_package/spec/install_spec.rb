@@ -1,5 +1,10 @@
 require 'chefspec'
 
+RSpec.configure do |config|
+  config.platform = 'solaris2'
+  config.version  = '5.11'
+end
+
 describe 'ips_package::install' do
   let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 

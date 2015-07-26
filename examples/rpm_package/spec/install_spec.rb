@@ -1,5 +1,10 @@
 require 'chefspec'
 
+RSpec.configure do |config|
+  config.platform = 'centos'
+  config.version  = '6.5'
+end
+
 describe 'rpm_package::install' do
   let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
