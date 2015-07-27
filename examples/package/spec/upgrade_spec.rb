@@ -16,4 +16,8 @@ describe 'package::upgrade' do
   it 'upgrades a package when specifying the identity attribute' do
     expect(chef_run).to upgrade_package('identity_attribute')
   end
+
+  it 'upgrades all packages when given an array of names' do
+    expect(chef_run).to upgrade_package(['with', 'array'])
+  end
 end

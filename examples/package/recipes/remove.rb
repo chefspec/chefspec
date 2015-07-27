@@ -11,3 +11,7 @@ package 'specifying the identity attribute' do
   package_name 'identity_attribute'
   action       :remove
 end
+
+package ['with', 'array'] do
+  action :remove
+end

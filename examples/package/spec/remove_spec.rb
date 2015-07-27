@@ -16,4 +16,8 @@ describe 'package::remove' do
   it 'removes a package when specifying the identity attribute' do
     expect(chef_run).to remove_package('identity_attribute')
   end
+
+  it 'removes all packages when given an array of names' do
+    expect(chef_run).to remove_package(['with', 'array'])
+  end
 end
