@@ -830,6 +830,31 @@ expect(chef_run).to write_motd_message('my message')
 
 **Don't forget to include documentation in your cookbook's README noting the custom matcher and its API!**
 
+As a caveat, if your custom LWRP uses a custom `provides` value as shown below (Chef 12+), you will need to package slightly different custom matchers:
+
+```ruby
+# motd/resources/message.rb
+actions :write
+default_action :write
+
+provides :foobar
+
+attribute :message, name_attribute: true
+```
+
+With a custom `provides` declaration, the resource is still inserted into the resource collection with its generic name; `provides` is just sugar for use in the recipe. As such, you will also need to introduce sugar into your custom matchers:
+
+```ruby
+# motd/libraries/matchers.rb
+if defined?(ChefSpec)
+  def write_foobar(message)
+    ChefSpec::Matchers::ResourceMatcher.new(:motd_message, :write, message)
+  end
+end
+```
+
+Notice that we have changed the name of the method to match the "foobar" action, but the resource matcher definition remains unchanged. When the Chef run executes, the resource will be inserted into the collection as `motd_message`, even though it was given a custom provides.
+
 
 Writing Custom Matchers
 -----------------------
