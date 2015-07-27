@@ -16,4 +16,8 @@ describe 'package::purge' do
   it 'purges a package when specifying the identity attribute' do
     expect(chef_run).to purge_package('identity_attribute')
   end
+
+  it 'purges all packages when given an array of names' do
+    expect(chef_run).to purge_package(['with', 'array'])
+  end
 end

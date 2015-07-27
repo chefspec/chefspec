@@ -20,4 +20,8 @@ describe 'package::install' do
   it 'installs a package when specifying the identity attribute' do
     expect(chef_run).to install_package('identity_attribute')
   end
+
+  it 'installs all packages when given an array of names' do
+    expect(chef_run).to install_package(['with', 'array'])
+  end
 end

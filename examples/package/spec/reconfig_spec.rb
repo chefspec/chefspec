@@ -16,4 +16,8 @@ describe 'package::reconfig' do
   it 'reconfigs a package when specifying the identity attribute' do
     expect(chef_run).to reconfig_package('identity_attribute')
   end
+
+  it 'reconfigs all packages when given an array of names' do
+    expect(chef_run).to reconfig_package(['with', 'array'])
+  end
 end
