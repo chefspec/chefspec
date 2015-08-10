@@ -1,5 +1,5 @@
 module ChefSpec::API
-  # @since 0.5.0
+  # @since 4.3.0
   module DscResourceMatchers
     ChefSpec.define_matcher :dsc_resource
 
