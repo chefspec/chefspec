@@ -26,4 +26,15 @@ describe 'dsc_resource::default' do
         ensure: 'present'
       })
   end
+
+  it 'runs dsc_resource with the user resource' do
+    expect(chef_run).to run_dsc_resource('user resource').with(
+      resource: :user,
+      properties: {
+        username: 'Foobar1',
+        fullname: 'Foobar1',
+        password: 'P@assword!',
+        ensure: 'present'
+      })
+  end
 end
