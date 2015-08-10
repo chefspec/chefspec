@@ -5,7 +5,7 @@ RSpec.configure do |config|
   config.version  = '2012R2'
 end
 
-describe 'dsc_resource::run' do
+describe 'dsc_resource::default' do
   let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
   it 'runs dsc_resource with the archive resource' do
@@ -13,7 +13,7 @@ describe 'dsc_resource::run' do
       resource: :archive,
       properties: {
         ensure: 'present',
-        path: 'C:\Users\Public\Documents\example.zip'
+        path: 'C:\Users\Public\Documents\example.zip',
         destination: 'C:\Users\Public\Documents\ExtractionPath'
       })
   end
@@ -23,17 +23,6 @@ describe 'dsc_resource::run' do
       resource: :group,
       properties: {
         groupname: 'demo1',
-        ensure: 'present'
-      })
-  end
-
-  it 'runs dsc_resource with the user resource' do
-    expect(chef_run).to run_dsc_resource('user resource').with(
-      resource: :user,
-      properties: {
-        username: 'Foobar1',
-        fullname: 'Foobar1',
-        password: ps_credential('P@assword!'),
         ensure: 'present'
       })
   end

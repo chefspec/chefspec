@@ -10,11 +10,3 @@ dsc_resource 'archive resource' do
   property :groupname, 'demo1'
   property :ensure, 'present'
 end
-
-dsc_resource 'user resource' do
-  resource :user
-  property :username, 'Foobar1'
-  property :fullname, 'Foobar1'
-  property :password, ps_credential('P@assword!')
-  property :ensure, 'present'
-end
