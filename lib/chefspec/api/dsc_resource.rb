@@ -24,7 +24,7 @@ module ChefSpec::API
     # @example Assert that a +dsc_resource+ was installed
     #   expect(chef_run).to run_dsc_resource('zip')
     #
-    # @example Assert that a +dsc_resource+ was installed with predicate matchers   #may have to get rid of this one
+    # @example Assert that a +dsc_resource+ was installed with predicate matchers
     #   expect(chef_run).to run_dsc_resource('zip').with_resource(:archive)
     #
     # @example Assert that a +dsc_resource+ was installed with attributes
