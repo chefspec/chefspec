@@ -8,8 +8,12 @@ module Kernel
   def deprecated(*messages)
     messages.each do |message|
       calling_spec = caller.find { |line| line =~ /(\/spec)|(_spec\.rb)/ }
-      calling_spec = 'spec/' + calling_spec.split('/spec/').last
-      warn "[DEPRECATION] #{message} (called from #{calling_spec})"
+      if calling_spec
+        calling_spec = 'spec/' + calling_spec.split('/spec/').last
+        warn "[DEPRECATION] #{message} (called from #{calling_spec})"
+      else
+        warn "[DEPRECATION] #{message}"
+      end
     end
   end
 end
