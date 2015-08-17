@@ -526,6 +526,18 @@ describe 'example::default' do
 end
 ```
 
+The stubbed command can also be passed as a regular expression, allowing multiple commands to be stubbed with one line.
+
+```ruby
+describe 'example::default' do
+  let(:chef_run) { ChefSpec::SoloRunner.new }
+
+  before do
+    stub_command(/(foo)|(bar)/).and_return(true)
+  end
+end
+```
+
 ### Data Bag & Data Bag Item
 **NOTE** This is not required if you are using a ChefSpec server.
 
