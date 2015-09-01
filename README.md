@@ -171,6 +171,29 @@ site 'https://supermarket.chef.io/api/v1'
 cookbook 'name_of_your_cookbook', path: '.'
 ```
 
+### Policyfile
+If you are using Chef Policies with ChefDK, simply require `chefspec/policyfile` in your `spec_helper`, and ensure you are using the `ChefSpec::ServerRunner` - Chef Solo does not support the exported repository format because the cookbook names use the unique version identifier.
+
+```ruby
+# spec_helper.rb
+require 'chefspec'
+require 'chefspec/policyfile'
+```
+
+Requiring this file will:
+
+- Create a temporary working directory
+- Download all the dependencies listed in your `Policyfile.rb` into the temporary directory
+- Set ChefSpec's `cookbook_path` to the temporary directory
+
+Your `Policyfile.rb` should look something like this:
+
+```ruby
+name 'my-cookbook'
+run_list 'my-cookbook::default'
+default_source :community
+cookbook 'my-cookbook', path: '.'
+```
 
 Running Specs
 -------------
