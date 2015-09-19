@@ -26,10 +26,9 @@ Gem::Specification.new do |s|
   # ChefSpec requires Ruby 1.9+
   s.required_ruby_version = '>= 1.9'
 
-  s.add_dependency 'chef',      '>= 11.14'
-  s.add_dependency 'chef-zero', '~> 4.2.3'
-  s.add_dependency 'fauxhai',   '~> 2.3'
-  s.add_dependency 'rspec',     '~> 3.0'
+  s.add_dependency 'chef',    '>= 11.14'
+  s.add_dependency 'fauxhai', '~> 2.3'
+  s.add_dependency 'rspec',   '~> 3.0'
 
   # Development Dependencies
   s.add_development_dependency 'rake'
