@@ -1,6 +1,16 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 4.4.0 (September 18, 2015)
+
+Bugfixes
+  - Documentation improvements (using regex in stubbed commands, chef 12+ custom matcher gotchas)
+  - Spec suite improvements (dsc resource specs, platform specific configurations)
+  - Chef 12+ platform specific resource loading related error
+
+Improvements
+  - Support for policy files
+
 ## 4.3.0 (July 16, 2015)
 
 Bugfixes:
