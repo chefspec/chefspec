@@ -15,19 +15,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test a
     # +remote_directory+ resource with ChefSpec.
     #
-    # @example Assert that a +remote_directory+ was createed
+    # @example Assert that a +remote_directory+ was created
     #   expect(chef_run).to create_remote_directory('/tmp')
     #
-    # @example Assert that a +remote_directory+ was createed with predicate matchers
+    # @example Assert that a +remote_directory+ was created with predicate matchers
     #   expect(chef_run).to create_remote_directory('/tmp').with_overwrite(true)
     #
-    # @example Assert that a +remote_directory+ was createed with attributes
+    # @example Assert that a +remote_directory+ was created with attributes
     #   expect(chef_run).to create_remote_directory('/tmp').with(overwrite: true)
     #
-    # @example Assert that a +remote_directory+ was createed using a regex
+    # @example Assert that a +remote_directory+ was created using a regex
     #   expect(chef_run).to create_remote_directory('/tmp').with(overwrite: /true/)
     #
-    # @example Assert that a +remote_directory+ was _not_ createed
+    # @example Assert that a +remote_directory+ was _not_ created
     #   expect(chef_run).to_not create_remote_directory('/tmp')
     #
     #
@@ -92,19 +92,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test a
     # +remote_directory+ resource with ChefSpec.
     #
-    # @example Assert that a +remote_directory+ was deleteed
+    # @example Assert that a +remote_directory+ was deleted
     #   expect(chef_run).to delete_remote_directory('/tmp')
     #
-    # @example Assert that a +remote_directory+ was deleteed with predicate matchers
+    # @example Assert that a +remote_directory+ was deleted with predicate matchers
     #   expect(chef_run).to delete_remote_directory('/tmp').with_overwrite(true)
     #
-    # @example Assert that a +remote_directory+ was deleteed with attributes
+    # @example Assert that a +remote_directory+ was deleted with attributes
     #   expect(chef_run).to delete_remote_directory('/tmp').with(overwrite: true)
     #
-    # @example Assert that a +remote_directory+ was deleteed using a regex
+    # @example Assert that a +remote_directory+ was deleted using a regex
     #   expect(chef_run).to delete_remote_directory('/tmp').with(overwrite: /true/)
     #
-    # @example Assert that a +remote_directory+ was _not_ deleteed
+    # @example Assert that a +remote_directory+ was _not_ deleted
     #   expect(chef_run).to_not delete_remote_directory('/tmp')
     #
     #

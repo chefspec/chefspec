@@ -15,19 +15,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test a
     # +directory+ resource with ChefSpec.
     #
-    # @example Assert that a +directory+ was createed
+    # @example Assert that a +directory+ was created
     #   expect(chef_run).to create_directory('/tmp')
     #
-    # @example Assert that a +directory+ was createed with predicate matchers
+    # @example Assert that a +directory+ was created with predicate matchers
     #   expect(chef_run).to create_directory('/tmp').with_user('svargo')
     #
-    # @example Assert that a +directory+ was createed with attributes
+    # @example Assert that a +directory+ was created with attributes
     #   expect(chef_run).to create_directory('/tmp').with(user: 'svargo')
     #
-    # @example Assert that a +directory+ was createed using a regex
+    # @example Assert that a +directory+ was created using a regex
     #   expect(chef_run).to create_directory('/tmp').with(user: /sva(.+)/)
     #
-    # @example Assert that a +directory+ was _not_ createed
+    # @example Assert that a +directory+ was _not_ created
     #   expect(chef_run).to_not create_directory('/tmp')
     #
     #
@@ -52,19 +52,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test a
     # +directory+ resource with ChefSpec.
     #
-    # @example Assert that a +directory+ was deleteed
+    # @example Assert that a +directory+ was deleted
     #   expect(chef_run).to delete_directory('/tmp')
     #
-    # @example Assert that a +directory+ was deleteed with predicate matchers
+    # @example Assert that a +directory+ was deleted with predicate matchers
     #   expect(chef_run).to delete_directory('/tmp').with_user('svargo')
     #
-    # @example Assert that a +directory+ was deleteed with attributes
+    # @example Assert that a +directory+ was deleted with attributes
     #   expect(chef_run).to delete_directory('/tmp').with(user: 'svargo')
     #
-    # @example Assert that a +directory+ was deleteed using a regex
+    # @example Assert that a +directory+ was deleted using a regex
     #   expect(chef_run).to delete_directory('/tmp').with(user: /sva(.+)/)
     #
-    # @example Assert that a +directory+ was _not_ deleteed
+    # @example Assert that a +directory+ was _not_ deleted
     #   expect(chef_run).to_not delete_directory('/tmp')
     #
     #

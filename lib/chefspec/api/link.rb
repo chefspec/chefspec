@@ -15,19 +15,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test a
     # +link+ resource with ChefSpec.
     #
-    # @example Assert that a +link+ was createed
+    # @example Assert that a +link+ was created
     #   expect(chef_run).to create_link('/tmp')
     #
-    # @example Assert that a +link+ was createed with predicate matchers
+    # @example Assert that a +link+ was created with predicate matchers
     #   expect(chef_run).to create_link('/tmp').with_link_type(:hard)
     #
-    # @example Assert that a +link+ was createed with attributes
+    # @example Assert that a +link+ was created with attributes
     #   expect(chef_run).to create_link('/tmp').with(link_type: :hard)
     #
-    # @example Assert that a +link+ was createed using a regex
+    # @example Assert that a +link+ was created using a regex
     #   expect(chef_run).to create_link('/tmp').with(link_type: Symbol)
     #
-    # @example Assert that a +link+ was _not_ createed
+    # @example Assert that a +link+ was _not_ created
     #   expect(chef_run).to_not create_link('/tmp')
     #
     #
@@ -52,19 +52,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test a
     # +link+ resource with ChefSpec.
     #
-    # @example Assert that a +link+ was deleteed
+    # @example Assert that a +link+ was deleted
     #   expect(chef_run).to delete_link('/tmp')
     #
-    # @example Assert that a +link+ was deleteed with predicate matchers
+    # @example Assert that a +link+ was deleted with predicate matchers
     #   expect(chef_run).to delete_link('/tmp').with_link_type(:hard)
     #
-    # @example Assert that a +link+ was deleteed with attributes
+    # @example Assert that a +link+ was deleted with attributes
     #   expect(chef_run).to delete_link('/tmp').with(link_type: :hard)
     #
-    # @example Assert that a +link+ was deleteed using a regex
+    # @example Assert that a +link+ was deleted using a regex
     #   expect(chef_run).to delete_link('/tmp').with(link_type: Symbol)
     #
-    # @example Assert that a +link+ was _not_ deleteed
+    # @example Assert that a +link+ was _not_ deleted
     #   expect(chef_run).to_not delete_link('/tmp')
     #
     #

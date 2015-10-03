@@ -15,19 +15,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test a
     # +user+ resource with ChefSpec.
     #
-    # @example Assert that a +user+ was createed
+    # @example Assert that a +user+ was created
     #   expect(chef_run).to create_user('apache2')
     #
-    # @example Assert that a +user+ was createed with predicate matchers
+    # @example Assert that a +user+ was created with predicate matchers
     #   expect(chef_run).to create_user('apache2').with_uid(1234)
     #
-    # @example Assert that a +user+ was createed with attributes
+    # @example Assert that a +user+ was created with attributes
     #   expect(chef_run).to create_user('apache2').with(uid: 1234)
     #
-    # @example Assert that a +user+ was createed using a regex
+    # @example Assert that a +user+ was created using a regex
     #   expect(chef_run).to create_user('apache2').with(uid: /\d+/)
     #
-    # @example Assert that a +user+ was _not_ createed
+    # @example Assert that a +user+ was _not_ created
     #   expect(chef_run).to_not create_user('apache2')
     #
     #
