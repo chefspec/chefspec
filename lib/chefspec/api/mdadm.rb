@@ -52,19 +52,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test a
     # +mdadm+ resource with ChefSpec.
     #
-    # @example Assert that a +mdadm+ was createed
+    # @example Assert that a +mdadm+ was created
     #   expect(chef_run).to create_mdadm('/dev/md0')
     #
-    # @example Assert that a +mdadm+ was createed with predicate matchers
+    # @example Assert that a +mdadm+ was created with predicate matchers
     #   expect(chef_run).to create_mdadm('/dev/md0').with_devices(['/dev/sda'])
     #
-    # @example Assert that a +mdadm+ was createed with attributes
+    # @example Assert that a +mdadm+ was created with attributes
     #   expect(chef_run).to create_mdadm('/dev/md0').with(devices: ['/dev/sda'])
     #
-    # @example Assert that a +mdadm+ was createed using a regex
+    # @example Assert that a +mdadm+ was created using a regex
     #   expect(chef_run).to create_mdadm('/dev/md0').with(devices: '/dev/sda')
     #
-    # @example Assert that a +mdadm+ was _not_ createed
+    # @example Assert that a +mdadm+ was _not_ created
     #   expect(chef_run).to_not create_mdadm('/dev/md0')
     #
     #

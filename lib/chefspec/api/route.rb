@@ -52,19 +52,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test a
     # +route+ resource with ChefSpec.
     #
-    # @example Assert that a +route+ was deleteed
+    # @example Assert that a +route+ was deleted
     #   expect(chef_run).to delete_route('10.0.0.10/32')
     #
-    # @example Assert that a +route+ was deleteed with predicate matchers
+    # @example Assert that a +route+ was deleted with predicate matchers
     #   expect(chef_run).to delete_route('10.0.0.10/32').with_device('eth0')
     #
-    # @example Assert that a +route+ was deleteed with attributes
+    # @example Assert that a +route+ was deleted with attributes
     #   expect(chef_run).to delete_route('10.0.0.10/32').with(device: 'eth0')
     #
-    # @example Assert that a +route+ was deleteed using a regex
+    # @example Assert that a +route+ was deleted using a regex
     #   expect(chef_run).to delete_route('10.0.0.10/32').with(device: /eth(\d+)/)
     #
-    # @example Assert that a +route+ was _not_ deleteed
+    # @example Assert that a +route+ was _not_ deleted
     #   expect(chef_run).to_not delete_route('10.0.0.10/32')
     #
     #

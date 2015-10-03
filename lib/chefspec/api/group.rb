@@ -15,19 +15,19 @@ module ChefSpec::API
     # The Examples section demonstrates the different ways to test a
     # +group+ resource with ChefSpec.
     #
-    # @example Assert that a +group+ was createed
+    # @example Assert that a +group+ was created
     #   expect(chef_run).to create_group('apache2')
     #
-    # @example Assert that a +group+ was createed with predicate matchers
+    # @example Assert that a +group+ was created with predicate matchers
     #   expect(chef_run).to create_group('apache2').with_gid(1234)
     #
-    # @example Assert that a +group+ was createed with attributes
+    # @example Assert that a +group+ was created with attributes
     #   expect(chef_run).to create_group('apache2').with(gid: 1234)
     #
-    # @example Assert that a +group+ was createed using a regex
+    # @example Assert that a +group+ was created using a regex
     #   expect(chef_run).to create_group('apache2').with(gid: /\d+/)
     #
-    # @example Assert that a +group+ was _not_ createed
+    # @example Assert that a +group+ was _not_ created
     #   expect(chef_run).to_not create_group('apache2')
     #
     #
