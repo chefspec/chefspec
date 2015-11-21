@@ -1,3 +1,6 @@
+require 'rspec/matchers/expecteds_for_multiple_diffs'
+require 'rspec/expectations/fail_with'
+
 module ChefSpec::Matchers
   class ResourceMatcher
     def initialize(resource_name, expected_action, expected_identity)
@@ -60,10 +63,14 @@ module ChefSpec::Matchers
               %Q{expected "#{resource.to_s}" to be run at converge time}
             end
           else
-            %Q{expected "#{resource.to_s}" to have parameters:} \
+            message = %Q{expected "#{resource.to_s}" to have parameters:} \
             "\n\n" \
             "  " + unmatched_parameters.collect { |parameter, h|
-              "#{parameter} #{h[:expected].inspect}, was #{h[:actual].inspect}"
+              msg = "#{parameter} #{h[:expected].inspect}, was #{h[:actual].inspect}"
+              diff = ::RSpec::Matchers::ExpectedsForMultipleDiffs.from(h[:expected]) \
+                     .message_with_diff(message, ::RSpec::Expectations::differ, h[:actual])
+              msg += diff if diff
+              msg
             }.join("\n  ")
           end
         else
