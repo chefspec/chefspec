@@ -20,14 +20,14 @@ Bugfixes:
   - Only exit if the status is a failure [GH-565]
   - Fix load order on Windows when using the `rights` attributes
   - Improve testing matrix and remove deprecated Chef versions
-  - Supress chef_gem compile_time warnings
+  - Suppress chef_gem compile_time warnings
   - Fix exceptions on converge for Chef 12.1.0 masking
-  - Update Librarian `Cheffile` site URL to supermerket.chef.io
+  - Update Librarian `Cheffile` site URL to supermarket.chef.io
   - Filter Windows and Unix paths for test coverage report with Berkshelf
 
 Improvements:
   - Added possibility to specify file_cache_path globally
-  - Added new capabilities for reboot resouce
+  - Added new capabilities for reboot resource
   - Use `Chef::Resource#declared_type` first if available (Chef >= 12),
     otherwise fall back to `Chef::Resource#resource_name` (Chef <= 11)
   - Extend render_file to yield the content as a block
@@ -67,7 +67,7 @@ Improvements:
   - Updated documentation
 
 Breaking changes:
-  - Due to the new `ServerRunner`, the `ChefSpec::Server` singleton object has been deprecated. As much as I would like to provide a backwards-compatible interface, there is no way to do so (as the code now supports multipel Chef Server instances). Sorry :(.
+  - Due to the new `ServerRunner`, the `ChefSpec::Server` singleton object has been deprecated. As much as I would like to provide a backwards-compatible interface, there is no way to do so (as the code now supports multiple Chef Server instances). Sorry :(.
   - Remove old deprecations - this is not really a breaking change, but the v2.0.0 deprecations have been removed in favor of new ones
 
 ## 4.0.2 (August 13, 2014)
@@ -154,7 +154,7 @@ Bugfixes:
   - Fix coverage calculation when there are no resources in the collection
   - Fix misplaced quote in matcher output
   - Include all files in generated gem
-  - Ensure compatability with Chef HEAD
+  - Ensure compatibility with Chef HEAD
 
 Improvements:
   - Test Ruby 2.1 on Travis
