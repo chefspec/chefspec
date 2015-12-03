@@ -28,10 +28,10 @@ Important Notes
 - **ChefSpec 3.0+ requires Ruby 1.9 or higher!**
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version's documentation!**
 - **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding aruba test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).**
-- **ChefSpec aims to maintain compatability with the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
+- **ChefSpec aims to maintain compatibility with the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
 
 
-Notes on Compatability with Chef Versions
+Notes on Compatibility with Chef Versions
 -----------------------------------------
 As a general rule, if it is tested in the Travis CI matrix, it is a supported version. The section below details any specific versions that are _not_ supported and why:
 
