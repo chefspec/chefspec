@@ -1,6 +1,11 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 4.5.0 (December 4, 2015)
+
+Improvements
+  - Update Fauxhai dependency to 3.0 to bring in newly generated mocked Ohai data
+
 ## 4.4.0 (September 18, 2015)
 
 Bugfixes
