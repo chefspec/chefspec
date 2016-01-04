@@ -981,9 +981,34 @@ it 'raises an error' do
 end
 ```
 
+Testing Multiple Recipes
+-------------
+Even though ChefSpec is cookbook-centric, you can still converge multiple recipes in a single `ChefSpec::SoloRunner` instance. Given a cookbook "sandwich" with recipes "bacon", "lettuce" and "tomato":
+
+```ruby
+# cookbooks/sandwich/recipes/bacon.rb
+package 'bacon'
+
+# cookbooks/sandwich/recipes/lettuce.rb
+package 'lettuce'
+
+# cookbooks/sandwich/recipes/tomato.rb
+package 'tomato'
+```
+
+```ruby
+let(:chef_run) { ChefSpec::SoloRunner.converge('sandwich::bacon', 'sandwich::lettuce', 'sandwich::tomato') }
+```
+
+```ruby
+expect(chef_run).to install_package('bacon')
+expect(chef_run).to install_package('lettuce')
+expect(chef_run).to install_package('tomato')
+```
+
 Testing Roles
 -------------
-Even though ChefSpec is cookbook-centric, you can still converge multiple recipes and roles in a single `ChefSpec::SoloRunner` instance. Given a cookbook "bacon" with a default recipe:
+Roles can also be used in a single `ChefSpec::SoloRunner` instance. Given a cookbook "bacon" with a default recipe:
 
 ```ruby
 # cookbooks/bacon/recipes/default.rb
