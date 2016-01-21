@@ -1,5 +1,6 @@
 module ChefSpec::Matchers
   class RenderFileMatcher
+    attr_reader :expected_content
     def initialize(path)
       @path = path
     end
@@ -20,7 +21,7 @@ module ChefSpec::Matchers
         raise ArgumentError, "Cannot specify expected content and a block!"
       elsif expected_content
         @expected_content = expected_content
-      elsif block
+      elsif block_given?
         @expected_content = block
       else
         raise ArgumentError, "Must specify expected content or a block!"
