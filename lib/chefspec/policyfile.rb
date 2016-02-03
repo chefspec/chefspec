@@ -23,7 +23,6 @@ module ChefSpec
     #
     def setup!
       policyfile_path = File.join(Dir.pwd, 'Policyfile.rb')
-      cbdir = File.join(@tmpdir, 'cookbooks')
 
       installer = ChefDK::PolicyfileServices::Install.new(
         policyfile: policyfile_path,
@@ -40,7 +39,12 @@ module ChefSpec
       FileUtils.rm_rf(@tmpdir)
       exporter.run
 
-      ::RSpec.configure { |config| config.cookbook_path = cbdir }
+      ::RSpec.configure do |config|
+        config.cookbook_path = [
+          File.join(@tmpdir, 'cookbooks'),
+          File.join(@tmpdir, 'cookbook_artifacts')
+        ]
+      end
     end
 
     #
