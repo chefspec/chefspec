@@ -6,6 +6,17 @@ describe ChefSpec::Matchers::RenderFileMatcher do
   let(:chef_run) { double('chef run', find_resource: file) }
   subject { described_class.new(path) }
 
+  describe '#with_content' do
+    it 'accepts do/end syntax' do
+      subject.matches?(chef_run)
+      expect(
+        subject.with_content do |content|
+          'Does not raise ArgumentError'
+        end.expected_content.call
+      ).to eq('Does not raise ArgumentError')
+    end
+  end
+
   describe '#failure_message' do
     it 'has the right value' do
       subject.matches?(chef_run)
