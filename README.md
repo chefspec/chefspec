@@ -244,7 +244,7 @@ require 'chefspec'
 describe 'example::default' do
   let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
-  it 'does something' do
+  it 'installs apache2' do
     expect(chef_run).to install_package('apache2')
   end
 end
@@ -260,7 +260,7 @@ require 'chefspec'
 describe 'example::default' do
   let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
-  it 'does something' do
+  it 'adds the member vagrant to the docker group' do
     expect(chef_run).to modify_group('docker').with(members: ['vagrant'])
   end
 end
