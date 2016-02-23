@@ -27,6 +27,7 @@ end
 require_relative 'api/apt_package'
 require_relative 'api/batch'
 require_relative 'api/chef_gem'
+require_relative 'api/chocolatey_package'
 require_relative 'api/cookbook_file'
 require_relative 'api/cron'
 require_relative 'api/deploy'
