@@ -19,7 +19,7 @@ module ChefSpec::API
     #
     # @example Assert that a +chocolatey_package+ was installed with attributes
     #   expect(chef_run).to install_chocolatey_package('git').with(
-    #     version: '2.7.1',
+    #     version: %w(2.7.1),
     #     options: '--params /GitAndUnixToolsOnPath'
     #  )
     #
@@ -55,7 +55,7 @@ module ChefSpec::API
     #
     # @example Assert that a specific +chocolatey_package+ version was removed
     #   expect(chef_run).to remove_chocolatey_package('7zip').with(
-    #     version: '15.14'
+    #     version: %w(15.14)
     #   )
     #
     # @example Assert that a +chocolatey_package+ was _not_ removed
@@ -88,7 +88,7 @@ module ChefSpec::API
     #
     # @example Assert that a +chocolatey_package+ was upgraded with attributes
     #   expect(chef_run).to upgrade_chocolatey_package('git').with(
-    #     version: '2.7.1',
+    #     version: %w(2.7.1),
     #     options: '-params "/GitAndUnixToolsOnPath"'
     #  )
     #
