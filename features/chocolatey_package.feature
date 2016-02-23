@@ -26,3 +26,4 @@ Feature: The chocolatey_package matcher
     | Matcher |
     | install |
     | remove  |
+    | upgrade |
