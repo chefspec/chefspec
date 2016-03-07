@@ -1,6 +1,11 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 4.6.0 (March 8, 2016)
+
+Improvements
+  - Support for new Policyfile-related cookbook_artifacts.
+
 ## 4.5.0 (December 4, 2015)
 
 Improvements
