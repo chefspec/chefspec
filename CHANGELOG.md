@@ -1,6 +1,20 @@
 CHANGELOG for ChefSpec
 ======================
 
+## 4.6.0 (March 7, 2016)
+
+Improvements
+
+  - Add support for adding `berkshelf_options` to the RSpec config
+  - Add `chocolately_package` matches
+  - Support `do..end` style syntax in block expectations
+  - Output a diff when multi-line resource parameters are unmatched
+
+Bugfixes
+
+  - Update tests to include better descriptions and feature names
+  - Add support for Policyfile workflow
+
 ## 4.5.0 (December 4, 2015)
 
 Improvements
