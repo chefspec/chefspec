@@ -38,5 +38,7 @@ module ChefSpec
     class GemLoadError < ChefSpecError; end
 
     class MayNeedToSpecifyPlatform < ChefSpecError; end
+
+    class InvalidBerkshelfOptions < ChefSpecError; end
   end
 end

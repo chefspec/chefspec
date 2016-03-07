@@ -21,7 +21,13 @@ module ChefSpec
     # Setup and install the necessary dependencies in the temporary directory.
     #
     def setup!
-      berksfile = ::Berkshelf::Berksfile.from_file('Berksfile')
+      # Get the list of Berkshelf options
+      opts = RSpec.configuration.berkshelf_options
+      if !opts.is_a?(Hash)
+        raise InvalidBerkshelfOptions(value: opts.inspect)
+      end
+
+      berksfile = ::Berkshelf::Berksfile.from_file('Berksfile', opts)
 
       # Grab a handle to tmpdir, since Berkshelf 2 modifies it a bit
       tmpdir = File.join(@tmpdir, 'cookbooks')

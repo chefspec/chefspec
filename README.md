@@ -145,6 +145,16 @@ Requiring this file will:
 - Download all the dependencies listed in your `Berksfile` into the temporary directory
 - Set ChefSpec's `cookbook_path` to the temporary directory
 
+You can customize the list of options passed to the installation command using the `berkshelf_options` RSpec configuration:
+
+```ruby
+RSpec.configuration do |config|
+  config.berkshelf_options = { only: "my-group" }
+end
+```
+
+This is a Ruby hash and valid options include `only` and `except`.
+
 ### Librarian
 
 If you are using Librarian, simply require `chefspec/librarian` in your `spec_helper` after requiring `chefspec`:

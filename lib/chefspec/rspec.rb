@@ -9,6 +9,7 @@ RSpec.configure do |config|
     ChefSpec::Stubs::SearchRegistry.reset!
   end
 
+  config.add_setting :berkshelf_options, default: {}
   config.add_setting :cookbook_path
   config.add_setting :role_path
   config.add_setting :environment_path
