@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rspec',   '~> 3.0'
 
   # Development Dependencies
-  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rake',      '< 11.0'
   s.add_development_dependency 'redcarpet', '~> 3.3'
   s.add_development_dependency 'yard',      '~> 0.8'
 
