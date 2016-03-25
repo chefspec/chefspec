@@ -11,6 +11,12 @@ module ChefSpec
 
     # @see (SoloRunner#initialize)
     def initialize(options = {})
+      # Unlike the SoloRunner, the file_cache_path needs to remain consistent
+      # for every Chef run.  Else the Chef client tries to loads the same
+      # cookbook multiple times and will encounter deprecated logic when
+      # creating LWRPs.
+      options[:file_cache_path] ||= ::RSpec.configuration.class::FILE_CACHE_PATH
+
       # Call super, but do not pass in the block because we want to customize
       # our yielding.
       super(options, &nil)
@@ -98,24 +104,6 @@ module ChefSpec
       @server.close
 
       return @port
-    end
-
-    #
-    # The path to cache files on disk.  Unlike the SoloRunner, this path needs
-    # to remain consistent for every Chef run.  Else the Chef client tries to
-    # loads the same cookbook multiple times and will encounter deprecated logic
-    # when creating LWRPs.  This method can be removed when the deprecated logic
-    # is removed.
-    #
-    # The method adds a {Kernel.at_exit} handler to ensure the temporary
-    # directory is deleted when the system exits.
-    #
-    def file_cache_path
-      @@file_cache_path ||= begin
-        d = Dir.mktmpdir
-        at_exit { FileUtils.rm_rf(d) }
-        d
-      end
     end
 
   end
