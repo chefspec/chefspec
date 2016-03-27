@@ -10,6 +10,7 @@ RSpec.configure do |config|
   end
 
   config.add_setting :berkshelf_options, default: {}
+  config.add_setting :file_cache_path
   config.add_setting :cookbook_path
   config.add_setting :role_path
   config.add_setting :environment_path
