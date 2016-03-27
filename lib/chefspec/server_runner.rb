@@ -2,6 +2,7 @@ require 'chef_zero/server'
 require 'chef/cookbook_loader'
 require 'chef/cookbook_uploader'
 
+require_relative 'file_cache_path_proxy'
 require_relative 'server_methods'
 require_relative 'solo_runner'
 
@@ -12,10 +13,11 @@ module ChefSpec
     # @see (SoloRunner#initialize)
     def initialize(options = {})
       # Unlike the SoloRunner, the file_cache_path needs to remain consistent
-      # for every Chef run.  Else the Chef client tries to loads the same
+      # for every Chef run or else the Chef client tries to loads the same
       # cookbook multiple times and will encounter deprecated logic when
-      # creating LWRPs.
-      options[:file_cache_path] ||= ::RSpec.configuration.class::FILE_CACHE_PATH
+      # creating LWRPs. It also slows down the entire process.
+      options[:file_cache_path] ||= RSpec.configuration.file_cache_path ||
+        ChefSpec::FileCachePathProxy.instance.file_cache_path
 
       # Call super, but do not pass in the block because we want to customize
       # our yielding.
@@ -105,6 +107,5 @@ module ChefSpec
 
       return @port
     end
-
   end
 end
