@@ -76,7 +76,7 @@ describe ChefSpec::Macros do
     end
 
     it 'sets the automatic attributes from a JSON data path' do
-      allow(File).to receive(:exists?).with('/path/to/json').and_return(true)
+      allow(File).to receive(:exist?).with('/path/to/json').and_return(true)
       allow(File).to receive(:read).with('/path/to/json').and_return('{ "ipaddress": "1.2.3.4" }')
       node = described_class.stub_node('node.example', path: '/path/to/json')
       expect(node['ipaddress']).to eq('1.2.3.4')
