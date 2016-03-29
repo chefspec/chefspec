@@ -1,11 +1,12 @@
-CHANGELOG for ChefSpec
-======================
+# CHANGELOG for ChefSpec
 
-## 4.6.0.dev (Unreleased)
-
-IMPROVEMENTS
+## 4.6.1 (March 29, 2016)
 
 BUG FIXES
+
+  - Use the same Chef :file_cache_path in every ChefSpec converge to prevent large numbers of LWRP deprecation warnings
+  - Require Fauxhai ~3.2 to prevent ChefSpec spec failures
+  - Require Rake < 11.0 to prevent failures
 
 ## 4.6.0 (March 7, 2016)
 
