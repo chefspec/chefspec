@@ -571,6 +571,31 @@ describe 'example::default' do
 end
 ```
 
+### Library Helpers
+
+Given a library helper with a `has_bacon?` method:
+
+```ruby
+module Demo
+  module Helper
+
+    include Chef::Mixin::ShellOut
+
+    def has_bacon?
+      cmd = shell_out!('getent passwd bacon', {:returns => [0,2]})
+      cmd.stderr.empty? && (cmd.stdout =~ /^bacon/)
+    end
+  end
+end
+```
+
+Stub the output of the library helper. [Additional information](http://jtimberman.housepub.org/blog/2015/05/30/quick-tip-stubbing-library-helpers-in-chefspec/)
+```ruby
+before do
+  allow_any_instance_of(Chef::Node).to receive(:has_bacon?).and_return(true)
+end
+```
+
 ### Data Bag & Data Bag Item
 **NOTE** This is not required if you are using a ChefSpec server.
 
