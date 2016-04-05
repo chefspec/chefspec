@@ -1,0 +1,14 @@
+<%='Touched'.to_s.ljust(8) %> <%='Resource'.to_s.ljust(48) %>   File:Line
+<% @all_resources.each do |resource| %>
+<%=resource.touched?.to_s.ljust(8) %> <%= resource.to_s.ljust(48) %>   <%= resource.source_file %>:<%= resource.source_line %>
+<% end %>
+
+<% if @total == 0 %>
+  No Chef resources found, skipping coverage calculation...
+<% else %>
+ChefSpec Coverage report generated...
+
+  Total Resources:   <%= @total %>
+  Touched Resources: <%= @touched %>
+  Touch Coverage:    <%= @coverage %>%
+<% end %>

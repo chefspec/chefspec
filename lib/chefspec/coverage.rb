@@ -28,6 +28,8 @@ module ChefSpec
     def initialize
       @collection = {}
       @filters    = {}
+      template = ChefSpec.root.join('templates', 'coverage', 'human.erb')
+      @erb = Erubis::Eruby.new(File.read(template))
     end
 
     #
@@ -67,7 +69,26 @@ module ChefSpec
 
       true
     end
-
+    #
+    # Change the template for reporting of converage analysis.
+    #
+    # @param [string] path
+    #   The template file to use for the output of the report
+    #
+    # @return [true]
+    #
+    def set_template(file = 'human.erb')
+      [
+        ChefSpec.root.join('templates', 'coverage', file),
+        File.join(Dir.pwd,file)
+      ].each do |template|
+        if File.exist? template
+          @erb = Erubis::Eruby.new(File.read(template))
+          return
+        end
+      end
+      raise ArgumentError, "template specified cannot be found: #{file}"
+    end
     #
     # Add a resource to the resource collection. Only new resources are added
     # and only resources that match the given filter are covered (which is *
@@ -130,10 +151,9 @@ module ChefSpec
       report[:untouched_resources] = @collection.collect do |_, resource|
         resource unless resource.touched?
       end.compact
+      report[:all_resources] = @collection.values
 
-      template = ChefSpec.root.join('templates', 'coverage', 'human.erb')
-      erb = Erubis::Eruby.new(File.read(template))
-      puts erb.evaluate(report)
+      puts @erb.evaluate(report)
 
       # Ensure we exit correctly (#351)
       Kernel.exit(exit_status) if exit_status && exit_status > 0
@@ -158,6 +178,15 @@ module ChefSpec
 
       def to_s
         @resource.to_s
+      end
+
+      def to_json
+        {
+          "source_file"=>source_file,
+          "source_line"=>source_line,
+          "touched"=>touched?,
+          "resource"=>to_s
+        }.to_json
       end
 
       def source_file
