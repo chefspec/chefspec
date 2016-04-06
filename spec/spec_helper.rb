@@ -1,6 +1,11 @@
 require 'chefspec'
 require 'support/hash'
 
+
+ChefSpec::Coverage.start! do
+  set_template '/home/efelix/tmp/t.erb'
+end
+
 RSpec.configure do |config|
   config.expect_with(:rspec) { |c| c.syntax = :expect }
   config.filter_run(focus: true)

@@ -40,5 +40,8 @@ module ChefSpec
     class MayNeedToSpecifyPlatform < ChefSpecError; end
 
     class InvalidBerkshelfOptions < ChefSpecError; end
+
+    class TemplateNotFound < ChefSpecError; end
+    class ErbTemplateParseError < ChefSpecError; end
   end
 end

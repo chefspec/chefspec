@@ -28,8 +28,7 @@ module ChefSpec
     def initialize
       @collection = {}
       @filters    = {}
-      template = ChefSpec.root.join('templates', 'coverage', 'human.erb')
-      @erb = Erubis::Eruby.new(File.read(template))
+      @template = ChefSpec.root.join('templates', 'coverage', 'human.erb')
     end
 
     #
@@ -80,14 +79,14 @@ module ChefSpec
     def set_template(file = 'human.erb')
       [
         ChefSpec.root.join('templates', 'coverage', file),
-        File.join(Dir.pwd,file)
-      ].each do |template|
-        if File.exist? template
-          @erb = Erubis::Eruby.new(File.read(template))
+        File.expand_path(file, Dir.pwd)
+      ].each do |temp|
+        if File.exist?(temp)
+          @template = temp
           return
         end
       end
-      raise ArgumentError, "template specified cannot be found: #{file}"
+      raise Error::TemplateNotFound.new(path: file)
     end
     #
     # Add a resource to the resource collection. Only new resources are added
@@ -152,8 +151,13 @@ module ChefSpec
         resource unless resource.touched?
       end.compact
       report[:all_resources] = @collection.values
-
-      puts @erb.evaluate(report)
+      
+      begin
+        erb = Erubis::Eruby.new(File.read(@template))
+        puts erb.evaluate(report)
+      rescue NameError => e
+        raise Error::ErbTemplateParseError.new(original_error: e.message)
+      end
 
       # Ensure we exit correctly (#351)
       Kernel.exit(exit_status) if exit_status && exit_status > 0
@@ -182,10 +186,10 @@ module ChefSpec
 
       def to_json
         {
-          "source_file"=>source_file,
-          "source_line"=>source_line,
-          "touched"=>touched?,
-          "resource"=>to_s
+          "source_file" => source_file,
+          "source_line" => source_line,
+          "touched" => touched?,
+          "resource" => to_s
         }.to_json
       end
 
