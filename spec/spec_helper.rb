@@ -3,7 +3,7 @@ require 'support/hash'
 
 
 ChefSpec::Coverage.start! do
-  set_template '/home/efelix/tmp/t.erb'
+  set_template 'table.erb'
 end
 
 RSpec.configure do |config|
