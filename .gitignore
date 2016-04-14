@@ -11,5 +11,6 @@ Gemfile.lock
 gemfiles/*.lock
 .bundle
 bin
+binstubs
 vendor
 .rspec
