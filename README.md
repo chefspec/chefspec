@@ -462,7 +462,7 @@ Create an environment:
 
 ```ruby
 ChefSpec::ServerRunner.new do |node, server|
-  server.create_environment('my_environment', { description: '...' })
+  server.create_environment('my_environment', { default_attributes: { description: '...' } })
 end
 ```
 
@@ -784,6 +784,18 @@ end
 
 Mocking Out Environments
 ------------------------
+### ServerRunner
+```ruby
+ChefSpec::ServerRunner.new do |node, server|
+  # Create the environment
+  server.create_environment('staging', { default_attributes: { cookbook_attr: 'value' } })
+
+  # Assign the environment to the node
+  node.chef_environment = 'staging'
+end
+```
+
+### SoloRunner
 If you want to mock out `node.chef_environment`, you'll need to use RSpec mocks/stubs twice:
 
 ```ruby
