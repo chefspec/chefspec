@@ -79,6 +79,7 @@ module ChefSpec
       Chef::Config[:role_path]       = Array(@options[:role_path])
       Chef::Config[:force_logger]    = true
       Chef::Config[:solo]            = true
+      Chef::Config[:solo_legacy_mode] = true
       Chef::Config[:environment_path] = @options[:environment_path]
 
       yield node if block_given?
