@@ -27,6 +27,7 @@ module ChefSpec
       Chef::Config[:client_name]     = 'chefspec'
       Chef::Config[:node_name]       = 'chefspec'
       Chef::Config[:solo]            = false
+      Chef::Config[:solo_legacy_mode] = false
 
       Chef::Config[:chef_server_url]  = server.url
       Chef::Config[:http_retry_count] = 0
