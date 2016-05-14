@@ -1,5 +1,11 @@
 # CHANGELOG for ChefSpec
 
+## 4.7.0 (May 13, 2016)
+
+IMPROVEMENTS
+
+  - Support Chef Solo actually being local mode (per Chef RFC 31)
+
 ## 4.6.1 (March 29, 2016)
 
 BUG FIXES
