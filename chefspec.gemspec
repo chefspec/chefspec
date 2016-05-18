@@ -23,8 +23,8 @@ Gem::Specification.new do |s|
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ['lib']
 
-  # ChefSpec requires Ruby 1.9+
-  s.required_ruby_version = '>= 1.9'
+  # ChefSpec requires Ruby 2.1+
+  s.required_ruby_version = '>= 2.1'
 
   s.add_dependency 'chef',    '>= 11.14'
   s.add_dependency 'fauxhai', '~> 3.2'
