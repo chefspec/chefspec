@@ -102,7 +102,7 @@ RSpec.configure do |config|
   config.platform = 'ubuntu'
 
   # Specify the operating version to mock Ohai data from (default: nil)
-  config.version = '12.04'
+  config.version = '14.04'
 end
 ```
 
@@ -110,10 +110,10 @@ Values specified at the initialization of a "Runner" merge and take precedence o
 
 ```ruby
 # Override only the operating system version (platform is still "ubuntu" from above)
-ChefSpec::SoloRunner.new(version: '10.04')
+ChefSpec::SoloRunner.new(version: '16.04')
 
 # Use a different operating system platform and version
-ChefSpec::SoloRunner.new(platform: 'centos', version: '5.10')
+ChefSpec::SoloRunner.new(platform: 'centos', version: '7.2.1511')
 
 # Specify a different cookbook_path
 ChefSpec::SoloRunner.new(cookbook_path: '/var/my/other/path', role_path: '/var/my/roles')
@@ -128,7 +128,7 @@ ChefSpec::SoloRunner.new(file_cache_path: '/var/chef/cache')
 ChefSpec::SoloRunner.new(log_level: :debug).converge(described_recipe)
 ```
 
-**NOTE** You do not _need_ to specify a platform and version to use ChefSpec. However, some cookbooks may rely on [Ohai](http://github.com/opscode/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/customink/fauxhai).
+**NOTE** You do not _need_ to specify a platform and version to use ChefSpec. However, some cookbooks may rely on [Ohai](http://github.com/chef/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/customink/fauxhai).
 
 ### Berkshelf
 If you are using Berkshelf, simply require `chefspec/berkshelf` in your `spec_helper` after requiring `chefspec`:
@@ -342,7 +342,7 @@ You can use any RSpec content matcher inside of the `with_content` predicate:
 expect(chef_run).to render_file('/etc/foo').with_content(start_with('# First line'))
 ```
 
-It is possible to assert which [Chef phase of execution](http://docs.opscode.com/essentials_nodes_chef_run.html) a resource is created. Given a resource that is installed at compile time using `run_action`:
+It is possible to assert which [Chef phase of execution](https://docs.chef.io/chef_client.html#the-chef-client-title-run) a resource is created. Given a resource that is installed at compile time using `run_action`:
 
 ```ruby
 package('apache2').run_action(:install)
@@ -400,7 +400,7 @@ describe 'example::default' do
 end
 ```
 
-The `node` that is returned is actually a [`Chef::Node`](http://docs.opscode.com/essentials_node_object.html) object.
+The `node` that is returned is actually a [`Chef::Node`](https://docs.chef.io/nodes.html) object.
 
 To set an attribute within a specific test, set the attribute in the `it` block and then **(re-)converge the node**:
 
@@ -694,11 +694,11 @@ Untouched Resources:
   package[git]               bacon/recipes/default.rb:2
   package[build-essential]   bacon/recipes/default.rb:3
   package[apache2]           bacon/recipes/default.rb:4
-  package[libvrt]            bacon/recipes/default.rb:5
+  package[libvirt]           bacon/recipes/default.rb:5
   package[core]              bacon/recipes/default.rb:6
 ```
 
-By default, ChefSpec will test all cookbooks that are loaded as part of the Chef Client run. If you have a cookbook with many dependencies, this may be less than desireable. To restrict coverage reporting against certain cookbooks, `ChefSpec::Coverage` yields a block:
+By default, ChefSpec will test all cookbooks that are loaded as part of the Chef Client run. If you have a cookbook with many dependencies, this may be less than desirable. To restrict coverage reporting against certain cookbooks, `ChefSpec::Coverage` yields a block:
 
 ```ruby
 ChefSpec::Coverage.start! do
