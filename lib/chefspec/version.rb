@@ -1,3 +1,3 @@
 module ChefSpec
-  VERSION = '4.7.0'
+  VERSION = '5.0.0'
 end
