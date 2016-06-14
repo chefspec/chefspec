@@ -23,6 +23,10 @@ module ChefSpec::Matchers
         @instance.delayed
       end
 
+      if @before
+        @instance.before
+      end
+
       if resource
         runner   = resource.run_context.node.runner
         expected = runner.find_resource(@expected_resource_type, @expected_resource_name)
@@ -45,6 +49,11 @@ module ChefSpec::Matchers
 
     def delayed
       @delayed = true
+      self
+    end
+
+    def before
+      @before = true
       self
     end
 
