@@ -10,6 +10,7 @@ describe ChefSpec::Matchers::NotificationsMatcher do
       performed_action?: true,
       immediate_notifications: [],
       delayed_notifications: [],
+      before_notifications: []
     )
   end
 

@@ -30,6 +30,7 @@ describe ChefSpec::Matchers::SubscribesMatcher do
         to_s: 'execute[install]',
         immediate_notifications: [],
         delayed_notifications: [],
+        before_notifications: []
       )
     end
 
