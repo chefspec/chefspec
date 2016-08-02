@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.1'
 
   s.add_dependency 'chef',    '>= 11.14'
-  s.add_dependency 'fauxhai', '~> 3.2'
+  s.add_dependency 'fauxhai', '~> 3.6'
   s.add_dependency 'rspec',   '~> 3.0'
 
   # Development Dependencies
