@@ -33,8 +33,8 @@ module Chef::DSL::DataQuery
 
   # @see Chef::DSL::DataQuery#data_bag_item
   alias_method :old_data_bag_item, :data_bag_item
-  def data_bag_item(bag, id)
-    return old_data_bag_item(bag, id) unless Chef::Config[:solo]
+  def data_bag_item(bag, id, secret = nil)
+    return old_data_bag_item(bag, id, secret) unless Chef::Config[:solo]
 
     stub = ChefSpec::Stubs::DataBagItemRegistry.stub_for(bag, id)
 
