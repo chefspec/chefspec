@@ -6,8 +6,9 @@ before_install:
   - gem install bundler
 
 rvm:
-  - 2.1
-  - 2.2
+  - 2.1.9
+  - 2.2.5
+  - 2.3.1
 
 branches:
   only:
@@ -51,4 +52,3 @@ matrix:
       rvm: 1.9.3
     - env: CHEF_VERSION=11.14.2
       rvm: 1.9.3
-
