@@ -781,6 +781,20 @@ ChefSpec::Coverage.start! do
 end
 ```
 
+If you would like a different output format for the Coverage.report! output, you can specify one of the three built-in templates, or supply your own by calling the set_template in the `ChefSpec::Coverage` block:
+
+```ruby
+ChefSpec::Coverage.start! do
+  set_template 'json.erb'
+end
+```
+Provided templates are human.erb*(default)*, table.erb and json.erb, to supply a custom template, specify a relative(to run directory) or absolute path.
+
+```ruby
+ChefSpec::Coverage.start! do
+  set_template '/opt/custom/templates/verbose.erb'
+end
+```
 
 Mocking Out Environments
 ------------------------
