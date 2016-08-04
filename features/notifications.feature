@@ -7,6 +7,7 @@ Feature: The notifications matcher
     * the output should contain "0 failures"
   Examples:
     | Matcher     |
+    | before      |
     | chained     |
     | default     |
     | delayed     |

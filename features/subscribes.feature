@@ -7,6 +7,7 @@ Feature: The subscribes matcher
     * the output should contain "0 failures"
   Examples:
     | Matcher     |
+    | before      |
     | chained     |
     | default     |
     | delayed     |
