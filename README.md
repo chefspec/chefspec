@@ -381,7 +381,7 @@ Node attribute can be set when creating the `Runner`. The initializer yields a b
 describe 'example::default' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new do |node|
-      node.set['cookbook']['attribute'] = 'hello'
+      node.normal['cookbook']['attribute'] = 'hello'
     end.converge(described_recipe)
   end
 end
@@ -409,7 +409,7 @@ describe 'example::default' do
   let(:chef_run) { ChefSpec::SoloRunner.new } # Notice we don't converge here
 
   it 'performs the action' do
-    chef_run.node.set['cookbook']['attribute'] = 'hello'
+    chef_run.node.normal['cookbook']['attribute'] = 'hello'
     chef_run.converge(described_recipe) # The converge happens inside the test
 
     expect(chef_run).to do_something
@@ -478,7 +478,7 @@ Note: the current "node" is always uploaded to the server. However, due to the w
 
 ```ruby
 ChefSpec::ServerRunner.new do |node, server|
-  node.set['attribute'] = 'value'
+  node.normal['attribute'] = 'value'
 
   # At this point, the server already has a copy of the current node object due
   # to the way Chef compiled the resources. However, that node does not have
@@ -492,7 +492,7 @@ You may also use the `stub_node` macro, which will create a new `Chef::Node` obj
 
 ```ruby
 www = stub_node(platform: 'ubuntu', version: '12.04') do |node|
-        node.set['attribute'] = 'value'
+        node.normal['attribute'] = 'value'
       end
 
 # `www` is now a local Chef::Node object you can use in your test. To publish

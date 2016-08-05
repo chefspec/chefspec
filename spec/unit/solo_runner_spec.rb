@@ -141,7 +141,7 @@ describe ChefSpec::SoloRunner do
     end
 
     it 'allows attributes to be set on the node' do
-      subject.node.set['bacon'] = 'ham'
+      subject.node.normal['bacon'] = 'ham'
       expect(subject.node.bacon).to eq('ham')
     end
   end

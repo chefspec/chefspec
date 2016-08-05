@@ -5,7 +5,7 @@ describe 'server::search' do
     stub_node('node_1') do |node|
       node.automatic['hostname'] = 'node_1'
       node.automatic['fqdn'] = 'node_1.example.com'
-      node.set['bar'] = true
+      node.normal['bar'] = true
     end
   end
 
@@ -13,7 +13,7 @@ describe 'server::search' do
     stub_node('node_2') do |node|
       node.automatic['hostname'] = 'node_2'
       node.automatic['fqdn'] = 'node_2.example.com'
-      node.set['bar'] = true
+      node.normal['bar'] = true
     end
   end
 
@@ -21,7 +21,7 @@ describe 'server::search' do
     stub_node('node_3') do |node|
       node.automatic['hostname'] = 'node_3'
       node.automatic['fqdn'] = 'node_3.example.com'
-      node.set['bar'] = true
+      node.normal['bar'] = true
     end
   end
 
@@ -34,7 +34,7 @@ describe 'server::search' do
 
   let(:chef_run) do
     ChefSpec::ServerRunner.new do |node, server|
-      node.set['bar'] = true
+      node.normal['bar'] = true
       server.update_node(node)
 
       server.create_node(node_1)
