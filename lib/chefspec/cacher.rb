@@ -35,8 +35,9 @@ module ChefSpec
 
     def cached(name, &block)
       location = ancestors.first.metadata[:location]
-      unless ancestors.first.metadata[:description].nil? || location.nil?
-        location += ancestors.first.metadata[:description]
+      unless location.nil?
+        location += ancestors.first.metadata[:description] unless ancestors.first.metadata[:description].nil?
+        location += ancestors.first.metadata[:scoped_id] unless ancestors.first.metadata[:scoped_id].nil?
       end
       location ||= ancestors.first.metadata[:parent_example_group][:location]
 
