@@ -858,9 +858,10 @@ end
 
 1. The entire contents of this file must be wrapped with the conditional clause checking if `ChefSpec` is defined.
 2. Each matcher is actually a top-level method. The above example corresponds to the following RSpec test:
-    ```ruby
-    expect(chef_run).to my_custom_matcher('...')
-    ```
+
+  ```ruby
+  expect(chef_run).to my_custom_matcher('...')
+  ```
 
 3. `ChefSpec::Matchers::ResourceMatcher` accepts three parameters:
     1. The name of the resource to find in the resource collection (i.e. the name of the LWRP).
@@ -1148,11 +1149,15 @@ Development
 1. Fork the repository from GitHub.
 2. Clone your fork to your local machine:
 
-        $ git clone git@github.com:USER/chefspec.git
+  ```
+  $ git clone git@github.com:USER/chefspec.git
+  ```
 
 3. Create a git branch
 
-        $ git checkout -b my_bug_fix
+  ```
+  $ git checkout -b my_bug_fix
+  ```
 
 4. **Write tests**
 5. Make your changes/patches/fixes, committing appropriately
