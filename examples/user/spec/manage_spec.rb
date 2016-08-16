@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'user::manage' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04').converge(described_recipe) }
 
   it 'manages a user with an explicit action' do
     expect(chef_run).to manage_user('explicit_action')
