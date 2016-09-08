@@ -23,11 +23,11 @@ Gem::Specification.new do |s|
   s.test_files    = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ['lib']
 
-  # ChefSpec requires Ruby 2.1+
+  # ChefSpec requires Ruby 2.1+ since ChefDK uses 2.1.X
   s.required_ruby_version = '>= 2.1'
 
-  s.add_dependency 'chef',    '>= 11.14'
-  s.add_dependency 'fauxhai', '~> 3.2'
+  s.add_dependency 'chef',    '>= 12.0'
+  s.add_dependency 'fauxhai', '~> 3.6'
   s.add_dependency 'rspec',   '~> 3.0'
 
   # Development Dependencies

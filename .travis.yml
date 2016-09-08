@@ -6,8 +6,8 @@ before_install:
   - gem install bundler
 
 rvm:
-  - 2.1
-  - 2.2
+  - 2.1.9
+  - 2.2.5
 
 branches:
   only:
@@ -19,36 +19,22 @@ gemfile: gemfiles/chefspec.gemfile
 
 env:
   - CHEF_VERSION=master
+  - CHEF_VERSION=12.13.37
+  - CHEF_VERSION=12.12.15
+  - CHEF_VERSION=12.11.18
+  - CHEF_VERSION=12.10.24
+  - CHEF_VERSION=12.9.41
   - CHEF_VERSION=12.8.1
   - CHEF_VERSION=12.7.2
   - CHEF_VERSION=12.6.0
   - CHEF_VERSION=12.5.1
   - CHEF_VERSION=12.4.3
-  - CHEF_VERSION=12.4.0
   - CHEF_VERSION=12.3.0
   - CHEF_VERSION=12.2.1
   - CHEF_VERSION=12.1.2
-  - CHEF_VERSION=12.1.1
-  - CHEF_VERSION=12.1.0
   - CHEF_VERSION=12.0.3
 
 matrix:
   fast_finish: true
   allow_failures:
     - env: CHEF_VERSION=master
-  include:
-    - env: CHEF_VERSION=11.18.6
-      rvm: 1.9.3
-    - env: CHEF_VERSION=11.18.0
-      rvm: 1.9.3
-    - env: CHEF_VERSION=11.16.4
-      rvm: 1.9.3
-    - env: CHEF_VERSION=11.16.2
-      rvm: 1.9.3
-    - env: CHEF_VERSION=11.16.0
-      rvm: 1.9.3
-    - env: CHEF_VERSION=11.14.6
-      rvm: 1.9.3
-    - env: CHEF_VERSION=11.14.2
-      rvm: 1.9.3
-

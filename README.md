@@ -25,7 +25,7 @@ What people are saying
 
 Important Notes
 ---------------
-- **ChefSpec 3.0+ requires Ruby 2.1 or higher!**
+- **ChefSpec requires Ruby 2.1 or later and Chef 12.0.2 or later!**
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version's documentation!**
 - **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding aruba test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).**
 - **ChefSpec aims to maintain compatibility with the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
@@ -34,8 +34,6 @@ Important Notes
 Notes on Compatibility with Chef Versions
 -----------------------------------------
 As a general rule, if it is tested in the Travis CI matrix, it is a supported version. The section below details any specific versions that are _not_ supported and why:
-
-- Chef 12 prior to Chef 12.0.2 is not supported due to the lack of a declared resource type. This was fixed in [Chef 12.0.2](https://github.com/chef/chef/blob/12.0.2/lib/chef/resource.rb#L422-428).
 
 Additionally, if you look at a cucumber feature and see a tag like `@not_chef_x_y_z`, that means that particular functionality is not supported on those versions of Chef.
 
@@ -381,7 +379,7 @@ Node attribute can be set when creating the `Runner`. The initializer yields a b
 describe 'example::default' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new do |node|
-      node.set['cookbook']['attribute'] = 'hello'
+      node.normal['cookbook']['attribute'] = 'hello'
     end.converge(described_recipe)
   end
 end
@@ -409,7 +407,7 @@ describe 'example::default' do
   let(:chef_run) { ChefSpec::SoloRunner.new } # Notice we don't converge here
 
   it 'performs the action' do
-    chef_run.node.set['cookbook']['attribute'] = 'hello'
+    chef_run.node.normal['cookbook']['attribute'] = 'hello'
     chef_run.converge(described_recipe) # The converge happens inside the test
 
     expect(chef_run).to do_something
@@ -478,7 +476,7 @@ Note: the current "node" is always uploaded to the server. However, due to the w
 
 ```ruby
 ChefSpec::ServerRunner.new do |node, server|
-  node.set['attribute'] = 'value'
+  node.normal['attribute'] = 'value'
 
   # At this point, the server already has a copy of the current node object due
   # to the way Chef compiled the resources. However, that node does not have
@@ -492,7 +490,7 @@ You may also use the `stub_node` macro, which will create a new `Chef::Node` obj
 
 ```ruby
 www = stub_node(platform: 'ubuntu', version: '12.04') do |node|
-        node.set['attribute'] = 'value'
+        node.normal['attribute'] = 'value'
       end
 
 # `www` is now a local Chef::Node object you can use in your test. To publish
@@ -872,9 +870,10 @@ end
 
 1. The entire contents of this file must be wrapped with the conditional clause checking if `ChefSpec` is defined.
 2. Each matcher is actually a top-level method. The above example corresponds to the following RSpec test:
-    ```ruby
-    expect(chef_run).to my_custom_matcher('...')
-    ```
+
+  ```ruby
+  expect(chef_run).to my_custom_matcher('...')
+  ```
 
 3. `ChefSpec::Matchers::ResourceMatcher` accepts three parameters:
     1. The name of the resource to find in the resource collection (i.e. the name of the LWRP).
@@ -1166,11 +1165,15 @@ Development
 1. Fork the repository from GitHub.
 2. Clone your fork to your local machine:
 
-        $ git clone git@github.com:USER/chefspec.git
+  ```
+  $ git clone git@github.com:USER/chefspec.git
+  ```
 
 3. Create a git branch
 
-        $ git checkout -b my_bug_fix
+  ```
+  $ git checkout -b my_bug_fix
+  ```
 
 4. **Write tests**
 5. Make your changes/patches/fixes, committing appropriately

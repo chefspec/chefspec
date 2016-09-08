@@ -35,7 +35,7 @@ describe 'server::node' do
   context 'with overridden node data' do
     let(:chef_run) do
       ChefSpec::ServerRunner.new do |node, server|
-        node.set['breakfast']['bacon'] = true
+        node.normal['breakfast']['bacon'] = true
       end.converge(described_recipe)
     end
 

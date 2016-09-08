@@ -1,5 +1,23 @@
 # CHANGELOG for ChefSpec
 
+## 5.0.0 (August 24, 2016)
+
+IMPROVEMENTS
+
+  - Require a minimum of Chef 12.0
+  - Add custom templating to Coverage Reporting. See readme for details
+  - Add matcher for apt_repository resource
+  - Add matcher for apt_update resource
+  - Add support for the :before notification
+  - Allow stubbing encrypted databags loaded with data_bag_item
+  - Add testing against Chef 12.8 - 12.3
+
+BUG FIXES
+
+  - Update docs/examples to use node.normal instead of node.set, which has been deprecated
+  - Update user spec examples to specify the platform
+  - Update docs to clarify the Ruby 2.1 requirement
+
 ## 4.7.0 (May 13, 2016)
 
 IMPROVEMENTS
