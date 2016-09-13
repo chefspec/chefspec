@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'http_request::put' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'puts a http_request with an explicit action' do
     expect(chef_run).to put_http_request('explicit_action')

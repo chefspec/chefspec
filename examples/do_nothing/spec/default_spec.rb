@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'do_nothing::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'includes the `other` recipe' do
     execute = chef_run.execute('install')

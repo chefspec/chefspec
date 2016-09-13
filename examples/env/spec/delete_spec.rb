@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'env::delete' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'windows', version: '2012R2')
+    ChefSpec::ServerRunner.new(platform: 'windows', version: '2012R2')
                         .converge(described_recipe)
   end
 

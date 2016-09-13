@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'template::create' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'creates a template with the default action' do
     expect(chef_run).to create_template('/tmp/default_action')

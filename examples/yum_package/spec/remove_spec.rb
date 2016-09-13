@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'yum_package::remove' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'centos', version: '7.2.1511')
+    ChefSpec::ServerRunner.new(platform: 'centos', version: '7.2.1511')
                         .converge(described_recipe)
   end
 

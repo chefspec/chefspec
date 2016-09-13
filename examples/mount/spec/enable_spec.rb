@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'mount::enable' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'enables a mount with an explicit action' do
     expect(chef_run).to enable_mount('/tmp/explicit_action')

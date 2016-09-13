@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'package::purge' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'purges a package with an explicit action' do
     expect(chef_run).to purge_package('explicit_action')

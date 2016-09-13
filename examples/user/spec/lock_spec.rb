@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'user::lock' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04')
+    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '14.04')
                         .converge(described_recipe)
   end
 

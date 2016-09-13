@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'http_request::options' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'optionss a http_request with an explicit action' do
     expect(chef_run).to options_http_request('explicit_action')

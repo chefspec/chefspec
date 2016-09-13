@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'mount::umount' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'umounts a mount with an explicit action' do
     expect(chef_run).to umount_mount('/tmp/explicit_action')

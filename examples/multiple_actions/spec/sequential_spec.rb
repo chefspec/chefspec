@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'multiple_actions::sequential' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new(log_level: :fatal)
+    ChefSpec::ServerRunner.new(log_level: :fatal)
                         .converge(described_recipe)
   end
 

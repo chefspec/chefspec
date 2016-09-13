@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'git::checkout' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'checkouts a git with an explicit action' do
     expect(chef_run).to checkout_git('/tmp/explicit_action')

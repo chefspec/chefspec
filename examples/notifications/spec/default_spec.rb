@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'notifications::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
   let(:template) { chef_run.template('/tmp/notifying_resource') }
 
   it 'sends a notification to the service' do

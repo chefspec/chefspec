@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'cron::create' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'creates a cron with the default action' do
     expect(chef_run).to create_cron('default_action')

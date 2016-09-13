@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'freebsd_package::remove' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'freebsd', version: '10.3')
+    ChefSpec::ServerRunner.new(platform: 'freebsd', version: '10.3')
                         .converge(described_recipe)
   end
 

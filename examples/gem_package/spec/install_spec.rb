@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'gem_package::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'installs a gem_package with the default action' do
     expect(chef_run).to install_gem_package('default_action')

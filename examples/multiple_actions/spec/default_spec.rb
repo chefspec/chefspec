@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'multiple_actions::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'executes both actions' do
     expect(chef_run).to enable_service('resource')
