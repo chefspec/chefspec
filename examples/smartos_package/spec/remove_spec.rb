@@ -1,7 +1,10 @@
 require 'chefspec'
 
 describe 'smartos_package::remove' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'smartos', version: '5.11')
+                        .converge(described_recipe)
+  end
 
   it 'removes a smartos_package with an explicit action' do
     expect(chef_run).to remove_smartos_package('explicit_action')

@@ -1,7 +1,10 @@
 require 'chefspec'
 
 describe 'apt_package::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04')
+                        .converge(described_recipe)
+  end
 
   it 'installs a apt_package with the default action' do
     expect(chef_run).to install_apt_package('default_action')

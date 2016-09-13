@@ -1,12 +1,10 @@
 require 'chefspec'
 
-RSpec.configure do |config|
-  config.platform = 'centos'
-  config.version  = '6.5'
-end
-
 describe 'rpm_package::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'centos', version: '7.2.1511')
+                        .converge(described_recipe)
+  end
 
   it 'installs a rpm_package with the default action' do
     expect(chef_run).to install_rpm_package('default_action')

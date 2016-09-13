@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'cookbook_file::create' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'creates a cookbook_file with the default action' do
     expect(chef_run).to create_cookbook_file('/tmp/default_action')
@@ -16,13 +16,13 @@ describe 'cookbook_file::create' do
     expect(chef_run).to create_cookbook_file('/tmp/with_attributes').with(
       user:   'user',
       group:  'group',
-      backup: false,
+      backup: false
     )
 
     expect(chef_run).to_not create_cookbook_file_if_missing('/tmp/with_attributes').with(
       user:   'bacon',
       group:  'fat',
-      backup: true,
+      backup: true
     )
   end
 

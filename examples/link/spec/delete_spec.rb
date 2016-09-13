@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'link::delete' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'deletes a link with an explicit action' do
     expect(chef_run).to delete_link('/tmp/explicit_action')

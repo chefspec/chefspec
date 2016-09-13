@@ -1,12 +1,10 @@
 require 'chefspec'
 
-RSpec.configure do |config|
-  config.platform = 'windows'
-  config.version  = '2012R2'
-end
-
 describe 'env::modify' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'windows', version: '2012R2')
+                        .converge(described_recipe)
+  end
 
   it 'modifies a env with an explicit action' do
     expect(chef_run).to modify_env('explicit_action')

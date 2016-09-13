@@ -1,12 +1,10 @@
 require 'chefspec'
 
-RSpec.configure do |config|
-  config.platform = 'windows'
-  config.version  = '2012R2'
-end
-
 describe 'windows_service::configure_startup' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'windows', version: '2012R2')
+                        .converge(described_recipe)
+  end
 
   it 'configures startup for a windows_service with an explicit action' do
     expect(chef_run).to configure_startup_windows_service('explicit_action')

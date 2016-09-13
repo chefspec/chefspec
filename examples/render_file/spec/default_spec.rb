@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'render_file::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   context 'file' do
     it 'renders the file' do

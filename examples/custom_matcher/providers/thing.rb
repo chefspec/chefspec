@@ -1,2 +1,2 @@
-action(:install)  {}
+action(:install) {}
 action(:remove) {}

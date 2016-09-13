@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'log::write' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'writes a log with the default action' do
     expect(chef_run).to write_log('default_action')

@@ -5,22 +5,22 @@ describe 'stub_search::default' do
 
   context 'when the search is not stubbed' do
     it 'raises an exception' do
-      expect {
+      expect do
         chef_run
-      }.to raise_error(ChefSpec::Error::SearchNotStubbed)
+      end.to raise_error(ChefSpec::Error::SearchNotStubbed)
     end
   end
 
   context 'as a String' do
     it 'does not raise an exception' do
-      stub_search(:node, 'name:example.com').and_return([ { name: 'example.com' } ])
+      stub_search(:node, 'name:example.com').and_return([{ name: 'example.com' }])
       expect { chef_run }.to_not raise_error
     end
   end
 
   context 'as a Regexp' do
     it 'does not raise an exception' do
-      stub_search(:node, /name:(.+)/).and_return([ { name: 'example.com' } ])
+      stub_search(:node, /name:(.+)/).and_return([{ name: 'example.com' }])
       expect { chef_run }.to_not raise_error
     end
   end

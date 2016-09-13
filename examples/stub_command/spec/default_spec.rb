@@ -1,13 +1,13 @@
 require 'chefspec'
 
 describe 'stub_command::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   context 'when the command is not stubbed' do
     it 'raises an exception' do
-      expect {
+      expect do
         chef_run
-      }.to raise_error(ChefSpec::Error::CommandNotStubbed)
+      end.to raise_error(ChefSpec::Error::CommandNotStubbed)
     end
   end
 

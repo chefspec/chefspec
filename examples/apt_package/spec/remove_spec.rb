@@ -1,7 +1,10 @@
 require 'chefspec'
 
 describe 'apt_package::remove' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04')
+                        .converge(described_recipe)
+  end
 
   it 'removes a apt_package with an explicit action' do
     expect(chef_run).to remove_apt_package('explicit_action')

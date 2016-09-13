@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'ifconfig::enable' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'enables a ifconfig with an explicit action' do
     expect(chef_run).to enable_ifconfig('10.0.0.2')

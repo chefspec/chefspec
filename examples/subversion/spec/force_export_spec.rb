@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'subversion::force_export' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'force_exports a subversion with an explicit action' do
     expect(chef_run).to force_export_subversion('/tmp/explicit_action')

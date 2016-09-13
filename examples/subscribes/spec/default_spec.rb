@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'subscribes::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
   let(:service)  { chef_run.service('receiving_resource') }
 
   it 'subscribes to the template creation' do
@@ -14,4 +14,3 @@ describe 'subscribes::default' do
     expect(service).to_not subscribe_to('template[/tmp/notifying_resource]').on(:delete)
   end
 end
-

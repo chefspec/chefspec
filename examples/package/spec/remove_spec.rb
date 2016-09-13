@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'package::remove' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'removes a package with an explicit action' do
     expect(chef_run).to remove_package('explicit_action')
@@ -18,6 +18,6 @@ describe 'package::remove' do
   end
 
   it 'removes all packages when given an array of names' do
-    expect(chef_run).to remove_package(['with', 'array'])
+    expect(chef_run).to remove_package(%w(with array))
   end
 end

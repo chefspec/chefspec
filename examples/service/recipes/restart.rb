@@ -9,5 +9,5 @@ end
 
 service 'specifying the identity attribute' do
   service_name 'identity_attribute'
-  action      :restart
+  action :restart
 end

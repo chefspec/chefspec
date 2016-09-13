@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'ifconfig::add' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'adds a ifconfig with the default action' do
     expect(chef_run).to add_ifconfig('10.0.0.1')

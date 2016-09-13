@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'package::upgrade' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'upgrades a package with an explicit action' do
     expect(chef_run).to upgrade_package('explicit_action')
@@ -18,6 +18,6 @@ describe 'package::upgrade' do
   end
 
   it 'upgrades all packages when given an array of names' do
-    expect(chef_run).to upgrade_package(['with', 'array'])
+    expect(chef_run).to upgrade_package(%w(with array))
   end
 end

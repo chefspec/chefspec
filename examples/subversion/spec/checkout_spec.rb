@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'subversion::checkout' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'checkouts a subversion with an explicit action' do
     expect(chef_run).to checkout_subversion('/tmp/explicit_action')

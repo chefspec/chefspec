@@ -5,22 +5,22 @@ describe 'stub_data_bag_item::default' do
 
   context 'when the data_bag_item is not stubbed' do
     it 'raises an exception' do
-      expect {
+      expect do
         chef_run
-      }.to raise_error(ChefSpec::Error::DataBagItemNotStubbed)
+      end.to raise_error(ChefSpec::Error::DataBagItemNotStubbed)
     end
   end
 
   context 'as a Symbol' do
     it 'does not raise an exception' do
-      stub_data_bag_item(:users, 'svargo').and_return({ id: 'svargo', name: 'Seth' })
+      stub_data_bag_item(:users, 'svargo').and_return(id: 'svargo', name: 'Seth')
       expect { chef_run }.to_not raise_error
     end
   end
 
   context 'as a String' do
     it 'does not raise an exception' do
-      stub_data_bag_item('users', 'svargo').and_return({ id: 'svargo', name: 'Seth' })
+      stub_data_bag_item('users', 'svargo').and_return(id: 'svargo', name: 'Seth')
       expect { chef_run }.to_not raise_error
     end
   end

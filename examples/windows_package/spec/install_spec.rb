@@ -1,12 +1,10 @@
 require 'chefspec'
 
-RSpec.configure do |config|
-  config.platform = 'windows'
-  config.version  = '2012R2'
-end
-
 describe 'windows_package::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'windows', version: '2012R2')
+                        .converge(described_recipe)
+  end
 
   it 'installs a windows_package with an explicit action' do
     expect(chef_run).to install_windows_package('explicit_action')

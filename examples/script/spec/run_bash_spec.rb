@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'script::run_bash' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'runs a bash script with the default action' do
     expect(chef_run).to run_bash('default_action')

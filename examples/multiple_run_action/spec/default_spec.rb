@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'multiple_run_action::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'includes the action explicitly given to the resource' do
     expect(chef_run).to create_template('/tmp/resource')

@@ -1,12 +1,10 @@
 require 'chefspec'
 
-RSpec.configure do |config|
-  config.platform = 'windows'
-  config.version  = '2012R2'
-end
-
 describe 'chocolatey_package::upgrade' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'windows', version: '2012R2')
+                        .converge(described_recipe)
+  end
 
   it 'upgrades a package' do
     expect(chef_run).to upgrade_chocolatey_package('7zip')

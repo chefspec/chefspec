@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'subscribes::chained' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
   let(:service)  { chef_run.service('service') }
   let(:log)      { chef_run.log('log') }
 

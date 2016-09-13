@@ -1,12 +1,10 @@
 require 'chefspec'
 
-RSpec.configure do |config|
-  config.platform = 'ubuntu'
-  config.version  = '14.04'
-end
-
 describe 'dpkg_package::purge' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04')
+                        .converge(described_recipe)
+  end
 
   it 'purges a dpkg_package with an explicit action' do
     expect(chef_run).to purge_dpkg_package('explicit_action')

@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'easy_install_package::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'installs a easy_install_package with the default action' do
     expect(chef_run).to install_easy_install_package('default_action')

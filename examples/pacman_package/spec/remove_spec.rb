@@ -1,12 +1,10 @@
 require 'chefspec'
 
-RSpec.configure do |config|
-  config.platform = 'arch'
-  config.version  = '3.10.5-1-ARCH'
-end
-
 describe 'pacman_package::remove' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'arch', version: '4.5.4-1-ARCH')
+                        .converge(described_recipe)
+  end
 
   it 'removes a pacman_package with an explicit action' do
     expect(chef_run).to remove_pacman_package('explicit_action')

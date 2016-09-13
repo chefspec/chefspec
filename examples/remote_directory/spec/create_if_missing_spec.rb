@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'remote_directory::create_if_missing' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'creates a remote_directory with an explicit action' do
     expect(chef_run).to create_remote_directory_if_missing('/tmp/explicit_action')

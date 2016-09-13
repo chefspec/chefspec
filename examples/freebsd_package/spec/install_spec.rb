@@ -1,7 +1,10 @@
 require 'chefspec'
 
 describe 'freebsd_package::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'freebsd', version: '10.3')
+                        .converge(described_recipe)
+  end
 
   it 'installs a freebsd_package with the default action' do
     expect(chef_run).to install_freebsd_package('default_action')

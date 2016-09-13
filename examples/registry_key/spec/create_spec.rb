@@ -1,7 +1,10 @@
 require 'chefspec'
 
 describe 'registry_key::create' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'windows', version: '2012R2')
+                        .converge(described_recipe)
+  end
 
   it 'creates a registry_key with the default action' do
     expect(chef_run).to create_registry_key('HKEY_LOCAL_MACHINE\default_action')

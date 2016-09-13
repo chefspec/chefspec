@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'template::create_if_missing' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'creates a template with an explicit action' do
     expect(chef_run).to create_template_if_missing('/tmp/explicit_action')
@@ -12,13 +12,13 @@ describe 'template::create_if_missing' do
     expect(chef_run).to create_template_if_missing('/tmp/with_attributes').with(
       user:   'user',
       group:  'group',
-      backup: false,
+      backup: false
     )
 
     expect(chef_run).to_not create_template_if_missing('/tmp/with_attributes').with(
       user:   'bacon',
       group:  'fat',
-      backup: true,
+      backup: true
     )
   end
 

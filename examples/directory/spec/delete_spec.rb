@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'directory::delete' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'deletes a directory with an explicit action' do
     expect(chef_run).to delete_directory('/tmp/explicit_action')
@@ -11,12 +11,12 @@ describe 'directory::delete' do
   it 'deletes a directory with attributes' do
     expect(chef_run).to delete_directory('/tmp/with_attributes').with(
       user:   'user',
-      group:  'group',
+      group:  'group'
     )
 
     expect(chef_run).to_not delete_directory('/tmp/with_attributes').with(
       user:   'bacon',
-      group:  'fat',
+      group:  'fat'
     )
   end
 

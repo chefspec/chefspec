@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'package::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'installs a package with the default action' do
     expect(chef_run).to install_package('default_action')
@@ -22,6 +22,6 @@ describe 'package::install' do
   end
 
   it 'installs all packages when given an array of names' do
-    expect(chef_run).to install_package(['with', 'array'])
+    expect(chef_run).to install_package(%w(with array))
   end
 end

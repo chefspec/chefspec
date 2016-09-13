@@ -1,12 +1,10 @@
 require 'chefspec'
 
-RSpec.configure do |config|
-  config.platform = 'ubuntu'
-  config.version  = '14.04'
-end
-
 describe 'dpkg_package::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04')
+                        .converge(described_recipe)
+  end
 
   it 'installs a dpkg_package with the default action' do
     expect(chef_run).to install_dpkg_package('default_action')

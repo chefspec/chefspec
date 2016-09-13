@@ -2,9 +2,9 @@ require 'chefspec'
 
 describe 'use_inline_resources::default' do
   let(:chef_run) do
-    ChefSpec::SoloRunner.new(step_into: ['use_inline_resources_lwrp'])
-      .converge(described_recipe)
-    end
+    ChefSpec::ServerRunner.new(step_into: ['use_inline_resources_lwrp'])
+                        .converge(described_recipe)
+  end
 
   it 'uses the LWRP' do
     expect(chef_run).to run_use_inline_resources_lwrp('resource')

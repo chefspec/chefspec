@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'package::purge' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
 
   it 'purges a package with an explicit action' do
     expect(chef_run).to purge_package('explicit_action')
@@ -18,6 +18,6 @@ describe 'package::purge' do
   end
 
   it 'purges all packages when given an array of names' do
-    expect(chef_run).to purge_package(['with', 'array'])
+    expect(chef_run).to purge_package(%w(with array))
   end
 end
