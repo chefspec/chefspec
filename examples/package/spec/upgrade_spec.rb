@@ -18,6 +18,6 @@ describe 'package::upgrade' do
   end
 
   it 'upgrades all packages when given an array of names' do
-    expect(chef_run).to upgrade_package(['with', 'array'])
+    expect(chef_run).to upgrade_package(%w(with array))
   end
 end

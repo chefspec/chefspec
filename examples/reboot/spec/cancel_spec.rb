@@ -7,4 +7,3 @@ describe 'reboot::cancel' do
     expect(chef_run).to cancel_reboot('explicit cancel')
   end
 end
-

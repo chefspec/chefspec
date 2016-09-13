@@ -4,6 +4,6 @@ default_attributes(
   }
 )
 run_list([
-  'recipe[roles::default]',
-  'recipe[roles::another]'
-])
+           'recipe[roles::default]',
+           'recipe[roles::another]'
+         ])

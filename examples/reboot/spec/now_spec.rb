@@ -7,4 +7,3 @@ describe 'reboot::now' do
     expect(chef_run).to now_reboot('explicit_action')
   end
 end
-

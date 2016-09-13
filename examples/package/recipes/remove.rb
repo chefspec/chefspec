@@ -12,6 +12,6 @@ package 'specifying the identity attribute' do
   action       :remove
 end
 
-package ['with', 'array'] do
+package %w(with array) do
   action :remove
 end

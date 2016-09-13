@@ -7,4 +7,3 @@ describe 'reboot::request' do
     expect(chef_run).to request_reboot('explicit_action')
   end
 end
-

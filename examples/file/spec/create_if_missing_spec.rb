@@ -12,13 +12,13 @@ describe 'file::create_if_missing' do
     expect(chef_run).to create_file_if_missing('/tmp/with_attributes').with(
       user:   'user',
       group:  'group',
-      backup: false,
+      backup: false
     )
 
     expect(chef_run).to_not create_file_if_missing('/tmp/with_attributes').with(
       user:   'bacon',
       group:  'fat',
-      backup: true,
+      backup: true
     )
   end
 

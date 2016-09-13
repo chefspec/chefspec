@@ -12,6 +12,6 @@ package 'specifying the identity attribute' do
   package_name 'identity_attribute'
 end
 
-package ['with', 'array'] do
+package %w(with array) do
   action :install
 end

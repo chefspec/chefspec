@@ -15,9 +15,9 @@ describe 'step_into::default' do
 
   context 'with :step_into' do
     let(:chef_run) do
-      ChefSpec::SoloRunner.new(step_into: ['step_into_lwrp', 'provides_this'])
-        .converge(described_recipe)
-      end
+      ChefSpec::SoloRunner.new(step_into: %w(step_into_lwrp provides_this))
+                          .converge(described_recipe)
+    end
 
     it 'executes the LWRPs action' do
       expect(chef_run).to write_log('message')

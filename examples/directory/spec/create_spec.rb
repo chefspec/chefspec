@@ -15,17 +15,17 @@ describe 'directory::create' do
   it 'creates a directory with attributes' do
     expect(chef_run).to create_directory('/tmp/with_attributes').with(
       user:   'user',
-      group:  'group',
+      group:  'group'
     )
 
     expect(chef_run).to_not create_directory('/tmp/with_attributes').with(
       user:   'bacon',
-      group:  'fat',
+      group:  'fat'
     )
   end
 
   it 'creates a directory with windows rights' do
-    expect(chef_run).to create_directory('c:\temp\with_windows_rights').with(rights: [{:permissions=>:read_execute, :principals=>"Users", :applies_to_children=>true}])
+    expect(chef_run).to create_directory('c:\temp\with_windows_rights').with(rights: [{ permissions: :read_execute, principals: 'Users', applies_to_children: true }])
   end
 
   it 'creates a directory when specifying the identity attribute' do

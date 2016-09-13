@@ -22,6 +22,6 @@ describe 'package::install' do
   end
 
   it 'installs all packages when given an array of names' do
-    expect(chef_run).to install_package(['with', 'array'])
+    expect(chef_run).to install_package(%w(with array))
   end
 end

@@ -14,4 +14,3 @@ describe 'subscribes::default' do
     expect(service).to_not subscribe_to('template[/tmp/notifying_resource]').on(:delete)
   end
 end
-

@@ -16,13 +16,13 @@ describe 'template::create' do
     expect(chef_run).to create_template('/tmp/with_attributes').with(
       user:   'user',
       group:  'group',
-      backup: false,
+      backup: false
     )
 
     expect(chef_run).to_not create_template('/tmp/with_attributes').with(
       user:   'bacon',
       group:  'fat',
-      backup: true,
+      backup: true
     )
   end
 

@@ -18,6 +18,6 @@ describe 'package::reconfig' do
   end
 
   it 'reconfigs all packages when given an array of names' do
-    expect(chef_run).to reconfig_package(['with', 'array'])
+    expect(chef_run).to reconfig_package(%w(with array))
   end
 end
