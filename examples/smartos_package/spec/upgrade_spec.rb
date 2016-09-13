@@ -1,7 +1,10 @@
 require 'chefspec'
 
 describe 'smartos_package::upgrade' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new(platform: 'smartos', version: '5.11')
+                        .converge(described_recipe)
+  end
 
   it 'upgrades a smartos_package with an explicit action' do
     expect(chef_run).to upgrade_smartos_package('explicit_action')

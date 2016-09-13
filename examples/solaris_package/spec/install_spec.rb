@@ -1,7 +1,10 @@
 require 'chefspec'
 
 describe 'solaris_package::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new(platform: 'solaris2', version: '5.11')
+                        .converge(described_recipe)
+  end
 
   it 'installs a solaris_package with the default action' do
     expect(chef_run).to install_solaris_package('default_action')

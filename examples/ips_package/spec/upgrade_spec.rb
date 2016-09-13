@@ -1,12 +1,10 @@
 require 'chefspec'
 
-RSpec.configure do |config|
-  config.platform = 'solaris2'
-  config.version  = '5.11'
-end
-
 describe 'ips_package::upgrade' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new(platform: 'solaris2', version: '5.11')
+                        .converge(described_recipe)
+  end
 
   it 'upgrades a ips_package with an explicit action' do
     expect(chef_run).to upgrade_ips_package('explicit_action')

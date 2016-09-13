@@ -1,12 +1,10 @@
 require 'chefspec'
 
-RSpec.configure do |config|
-  config.platform = 'ubuntu'
-  config.version  = '16.04'
-end
-
 describe 'apt_repository::remove' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04')
+                        .converge(described_recipe)
+  end
 
   it 'removes a apt_repository with default action' do
     expect(chef_run).to remove_apt_repository('explicit_remove_action')

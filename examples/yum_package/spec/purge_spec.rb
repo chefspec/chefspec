@@ -1,7 +1,10 @@
 require 'chefspec'
 
 describe 'yum_package::purge' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new(platform: 'centos', version: '7.2.1511')
+                        .converge(described_recipe)
+  end
 
   it 'purges a yum_package with an explicit action' do
     expect(chef_run).to purge_yum_package('explicit_action')

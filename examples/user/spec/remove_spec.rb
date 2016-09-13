@@ -1,7 +1,10 @@
 require 'chefspec'
 
 describe 'user::remove' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04').converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '14.04')
+                        .converge(described_recipe)
+  end
 
   it 'removes a user with an explicit action' do
     expect(chef_run).to remove_user('explicit_action')

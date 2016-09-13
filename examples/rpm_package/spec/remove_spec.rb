@@ -1,12 +1,10 @@
 require 'chefspec'
 
-RSpec.configure do |config|
-  config.platform = 'centos'
-  config.version  = '6.5'
-end
-
 describe 'rpm_package::remove' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new(platform: 'centos', version: '7.2.1511')
+                        .converge(described_recipe)
+  end
 
   it 'removes a rpm_package with an explicit action' do
     expect(chef_run).to remove_rpm_package('explicit_action')
