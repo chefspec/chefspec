@@ -4,10 +4,10 @@ end
 
 apt_package 'with_attributes' do
   version '1.0.0'
-  action  :purge
+  action :purge
 end
 
 apt_package 'specifying the identity attribute' do
   package_name 'identity_attribute'
-  action       :purge
+  action :purge
 end

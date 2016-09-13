@@ -25,6 +25,8 @@ module ChefSpec
 end
 
 require_relative 'api/apt_package'
+require_relative 'api/apt_update'
+require_relative 'api/apt_repository'
 require_relative 'api/batch'
 require_relative 'api/chef_gem'
 require_relative 'api/chocolatey_package'
