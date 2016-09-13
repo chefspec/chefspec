@@ -1,5 +1,11 @@
 require 'chefspec'
 
+RSpec.configure do |config|
+  config.platform = 'ubuntu'
+  config.version  = '16.04'
+  config.formatter = :documentation
+end
+
 describe 'apt_repository::add' do
   let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
