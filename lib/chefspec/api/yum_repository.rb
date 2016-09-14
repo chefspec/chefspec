@@ -31,25 +31,49 @@ module ChefSpec::API
 
     #
     # Assert that a +yum_repository+ resource exists in the Chef run with the
-    # action +:delete+. Given a Chef Recipe that deletes "epel" as an
+    # action +:remove+. Given a Chef Recipe that removes "epel" as an
     # +yum_repository+:
     #
     #     yum_repository 'epel' do
-    #       action :delete
+    #       action :remove
     #     end
     #
     # The Examples section demonstrates the different ways to test an
     # +yum_repository+ resource with ChefSpec.
     #
-    # @example Assert that an +yum_repository+ was deleted
-    #   expect(chef_run).to delete_yum_repository('epel')
+    # @example Assert that an +yum_repository+ was removed
+    #   expect(chef_run).to remove_yum_repository('epel')
     # @param [String, Regex] resource_name
     #   the name of the resource to match
     #
     # @return [ChefSpec::Matchers::ResourceMatcher]
 
-    def delete_yum_repository(resource_name)
-      ChefSpec::Matchers::ResourceMatcher.new(:yum_repository, :delete,
+    def remove_yum_repository(resource_name)
+      ChefSpec::Matchers::ResourceMatcher.new(:yum_repository, :remove,
+                                              resource_name)
+    end
+
+    #
+    # Assert that a +yum_repository+ resource exists in the Chef run with the
+    # action +:make_cache+. Given a Chef Recipe that makes cache for "epel" as
+    # a +yum_repository+:
+    #
+    #     yum_repository 'epel' do
+    #       action :make_cache
+    #     end
+    #
+    # The Examples section demonstrates the different ways to test an
+    # +yum_repository+ resource with ChefSpec.
+    #
+    # @example Assert that an +yum_repository+ was make cache'd
+    #   expect(chef_run).to make_cache_yum_repository('epel')
+    # @param [String, Regex] resource_name
+    #   the name of the resource to match
+    #
+    # @return [ChefSpec::Matchers::ResourceMatcher]
+
+    def make_cache_yum_repository(resource_name)
+      ChefSpec::Matchers::ResourceMatcher.new(:yum_repository, :make_cache,
                                               resource_name)
     end
   end
