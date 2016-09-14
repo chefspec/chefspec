@@ -11,5 +11,6 @@ Feature: The script matcher
     | run_csh    |
     | run_perl   |
     | run_python |
+    | run_ksh    |
     | run_ruby   |
     | run_script |

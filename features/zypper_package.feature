@@ -1,6 +1,6 @@
-Feature: The solaris_package matcher
+Feature: The zypper_package matcher
   Background:
-    * I am using the "solaris_package" cookbook
+    * I am using the "zypper_package" cookbook
 
   Scenario Outline: Running specs
     * I successfully run `rspec spec/<Matcher>_spec.rb`
@@ -8,5 +8,6 @@ Feature: The solaris_package matcher
   Examples:
     | Matcher  |
     | install  |
+    | purge    |
     | remove   |
     | upgrade  |
