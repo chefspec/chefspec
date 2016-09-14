@@ -74,6 +74,17 @@ describe 'render_file::default' do
           end_with('not')
         )
       end
+
+      it 'renders the file with chained content matchers' do
+        expect(chef_run).to render_file('/tmp/cookbook_file')
+          .with_content('This')
+          .with_content('is')
+          .with_content('content!')
+        expect(chef_run).to_not render_file('/tmp/cookbook_file')
+          .with_content('Sparta!')
+          .with_content('is')
+          .with_content('This')
+      end
     end
 
     context 'with a pristine filesystem' do
