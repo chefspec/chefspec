@@ -2,6 +2,45 @@ module ChefSpec::API
   # @since 1.0.0
   module ScriptMatchers
     #
+    # Assert that a +ksh+ resource exists in the Chef run with the
+    # action +:run+. Given a Chef Recipe that runs "command" using
+    # +ksh+:
+    #
+    #     ksh 'command' do
+    #       action :run
+    #     end
+    #
+    # The Examples section demonstrates the different ways to test a
+    # +ksh+ resource with ChefSpec.
+    #
+    # @example Assert that a +ksh+ was run
+    #   expect(chef_run).to run_ksh('command')
+    #
+    # @example Assert that a +ksh+ was run with predicate matchers
+    #   expect(chef_run).to run_ksh('command').with_cwd('/home')
+    #
+    # @example Assert that a +ksh+ was run with attributes
+    #   expect(chef_run).to run_ksh('command').with(cwd: '/home')
+    #
+    # @example Assert that a +ksh+ was run using a regex
+    #   expect(chef_run).to run_ksh('command').with(cwd: /\/(.+)/)
+    #
+    # @example Assert that a +ksh+ was _not_ run
+    #   expect(chef_run).to_not run_ksh('command')
+    #
+    #
+    # @param [String, Regex] resource_name
+    #   the name of the resource to match
+    #
+    # @return [ChefSpec::Matchers::ResourceMatcher]
+    #
+    def run_ksh(resource_name)
+      ChefSpec::Matchers::ResourceMatcher.new(:ksh, :run, resource_name)
+    end
+
+    ChefSpec.define_matcher :ksh
+
+    #
     # Assert that a +bash+ resource exists in the Chef run with the
     # action +:run+. Given a Chef Recipe that runs "command" using
     # +bash+:
