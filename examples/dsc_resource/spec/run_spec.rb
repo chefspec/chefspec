@@ -1,6 +1,6 @@
 require 'chefspec'
 
-describe 'dsc_resource::default' do
+describe 'dsc_resource::run' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'windows', version: '2012R2')
                         .converge(described_recipe)
