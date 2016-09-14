@@ -5,7 +5,7 @@ module ChefSpec::API
 
     #
     # Assert that a +yum_repository+ resource exists in the Chef run with the
-    # action +:create+. Given a Chef Recipe that adds "epel" as an
+    # action +:create+. Given a Chef Recipe that creates "epel" as an
     # +yum_repository+:
     #
     #     yum_repository 'epel' do
@@ -26,6 +26,56 @@ module ChefSpec::API
 
     def create_yum_repository(resource_name)
       ChefSpec::Matchers::ResourceMatcher.new(:yum_repository, :create,
+                                              resource_name)
+    end
+
+    #
+    # Assert that a +yum_repository+ resource exists in the Chef run with the
+    # action +:add+. Given a Chef Recipe that adds "epel" as an
+    # +yum_repository+:
+    #
+    #     yum_repository 'epel' do
+    #       baseurl "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-#{node['platform_version'].to_i}&arch=$basearch"
+    #       description 'Extra Packages for $releasever - $basearch'
+    #       action :add
+    #     end
+    #
+    # The Examples section demonstrates the different ways to test an
+    # +yum_repository+ resource with ChefSpec.
+    #
+    # @example Assert that an +yum_repository+ was added
+    #   expect(chef_run).to add_yum_repository('epel')
+    # @param [String, Regex] resource_name
+    #   the name of the resource to match
+    #
+    # @return [ChefSpec::Matchers::ResourceMatcher]
+
+    def add_yum_repository(resource_name)
+      ChefSpec::Matchers::ResourceMatcher.new(:yum_repository, :add,
+                                              resource_name)
+    end
+
+    #
+    # Assert that a +yum_repository+ resource exists in the Chef run with the
+    # action +:delete+. Given a Chef Recipe that deletes "epel" as an
+    # +yum_repository+:
+    #
+    #     yum_repository 'epel' do
+    #       action :delete
+    #     end
+    #
+    # The Examples section demonstrates the different ways to test an
+    # +yum_repository+ resource with ChefSpec.
+    #
+    # @example Assert that an +yum_repository+ was deleted
+    #   expect(chef_run).to delete_yum_repository('epel')
+    # @param [String, Regex] resource_name
+    #   the name of the resource to match
+    #
+    # @return [ChefSpec::Matchers::ResourceMatcher]
+
+    def delete_yum_repository(resource_name)
+      ChefSpec::Matchers::ResourceMatcher.new(:yum_repository, :delete,
                                               resource_name)
     end
 

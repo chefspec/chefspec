@@ -1,12 +1,12 @@
 require 'chefspec'
 
-describe 'yum_repository::remove' do
+describe 'yum_repository::add' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'centos', version: '7.2.1511')
                         .converge(described_recipe)
   end
 
-  it 'removes a yum_repository with remove action' do
-    expect(chef_run).to remove_yum_repository('explicit_remove_action')
+  it 'creates a yum_repository with add action' do
+    expect(chef_run).to add_yum_repository('explicit_add_action')
   end
 end
