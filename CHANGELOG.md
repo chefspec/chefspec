@@ -1,5 +1,11 @@
 # CHANGELOG for ChefSpec
 
+## 5.1.1 (September 14, 2016)
+
+BUG FIXES
+
+- Add missing matchers for yum_repository
+
 ## 5.1.0 (September 14, 2016)
 
 IMPROVEMENTS
