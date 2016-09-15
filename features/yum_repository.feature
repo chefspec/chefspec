@@ -23,5 +23,7 @@ Feature: The yum_repository matcher
   Examples:
     | Matcher    |
     | create     |
+    | delete     |
+    | add        |
     | remove     |
     | make_cache |

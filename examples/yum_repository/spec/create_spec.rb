@@ -11,7 +11,7 @@ describe 'yum_repository::create' do
     expect(chef_run).to_not create_yum_repository('not_default_action')
   end
 
-  it 'creates a yum_repository with an explicit action' do
+  it 'creates a yum_repository with create action' do
     expect(chef_run).to create_yum_repository('explicit_action')
   end
 end
