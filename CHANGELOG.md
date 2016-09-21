@@ -1,5 +1,16 @@
 # CHANGELOG for ChefSpec
 
+## 5.2.0 (September 21, 2016)
+
+IMPROVEMENTS
+
+- Added platform and versions to all examples to avoid deprecation warnings from Fauxhai
+- Allow modifications to node object before converge
+
+BUG FIXES
+
+- Fix makecache matcher for yum_repository
+
 ## 5.1.1 (September 14, 2016)
 
 BUG FIXES
