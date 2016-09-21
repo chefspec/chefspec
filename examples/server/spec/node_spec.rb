@@ -27,7 +27,7 @@ describe 'server::node' do
 
       node = chef_run.get_node('chefspec')
       expect(node['kernel']['name']).to eq('Linux')
-      expect(node['kernel']['release']).to eq('3.13.0-66-generic')
+      expect(node['kernel']['release']).to eq('4.4.0-21-generic')
       expect(node['kernel']['machine']).to eq('x86_64')
     end
   end

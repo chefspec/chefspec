@@ -47,7 +47,7 @@ describe 'server::search' do
   it 'finds all nodes with the bar attribute' do
     expect(chef_run).to write_log('nodes with an attribute')
       .with_message(<<-EOH.gsub(/^ {8}/, '').strip)
-        chefspec, FQDN: chefspec.local, hostname: chefspec
+        chefspec, FQDN: fauxhai.local, hostname: Fauxhai
         node_1, FQDN: node_1.example.com, hostname: node_1
         node_2, FQDN: node_2.example.com, hostname: node_2
         node_3, FQDN: node_3.example.com, hostname: node_3
