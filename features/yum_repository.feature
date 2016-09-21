@@ -26,4 +26,4 @@ Feature: The yum_repository matcher
     | delete     |
     | add        |
     | remove     |
-    | make_cache |
+    | makecache  |
