@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'custom_matcher::install' do
-  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'installs a custom_matcher with the default action' do
     expect(chef_run).to install_custom_matcher_thing('default_action')

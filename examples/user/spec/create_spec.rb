@@ -2,8 +2,8 @@ require 'chefspec'
 
 describe 'user::create' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '14.04')
-                        .converge(described_recipe)
+    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04')
+                          .converge(described_recipe)
   end
 
   it 'creates a user with the default action' do

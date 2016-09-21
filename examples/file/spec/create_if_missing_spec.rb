@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'file::create_if_missing' do
-  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'creates a file with an explicit action' do
     expect(chef_run).to create_file_if_missing('/tmp/explicit_action')

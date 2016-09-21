@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'cron::delete' do
-  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'deletes a cron with an explicit action' do
     expect(chef_run).to delete_cron('explicit_action')

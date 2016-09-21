@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'mount::remount' do
-  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'remounts a mount with an explicit action' do
     expect(chef_run).to remount_mount('/tmp/explicit_action')
