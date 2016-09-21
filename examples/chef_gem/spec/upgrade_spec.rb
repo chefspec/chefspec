@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'chef_gem::upgrade' do
-  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'upgrades a chef_gem with an explicit action' do
     expect(chef_run).to upgrade_chef_gem('explicit_action')

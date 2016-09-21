@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'route::delete' do
-  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'deletes a route with an explicit action' do
     expect(chef_run).to delete_route('10.0.0.2')

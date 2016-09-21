@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'http_request::get' do
-  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'gets a http_request with the default action' do
     expect(chef_run).to get_http_request('default_action')

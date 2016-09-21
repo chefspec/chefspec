@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'server::data_bag' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new do |node, server|
+    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04') do |node, server|
       server.create_data_bag('accounts', {
       'github' => {
         'username' => 'sethvargo',

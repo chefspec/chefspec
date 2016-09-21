@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'remote_file::touch' do
-  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'touchs a remote_file with an explicit action' do
     expect(chef_run).to touch_remote_file('/tmp/explicit_action')

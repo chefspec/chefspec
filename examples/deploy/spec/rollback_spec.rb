@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'deploy::rollback' do
-  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'rollsback deploys a deploy with an explicit action' do
     expect(chef_run).to rollback_deploy('/tmp/explicit_action')

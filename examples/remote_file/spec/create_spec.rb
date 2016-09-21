@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'remote_file::create' do
-  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'creates a remote_file with the default action' do
     expect(chef_run).to create_remote_file('/tmp/default_action')

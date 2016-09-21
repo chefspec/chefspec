@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'script::run_perl' do
-  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'runs a perl script with the default action' do
     expect(chef_run).to run_perl('default_action')

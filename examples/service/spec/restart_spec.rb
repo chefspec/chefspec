@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'service::restart' do
-  let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'restarts a service with an explicit action' do
     expect(chef_run).to restart_service('explicit_action')
