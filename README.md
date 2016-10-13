@@ -88,7 +88,7 @@ RSpec.configure do |config|
   config.environment_path = '/var/environments'
 
   # Specify the path for Chef Solo file cache path (default: nil)
-  config.file_cache_path = '/var/chef/cache'
+  config.file_cache_path = Chef::Config[:file_cache_path]
 
   # Specify the Chef log_level (default: :warn)
   config.log_level = :debug
@@ -120,7 +120,7 @@ ChefSpec::SoloRunner.new(cookbook_path: '/var/my/other/path', role_path: '/var/m
 # This can be overridden by passing the `file_cache_path` option.
 # Note: Resources containing `Chef::Config[:file_cache_path]` in their name or
 # attributes, will fail unless this option is specified.
-ChefSpec::SoloRunner.new(file_cache_path: '/var/chef/cache')
+ChefSpec::SoloRunner.new(file_cache_path: Chef::Config[:file_cache_path])
 
 # Add debug log output
 ChefSpec::SoloRunner.new(log_level: :debug).converge(described_recipe)
