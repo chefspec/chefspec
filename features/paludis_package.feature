@@ -1,3 +1,5 @@
+@not_chef_12_0_3
+
 Feature: The paludis_package matcher
   Background:
     * I am using the "paludis_package" cookbook

@@ -1,3 +1,5 @@
+@not_chef_12_0_3
+
 Feature: The openbsd_package matcher
   Background:
     * I am using the "openbsd_package" cookbook

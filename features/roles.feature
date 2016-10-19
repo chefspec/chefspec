@@ -1,4 +1,4 @@
-Feature: Overridding roles in the Runner
+Feature: Overriding roles in the Runner
   Background:
     * I am using the "roles" cookbook
 
