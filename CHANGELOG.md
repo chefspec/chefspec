@@ -1,5 +1,23 @@
 # CHANGELOG for ChefSpec
 
+## 5.3.0 (October 20, 2016)
+
+IMPROVEMENTS
+
+- Added all missing matchers for built-in chef-client resources
+
+  - osx_profile
+  - zypper_package
+  - systemd_unit
+  - openbsd_package
+  - launchd
+  - homebrew_package
+  - bff_package
+
+BUG FIXES
+
+- Fixed readme examples to properly specify the platform / platform version and to use a cache dir that will work on Windows
+
 ## 5.2.0 (September 21, 2016)
 
 IMPROVEMENTS
