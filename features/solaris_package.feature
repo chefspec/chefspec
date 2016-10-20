@@ -9,3 +9,4 @@ Feature: The solaris_package matcher
     | Matcher  |
     | install  |
     | remove   |
+    | upgrade  |

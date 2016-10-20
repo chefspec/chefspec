@@ -1,4 +1,4 @@
-Feature: Overridding attributes in the Runner
+Feature: Overriding attributes in the Runner
   Background:
     * I am using the "attributes" cookbook
 

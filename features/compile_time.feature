@@ -1,4 +1,4 @@
-Feature: Overridding compile_time in the Runner
+Feature: Overriding compile_time in the Runner
   Background:
     * I am using the "compile_time" cookbook
 
