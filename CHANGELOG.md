@@ -1,6 +1,6 @@
 # CHANGELOG for ChefSpec
 
-## 5.3.0 (October 20, 2016)
+## 5.3.0 (October 29, 2016)
 
 IMPROVEMENTS
 
