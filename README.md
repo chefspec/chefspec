@@ -594,6 +594,18 @@ before do
 end
 ```
 
+**WARNING** Stubbed library helper class methods [are overwritten when `converge` is called](https://github.com/sethvargo/chefspec/issues/562#issuecomment-74120922) in your tests, leading to the real implementation being used. Guard against this behavior inside your library helper:
+
+```ruby
+module Demo
+  module Helper
+    def self.has_bacon?
+      # ...
+    end
+  end
+end unless defined?(Demo::Helper)
+```
+
 ### Data Bag & Data Bag Item
 **NOTE** This is not required if you are using a ChefSpec server.
 
