@@ -970,6 +970,8 @@ require_relative 'support/matchers'
 
 Please use this as a _temporary_ solution. Consider sending a Pull Request to the LWRP author(s) packaging the custom resource matchers (see previous section).
 
+Matchers for looking up custom resources
+----------------------------------------
 ChefSpec also provides a helper method to define a method on the Chef runner for locating a resource in the collection. This is helpful while asserting against custom resource notifications.
 
 ```ruby
@@ -987,6 +989,8 @@ it 'notifies the thing' do
   expect(custom).to notify('service[apache2]').to(:restart).immediately
 end
 ```
+
+You can use this functionality to bundle lookup matchers with cookbooks, or to provide your own when the upstream cookbook doesn't include it.
 
 
 Expecting Exceptions
