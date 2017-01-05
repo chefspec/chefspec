@@ -1,10 +1,6 @@
-ChefSpec
-========
-[![Gem Version](http://img.shields.io/gem/v/chefspec.svg)][gem]
-[![Build Status](http://img.shields.io/travis/sethvargo/chefspec.svg)][travis]
+# ChefSpec
 
-[gem]: https://rubygems.org/gems/chefspec
-[travis]: http://travis-ci.org/sethvargo/chefspec
+[![Gem Version](http://img.shields.io/gem/v/chefspec.svg)][gem] [![Build Status](http://img.shields.io/travis/sethvargo/chefspec.svg)][travis]
 
 ChefSpec is a unit testing framework for testing Chef cookbooks. ChefSpec makes it easy to write examples and get fast feedback on cookbook changes without the need for virtual machines or cloud servers.
 
@@ -13,33 +9,29 @@ ChefSpec runs your cookbook(s) locally with Chef Solo without actually convergin
 - It's really fast!
 - Your tests can vary node attributes, operating systems, and search results to assert behavior under varying conditions.
 
+## What people are saying
 
-What people are saying
-----------------------
 > I just wanted to drop you a line to say "HELL YES!" to ChefSpec. - [Joe Goggins](https://twitter.com/jgoggins)
 
 > OK ChefSpec is my new best friend. Delightful few hours working with it. - [Michael Ivey](https://twitter.com/ivey)
 
 **Chat with us - [#chefspec](irc://irc.freenode.net/chefspec) on Freenode**
 
+## Important Notes
 
-Important Notes
----------------
-- **ChefSpec requires Ruby 2.1 or later and Chef 12.0.2 or later!**
+- **ChefSpec requires Ruby 2.2 or later and Chef 12.0.2 or later!**
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version's documentation!**
 - **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding aruba test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).**
 - **ChefSpec aims to maintain compatibility with the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
 
+## Notes on Compatibility with Chef Versions
 
-Notes on Compatibility with Chef Versions
------------------------------------------
 As a general rule, if it is tested in the Travis CI matrix, it is a supported version. The section below details any specific versions that are _not_ supported and why:
 
 Additionally, if you look at a cucumber feature and see a tag like `@not_chef_x_y_z`, that means that particular functionality is not supported on those versions of Chef.
 
+## Writing a Cookbook Example
 
-Writing a Cookbook Example
---------------------------
 If you want `knife` to automatically generate spec stubs for you, install [knife-spec](https://github.com/sethvargo/knife-spec).
 
 Given an extremely basic Chef recipe that just installs an operating system package:
@@ -65,14 +57,13 @@ end
 Let's step through this file to see what is happening:
 
 1. At the top of the spec file we require the chefspec gem. This is required so that our custom matchers are loaded. In larger projects, it is common practice to create a file named "spec_helper.rb" and include ChefSpec and perform other setup tasks in that file.
-1. The `describe` keyword is part of RSpec and indicates that everything nested beneath is describing the `example::default` recipe. The convention is to have a separate spec for each recipe in your cookbook.
-1. The `let` block on creates the `ChefSpec:Runner` and then does a fake Chef run with the run_list of `example::default`. Any subsequent examples can then refer to `chef_run` in order to make assertions about the resources that were created during the mock converge.
-1. The `described_recipe` macro is a ChefSpec helper method that infers the recipe from the `describe` block. Alternatively you could specify the recipe directly.
-1. The `it` block is an example specifying that the `foo` package is installed. Normally you will have multiple `it` blocks per recipe, each making a single assertion.
+2. The `describe` keyword is part of RSpec and indicates that everything nested beneath is describing the `example::default` recipe. The convention is to have a separate spec for each recipe in your cookbook.
+3. The `let` block on creates the `ChefSpec:Runner` and then does a fake Chef run with the run_list of `example::default`. Any subsequent examples can then refer to `chef_run` in order to make assertions about the resources that were created during the mock converge.
+4. The `described_recipe` macro is a ChefSpec helper method that infers the recipe from the `describe` block. Alternatively you could specify the recipe directly.
+5. The `it` block is an example specifying that the `foo` package is installed. Normally you will have multiple `it` blocks per recipe, each making a single assertion.
 
+## Configuration
 
-Configuration
--------------
 ChefSpec exposes a configuration layer at the global level and at the `Runner` level. The following settings are available:
 
 ```ruby
@@ -129,6 +120,7 @@ ChefSpec::SoloRunner.new(log_level: :debug).converge(described_recipe)
 **NOTE** You do not _need_ to specify a platform and version to use ChefSpec. However, some cookbooks may rely on [Ohai](http://github.com/chef/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/customink/fauxhai).
 
 ### Berkshelf
+
 If you are using Berkshelf, simply require `chefspec/berkshelf` in your `spec_helper` after requiring `chefspec`:
 
 ```ruby
@@ -169,8 +161,7 @@ Requiring this file will:
 - Download all the dependencies listed in your `Cheffile` into the temporary directory
 - Set ChefSpec's `cookbook_path` to the temporary directory
 
-**NOTE** In order to test the cookbook in the current working directory, you
-have to write your `Cheffile` like this:
+**NOTE** In order to test the cookbook in the current working directory, you have to write your `Cheffile` like this:
 
 ```ruby
 # Cheffile
@@ -180,6 +171,7 @@ cookbook 'name_of_your_cookbook', path: '.'
 ```
 
 ### Policyfile
+
 If you are using Chef Policies with ChefDK, simply require `chefspec/policyfile` in your `spec_helper`, and ensure you are using the `ChefSpec::ServerRunner` - Chef Solo does not support the exported repository format because the cookbook names use the unique version identifier.
 
 ```ruby
@@ -203,8 +195,8 @@ default_source :community
 cookbook 'my-cookbook', path: '.'
 ```
 
-Running Specs
--------------
+## Running Specs
+
 ChefSpec is actually an RSpec extension, so you can run your tests using the RSpec CLI:
 
 ```bash
@@ -219,9 +211,8 @@ $ rspec spec/unit/recipes/default_spec.rb --color
 
 For more information on the RSpec CLI, please see the [documentation](https://relishapp.com/rspec/rspec-core/docs/command-line).
 
+## Making Assertions
 
-Making Assertions
------------------
 ChefSpec asserts that resource actions have been performed. In general, ChefSpec follows the following pattern:
 
 ```ruby
@@ -280,7 +271,8 @@ ChefSpec includes matchers for all of Chef's core resources using the above sche
 
 Additionally, ChefSpec includes the following helpful matchers. They are also [documented in Yard](http://rubydoc.info/github/sethvargo/chefspec), but they are included here because they do not follow the "general pattern".
 
-##### include_recipe
+### include_recipe
+
 Assert that the Chef run included a recipe from another cookbook
 
 ```ruby
@@ -305,7 +297,8 @@ describe 'example::default' do
 end
 ```
 
-##### notify
+### notify
+
 Assert that a resource notifies another in the Chef run
 
 ```ruby
@@ -313,7 +306,8 @@ resource = chef_run.template('/etc/foo')
 expect(resource).to notify('service[apache2]').to(:restart).immediately
 ```
 
-##### subscribes
+### subscribes
+
 Assert that a resource subscribes to another in the Chef run
 
 ```ruby
@@ -321,7 +315,8 @@ resource = chef_run.service('apache2')
 expect(resource).to subscribe_to('template[/etc/foo]').on(:create).delayed
 ```
 
-##### render_file
+### render_file
+
 Assert that the Chef run renders a file (with optional content); this will match `cookbook_file`, `file`, and `template` resources and can also check the resulting content
 
 ```ruby
@@ -360,7 +355,8 @@ expect(chef_run).to install_package('apache2').at_converge_time
 
 Since "converge time" is the default behavior for all recipes, this test might be redundant and the predicate could be dropped depending on your situation.
 
-##### do_nothing
+### do_nothing
+
 Assert that a resource performs no action
 
 ```ruby
@@ -370,9 +366,8 @@ expect(resource).to do_nothing
 
 **For more complex examples, please see the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples) or the [Yard documentation](http://rubydoc.info/github/sethvargo/chefspec).**
 
+## Setting node Attributes
 
-Setting node Attributes
------------------------
 Node attribute can be set when creating the `Runner`. The initializer yields a block that gives full access to the node object:
 
 ```ruby
@@ -386,6 +381,7 @@ end
 ```
 
 ### Automatic attributes
+
 ChefSpec provides mocked automatic Ohai data using [fauxhai](https://github.com/customink/fauxhai). To mock out `automatic` attributes, you must use the `automatic` key:
 
 ```ruby
@@ -415,8 +411,8 @@ describe 'example::default' do
 end
 ```
 
-Using a Chef Server
--------------------
+## Using a Chef Server
+
 All the examples thus far have used the `ChefSpec::SoloRunner`, which runs ChefSpec in Chef Solo mode. ChefSpec also includes the ability to create in-memory Chef Servers. This server can be populated with fake data and used to test search, data bags, and other "server-only" features.
 
 To use the ChefSpec server, simply replace `ChefSpec::SoloRunner` with `ChefSpec::ServerRunner`:
@@ -431,6 +427,7 @@ end
 This will automatically create a Chef Server, synchronize all the cookbooks in your `cookbook_path`, and wire all the internals of Chef together. Recipe calls to `search`, `data_bag` and `data_bag_item` will now query this ChefSpec server.
 
 ### DSL
+
 The ChefSpec server includes a collection of helpful DSL methods for populating data into the Chef Server.
 
 Create a client:
@@ -511,10 +508,10 @@ end
 
 **NOTE** The ChefSpec server is empty at the start of each example to avoid interdependent tests.
 
+## Stubbing
 
-Stubbing
---------
 ### Command
+
 Given a recipe with shell guard:
 
 ```ruby
@@ -588,6 +585,7 @@ end
 ```
 
 Stub the output of the library helper. [Additional information](http://jtimberman.housepub.org/blog/2015/05/30/quick-tip-stubbing-library-helpers-in-chefspec/)
+
 ```ruby
 before do
   allow_any_instance_of(Chef::Node).to receive(:has_bacon?).and_return(true)
@@ -595,6 +593,7 @@ end
 ```
 
 ### Data Bag & Data Bag Item
+
 **NOTE** This is not required if you are using a ChefSpec server.
 
 Given a recipe that executes a `data_bag` method:
@@ -653,6 +652,7 @@ end
 ```
 
 ### Search
+
 **NOTE** This is not required if you are using a ChefSpec server.
 
 Because ChefSpec is a unit-testing framework, it is recommended that all third-party API calls be mocked or stubbed. ChefSpec exposes a helpful RSpec macro for stubbing search results in your tests. If you converge a Chef recipe that implements a `search` call, ChefSpec will throw an error like:
@@ -689,9 +689,8 @@ describe 'example::default' do
 end
 ```
 
+## Reporting
 
-Reporting
----------
 ChefSpec can generate a report of resources read over resources tested.
 
 To generate the coverage report, add the following to your `spec_helper.rb` before you require any "Chef" code:
@@ -786,7 +785,8 @@ ChefSpec::Coverage.start! do
   set_template 'json.erb'
 end
 ```
-Provided templates are human.erb*(default)*, table.erb and json.erb, to supply a custom template, specify a relative(to run directory) or absolute path.
+
+Provided templates are human.erb_(default)_, table.erb and json.erb, to supply a custom template, specify a relative(to run directory) or absolute path.
 
 ```ruby
 ChefSpec::Coverage.start! do
@@ -794,9 +794,10 @@ ChefSpec::Coverage.start! do
 end
 ```
 
-Mocking Out Environments
-------------------------
+## Mocking Out Environments
+
 ### ServerRunner
+
 ```ruby
 ChefSpec::ServerRunner.new do |node, server|
   # Create the environment
@@ -808,6 +809,7 @@ end
 ```
 
 ### SoloRunner
+
 If you want to mock out `node.chef_environment`, you'll need to use RSpec mocks/stubs twice:
 
 ```ruby
@@ -828,9 +830,8 @@ end
 
 **There is probably a better/easier way to do this. If you have a better solution, please open an issue or Pull Request so we can make this less painful :)**
 
+## Testing LWRPs
 
-Testing LWRPs
--------------
 **WARNING** Cookbooks with dashes (hyphens) are difficult to test with ChefSpec because of how Chef classifies objects. We recommend naming cookbooks with underscores (`_`) instead of dashes (`-`).
 
 ChefSpec overrides all providers to take no action (otherwise it would actually converge your system). This means that the steps inside your LWRP are not actually executed. If an LWRP performs actions, those actions are never executed or added to the resource collection.
@@ -853,9 +854,8 @@ end
 
 **NOTE:** If your cookbook exposes LWRPs, it is highly recommended you also create a `libraries/matchers.rb` file as outlined below in the "Packaging Custom Matchers" section. **You should never `step_into` an LWRP unless you are testing it. Never `step_into` an LWRP from another cookbook!**
 
+## Packaging Custom Matchers
 
-Packaging Custom Matchers
--------------------------
 ChefSpec exposes the ability for cookbook authors to package custom matchers inside a cookbook so that other developers may take advantage of them in testing. This is done by creating a special library file in the cookbook named `matchers.rb`:
 
 ```ruby
@@ -882,7 +882,8 @@ end
 
 ChefSpec's built-in `ResourceMatcher` _should_ satisfy most common use cases for packaging a custom matcher with your LWRPs. However, if your cookbook is extending Chef core or is outside of the scope of a traditional "resource", you may need to create a custom matcher. For more information on custom matchers in RSpec, please [watch the Railscast on Custom Matchers](http://railscasts.com/episodes/157-rspec-matchers-macros) or look at some of the other custom matchers in ChefSpec's source code.
 
-#### Example
+### Example
+
 Suppose I have a cookbook named "motd" with a resource/provider "message".
 
 ```ruby
@@ -950,9 +951,8 @@ end
 
 Notice that we have changed the name of the method to match the "foobar" action, but the resource matcher definition remains unchanged. When the Chef run executes, the resource will be inserted into the collection as `motd_message`, even though it was given a custom provides.
 
+## Writing Custom Matchers
 
-Writing Custom Matchers
------------------------
 If you are testing a cookbook that does not package its LWRP matchers, you can create your own following the same pattern as the "Packaging Custom Matchers" section. Simply, create a file at `spec/support/matchers.rb` and add your resource matchers:
 
 ```ruby
@@ -970,8 +970,8 @@ require_relative 'support/matchers'
 
 Please use this as a _temporary_ solution. Consider sending a Pull Request to the LWRP author(s) packaging the custom resource matchers (see previous section).
 
-Matchers for looking up custom resources
-----------------------------------------
+## Matchers for looking up custom resources
+
 ChefSpec also provides a helper method to define a method on the Chef runner for locating a resource in the collection. This is helpful while asserting against custom resource notifications.
 
 ```ruby
@@ -992,9 +992,8 @@ end
 
 You can use this functionality to bundle lookup matchers with cookbooks, or to provide your own when the upstream cookbook doesn't include it.
 
+## Expecting Exceptions
 
-Expecting Exceptions
---------------------
 In Chef 11, custom formatters were introduced and ChefSpec uses a custom formatter to suppress Chef Client output. In the event of a convergence failure, ChefSpec will output the error message from the run to help you debug:
 
 ```text
@@ -1045,8 +1044,8 @@ it 'raises an error' do
 end
 ```
 
-Testing Multiple Recipes
--------------
+## Testing Multiple Recipes
+
 Even though ChefSpec is cookbook-centric, you can still converge multiple recipes in a single `ChefSpec::SoloRunner` instance. Given a cookbook "sandwich" with recipes "bacon", "lettuce" and "tomato":
 
 ```ruby
@@ -1070,8 +1069,8 @@ expect(chef_run).to install_package('lettuce')
 expect(chef_run).to install_package('tomato')
 ```
 
-Testing Roles
--------------
+## Testing Roles
+
 Roles can also be used in a single `ChefSpec::SoloRunner` instance. Given a cookbook "bacon" with a default recipe:
 
 ```ruby
@@ -1130,9 +1129,8 @@ end
 ChefSpec::SoloRunner.new(role_path: '/var/my/roles') # local setting
 ```
 
+## Faster Specs
 
-Faster Specs
-------------
 ChefSpec aims to provide the easiest and simplest path for new users to write RSpec examples for Chef cookbooks. In doing so, it makes some sacrifices in terms of speed and agility of execution. In other words, ChefSpec favors "speed to develop" over "speed to execute". Many of these decisions are directly related to the way Chef dynamically loads resources at runtime.
 
 If you understand how RSpec works and would like to see some significant speed improvements in your specs, you can use the `ChefSpec::Cacher` module inspired by [Juri Timošin](https://github.com/DracoAter). Simply convert all your `let` blocks to `cached`:
@@ -1147,9 +1145,8 @@ cached(:chef_run) { ChefSpec::SoloRunner.new }
 
 Everything else should work the same. Be advised, as the method name suggests, this will cache the results of your Chef Client Run for the **entire RSpec example**. This makes stubbing more of a challenge, since the node is already converged. For more information, please see [Juri Timošin's blog post on faster specs](http://dracoater.blogspot.com/2013/12/testing-chef-cookbooks-part-25-speeding.html) as well as the discussion in [#275](https://github.com/sethvargo/chefspec/issues/275).
 
+## Media & Third-party Tutorials
 
-Media & Third-party Tutorials
------------------------------
 - [CustomInk's Testing Chef Cookbooks](http://technology.customink.com/blog/2012/08/03/testing-chef-cookbooks/)
 - [Jake Vanderdray's Practical ChefSpec](http://files.meetup.com/1780846/ChefSpec.pdf)
 - [Jim Hopp's excellent Test Driven Development for Chef Practitioners](http://www.youtube.com/watch?v=o2e0aZUAVGw)
@@ -1159,9 +1156,8 @@ Media & Third-party Tutorials
 - [Seth Vargo's TDDing tmux talk](http://www.confreaks.com/videos/2364-mwrc2013-tdding-tmux)
 - [Stephen Nelson Smith's Test-Driven Infrastructure with Chef](http://shop.oreilly.com/product/0636920030973.do)
 
+## Development
 
-Development
------------
 1. Fork the repository from GitHub.
 2. Clone your fork to your local machine:
 
@@ -1176,16 +1172,22 @@ Development
   ```
 
 4. **Write tests**
+
 5. Make your changes/patches/fixes, committing appropriately
+
 6. Run the tests: `bundle exec rake`
+
 7. Push your changes to GitHub
+
 8. Open a Pull Request
 
-ChefSpec is on [Travis CI](http://travis-ci.org/sethvargo/chefspec) which tests against multiple Chef and Ruby versions.
+ChefSpec is on [Travis CI][travis] which tests against multiple Chef and Ruby versions.
 
 If you are contributing, please see the [Contributing Guidelines](https://github.com/sethvargo/chefspec/blob/master/CONTRIBUTING.md) for more information.
 
+## License
 
-License
--------
 MIT - see the accompanying [LICENSE](https://github.com/sethvargo/chefspec/blob/master/LICENSE) file for details.
+
+[gem]: https://rubygems.org/gems/chefspec
+[travis]: http://travis-ci.org/sethvargo/chefspec
