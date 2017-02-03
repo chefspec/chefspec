@@ -101,6 +101,9 @@ RSpec.configure do |config|
 
   # Specify the operating version to mock Ohai data from (default: nil)
   config.version = '14.04'
+
+  # When using ChefSpec::ServerRunner, specify the data storage method (options: in_memory, on_disk; default: in_memory)
+  config.server_runner_data_store = :on_disk
 end
 ```
 
@@ -511,6 +514,12 @@ end
 
 **NOTE** The ChefSpec server is empty at the start of each example to avoid interdependent tests.
 
+### Data Store
+
+The `ServerRunner` has two options for how it will store data: `in_memory` or `on_disk`. The default
+value is `in_memory`. These two options have different performance implications based on your specific
+setup. If you are running into performance problems (slow tests, frequent hanging, etc) with one setting,
+try using the other.
 
 Stubbing
 --------

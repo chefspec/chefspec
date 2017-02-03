@@ -1,5 +1,11 @@
 # CHANGELOG for ChefSpec
 
+## Unreleased
+
+IMPROVEMENTS
+
+- Support for in-memory or on-disk ChefZero Servers
+
 ## 5.3.0 (October 29, 2016)
 
 IMPROVEMENTS
