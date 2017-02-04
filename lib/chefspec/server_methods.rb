@@ -16,6 +16,9 @@ module ChefSpec
 
         # Set a random port so ChefSpec may be run in multiple contexts
         port: port,
+
+        # Set the data store
+        data_store: data_store(RSpec.configuration.server_runner_data_store),
       )
     end
 
@@ -171,6 +174,28 @@ module ChefSpec
       else
         @server.data_store.get(args)
       end
+    end
+
+    #
+    # Generate the DataStore object to be passed in to the ChefZero::Server object
+    #
+    def data_store(option)
+      require "chef_zero/data_store/default_facade"
+
+      store = case option
+              when :in_memory
+                require "chef_zero/data_store/memory_store_v2"
+                ChefZero::DataStore::MemoryStoreV2.new
+              when :on_disk
+                require "tmpdir"
+                require "chef_zero/data_store/raw_file_store"
+                tmpdir = Dir.mktmpdir
+                ChefZero::DataStore::RawFileStore.new(Dir.mktmpdir)
+              else
+                raise ArgumentError, ":#{option} is not a valid server_runner_data_store option. Please use either :in_memory or :on_disk."
+              end
+
+      ChefZero::DataStore::DefaultFacade.new(store, "chef", true)
     end
   end
 end
