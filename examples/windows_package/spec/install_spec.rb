@@ -3,7 +3,7 @@ require 'chefspec'
 describe 'windows_package::install' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'windows', version: '2012R2')
-                        .converge(described_recipe)
+                          .converge(described_recipe)
   end
 
   it 'installs a windows_package with an explicit action' do

@@ -3,7 +3,7 @@ require 'chefspec'
 describe 'dsc_resource::run' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'windows', version: '2012R2')
-                        .converge(described_recipe)
+                          .converge(described_recipe)
   end
 
   it 'runs dsc_resource with the archive resource' do
@@ -12,7 +12,7 @@ describe 'dsc_resource::run' do
       properties: {
         ensure: 'present',
         path: 'C:\Users\Public\Documents\example.zip',
-        destination: 'C:\Users\Public\Documents\ExtractionPath'
+        destination: 'C:\Users\Public\Documents\ExtractionPath',
       })
   end
 
@@ -21,7 +21,7 @@ describe 'dsc_resource::run' do
       resource: :group,
       properties: {
         groupname: 'demo1',
-        ensure: 'present'
+        ensure: 'present',
       })
   end
 
@@ -32,7 +32,7 @@ describe 'dsc_resource::run' do
         username: 'Foobar1',
         fullname: 'Foobar1',
         password: 'P@assword!',
-        ensure: 'present'
+        ensure: 'present',
       })
   end
 end
