@@ -1,11 +1,5 @@
 source 'https://rubygems.org'
 
-# travis runs on older chef releases failed while including
-# rack 2.X on Ruby 2.1. When we remove Ruby 2.1 support this can go
-if ENV['CHEF_VERSION'].to_f < 12.6
-  gem 'rack', '~> 1.0'
-end
-
 if ENV['CHEF_VERSION'] == 'master'
   gem 'chef', github: 'chef/chef'
 else
