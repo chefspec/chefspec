@@ -1,6 +1,6 @@
 # ChefSpec
 
-[![Gem Version](http://img.shields.io/gem/v/chefspec.svg)][gem] [![Build Status](http://img.shields.io/travis/sethvargo/chefspec.svg)][travis]
+[![Gem Version](https://badge.fury.io/rb/chefspec.svg)](https://badge.fury.io/rb/chefspec) [![Build Status](https://travis-ci.org/sethvargo/chefspec.svg?branch=master)](https://travis-ci.org/sethvargo/chefspec)
 
 ChefSpec is a unit testing framework for testing Chef cookbooks. ChefSpec makes it easy to write examples and get fast feedback on cookbook changes without the need for virtual machines or cloud servers.
 
@@ -1196,6 +1196,3 @@ If you are contributing, please see the [Contributing Guidelines](https://github
 ## License
 
 MIT - see the accompanying [LICENSE](https://github.com/sethvargo/chefspec/blob/master/LICENSE) file for details.
-
-[gem]: https://rubygems.org/gems/chefspec
-[travis]: http://travis-ci.org/sethvargo/chefspec
