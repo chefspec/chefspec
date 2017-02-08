@@ -1,6 +1,6 @@
 # CHANGELOG for ChefSpec
 
-## Unreleased
+## 5.4.0 (February 8, 2017)
 
 IMPROVEMENTS
 
