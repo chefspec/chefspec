@@ -189,28 +189,47 @@ cookbook 'name_of_your_cookbook', path: '.'
 
 ### Policyfile
 
-If you are using Chef Policies with ChefDK, simply require `chefspec/policyfile` in your `spec_helper`, and ensure you are using the `ChefSpec::ServerRunner` - Chef Solo does not support the exported repository format because the cookbook names use the unique version identifier.
+If you are using Chef Policies with ChefDK, ensure you are using the `ChefSpec::ServerRunner` - Chef Solo does not support the exported repository format because the cookbook names use the unique version identifier.
+Simply specify the `policy_name` option to the runner.
 
 ```ruby
 # spec_helper.rb
 require 'chefspec'
-require 'chefspec/policyfile'
 ```
 
-Requiring this file will:
+```ruby
+require 'spec_helper'
 
-- Create a temporary working directory
-- Download all the dependencies listed in your `Policyfile.rb` into the temporary directory
-- Set ChefSpec's `cookbook_path` to the temporary directory
+describe 'my_policy_name' do
+  context 'When all attributes are default, on centos' do
+    cached(:chef_run) do
+      runner = ChefSpec::ServerRunner.new(
+        platform: 'centos',
+        version: '7.2.1511',
+        policy_name: described_policy,
+      )
+      runner.converge
+    end
 
-Your `Policyfile.rb` should look something like this:
+    it 'converges correctly' do
+      expect { chef_run }.to_not raise_error
+    end
+  end
+end
+```
+
+You can also specify the `policy_group` option.
+
+Your policyfile should be named `my_policy_name.rb` should look something like this:
 
 ```ruby
-name 'my-cookbook'
+name 'my_policy_name'
 run_list 'my-cookbook::default'
 default_source :community
 cookbook 'my-cookbook', path: '.'
 ```
+
+Directory where policies are found is configurable with `policy_path` RSpec option.
 
 ## Running Specs
 

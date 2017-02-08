@@ -52,6 +52,26 @@ module ChefSpec
     end
 
     #
+    # The name of the currently running policy spec. Given the top-level
+    # +describe+ block is of the format:
+    #
+    #     describe 'my_policy::my_named_run_list' do
+    #       # ...
+    #     end
+    #
+    # The value of +described_recipe+ is "my_policy".
+    #
+    # @example Using +described_recipe+ in the +ChefSpec::ServerRunner+
+    #   let(:chef_run) { ChefSpec::ServerRunner.new.converge(described_recipe) }
+    #
+    #
+    # @return [String]
+    #
+    def described_policy
+      described_cookbook
+    end
+
+    #
     # Stub a shell command to return a particular value without
     # shelling out to the system.
     #

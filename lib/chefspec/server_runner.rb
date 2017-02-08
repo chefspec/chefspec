@@ -32,14 +32,32 @@ module ChefSpec
       Chef::Config[:chef_server_url]  = server.url
       Chef::Config[:http_retry_count] = 0
 
+      if policy_mode?
+        node.policy_name(options[:policy_name])
+        node.policy_group(options[:policy_group] || 'test_group')
+        Chef::Config[:policy_group] = node.policy_group
+        Chef::Config[:policy_name] = node.policy_name
+        # need to reselect policy_builder implementation since we've modified the node
+        client.policy_builder.select_implementation(node)
+      end
+
       # Unlike the SoloRunner, the node AND server object are yielded for
       # customization
       yield node, self if block_given?
     end
 
+    def policy_mode?
+      @options.key?(:policy_name)
+    end
+
     # @see (SoloRunner#converge)
     def converge(*recipe_names)
-      ChefSpec::ZeroServer.upload_cookbooks!
+      if policy_mode?
+        ChefSpec::Policyfile.setup!(node.policy_name, node.policy_group)
+        client.policy_builder.send(:implementation).finish_load_node(node)
+      else
+        ChefSpec::ZeroServer.upload_cookbooks!
+      end
 
       super do
         yield if block_given?
