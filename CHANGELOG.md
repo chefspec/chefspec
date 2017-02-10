@@ -1,10 +1,15 @@
 # CHANGELOG for ChefSpec
 
-## Unreleased
+## 5.4.0 (February 9, 2017)
 
 IMPROVEMENTS
 
-- Support for in-memory or on-disk ChefZero Servers
+- Support for in-memory or on-disk ChefZero Servers. See README for usage details.
+
+UPDATES
+
+- While Chef 12.0 - 12.5 are still supported, they are no longer being tested.
+
 
 ## 5.3.0 (October 29, 2016)
 
