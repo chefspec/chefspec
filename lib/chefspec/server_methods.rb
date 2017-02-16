@@ -151,7 +151,7 @@ module ChefSpec
     #   to the server
     #
     def load_data(name, key, data = {})
-      server.load_data({ key => { name => data } })
+      ChefSpec::ZeroServer.load_data(name, key, data)
     end
 
     #

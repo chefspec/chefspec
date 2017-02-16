@@ -6,7 +6,7 @@ module ChefSpec
   class ZeroServer
     class << self
       extend Forwardable
-      def_delegators :instance, :setup!, :teardown!, :reset!, :server
+      def_delegators :instance, :setup!, :teardown!, :reset!, :upload_cookbooks!, :server, :load_data
     end
 
     include Singleton
@@ -20,29 +20,84 @@ module ChefSpec
         # Set the data store
         data_store: data_store(RSpec.configuration.server_runner_data_store),
       )
+      @cookbooks_uploaded = false
+      @data_loaded = {}
     end
 
+    #
     # Start the ChefZero Server
+    #
     def setup!
       @server.start_background
     end
 
-    # Remove all the non-cookbook entities from the ChefZero Server
+    #
+    # Remove all the data we just loaded from the ChefZero server
+    #
     def reset!
-      @server.clear_data
+      @data_loaded.each do |key, names|
+        names.each do |name|
+          @server.data_store.delete(["organizations", "chef", key, name])
+        end
+      end
+      @data_loaded = {}
     end
 
+    #
     # Teardown the ChefZero Server
+    #
     def teardown!
       @server.stop if @server.running?
     end
 
+    #
+    # Upload the cookbooks to the Chef Server.
+    #
+    def upload_cookbooks!
+      return if @cookbooks_uploaded
+      loader = Chef::CookbookLoader.new(Chef::Config[:cookbook_path])
+      loader.load_cookbooks
+      cookbook_uploader_for(loader).upload_cookbooks
+      @cookbooks_uploaded = true
+    end
+
+    #
     # The URL for the ChefZero Server
+    #
     def server
       @server
     end
 
+    #
+    # Load (and track) data sent to the server
+    #
+    # @param [String] name
+    #   the name or id of the item to load
+    # @param [String, Symbol] key
+    #   the key to load
+    # @param [Hash] data
+    #   the data for the object, which will be converted to JSON and uploaded
+    #   to the server
+    #
+    def load_data(name, key, data)
+      @data_loaded[key] ||= []
+      @data_loaded[key] << name
+      server.load_data({ key => { name => data } })
+    end
+
     private
+
+    #
+    # The uploader for the cookbooks.
+    #
+    # @param [Chef::CookbookLoader] loader
+    #   the Chef cookbook loader
+    #
+    # @return [Chef::CookbookUploader]
+    #
+    def cookbook_uploader_for(loader)
+      Chef::CookbookUploader.new(loader.cookbooks)
+    end
 
     #
     # Generate the DataStore object to be passed in to the ChefZero::Server object

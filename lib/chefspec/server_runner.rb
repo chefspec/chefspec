@@ -37,31 +37,10 @@ module ChefSpec
       yield node, self if block_given?
     end
 
-    #
-    # Upload the cookbooks to the Chef Server.
-    #
-    def upload_cookbooks!
-      loader = Chef::CookbookLoader.new(Chef::Config[:cookbook_path])
-      loader.load_cookbooks
-      cookbook_uploader_for(loader).upload_cookbooks
-    end
-
-    #
-    # The uploader for the cookbooks.
-    #
-    # @param [Chef::CookbookLoader] loader
-    #   the Chef cookbook loader
-    #
-    # @return [Chef::CookbookUploader]
-    #
-    def cookbook_uploader_for(loader)
-      Chef::CookbookUploader.new(loader.cookbooks)
-    end
-
     # @see (SoloRunner#converge)
     def converge(*recipe_names)
-      upload_cookbooks!
-
+      ChefSpec::ZeroServer.upload_cookbooks!
+      
       super do
         yield if block_given?
 
