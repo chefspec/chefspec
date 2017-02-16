@@ -34,11 +34,13 @@ module ChefSpec
     #
     # Remove all the data we just loaded from the ChefZero server
     #
-    def reset!(opts = {})
-      if opts[:clear_cookbooks]
+    def reset!
+      if RSpec.configuration.server_runner_clear_cookbooks
         @server.clear_data
         @cookbooks_uploaded = false
       else
+        # If we don't want to do a full clear, iterate through each value that we
+        # set and manually remove it.
         @data_loaded.each do |key, names|
           if key == "data"
             names.each { |n| @server.data_store.delete_dir(["organizations", "chef", key, n]) }
@@ -89,7 +91,7 @@ module ChefSpec
     def load_data(name, key, data)
       @data_loaded[key] ||= []
       @data_loaded[key] << name
-      server.load_data({ key => { name => data } })
+      @server.load_data({ key => { name => data } })
     end
 
     private

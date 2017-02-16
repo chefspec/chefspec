@@ -40,7 +40,7 @@ module ChefSpec
     # @see (SoloRunner#converge)
     def converge(*recipe_names)
       ChefSpec::ZeroServer.upload_cookbooks!
-      
+
       super do
         yield if block_given?
 

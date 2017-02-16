@@ -92,9 +92,6 @@ RSpec.configure do |config|
 
   # Specify the operating version to mock Ohai data from (default: nil)
   config.version = '14.04'
-
-  # When using ChefSpec::ServerRunner, specify the data storage method (options: in_memory, on_disk; default: in_memory)
-  config.server_runner_data_store = :on_disk
 end
 ```
 
@@ -121,6 +118,23 @@ ChefSpec::SoloRunner.new(log_level: :debug).converge(described_recipe)
 ```
 
 **NOTE** You do not _need_ to specify a platform and version to use ChefSpec. However, some cookbooks may rely on [Ohai](http://github.com/chef/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/customink/fauxhai).
+
+### ChefZero Server
+
+The `ServerRunner` uses a [chef-zero](https://github.com/chef/chef-zero) instance as a stand-in for a full Chef Server. The instance is created at the initiation of the ChefSpec suite and is terminated at its completion. In between each test the state of the ChefZero server is completely reset.
+
+```ruby
+RSpec.configure do |config|
+  # When using ChefSpec::ServerRunner, specify the data storage method (options: in_memory, on_disk; default: in_memory)
+  # If you are in a low-memory environment, setting this value to :on_disk may improve speed and/or reliability.
+  config.server_runner_data_store = :on_disk
+
+  # Whether or not to clear the cookbooks on the ChefZero instance in-between each test (default: true)
+  # For most people, not clearing the cookbooks will drastically improve test execution time. This is a
+  # good option for people who are using chefspec within the context of a single Berksfile or Policyfile.
+  config.server_runner_clear_cookbooks = false
+end
+```
 
 ### Berkshelf
 

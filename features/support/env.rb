@@ -20,14 +20,12 @@ Before do
   # RSpec::Runner) removes our configurations :(
   load 'lib/chefspec/rspec.rb'
 
-  # These settings need to be reloaded specific to the way Aruba runs. That
-  # is why they are here instead of in rspec.rb
+  # These settings need to be specified manually here rather than in rspec.rb
+  # because we do not want the zero-server terminating between each run. The
+  # runs happen too quickly in succession the port doesn't have time to get reset.
   RSpec.configure do |config|
     config.before(:suite) { ChefSpec::ZeroServer.setup! }
-    config.after(:each) do
-      # We need to reset not only the data but the cookbooks as well
-      ChefSpec::ZeroServer.reset!({ clear_cookbooks: true})
-    end
+    config.after(:each) { ChefSpec::ZeroServer.reset! }
   end
 
   # Use a temporary directory to suppress Travis warnings
