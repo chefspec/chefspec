@@ -1,5 +1,12 @@
 # CHANGELOG for ChefSpec
 
+## 5.5.0 (Unreleased)
+
+IMPROVEMENTS
+
+- Improve ServerRunner speed and reduce process hangs by using single stand-alone chef-zero server.
+
+
 ## 5.4.0 (February 9, 2017)
 
 IMPROVEMENTS
