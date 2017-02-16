@@ -1,7 +1,7 @@
-require 'chef_zero/server'
 require 'chef/cookbook_loader'
 require 'chef/cookbook_uploader'
 
+require_relative 'zero_server'
 require_relative 'file_cache_path_proxy'
 require_relative 'server_methods'
 require_relative 'solo_runner'
@@ -31,10 +31,6 @@ module ChefSpec
 
       Chef::Config[:chef_server_url]  = server.url
       Chef::Config[:http_retry_count] = 0
-
-      # Start the Chef Zero instance in the background
-      server.start_background
-      at_exit { server.stop if server.running? }
 
       # Unlike the SoloRunner, the node AND server object are yielded for
       # customization
@@ -92,21 +88,6 @@ module ChefSpec
       File.open(path, 'wb') { |f| f.write(ChefZero::PRIVATE_KEY) }
       at_exit { FileUtils.rm_rf(tmp) }
       path
-    end
-
-    #
-    # A randomly assigned, open port for run the Chef Zero server.
-    #
-    # @return [Fixnum]
-    #
-    def port
-      return @port if @port
-
-      @server = TCPServer.new('127.0.0.1', 0)
-      @port   = @server.addr[1].to_i
-      @server.close
-
-      return @port
     end
   end
 end
