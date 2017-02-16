@@ -20,6 +20,16 @@ Before do
   # RSpec::Runner) removes our configurations :(
   load 'lib/chefspec/rspec.rb'
 
+  # These settings need to be reloaded specific to the way Aruba runs. That
+  # is why they are here instead of in rspec.rb
+  RSpec.configure do |config|
+    config.before(:suite) { ChefSpec::ZeroServer.setup! }
+    config.after(:each) do
+      # We need to reset not only the data but the cookbooks as well
+      ChefSpec::ZeroServer.reset!({ clear_cookbooks: true})
+    end
+  end
+
   # Use a temporary directory to suppress Travis warnings
   @dirs = [Dir.mktmpdir]
 end

@@ -28,16 +28,23 @@ module ChefSpec
     # Start the ChefZero Server
     #
     def setup!
-      @server.start_background
+      @server.start_background unless @server.running?
     end
 
     #
     # Remove all the data we just loaded from the ChefZero server
     #
-    def reset!
-      @data_loaded.each do |key, names|
-        names.each do |name|
-          @server.data_store.delete(["organizations", "chef", key, name])
+    def reset!(opts = {})
+      if opts[:clear_cookbooks]
+        @server.clear_data
+        @cookbooks_uploaded = false
+      else
+        @data_loaded.each do |key, names|
+          if key == "data"
+            names.each { |n| @server.data_store.delete_dir(["organizations", "chef", key, n]) }
+          else
+            names.each { |n| @server.data_store.delete(["organizations", "chef", key, n]) }
+          end
         end
       end
       @data_loaded = {}
