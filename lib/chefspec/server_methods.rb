@@ -10,7 +10,7 @@ module ChefSpec
     # @return [ChefZero::Server]
     #
     def server
-      @server ||= ChefZero::Server.new(
+      @@server ||= ChefZero::Server.new(
         # Set the log level from RSpec, defaulting to warn
         log_level:  RSpec.configuration.log_level || :warn,
 
@@ -160,7 +160,7 @@ module ChefSpec
     #   to the server
     #
     def load_data(name, key, data = {})
-      @server.load_data({ key => { name => data } })
+      @@server.load_data({ key => { name => data } })
     end
 
     #
@@ -170,9 +170,9 @@ module ChefSpec
       args.unshift('organizations', 'chef')
 
       if args.size == 3
-        @server.data_store.list(args)
+        @@server.data_store.list(args)
       else
-        @server.data_store.get(args)
+        @@server.data_store.get(args)
       end
     end
 

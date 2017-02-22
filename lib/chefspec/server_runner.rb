@@ -10,6 +10,8 @@ module ChefSpec
   class ServerRunner < SoloRunner
     include ChefSpec::ServerMethods
 
+    @@server = nil
+
     # @see (SoloRunner#initialize)
     def initialize(options = {})
       # Unlike the SoloRunner, the file_cache_path needs to remain consistent
@@ -36,9 +38,27 @@ module ChefSpec
       server.start_background
       at_exit { server.stop if server.running? }
 
+      # Tell RSpec, after each test, to reset the ServerRunner
+      RSpec.configure do |config|
+        config.after(:each) do
+          ChefSpec::ServerRunner.cleanup!
+        end
+      end
+
       # Unlike the SoloRunner, the node AND server object are yielded for
       # customization
       yield node, self if block_given?
+    end
+
+    #
+    # Cleanup the Chef Server after each test to avoid server threads hanging
+    # around until the end of the suite.
+    #
+    def self.cleanup!
+      if @@server && @@server.running?
+        @@server.clear_data
+        @@server.stop
+      end
     end
 
     #
