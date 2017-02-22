@@ -20,6 +20,14 @@ Before do
   # RSpec::Runner) removes our configurations :(
   load 'lib/chefspec/rspec.rb'
 
+  # These settings need to be specified manually here rather than in rspec.rb
+  # because we do not want the zero-server terminating between each run. The
+  # runs happen too quickly in succession the port doesn't have time to get reset.
+  RSpec.configure do |config|
+    config.before(:suite) { ChefSpec::ZeroServer.setup! }
+    config.after(:each) { ChefSpec::ZeroServer.reset! }
+  end
+
   # Use a temporary directory to suppress Travis warnings
   @dirs = [Dir.mktmpdir]
 end

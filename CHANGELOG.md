@@ -1,5 +1,12 @@
 # CHANGELOG for ChefSpec
 
+## 5.5.0 (Unreleased)
+
+IMPROVEMENTS
+
+- Improve ServerRunner speed and reduce process hangs by using a single stand-alone chef-zero server.
+- Add configuration value to dictate whether cookbooks are re-uploaded before every test context.
+
 ## 5.4.0 (February 9, 2017)
 
 IMPROVEMENTS

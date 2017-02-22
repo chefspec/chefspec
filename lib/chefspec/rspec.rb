@@ -20,4 +20,5 @@ RSpec.configure do |config|
   config.add_setting :platform
   config.add_setting :version
   config.add_setting :server_runner_data_store, default: :in_memory
+  config.add_setting :server_runner_clear_cookbooks, default: true
 end
