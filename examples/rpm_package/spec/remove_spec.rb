@@ -3,7 +3,7 @@ require 'chefspec'
 describe 'rpm_package::remove' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'centos', version: '7.2.1511')
-                        .converge(described_recipe)
+                          .converge(described_recipe)
   end
 
   it 'removes a rpm_package with an explicit action' do

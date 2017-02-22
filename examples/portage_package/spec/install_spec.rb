@@ -3,7 +3,7 @@ require 'chefspec'
 describe 'portage_package::install' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'gentoo', version: '2.2')
-                        .converge(described_recipe)
+                          .converge(described_recipe)
   end
 
   it 'installs a portage_package with the default action' do

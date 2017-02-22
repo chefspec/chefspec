@@ -3,7 +3,7 @@ require 'chefspec'
 describe 'powershell_script::run' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'windows', version: '2012R2')
-                        .converge(described_recipe)
+                          .converge(described_recipe)
   end
 
   it 'runs a powershell_script with the default action' do

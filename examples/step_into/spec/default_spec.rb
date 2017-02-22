@@ -15,8 +15,8 @@ describe 'step_into::default' do
 
   context 'with :step_into' do
     let(:chef_run) do
-      ChefSpec::ServerRunner.new(step_into: %w(step_into_lwrp provides_this))
-                          .converge(described_recipe)
+      ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04', step_into: %w(step_into_lwrp provides_this))
+                            .converge(described_recipe)
     end
 
     it 'executes the LWRPs action' do

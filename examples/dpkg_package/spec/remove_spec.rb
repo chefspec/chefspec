@@ -3,7 +3,7 @@ require 'chefspec'
 describe 'dpkg_package::remove' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04')
-                        .converge(described_recipe)
+                          .converge(described_recipe)
   end
 
   it 'removes a dpkg_package with an explicit action' do

@@ -3,7 +3,7 @@ require 'chefspec'
 describe 'env::create' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'windows', version: '2012R2')
-                        .converge(described_recipe)
+                          .converge(described_recipe)
   end
 
   it 'creates a env with the default action' do
