@@ -189,7 +189,6 @@ module ChefSpec
               when :on_disk
                 require "tmpdir"
                 require "chef_zero/data_store/raw_file_store"
-                tmpdir = Dir.mktmpdir
                 ChefZero::DataStore::RawFileStore.new(Dir.mktmpdir)
               else
                 raise ArgumentError, ":#{option} is not a valid server_runner_data_store option. Please use either :in_memory or :on_disk."
