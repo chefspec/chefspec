@@ -1,11 +1,16 @@
 # CHANGELOG for ChefSpec
 
-## 5.5.0 (Unreleased)
+## 6.0.0 (February 22, 2017)
+
+BREAKING CHANGES
+
+ChefSpec now requires Ruby 2.2 or later.
 
 IMPROVEMENTS
 
 - Improve ServerRunner speed and reduce process hangs by using a single stand-alone chef-zero server.
 - Add configuration value to dictate whether cookbooks are re-uploaded before every test context.
+- Added matchers for dnf_package, msu_package, and cab_package
 
 ## 5.4.0 (February 9, 2017)
 
@@ -16,7 +21,6 @@ IMPROVEMENTS
 UPDATES
 
 - While Chef 12.0 - 12.5 are still supported, they are no longer being tested.
-
 
 ## 5.3.0 (October 29, 2016)
 
