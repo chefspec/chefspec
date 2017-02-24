@@ -16,6 +16,7 @@ module ChefSpec
       @server ||= ChefZero::Server.new(
         # Set the log level from RSpec, defaulting to warn
         log_level:  RSpec.configuration.log_level || :warn,
+        port: RSpec.configuration.server_runner_port,
 
         # Set the data store
         data_store: data_store(RSpec.configuration.server_runner_data_store),
