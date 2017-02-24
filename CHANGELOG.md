@@ -1,5 +1,9 @@
 # CHANGELOG for ChefSpec
 
+## 6.0.1 (February 24, 2017)
+
+- Add the ability to set the Chef Zero port range used by the ServerRunner
+
 ## 6.0.0 (February 22, 2017)
 
 BREAKING CHANGES
