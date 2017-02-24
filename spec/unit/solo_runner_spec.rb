@@ -70,6 +70,7 @@ describe ChefSpec::SoloRunner do
       expect(Chef::Config.force_logger).to be_truthy
       expect(Chef::Config.no_lazy_load).to be_truthy
       expect(Chef::Config.solo).to be_truthy
+      expect(Chef::Config.use_policyfile).to be_falsey
     end
 
     it 'yields a block to set node attributes' do

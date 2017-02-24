@@ -80,6 +80,7 @@ module ChefSpec
       Chef::Config[:force_logger]    = true
       Chef::Config[:solo]            = true
       Chef::Config[:solo_legacy_mode] = true
+      Chef::Config[:use_policyfile]  = false
       Chef::Config[:environment_path] = @options[:environment_path]
 
       yield node if block_given?
