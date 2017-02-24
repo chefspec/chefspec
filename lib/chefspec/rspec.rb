@@ -21,5 +21,5 @@ RSpec.configure do |config|
   config.add_setting :version
   config.add_setting :server_runner_data_store, default: :in_memory
   config.add_setting :server_runner_clear_cookbooks, default: true
-  config.add_setting :server_runner_port, default: 8889
+  config.add_setting :server_runner_port, default: (8889..8899)
 end
