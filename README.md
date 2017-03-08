@@ -46,7 +46,7 @@ the associated ChefSpec test might look like:
 require 'chefspec'
 
 describe 'example::default' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
 
   it 'installs foo' do
     expect(chef_run).to install_package('foo')
@@ -58,7 +58,7 @@ Let's step through this file to see what is happening:
 
 1. At the top of the spec file we require the chefspec gem. This is required so that our custom matchers are loaded. In larger projects, it is common practice to create a file named "spec_helper.rb" and include ChefSpec and perform other setup tasks in that file.
 2. The `describe` keyword is part of RSpec and indicates that everything nested beneath is describing the `example::default` recipe. The convention is to have a separate spec for each recipe in your cookbook.
-3. The `let` block on creates the `ChefSpec:ServerRunner` with mocked Ohai data for Ubuntu 16.04 from [Fauxhai](https://github.com/customink/fauxhai). It then does a fake Chef run with the run_list of `example::default`. Any subsequent examples can then refer to `chef_run` in order to make assertions about the resources that were created during the mock converge.
+3. The `let` block on creates the `ChefSpec:SoloRunner` with mocked Ohai data for Ubuntu 16.04 from [Fauxhai](https://github.com/customink/fauxhai). It then does a fake Chef run with the run_list of `example::default`. Any subsequent examples can then refer to `chef_run` in order to make assertions about the resources that were created during the mock converge.
 4. The `described_recipe` macro is a ChefSpec helper method that infers the recipe from the `describe` block. Alternatively you could specify the recipe directly.
 5. The `it` block is an example specifying that the `foo` package is installed. Normally you will have multiple `it` blocks per recipe, each making a single assertion.
 
@@ -99,22 +99,22 @@ Values specified at the initialization of a "Runner" merge and take precedence o
 
 ```ruby
 # Override only the operating system version (platform is still "ubuntu" from above)
-ChefSpec::ServerRunner.new(version: '16.04')
+ChefSpec::SoloRunner.new(version: '16.04')
 
 # Use a different operating system platform and version
-ChefSpec::ServerRunner.new(platform: 'centos', version: '7.2.1511')
+ChefSpec::SoloRunner.new(platform: 'centos', version: '7.2.1511')
 
 # Specify a different cookbook_path
-ChefSpec::ServerRunner.new(cookbook_path: '/var/my/other/path', role_path: '/var/my/roles')
+ChefSpec::SoloRunner.new(cookbook_path: '/var/my/other/path', role_path: '/var/my/roles')
 
 # By default ChefSpec sets a new temporary directory for file caching in every run.
 # This can be overridden by passing the `file_cache_path` option.
 # Note: Resources containing `Chef::Config[:file_cache_path]` in their name or
 # attributes, will fail unless this option is specified.
-ChefSpec::ServerRunner.new(file_cache_path: Chef::Config[:file_cache_path])
+ChefSpec::SoloRunner.new(file_cache_path: Chef::Config[:file_cache_path])
 
 # Add debug log output
-ChefSpec::ServerRunner.new(log_level: :debug).converge(described_recipe)
+ChefSpec::SoloRunner.new(log_level: :debug).converge(described_recipe)
 ```
 
 **NOTE** You do not _need_ to specify a platform and version to use ChefSpec. However, some cookbooks may rely on [Ohai](http://github.com/chef/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/customink/fauxhai). See the [PLATFORMS.md file](https://github.com/customink/fauxhai/blob/master/PLATFORMS.md) in the Fauxhai repo for a complete list of platforms and versions for use with ChefSpec.
