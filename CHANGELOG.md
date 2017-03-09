@@ -4,6 +4,7 @@
 
 - Loosen the Fauxhai dependency to allow Fauxhai 4.0 This deprecates a large number of Ohai mocks for end of life platforms. See <https://github.com/customink/fauxhai/blob/master/PLATFORMS.md> for the current list of platforms supported by Fauxhai
 - SoloRunner defaults to use_policyfile == false now
+- Resolve JSON deprecation warning in the ServerRunner
 
 ## 6.0.1 (February 24, 2017)
 
