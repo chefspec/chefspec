@@ -64,8 +64,8 @@ module ChefSpec
           data = get('#{key}', name)
           json = JSON.parse(data)
 
-          if #{klass}.respond_to?(:json_create)
-            #{klass}.json_create(json)
+          if #{klass}.respond_to?(:to_hash)
+            #{klass}.to_hash(json)
           else
             #{klass}.new(json)
           end
@@ -115,7 +115,7 @@ module ChefSpec
     #
     # @example Create a node from a +Chef::Node+ object
     #
-    #   node = stub_node('bacon', platform: 'ubuntu', version: '12.04')
+    #   node = stub_node('bacon', platform: 'ubuntu', version: '16.04')
     #   create_node(node)
     #
     # @param [String, Chef::Node] object

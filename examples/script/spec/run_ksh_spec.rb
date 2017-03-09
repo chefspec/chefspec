@@ -16,8 +16,4 @@ describe 'script::run_ksh' do
     expect(chef_run).to run_ksh('with_attributes').with(creates: 'creates')
     expect(chef_run).to_not run_ksh('with_attributes').with(creates: 'bacon')
   end
-
-  it 'runs a ksh script when specifying the identity attribute' do
-    expect(chef_run).to run_ksh('identity_attribute')
-  end
 end

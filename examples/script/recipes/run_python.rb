@@ -7,7 +7,3 @@ end
 python 'with_attributes' do
   creates 'creates'
 end
-
-python 'specifying the identity attribute' do
-  command 'identity_attribute'
-end
