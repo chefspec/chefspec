@@ -16,8 +16,4 @@ describe 'script::run_script' do
     expect(chef_run).to run_script('with_attributes').with(creates: 'creates')
     expect(chef_run).to_not run_script('with_attributes').with(creates: 'bacon')
   end
-
-  it 'runs a script when specifying the identity attribute' do
-    expect(chef_run).to run_script('identity_attribute')
-  end
 end
