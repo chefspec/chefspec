@@ -1,7 +1,10 @@
 require 'chefspec'
 
 describe 'solaris_package::upgrade' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) do
+    ChefSpec::ServerRunner.new(platform: 'solaris2', version: '5.11')
+                          .converge(described_recipe)
+  end
 
   it 'upgrades a solaris_package with an explicit action' do
     expect(chef_run).to upgrade_solaris_package('explicit_action')

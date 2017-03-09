@@ -19,8 +19,4 @@ describe 'powershell_script::run' do
     expect(chef_run).to run_powershell_script('with_attributes').with(flags: '--flags')
     expect(chef_run).to_not run_powershell_script('with_attributes').with(flags: '--not-flags')
   end
-
-  it 'runs a powershell_script when specifying the identity attribute' do
-    expect(chef_run).to run_powershell_script('identity_attribute')
-  end
 end

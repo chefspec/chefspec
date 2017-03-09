@@ -7,7 +7,3 @@ end
 batch 'with_attributes' do
   flags '-f'
 end
-
-batch 'specifying the identity attribute' do
-  command 'identity_attribute'
-end

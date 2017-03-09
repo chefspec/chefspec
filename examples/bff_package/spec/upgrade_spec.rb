@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'bff_package::upgrade' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'aix', version: '7.1').converge(described_recipe) }
 
   it 'upgrades a bff_package with an explicit action' do
     expect(chef_run).to upgrade_bff_package('explicit_action')
