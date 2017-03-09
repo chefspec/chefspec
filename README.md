@@ -102,7 +102,7 @@ Values specified at the initialization of a "Runner" merge and take precedence o
 ChefSpec::SoloRunner.new(version: '16.04')
 
 # Use a different operating system platform and version
-ChefSpec::SoloRunner.new(platform: 'centos', version: '7.2.1511')
+ChefSpec::SoloRunner.new(platform: 'centos', version: '7.3.1611')
 
 # Specify a different cookbook_path
 ChefSpec::SoloRunner.new(cookbook_path: '/var/my/other/path', role_path: '/var/my/roles')
@@ -503,7 +503,7 @@ end
 You may also use the `stub_node` macro, which will create a new `Chef::Node` object and accepts the same parameters as the Chef Runner and a Fauxhai object:
 
 ```ruby
-www = stub_node(platform: 'ubuntu', version: '12.04') do |node|
+www = stub_node(platform: 'ubuntu', version: '16.04') do |node|
         node.normal['attribute'] = 'value'
       end
 

@@ -93,12 +93,12 @@ describe ChefSpec::SoloRunner do
     end
 
     context 'fauxhai attributes' do
-      let(:hash) { described_class.new(platform: 'ubuntu', version: '12.04').node.to_hash }
+      let(:hash) { described_class.new(platform: 'ubuntu', version: '16.04').node.to_hash }
 
       it 'sets the attributes from fauxhai' do
         expect(hash['os']).to eq('linux')
         expect(hash['languages']['ruby']['ruby_bin']).to eq('/usr/local/bin/ruby')
-        expect(hash['os_version']).to eq('3.2.0-92-generic')
+        expect(hash['os_version']).to eq('4.4.0-53-generic')
         expect(hash['fqdn']).to eq('fauxhai.local')
         expect(hash['domain']).to eq('local')
         expect(hash['ipaddress']).to eq('10.0.0.2')
