@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'bff_package::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'aix', version: '7.1').converge(described_recipe) }
 
   it 'installs a bff_package with the default action' do
     expect(chef_run).to install_bff_package('default_action')

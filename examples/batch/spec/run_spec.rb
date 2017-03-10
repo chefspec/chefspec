@@ -19,8 +19,4 @@ describe 'batch::run' do
     expect(chef_run).to run_batch('with_attributes').with(flags: '-f')
     expect(chef_run).to_not run_batch('with_attributes').with(flags: '-x')
   end
-
-  it 'runs a batch when specifying the identity attribute' do
-    expect(chef_run).to run_batch('identity_attribute')
-  end
 end

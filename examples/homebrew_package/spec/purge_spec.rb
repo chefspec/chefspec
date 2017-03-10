@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'homebrew_package::purge' do
-  let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: '10.12').converge(described_recipe) }
 
   it 'purges a homebrew_package with an explicit action' do
     expect(chef_run).to purge_homebrew_package('explicit_action')

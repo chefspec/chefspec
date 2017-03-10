@@ -7,7 +7,3 @@ end
 powershell_script 'with_attributes' do
   flags '--flags'
 end
-
-powershell_script 'specifying the identity attribute' do
-  command 'identity_attribute'
-end
