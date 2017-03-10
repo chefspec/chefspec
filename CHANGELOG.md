@@ -1,5 +1,10 @@
 # CHANGELOG for ChefSpec
 
+## 6.1.0 (March 9, 2017)
+
+- Loosen the Fauxhai dependency to allow Fauxhai 4.0 This deprecates a large number of Ohai mocks for end of life platforms. See <https://github.com/customink/fauxhai/blob/master/PLATFORMS.md> for the current list of platforms supported by Fauxhai
+- SoloRunner defaults to use_policyfile == false now
+
 ## 6.0.1 (February 24, 2017)
 
 - Add the ability to set the Chef Zero port range used by the ServerRunner
