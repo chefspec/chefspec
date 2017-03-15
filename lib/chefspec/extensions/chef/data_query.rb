@@ -14,7 +14,12 @@ module Chef::DSL::DataQuery
       raise ChefSpec::Error::SearchNotStubbed.new(args: [type, query])
     end
 
-    stub.result
+    if block
+      Array(stub.result).each {|r| block.call(r) }
+      true
+    else
+      stub.result
+    end
   end
 
   # @see Chef::DSL::DataQuery#data_bag
