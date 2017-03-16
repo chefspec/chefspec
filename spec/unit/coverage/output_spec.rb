@@ -1,9 +1,6 @@
 require 'spec_helper'
 
-# Note: These specs don't use Berkshelf code directly as this project doesn't
-# have a direct dependency on Berkshelf and loading it would impact the
-# perfance of these specs. While not ideal, the test doubles provide enough of
-# a standin for Berkshelf to exercise the `#matches?` behavior.
+# coverage report output tests
 describe ChefSpec::Coverage::PutsOutput do
   subject { described_class.new }
 
