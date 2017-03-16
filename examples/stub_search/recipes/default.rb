@@ -1,5 +1,2 @@
-template '/tmp/specific_stub' do
-  variables(
-    nodes: search(:node, 'name:example.com')
-  )
-end
+hosts = search(:node, 'name:example.com')
+raise 'test failure' unless hosts.length == 1 && hosts[0]['name'] == 'example.com'
