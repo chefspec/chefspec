@@ -1,4 +1,5 @@
 require_relative 'coverage/filters'
+require_relative 'coverage/outputs'
 
 module ChefSpec
   class Coverage
@@ -28,6 +29,8 @@ module ChefSpec
     def initialize
       @collection = {}
       @filters    = {}
+      @outputs    = {}
+      add_output(PutsOutput.new)
       @template = ChefSpec.root.join('templates', 'coverage', 'human.erb')
     end
 
@@ -41,7 +44,7 @@ module ChefSpec
     end
 
     #
-    # Add a filter to the converage analysis.
+    # Add a filter to the coverage analysis.
     #
     # @param [Filter, String, Regexp] filter
     #   the filter to add
@@ -68,6 +71,29 @@ module ChefSpec
 
       true
     end
+
+    #
+    # Add an output to send the coverage results to.
+    #
+    # @param [Output] output
+    #   the output to add
+    # @param [Proc] block
+    #   the block to use as the output
+    #
+    # @return [true]
+    #
+    def add_output(output = nil, &block)
+      id = "#{output.inspect}/#{block.inspect}".hash
+      @outputs[id] = if output.kind_of?(Output)
+                       output
+                     elsif block
+                       BlockOutput.new(&block)
+                     else
+                       raise ArgumentError, 'Please specify either an ouput, ' \
+                         'or block to output the results to!'
+                     end
+    end
+
     #
     # Change the template for reporting of converage analysis.
     #
@@ -154,7 +180,8 @@ module ChefSpec
       
       begin
         erb = Erubis::Eruby.new(File.read(@template))
-        puts erb.evaluate(report)
+        reportOutput = erb.evaluate(report)
+        @outputs.each { |_,value| value.output(reportOutput) }
       rescue NameError => e
         raise Error::ErbTemplateParseError.new(original_error: e.message)
       end

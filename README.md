@@ -815,6 +815,18 @@ ChefSpec::Coverage.start! do
 end
 ```
 
+If you would like to add alternative reporting for the Coverage.report! ouput, you can supply your own by calling add_output in the `ChefSepc::Coverage` block:
+
+```ruby
+ChefSpec::Coverage.start! do
+   add_output do |reportOutput|
+      output = File.open( "coverage.json","w" )
+      output << reportOutput
+      output.close
+   end
+end
+```
+
 ## Mocking Out Environments
 
 ### ServerRunner
