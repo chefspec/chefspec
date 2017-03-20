@@ -816,7 +816,7 @@ end
 ```
 
 If you would like to add alternative reporting for the Coverage.report! ouput, you can supply your own by calling add_output in the `ChefSepc::Coverage` block:
-Note the reportOutput has teh following items in it
+Note the reportOutput has the following items in it: total, touched, coverage and collections of untouched_resources and all_resources
 
 ```ruby
 ChefSpec::Coverage.start! do
