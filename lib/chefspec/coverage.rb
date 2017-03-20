@@ -29,14 +29,14 @@ module ChefSpec
       @collection = {}
       @filters    = {}
       @outputs    = []
-      add_output { |report|
+      add_output do |report|
         begin
           erb = Erubis::Eruby.new(File.read(@template))
           puts erb.evaluate(report)
         rescue NameError => e
           raise Error::ErbTemplateParseError.new(original_error: e.message)
         end
-      }
+      end
       @template = ChefSpec.root.join('templates', 'coverage', 'human.erb')
     end
 
@@ -173,8 +173,8 @@ module ChefSpec
       end.compact
       report[:all_resources] = @collection.values
 
-      @outputs.each do
-        |block| self.instance_exec(report,&block)
+      @outputs.each do |block|
+        self.instance_exec(report, &block)
       end
 
       # Ensure we exit correctly (#351)

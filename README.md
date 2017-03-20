@@ -816,14 +816,19 @@ end
 ```
 
 If you would like to add alternative reporting for the Coverage.report! ouput, you can supply your own by calling add_output in the `ChefSepc::Coverage` block:
+Note the reportOutput has teh following items in it
 
 ```ruby
 ChefSpec::Coverage.start! do
-   add_output do |reportOutput|
-      output = File.open( "coverage.json","w" )
-      output << reportOutput
-      output.close
-   end
+  add_output do |reportOutput|
+    File.open( "coverage.json","w" ) do |f|
+      f.puts(reportOutput[:total])
+      f.puts(reportOutput[:touched])
+      f.puts(reportOutput[:coverage])
+      f.puts(reportOutput[:untouched_resources])
+      f.puts(reportOutput[:all_resources])
+    end
+  end
 end
 ```
 
