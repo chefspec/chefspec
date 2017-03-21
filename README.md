@@ -831,6 +831,7 @@ ChefSpec::Coverage.start! do
   end
 end
 ```
+Note the above example outputs the raw data without applying formatting.
 
 ## Mocking Out Environments
 
