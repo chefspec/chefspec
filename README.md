@@ -815,6 +815,24 @@ ChefSpec::Coverage.start! do
 end
 ```
 
+If you would like to add alternative reporting for the Coverage.report! ouput, you can supply your own by calling add_output in the `ChefSepc::Coverage` block:
+Note the reportOutput has the following items in it: total, touched, coverage and collections of untouched_resources and all_resources
+
+```ruby
+ChefSpec::Coverage.start! do
+  add_output do |reportOutput|
+    File.open( "coverage.json","w" ) do |f|
+      f.puts(reportOutput[:total])
+      f.puts(reportOutput[:touched])
+      f.puts(reportOutput[:coverage])
+      f.puts(reportOutput[:untouched_resources])
+      f.puts(reportOutput[:all_resources])
+    end
+  end
+end
+```
+Note the above example outputs the raw data without applying formatting.
+
 ## Mocking Out Environments
 
 ### ServerRunner

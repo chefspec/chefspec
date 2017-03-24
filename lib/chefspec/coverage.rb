@@ -28,6 +28,15 @@ module ChefSpec
     def initialize
       @collection = {}
       @filters    = {}
+      @outputs    = []
+      add_output do |report|
+        begin
+          erb = Erubis::Eruby.new(File.read(@template))
+          puts erb.evaluate(report)
+        rescue NameError => e
+          raise Error::ErbTemplateParseError.new(original_error: e.message)
+        end
+      end
       @template = ChefSpec.root.join('templates', 'coverage', 'human.erb')
     end
 
@@ -41,7 +50,7 @@ module ChefSpec
     end
 
     #
-    # Add a filter to the converage analysis.
+    # Add a filter to the coverage analysis.
     #
     # @param [Filter, String, Regexp] filter
     #   the filter to add
@@ -68,6 +77,18 @@ module ChefSpec
 
       true
     end
+
+    #
+    # Add an output to send the coverage results to.
+    # @param [Proc] block
+    #   the block to use as the output
+    #
+    # @return [true]
+    #
+    def add_output(&block)
+      @outputs << block
+    end
+
     #
     # Change the template for reporting of converage analysis.
     #
@@ -151,12 +172,9 @@ module ChefSpec
         resource unless resource.touched?
       end.compact
       report[:all_resources] = @collection.values
-      
-      begin
-        erb = Erubis::Eruby.new(File.read(@template))
-        puts erb.evaluate(report)
-      rescue NameError => e
-        raise Error::ErbTemplateParseError.new(original_error: e.message)
+
+      @outputs.each do |block|
+        self.instance_exec(report, &block)
       end
 
       # Ensure we exit correctly (#351)
