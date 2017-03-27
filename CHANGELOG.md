@@ -1,5 +1,10 @@
 # CHANGELOG for ChefSpec
 
+## 6.2.0 (March 27, 2017)
+
+- Correctly handle the block form of search() when using stubs
+- Add support for alternative reporting output from Coverage.report!
+
 ## 6.1.0 (March 9, 2017)
 
 - Loosen the Fauxhai dependency to allow Fauxhai 4.0 This deprecates a large number of Ohai mocks for end of life platforms. See <https://github.com/customink/fauxhai/blob/master/PLATFORMS.md> for the current list of platforms supported by Fauxhai
