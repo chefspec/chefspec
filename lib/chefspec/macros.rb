@@ -218,5 +218,22 @@ module ChefSpec
     def stub_search(type, query = '*:*', &block)
       Stubs::SearchRegistry.register(Stubs::SearchStub.new(type, query, &block))
     end
+
+    #
+    # Stub a Chef include_recipe call.
+    #
+    # @example stubbing the inclusion of a recipe
+    #   stub_include_recipe('example_cookbook')
+    #
+    #
+    # @param [String] recipe_name
+    #   the name of the recipe
+    #
+    # @return [ChefSpec::IncludeRecipeStub]
+    #
+    def stub_include_recipe(recipe_name)
+      Stubs::IncludeRecipeRegistry.register(Stubs::IncludeRecipeStub.new(recipe_name, described_cookbook))
+    end
+
   end
 end

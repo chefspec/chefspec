@@ -50,6 +50,7 @@ require_relative 'chefspec/extensions/chef/data_query'
 require_relative 'chefspec/extensions/chef/lwrp_base'
 require_relative 'chefspec/extensions/chef/resource'
 require_relative 'chefspec/extensions/chef/resource/freebsd_package'
+require_relative 'chefspec/extensions/chef/recipe'
 
 require_relative 'chefspec/mixins/normalize'
 
@@ -63,6 +64,8 @@ require_relative 'chefspec/stubs/registry'
 require_relative 'chefspec/stubs/stub'
 require_relative 'chefspec/stubs/search_registry'
 require_relative 'chefspec/stubs/search_stub'
+require_relative 'chefspec/stubs/include_recipe_registry'
+require_relative 'chefspec/stubs/include_recipe_stub'
 
 require_relative 'chefspec/api'
 require_relative 'chefspec/cacher'

@@ -23,6 +23,18 @@ describe ChefSpec::Macros do
     end
   end
 
+  describe '#stub_include_recipe' do
+    let(:include_recipe_stub) { double('include_recipe') }
+
+    it 'adds the recipe to the include_recipe registry' do
+      allow(ChefSpec::Macros).to receive(:described_recipe).and_return('cookbook::recipe')
+      allow(ChefSpec::Stubs::IncludeRecipeStub).to receive(:new).and_return(include_recipe_stub)
+      described_class.stub_include_recipe('cookbook::recipe')
+
+      expect(ChefSpec::Stubs::IncludeRecipeRegistry.stubs).to include(include_recipe_stub)
+    end
+  end
+
   describe '#stub_data_bag' do
     let(:data_bag_stub) { double('data_bag') }
 

@@ -32,6 +32,7 @@ module ChefSpec
     class CommandNotStubbed < NotStubbed; end
     class SearchNotStubbed < NotStubbed; end
     class DataBagNotStubbed < NotStubbed; end
+    class IncludeRecipeNotStubbed < NotStubbed; end
     class DataBagItemNotStubbed < NotStubbed; end
 
     class CookbookPathNotFound < ChefSpecError; end
