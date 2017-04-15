@@ -12,3 +12,4 @@ Feature: The notifications matcher
     | default     |
     | delayed     |
     | immediately |
+    | guard       |
