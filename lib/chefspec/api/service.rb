@@ -242,5 +242,45 @@ module ChefSpec::API
     def stop_service(resource_name)
       ChefSpec::Matchers::ResourceMatcher.new(:service, :stop, resource_name)
     end
+
+    #
+    # Assert that a +service+ resource exists in the Chef run with the
+    # action +:nothing+. Given a Chef Recipe that disables "apache2" as a
+    # +service+:
+    #
+    #     service 'apache2' do
+    #       action :nothing
+    #     end
+    #
+    # To test the content rendered by a +service+, see
+    # {ChefSpec::API::RenderFileMatchers}.
+    #
+    # The Examples section demonstrates the different ways to test a
+    # +service+ resource with ChefSpec.
+    #
+    # @example Assert that a +service+ was created
+    #   expect(chef_run).to create_service('apache2')
+    #
+    # @example Assert that a +service+ was created with predicate matchers
+    #   expect(chef_run).to create_service('apache2').with_pattern('apa*')
+    #
+    # @example Assert that a +service+ was created with attributes
+    #   expect(chef_run).to create_service('apache2').with(pattern: 'apa*')
+    #
+    # @example Assert that a +service+ was created using a regex
+    #   expect(chef_run).to create_service('apache2').with(patthen: /(.+)/)
+    #
+    # @example Assert that a +service+ was _not_ created
+    #   expect(chef_run).to_not create_service('apache2')
+    #
+    #
+    # @param [String, Regex] resource_name
+    #   the name of the resource to match
+    #
+    # @return [ChefSpec::Matchers::ResourceMatcher]
+    #
+    def create_service(resource_name)
+      ChefSpec::Matchers::ResourceMatcher.new(:service, :nothing, resource_name)
+    end
   end
 end
