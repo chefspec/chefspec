@@ -9,6 +9,13 @@ class Chef::Resource
 
   alias_method :old_run_action, :run_action
   def run_action(action, notification_type = nil, notifying_resource = nil)
+    # node's runner may not exist yet if cookbook's library tries to use some
+    # resource (for example, install some gem on which it depends)
+    if node.runner.nil?
+      old_run_action(action, notification_type, notifying_resource)
+      return
+    end
+
     resolve_notification_references
     validate_action(action)
 
