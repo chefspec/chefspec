@@ -156,7 +156,9 @@ module ChefSpec
     end
 
     #
-    # Find the resource with the declared type and resource name.
+    # Find the resource with the declared type and resource name, and optionally match a performed action.
+    #
+    # If multiples match it returns the last (which more or less matches the chef last-inserter-wins semantics)
     #
     # @example Find a template at `/etc/foo`
     #   chef_run.find_resource(:template, '/etc/foo') #=> #<Chef::Resource::Template>
@@ -167,17 +169,15 @@ module ChefSpec
     #   or `directory`.
     # @param [String, Regexp] name
     #   The value of the name attribute or identity attribute for the resource.
+    # @param [Symbol] action
+    #   (optional) match only resources that performed the action.
     #
     # @return [Chef::Resource, nil]
     #   The matching resource, or nil if one is not found
     #
-    def find_resource(type, name)
-      begin
-        return resource_collection.lookup("#{type}[#{name}]")
-      rescue Chef::Exceptions::ResourceNotFound; end
-
-      resource_collection.all_resources.find do |resource|
-        resource_name(resource) == type && (name === resource.identity || name === resource.name)
+    def find_resource(type, name, action = nil)
+      resource_collection.all_resources.reverse_each.find do |resource|
+        resource.declared_type == type.to_sym && (name === resource.identity || name === resource.name) && (action.nil? || resource.performed_action?(action))
       end
     end
 

@@ -39,7 +39,7 @@ module ChefSpec::Matchers
     end
 
     def description
-      %Q{#{@expected_action} #{@resource_name} "#{@expected_identity}"}
+      %Q{#{@expected_actioe} #{@resource_name} "#{@expected_identity}"}
     end
 
     def matches?(runner)
@@ -47,42 +47,35 @@ module ChefSpec::Matchers
 
       if resource
         ChefSpec::Coverage.cover!(resource)
-        resource.performed_action?(@expected_action) && unmatched_parameters.empty? && correct_phase?
-      else
-        false
+        unmatched_parameters.empty? && correct_phase?
       end
     end
 
     def failure_message
       if resource
-        if resource.performed_action?(@expected_action)
-          if unmatched_parameters.empty?
-            if @compile_time
-              %Q{expected "#{resource.to_s}" to be run at compile time}
-            else
-              %Q{expected "#{resource.to_s}" to be run at converge time}
-            end
+        if unmatched_parameters.empty?
+          if @compile_time
+            %Q{expected "#{resource.to_s}" to be run at compile time}
           else
-            message = %Q{expected "#{resource.to_s}" to have parameters:} \
-            "\n\n" \
-            "  " + unmatched_parameters.collect { |parameter, h|
-              msg = "#{parameter} #{h[:expected].inspect}, was #{h[:actual].inspect}"
-              diff = ::RSpec::Matchers::ExpectedsForMultipleDiffs.from(h[:expected]) \
-                     .message_with_diff(message, ::RSpec::Expectations::differ, h[:actual])
-              msg += diff if diff
-              msg
-            }.join("\n  ")
+            %Q{expected "#{resource.to_s}" to be run at converge time}
           end
         else
-          %Q{expected "#{resource.to_s}" actions #{resource.performed_actions.inspect}} \
-          " to include :#{@expected_action}"
+          message = %Q{expected "#{resource.to_s}" to have parameters:} \
+            "\n\n" \
+            "  " + unmatched_parameters.collect { |parameter, h|
+            msg = "#{parameter} #{h[:expected].inspect}, was #{h[:actual].inspect}"
+            diff = ::RSpec::Matchers::ExpectedsForMultipleDiffs.from(h[:expected]) \
+              .message_with_diff(message, ::RSpec::Expectations::differ, h[:actual])
+            msg += diff if diff
+            msg
+          }.join("\n  ")
         end
       else
         %Q{expected "#{@resource_name}[#{@expected_identity}]"} \
-        " with action :#{@expected_action} to be in Chef run." \
-        " Other #{@resource_name} resources:" \
-        "\n\n" \
-        "  " + similar_resources.map(&:to_s).join("\n  ") + "\n "
+          " with action :#{@expected_action} to be in Chef run." \
+          " Other #{@resource_name} resources:" \
+          "\n\n" \
+          "  " + similar_resources.map(&:to_s).join("\n  ") + "\n "
       end
     end
 
@@ -165,7 +158,7 @@ module ChefSpec::Matchers
     # @return [Chef::Resource, nil]
     #
     def resource
-      @_resource ||= @runner.find_resource(@resource_name, @expected_identity)
+      @_resource ||= @runner.find_resource(@resource_name, @expected_identity, @expected_action)
     end
 
     #
