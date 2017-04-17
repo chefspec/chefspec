@@ -17,15 +17,16 @@ class Chef::Resource
     ChefSpec::Coverage.add(self)
 
     unless should_skip?(action)
-      if node.runner.step_into?(self)
-        instance_eval { @not_if = []; @only_if = [] }
-        old_run_action(action, notification_type, notifying_resource)
-      end
-
-      if node.runner.compiling?
-        perform_action(action, compile_time: true)
-      else
-        perform_action(action, converge_time: true)
+      if node.respond_to?(:runner)
+        if node.runner.step_into?(self)
+          instance_eval { @not_if = []; @only_if = [] }
+          old_run_action(action, notification_type, notifying_resource)
+        end
+        if node.runner.compiling?
+          perform_action(action, compile_time: true)
+        else
+          perform_action(action, converge_time: true)
+        end
       end
     end
   end
