@@ -1,8 +1,13 @@
-if defined?(Chef::Provider::LWRPBase::InlineResources) # < 12.5
+# XXX: This monkeypatch is somewhat terrible and dumps all of the
+# resources in the sub-resource collection into the main resource
+# collection.  Chefspec needs to be taught how to deal with
+# sub-resource collections.
+
+if defined?(Chef::Provider::LWRPBase::InlineResources)
   class Chef
     class Provider
       class LWRPBase < Provider
-        module InlineResources
+        module InlineResources # < 12.5
           module ClassMethods
             def action(name, &block)
               define_method("action_#{name}", &block)
@@ -10,12 +15,7 @@ if defined?(Chef::Provider::LWRPBase::InlineResources) # < 12.5
           end
         end
       end
-    end
-  end
-elsif defined?(Chef::Provider::InlineResources) # ~> 12.5
-  class Chef
-    class Provider
-      module InlineResources
+      module InlineResources # ~> 12.5
         def initialize(resource, run_context)
           super
           @run_context = run_context
