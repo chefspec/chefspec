@@ -30,6 +30,20 @@ class Chef::Resource
     end
   end
 
+  alias_method :old_method_missing, :method_missing
+  def method_missing(method_name, *arguments, &block)
+    if method_name.to_s =~ /has_(.*)\?/
+      send($1) == arguments.first
+    else
+      old_method_missing(method_name, *arguments, &block)
+    end
+  end
+
+  alias_method :old_respond_to?, :respond_to?
+  def respond_to?(method_name, include_private = false)
+    method_name.to_s =~ /has_(.*)\?/ || old_respond_to?(method_name, include_private)
+  end
+
   def perform_action(action, options = {})
     @performed_actions[action.to_sym] ||= {}
     @performed_actions[action.to_sym].merge!(options)
@@ -42,6 +56,7 @@ class Chef::Resource
   def performed_action?(action)
     !!performed_action(action)
   end
+  alias_method :has_performed_action?, :performed_action?
 
   def performed_actions
     @performed_actions.keys
