@@ -9,3 +9,4 @@ Feature: The multiple_actions matcher
     | Matcher    |
     | default    |
     | sequential |
+    | reversed   |
