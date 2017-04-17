@@ -1,6 +1,6 @@
 require 'chefspec'
 
-describe 'use_inline_resources::default' do
+describe 'custom_resource::default' do
   let(:chef_run) do
     ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04', step_into: ['custom_resource'])
                           .converge(described_recipe)
