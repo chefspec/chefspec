@@ -64,8 +64,11 @@ module ChefSpec
           data = get('#{key}', name)
           json = JSON.parse(data)
 
-          if #{klass}.respond_to?(:json_create)
+          case
+          when #{klass}.respond_to?(:json_create)
             #{klass}.json_create(json)
+          when #{klass}.respond_to?(:from_hash)
+            #{klass}.from_hash(json)
           else
             #{klass}.new(json)
           end
