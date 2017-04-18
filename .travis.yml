@@ -6,7 +6,7 @@ before_install:
   - gem install bundler
 
 rvm:
-  - 2.2.6
+  - 2.4.1
 
 branches:
   only:
