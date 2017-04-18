@@ -18,6 +18,7 @@ gemfile: gemfiles/chefspec.gemfile
 
 env:
   - CHEF_VERSION=master
+  - CHEF_VERSION=13.0.118
   - CHEF_VERSION=12.18.31
   - CHEF_VERSION=12.17.44
   - CHEF_VERSION=12.16.42
