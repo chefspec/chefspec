@@ -14,24 +14,19 @@ branches:
 
 bundler_args: --jobs 7 --retry 3
 
-env:
-  - CHEF_VERSION=master
-  - CHEF_VERSION=13.0.118
-  - CHEF_VERSION=12.18.31
-  - CHEF_VERSION=12.17.44
-  - CHEF_VERSION=12.16.42
-  - CHEF_VERSION=12.15.19
-  - CHEF_VERSION=12.14.89
-  - CHEF_VERSION=12.13.37
-  - CHEF_VERSION=12.12.15
-  - CHEF_VERSION=12.11.18
-  - CHEF_VERSION=12.10.24
-  - CHEF_VERSION=12.9.41
-  - CHEF_VERSION=12.8.1
-  - CHEF_VERSION=12.7.2
-  - CHEF_VERSION=12.6.0
-
 matrix:
-  fast_finish: true
-  allow_failures:
+  include:
     - env: CHEF_VERSION=master
+      rvm: 2.4.1
+    - env: CHEF_VERSION=13.0.118
+      rvm: 2.4.1
+    - env: CHEF_VERSION=12.18.31
+      rvm: 2.3.1
+    - env: CHEF_VERSION=12.17.44
+      rvm: 2.3.1
+    - env: CHEF_VERSION=12.16.42
+      rvm: 2.3.1
+    - env: CHEF_VERSION=12.15.19
+      rvm: 2.3.1
+    - env: CHEF_VERSION=12.14.89
+      rvm: 2.3.1

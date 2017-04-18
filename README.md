@@ -19,7 +19,7 @@ ChefSpec runs your cookbook(s) locally with Chef Solo without actually convergin
 
 ## Important Notes
 
-- **ChefSpec requires Ruby 2.2 or later and Chef 12.6 or later!**
+- **ChefSpec requires Ruby 2.2 or later and Chef 12.14.89 or later!**
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version's documentation!**
 - **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding aruba test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).**
 - **ChefSpec aims to maintain compatibility with the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
