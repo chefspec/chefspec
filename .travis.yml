@@ -14,8 +14,6 @@ branches:
 
 bundler_args: --jobs 7 --retry 3
 
-gemfile: gemfiles/chefspec.gemfile
-
 env:
   - CHEF_VERSION=master
   - CHEF_VERSION=13.0.118
