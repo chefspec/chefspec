@@ -4,9 +4,9 @@ sudo: false
 
 before_install:
   - gem install bundler
-
-rvm:
-  - 2.4.1
+  - bundle --version
+  - gem update --system
+  - gem --version
 
 branches:
   only:
