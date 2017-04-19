@@ -1,5 +1,15 @@
 # CHANGELOG for ChefSpec
 
+## 7.0.0 (April, 18, 2017)
+
+- Increased the chef gem dependency from 12.6+ to 12.14+. Since ChefSpec is consumed within ChefDK this actually has a minor impact on end users who generally consume Chefspec via ChefDK, which will bundle both compatible chef and chefspec releases.
+- Fixed incompatibilities with Chef 13.
+- Loosened the Fauxhai dependency to allow for the upcoming Fauxhai 5.0 release.
+- Removed easy_install_package testing and examples as easy_install_package was removed in Chef 13\. The actual matcher is still present for users with existing specs against Chef 12 cookbooks.
+- Added additional testing and an example for LWRPs with use_inline_resources defined.
+- Added testing against Chef 13 and Ruby 2.4.
+- Removed code that supported Chef < 12.5.
+
 ## 6.2.0 (March 27, 2017)
 
 - Correctly handle the block form of search() when using stubs
