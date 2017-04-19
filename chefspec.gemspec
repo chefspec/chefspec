@@ -28,12 +28,4 @@ Gem::Specification.new do |s|
   s.add_dependency 'chef',    '>= 12.14.89'
   s.add_dependency 'fauxhai', '>= 3.6', '< 5'
   s.add_dependency 'rspec',   '~> 3.0'
-
-  # Development Dependencies
-  s.add_development_dependency 'rake',      '< 13.0'
-  s.add_development_dependency 'redcarpet', '~> 3.3'
-  s.add_development_dependency 'yard',      '~> 0.8'
-
-  # Testing Dependencies
-  s.add_development_dependency 'aruba', '~> 0.8'
 end

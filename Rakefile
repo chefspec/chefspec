@@ -1,7 +1,10 @@
 require 'bundler/gem_tasks'
-require 'cucumber/rake/task'
+require 'rspec/core'
 require 'rspec/core/rake_task'
 require 'yard/rake/yardoc_task'
+require 'tmpdir'
+require 'rspec'
+require 'chefspec'
 
 require 'chef/version'
 
@@ -14,13 +17,47 @@ RSpec::Core::RakeTask.new(:unit) do |t|
   end.join(' ')
 end
 
-Cucumber::Rake::Task.new(:acceptance) do |t|
-  t.cucumber_opts = [].tap do |a|
-    a.push('--color')
-    a.push('--format progress')
-    a.push('--strict')
-    a.push('--tags ~@not_chef_' + Chef::VERSION.gsub('.', '_'))
-  end.join(' ')
+failed = false
+
+namespace :acceptance do |ns|
+  Dir.foreach("examples") do |dir|
+    next if dir == '.' or dir == '..'
+    desc "#{dir} acceptance tests"
+    task dir.to_sym do
+      Dir.mktmpdir do |tmp|
+        FileUtils.cp_r("examples/#{dir}", tmp)
+
+        pwd = Dir.pwd
+
+        Dir.chdir "#{tmp}/#{dir}" do
+          Dir["spec/**/*_spec.rb"].each do |file|
+            puts "rspec examples/#{dir}/#{file}"
+            load "#{pwd}/lib/chefspec/rspec.rb"
+
+            RSpec.configure do |config|
+              config.color = true
+              config.before(:suite) do
+                ChefSpec::ZeroServer.setup!
+              end
+              config.after(:each) do
+                ChefSpec::ZeroServer.reset!
+              end
+            end
+
+            RSpec.clear_examples
+            exitstatus = RSpec::Core::Runner.run([file])
+            RSpec.reset
+            failed = true unless exitstatus == 0
+          end
+        end
+      end
+    end
+  end
+end
+
+
+task acceptance: Rake.application.tasks.select { |t| t.name.start_with?("acceptance:") } do
+  raise "some tests failed" if failed
 end
 
 desc 'Run all tests'

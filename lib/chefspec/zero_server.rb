@@ -6,23 +6,16 @@ module ChefSpec
   class ZeroServer
     class << self
       extend Forwardable
-      def_delegators :instance, :setup!, :teardown!, :reset!, :upload_cookbooks!, :server, :load_data
+      def_delegators :instance, :setup!, :teardown!, :reset!, :upload_cookbooks!, :server, :load_data, :nuke!
     end
 
     include Singleton
 
+    attr_reader :server
+
     # Create the ChefZero Server
     def initialize
-      @server ||= ChefZero::Server.new(
-        # Set the log level from RSpec, defaulting to warn
-        log_level:  RSpec.configuration.log_level || :warn,
-        port: RSpec.configuration.server_runner_port,
-
-        # Set the data store
-        data_store: data_store(RSpec.configuration.server_runner_data_store),
-      )
-      @cookbooks_uploaded = false
-      @data_loaded = {}
+      nuke!
     end
 
     #
@@ -54,6 +47,22 @@ module ChefSpec
     end
 
     #
+    # Really reset everything and reload the configuration
+    #
+    def nuke!
+      @server = ChefZero::Server.new(
+        # Set the log level from RSpec, defaulting to warn
+        log_level:  RSpec.configuration.log_level || :warn,
+        port: RSpec.configuration.server_runner_port,
+
+        # Set the data store
+        data_store: data_store(RSpec.configuration.server_runner_data_store),
+      )
+      @cookbooks_uploaded = false
+      @data_loaded = {}
+    end
+
+    #
     # Teardown the ChefZero Server
     #
     def teardown!
@@ -69,13 +78,6 @@ module ChefSpec
       loader.load_cookbooks
       cookbook_uploader_for(loader).upload_cookbooks
       @cookbooks_uploaded = true
-    end
-
-    #
-    # The URL for the ChefZero Server
-    #
-    def server
-      @server
     end
 
     #

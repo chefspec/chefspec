@@ -10,3 +10,9 @@ if ENV['CHEF_VERSION']
 end
 
 gemspec
+
+group :development do
+  gem 'rake'
+  gem 'redcarpet'
+  gem 'yard'
+end
