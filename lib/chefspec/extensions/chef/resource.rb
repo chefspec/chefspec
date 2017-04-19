@@ -70,13 +70,13 @@ module ChefSpec::Extensions::Chef::Resource
   end
 
   module ClassMethods
+    # XXX: kind of a crappy way to find all the names of a resource
     def provides_names
       @provides_names ||= []
     end
 
     def resource_name(name = ::Chef::NOT_PASSED)
       unless name == ::Chef::NOT_PASSED
-        puts "resource_name called for #{name}"
         provides_names << name unless provides_names.include?(name)
         inject_actions(*allowed_actions)
       end
@@ -84,7 +84,6 @@ module ChefSpec::Extensions::Chef::Resource
     end
 
     def provides(name, *args, &block)
-      puts "provides called for #{name}"
       provides_names << name unless provides_names.include?(name)
       inject_actions(*allowed_actions)
       super
@@ -117,10 +116,8 @@ module ChefSpec::Extensions::Chef::Resource
 
     def inject_actions(*actions)
       provides_names.each do |resource_name|
-        puts "defining matcher for #{resource_name}"
         ChefSpec.define_matcher(resource_name)
         actions.each do |action|
-          puts "defining matcher for #{resource_name} action #{action}"
           inject_method(:"#{action}_#{resource_name}", resource_name, action)
           if action == :create_if_missing
             inject_method(:"create_#{resource_name}_if_missing", resource_name, action)
