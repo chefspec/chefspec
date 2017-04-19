@@ -710,6 +710,34 @@ describe 'example::default' do
 end
 ```
 
+### Ruby libraries (File, FileUtils, etc)
+
+When stubbing core ruby libraries, users must be aware that there is no differentiation between your cookbook code that calls `File.exist?` and core chef
+code (e.g. the cookbook loader) that calls `File.exist?`.  If you stub or setup an expectation without qualifying the arguments then you will stub that
+method for all core chef code as well.  Also note that if you setup an expectation on a particular argument that invoking the method with any other
+argument will throw an unexpected argument error out of rspec, so you must setup an allowance using `.and_call_original` to avoid breaking core chef.
+
+```ruby
+describe 'example::default' do
+  let(:chef_run) { ChefSpec::SoloRunner.new }
+
+  before do
+    # avoid breaking all of core chef wherever it calls File.exist? with other arguments
+    allow(File).to receive(:exist?).and_call_original
+  end
+
+  it "tests something when /etc/myfile.txt does not exist" do
+    # only setup an expectation on our file
+    expect(File).to receive(:exist?).with("/etc/myfile.txt").and_return(false)
+    [ ... test that the chef resource collection is constructed correctly in this case ... ]
+  end
+end
+```
+
+This is basic usage of rspec and not specific to chefspec.  It applies to any class method in `File`, `Dir`, `FileUtils`, `IO` or any other ruby library.  In
+general any time you `expect(Some::Symbol).to receive(:a_method).and_return(value)` you run the risk of breaking other code unless you isolate your mocking
+or expectation down to only the arguments which your code uses.
+
 ## Reporting
 
 ChefSpec can generate a report of resources read over resources tested.
