@@ -902,6 +902,9 @@ matcher.
 
 Matchers should be wired up for the `resource_name` of the resource along with all define `provides` lines synonyms and any `action` methods or `allowed_actions`.
 
+There should be little reason to package custom matchers in cookbooks any more, but the approach below still works if there are special matchers which cookbooks wish to expose which do
+not follow the automatically generated pattern.
+
 ## Packaging Custom Matchers
 
 ChefSpec exposes the ability for cookbook authors to package custom matchers inside a cookbook so that other developers may take advantage of them in testing. This is done by creating a special library file in the cookbook named `matchers.rb`:
