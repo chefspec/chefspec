@@ -106,11 +106,11 @@ module ChefSpec::Matchers
     # @return [true, false]
     #
     def matches_content?
-      return true if @expected_content.nil?
-
+      # always render, even if no expected_content is required
       @actual_content = ChefSpec::Renderer.new(@runner, resource).content
 
       return false if @actual_content.nil?
+      return true if @expected_content.nil?
 
       if @expected_content.is_a?(Regexp)
         @actual_content =~ @expected_content
