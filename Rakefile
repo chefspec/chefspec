@@ -32,6 +32,11 @@ namespace :acceptance do |ns|
         Dir.chdir "#{tmp}/#{dir}" do
           Dir["spec/**/*_spec.rb"].each do |file|
             puts "rspec examples/#{dir}/#{file}"
+
+            #
+            # This bit of mildly awful magic below is to load each file into an in-memory
+            # RSpec runner while keeping a persistent ChefZero server alive.
+            #
             load "#{pwd}/lib/chefspec/rspec.rb"
 
             RSpec.configure do |config|
