@@ -1,3 +1,4 @@
+require 'chefspec'
 require_relative '../libraries/resource_service'
 
 describe 'heavy_provider_light_resource::default' do

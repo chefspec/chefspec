@@ -1,3 +1,4 @@
+require 'chefspec'
 require 'chefspec/cacher'
 
 RSpec.configure do |config|
