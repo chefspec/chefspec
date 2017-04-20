@@ -9,26 +9,18 @@ ChefSpec runs your cookbook(s) locally with Chef Solo without actually convergin
 - It's really fast!
 - Your tests can vary node attributes, operating systems, and search results to assert behavior under varying conditions.
 
-## What people are saying
-
-> I just wanted to drop you a line to say "HELL YES!" to ChefSpec. - [Joe Goggins](https://twitter.com/jgoggins)
-
-> OK ChefSpec is my new best friend. Delightful few hours working with it. - [Michael Ivey](https://twitter.com/ivey)
-
-**Chat with us - [#chefspec](irc://irc.freenode.net/chefspec) on Freenode**
-
 ## Important Notes
 
 - **ChefSpec requires Ruby 2.2 or later and Chef 12.14.89 or later!**
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version's documentation!**
-- **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding aruba test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).**
-- **ChefSpec aims to maintain compatibility with the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
+- **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding test recipe in the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).**
 
 ## Notes on Compatibility with Chef Versions
 
+**ChefSpec aims to maintain compatibility with the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
+
 As a general rule, if it is tested in the Travis CI matrix, it is a supported version. The section below details any specific versions that are _not_ supported and why:
 
-Additionally, if you look at a cucumber feature and see a tag like `@not_chef_x_y_z`, that means that particular functionality is not supported on those versions of Chef.
 
 ## Writing a Cookbook Example
 
