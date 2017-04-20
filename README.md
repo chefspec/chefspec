@@ -921,6 +921,18 @@ end
 
 **NOTE:** If your cookbook exposes LWRPs, it is highly recommended you also create a `libraries/matchers.rb` file as outlined below in the "Packaging Custom Matchers" section. **You should never `step_into` an LWRP unless you are testing it. Never `step_into` an LWRP from another cookbook!**
 
+## Automatic Matchers
+
+As of ChefSpec 7.1.0 there are "custom" matchers generated for all internal core-chef resources, along with any LWRPs/HWRPs/Custom Resources that are user-defined in cookbooks.
+
+The matchers follow the standard custom of `<action>_<resource_name>` with the exception of the `create_if_missing` action which *also* gets a `create_<resource_name>_if_missing`
+matcher.
+
+Matchers should be wired up for the `resource_name` of the resource along with all define `provides` lines synonyms and any `action` methods or `allowed_actions`.
+
+There should be little reason to package custom matchers in cookbooks any more, but the approach below still works if there are special matchers which cookbooks wish to expose which do
+not follow the automatically generated pattern.
+
 ## Packaging Custom Matchers
 
 ChefSpec exposes the ability for cookbook authors to package custom matchers inside a cookbook so that other developers may take advantage of them in testing. This is done by creating a special library file in the cookbook named `matchers.rb`:

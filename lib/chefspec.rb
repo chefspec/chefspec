@@ -42,14 +42,7 @@ module ChefSpec
   module_function :matchers
 end
 
-require_relative 'chefspec/extensions/chef/securable'
-require_relative 'chefspec/extensions/chef/client'
-require_relative 'chefspec/extensions/chef/conditional'
-require_relative 'chefspec/extensions/chef/cookbook_uploader'
-require_relative 'chefspec/extensions/chef/data_query'
-require_relative 'chefspec/extensions/chef/lwrp_base'
-require_relative 'chefspec/extensions/chef/resource'
-require_relative 'chefspec/extensions/chef/resource/freebsd_package'
+require_relative 'chefspec/extensions'
 
 require_relative 'chefspec/mixins/normalize'
 
