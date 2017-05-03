@@ -33,6 +33,12 @@ describe 'render_file::default' do
       expect(chef_run).to render_file('/tmp/file').with_content(
         start_with('This')
       )
+      expect(chef_run).to render_file('/tmp/file').with_content(
+        end_with('content!')
+      )
+      expect(chef_run).to_not render_file('/tmp/file').with_content(
+        start_with('not')
+      )
       expect(chef_run).to_not render_file('/tmp/file').with_content(
         end_with('not')
       )
@@ -69,6 +75,12 @@ describe 'render_file::default' do
       it 'renders the file with content matching arbitrary matcher' do
         expect(chef_run).to render_file('/tmp/cookbook_file').with_content(
           start_with('This')
+        )
+        expect(chef_run).to render_file('/tmp/cookbook_file').with_content(
+          end_with('content!')
+        )
+        expect(chef_run).to_not render_file('/tmp/cookbook_file').with_content(
+          start_with('not')
         )
         expect(chef_run).to_not render_file('/tmp/cookbook_file').with_content(
           end_with('not')
@@ -119,6 +131,12 @@ describe 'render_file::default' do
     it 'renders the file with content matching arbitrary matcher' do
       expect(chef_run).to render_file('/tmp/template').with_content(
         start_with('This')
+      )
+      expect(chef_run).to render_file('/tmp/template').with_content(
+        end_with('content!')
+      )
+      expect(chef_run).to_not render_file('/tmp/template').with_content(
+        start_with('not')
       )
       expect(chef_run).to_not render_file('/tmp/template').with_content(
         end_with('not')
