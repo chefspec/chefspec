@@ -218,6 +218,14 @@ You can also specify a specific spec to run and various RSpec command line optio
 $ rspec spec/unit/recipes/default_spec.rb --color
 ```
 
+If you're using chefspec/berkshelf or wish to have command line option run by default, create a .rspec file in your cookbook directory and specify the spec_helper dependency or default options:
+
+```bash
+--color
+--format progress
+--require spec_helper
+```
+
 For more information on the RSpec CLI, please see the [documentation](https://relishapp.com/rspec/rspec-core/docs/command-line).
 
 ## Making Assertions
