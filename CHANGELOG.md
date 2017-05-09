@@ -1,6 +1,16 @@
 # CHANGELOG for ChefSpec
 
-## 7.0.0 (April, 18, 2017)
+## 7.1.0 (May 9, 2017)
+
+- Resource matchers are now generated automatically. What does this mean for you? A lot:
+  1. You won't have to worry about older releases of ChefSpec not knowing about new resources in chef-client.
+  2. You won't have to define the matchers in your cookbook code, which also means you won't have issues if a community cookbook lacks matchers
+
+- Removed the usage of Cucumber for testing
+- Removed all test deps from the Gemspec
+- Added a warning about stubbing core Ruby methods and the issues that can cause
+
+## 7.0.0 (April 18, 2017)
 
 - Increased the chef gem dependency from 12.6+ to 12.14+. Since ChefSpec is consumed within ChefDK this actually has a minor impact on end users who generally consume Chefspec via ChefDK, which will bundle both compatible chef and chefspec releases.
 - Fixed incompatibilities with Chef 13.
