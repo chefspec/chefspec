@@ -52,7 +52,11 @@ module ChefSpec::Extensions::Chef::Resource
   end
 
   def performed_action?(action)
-    !!performed_action(action)
+    if action == :nothing
+      performed_actions.empty?
+    else
+      !!performed_action(action)
+    end
   end
 
   def performed_actions
