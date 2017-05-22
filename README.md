@@ -375,9 +375,28 @@ expect(resource).to do_nothing
 
 **For more complex examples, please see the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples) or the [Yard documentation](http://rubydoc.info/github/sethvargo/chefspec).**
 
-## Setting node Attributes
+## Specifying Node Information
 
-Node attribute can be set when creating the `Runner`. The initializer yields a block that gives full access to the node object:
+Node information can be set when creating the `Runner`. The initializer yields a block that gives full access to the node object:
+
+```ruby
+describe 'example::default' do
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new do |node|
+      node.name 'test.node-1'
+    end.converge(described_recipe)
+  end
+
+  it 'has node name set' do
+    expect(chef_run.node.name).to eq('test.node-1')
+  end
+end
+```
+
+
+### Setting Node Attributes
+
+Node attributes can also be set inside the initializer block:
 
 ```ruby
 describe 'example::default' do
