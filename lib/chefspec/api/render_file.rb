@@ -17,6 +17,9 @@ module ChefSpec::API
   # @example Assert a template is rendered with content matching any RSpec matcher
   #   expect(template).to render_file('/etc/foo').with_content(starts_with('This'))
   #
+  # @example Assert a template is rendered with content ignoring leading and trailing whitespace lines, and trailing whitespace on each line
+  #   expect(template).to render_file('/etc/foo').with_content('This is a file', strip_content: true)
+  #
   # @example Assert a partial path to a template is rendered with matching content
   #   expect(template).to render_file(/\/etc\/foo-(\d+)$/).with_content(/^This(.+)$/)
   #

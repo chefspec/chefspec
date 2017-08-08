@@ -116,6 +116,13 @@ describe 'render_file::default' do
       }
     end
 
+    it 'ignores certain whitespace when strip_content is specified' do
+      expect(chef_run).to render_file('/tmp/whitespace_template').with_content(
+        "There was whitespace before this line...\n  after these words...\nand after this line",
+        strip_content: true
+      )
+    end
+
     it 'renders the file with content matching arbitrary matcher' do
       expect(chef_run).to render_file('/tmp/template').with_content(
         start_with('This')
