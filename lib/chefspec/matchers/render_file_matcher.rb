@@ -16,11 +16,15 @@ module ChefSpec::Matchers
       end
     end
 
-    def with_content(expected_content = nil, &block)
+    def with_content(expected_content = nil, strip_content: false, &block)
       if expected_content && block
         raise ArgumentError, "Cannot specify expected content and a block!"
       elsif expected_content
-        @expected_content = expected_content
+        @expected_content = if strip_content
+                              Util.remove_config_file_whitespace(expected_content)
+                            else
+                              expected_content
+                            end
       elsif block_given?
         @expected_content = block
       else

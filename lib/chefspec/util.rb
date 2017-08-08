@@ -54,5 +54,22 @@ module ChefSpec
         string
       end
     end
+
+    #
+    # Remove leading and trailing blank lines, and trailing whitespace from each
+    # line. This is useful for matching the content in a config file, when this
+    # whitespace doesn't typically matter.
+    #
+    # @param [String] string
+    #   the string to trim whitespace off of
+    #
+    def remove_config_file_whitespace(string)
+      lines = string.lines
+      # remove leading and trailing blank lines
+      lines.shift while lines.first.strip.empty?
+      lines.pop while lines.last.strip.empty?
+      # remove trailing whitespace from lines
+      lines.map(&:rstrip).join("\n")
+    end
   end
 end

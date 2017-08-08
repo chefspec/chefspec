@@ -13,3 +13,7 @@ end
 template '/tmp/partial' do
   source 'partial.erb'
 end
+
+template '/tmp/whitespace_template' do
+  source 'whitespace_template.erb'
+end
