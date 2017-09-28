@@ -151,7 +151,7 @@ RSpec.configuration do |config|
 end
 ```
 
-This is a Ruby hash and valid options include `only` and `except`.
+This is a Ruby hash and valid options include `berksfile`, `only` and `except`.
 
 ### Librarian
 
