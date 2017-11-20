@@ -68,6 +68,7 @@ module ChefSpec::Extensions::Chef::Resource
   #
 
   def self.prepended(base)
+    base.send(alias_method, :old_run_action, :run_action)
     class << base
       prepend ClassMethods
     end
