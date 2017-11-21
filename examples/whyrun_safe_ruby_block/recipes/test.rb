@@ -1,9 +1,15 @@
 # Example of a whyrun_safe_ruby_block that will execute when test is run
 
-whyrun_safe_ruby_block 'Hello World from whyrun' do
+ruby_block 'foo' do
   block do
-    puts ''
-    puts ''
-    puts 'Hello World from whyrun!'
+    @name = 'bar'
   end
+  action :run
+end
+
+whyrun_safe_ruby_block 'bah' do
+  block do
+    @name = 'baz'
+  end
+  action :run
 end
