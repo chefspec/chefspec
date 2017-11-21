@@ -2,13 +2,8 @@ require 'chefspec'
 
 describe 'whyrun_safe_ruby_block::test' do
   let(:chef_run) do
-    runner = ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04')
+    runner = ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04', step_into: %w(whyrun_safe_ruby_block))
     runner.converge(described_recipe)
-    if runner.find_resources(:whyrun_safe_ruby_block)
-      runner.find_resources(:whyrun_safe_ruby_block).each do |resource|
-        resource.old_run_action(:run)
-      end
-    end
   end
 
   it 'converges successfully' do
