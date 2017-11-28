@@ -1,5 +1,9 @@
 # CHANGELOG for ChefSpec
 
+## 7.1.1 (November 28, 2017)
+
+- Better support for matching action :nothing in resources
+
 ## 7.1.0 (May 9, 2017)
 
 - Resource matchers are now generated automatically. What does this mean for you? A lot:
