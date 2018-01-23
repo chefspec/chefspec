@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'pacman_package::purge' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'arch', version: '4.9.11-1-ARCH')
+    ChefSpec::ServerRunner.new(platform: 'arch', version: '4.10.13-1-ARCH')
                           .converge(described_recipe)
   end
 

@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'portage_package::install' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'gentoo', version: '2.2')
+    ChefSpec::ServerRunner.new(platform: 'gentoo', version: '4.9.6-gentoo-r1')
                           .converge(described_recipe)
   end
 
