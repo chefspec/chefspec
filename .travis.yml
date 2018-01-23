@@ -16,8 +16,8 @@ bundler_args: --jobs 7 --retry 3
 
 matrix:
   include:
-    # - env: CHEF_VERSION=master
-    #  rvm: 2.4.2
+    - env: CHEF_VERSION=master
+      rvm: 2.5.0
     - env: CHEF_VERSION=13.7.16
       rvm: 2.4.3
     - env: CHEF_VERSION=13.6.4
