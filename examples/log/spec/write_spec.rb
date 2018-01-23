@@ -18,6 +18,7 @@ describe 'log::write' do
   end
 
   it 'writes a log when specifying the identity attribute' do
+    skip if Chef::VERSION == "13.7.16" # this is broken in 13.7.16
     expect(chef_run).to write_log('identity_attribute')
   end
 end
