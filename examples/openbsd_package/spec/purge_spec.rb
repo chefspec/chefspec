@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'openbsd_package::purge' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'openbsd', version: '5.4').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'openbsd', version: '6.2').converge(described_recipe) }
 
   it 'purges a openbsd_package with an explicit action' do
     expect(chef_run).to purge_openbsd_package('explicit_action')
