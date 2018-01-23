@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'paludis_package::remove' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'gentoo', version: '2.2').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'gentoo', version: '4.9.6-gentoo-r1').converge(described_recipe) }
 
   it 'removes a paludis_package with an explicit action' do
     expect(chef_run).to remove_paludis_package('explicit_action')
