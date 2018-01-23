@@ -31,7 +31,7 @@
 
 ## 6.1.0 (March 9, 2017)
 
-- Loosen the Fauxhai dependency to allow Fauxhai 4.0 This deprecates a large number of Ohai mocks for end of life platforms. See <https://github.com/customink/fauxhai/blob/master/PLATFORMS.md> for the current list of platforms supported by Fauxhai
+- Loosen the Fauxhai dependency to allow Fauxhai 4.0 This deprecates a large number of Ohai mocks for end of life platforms. See <https://github.com/chefspec/fauxhai/blob/master/PLATFORMS.md> for the current list of platforms supported by Fauxhai
 - SoloRunner defaults to use_policyfile == false now
 
 ## 6.0.1 (February 24, 2017)
@@ -384,7 +384,7 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
-- Require i18n 0.6.9 or higher (but less than 1.0.0) ([#289](https://github.com/sethvargo/chefspec/issues/245))
+- Require i18n 0.6.9 or higher (but less than 1.0.0) ([#289](https://github.com/chefspec/chefspec/issues/245))
 
 ## 3.1.1 (December 29, 2013)
 
@@ -437,12 +437,12 @@ IMPROVEMENTS:
 
 BUG FIXES:
 
-- Fix an issue where LWRPs were not properly stepped into when `use_inline_resources` was specified ([#244](https://github.com/sethvargo/chefspec/issues/244))
-- Coerce `render_file` `@expected_content` to a string before asserting if content is included ([#243](https://github.com/sethvargo/chefspec/issues/243))
+- Fix an issue where LWRPs were not properly stepped into when `use_inline_resources` was specified ([#244](https://github.com/chefspec/chefspec/issues/244))
+- Coerce `render_file` `@expected_content` to a string before asserting if content is included ([#243](https://github.com/chefspec/chefspec/issues/243))
 
 IMPROVEMENTS:
 
-- Miscellaneous documentation fixes and additions ([#245](https://github.com/sethvargo/chefspec/issues/245), [#241](https://github.com/sethvargo/chefspec/issues/241), [#238](https://github.com/sethvargo/chefspec/issues/238))
+- Miscellaneous documentation fixes and additions ([#245](https://github.com/chefspec/chefspec/issues/245), [#241](https://github.com/chefspec/chefspec/issues/241), [#238](https://github.com/chefspec/chefspec/issues/238))
 
 ## 3.0.0 (October 20, 2013)
 
@@ -661,7 +661,7 @@ BUG FIXES:
 
 FEATURES:
 
-- LWRP support added (#40). You can now make assertions about the resources created by a provider by telling chefspec to [step into a provider implementation](https://github.com/sethvargo/chefspec/tree/v0.8.0#writing-examples-for-lwrps). Thanks to Augusto Becciu for implementing this feature.
+- LWRP support added (#40). You can now make assertions about the resources created by a provider by telling chefspec to [step into a provider implementation](https://github.com/chefspec/chefspec/tree/v0.8.0#writing-examples-for-lwrps). Thanks to Augusto Becciu for implementing this feature.
 - Updated for compatibility with Chef 10.14\. Thanks Augusto Becciu.
 
 BUG FIXES:
@@ -724,8 +724,8 @@ BUG FIXES:
 
 FEATURES:
 
-- [Added new matcher](https://www.relishapp.com/sethvargo/chefspec/docs/write-examples-for-templates) `create_file_with_content` for verifying Chef `template` resource generated content.
-- [Knife plugin](https://www.relishapp.com/sethvargo/chefspec/docs/generate-placeholder-examples) added to generate placeholder examples.
+- [Added new matcher](https://www.relishapp.com/chefspec/chefspec/docs/write-examples-for-templates) `create_file_with_content` for verifying Chef `template` resource generated content.
+- [Knife plugin](https://www.relishapp.com/chefspec/chefspec/docs/generate-placeholder-examples) added to generate placeholder examples.
 
 ## 0.2.1 (September 21, 2011)
 

@@ -21,7 +21,6 @@ ChefSpec runs your cookbook(s) locally with Chef Solo without actually convergin
 
 As a general rule, if it is tested in the Travis CI matrix, it is a supported version. The section below details any specific versions that are _not_ supported and why:
 
-
 ## Writing a Cookbook Example
 
 If you want `knife` to automatically generate spec stubs for you, install [knife-spec](https://github.com/sethvargo/knife-spec).
@@ -109,7 +108,7 @@ ChefSpec::SoloRunner.new(file_cache_path: Chef::Config[:file_cache_path])
 ChefSpec::SoloRunner.new(log_level: :debug).converge(described_recipe)
 ```
 
-**NOTE** You do not _need_ to specify a platform and version to use ChefSpec. However, some cookbooks may rely on [Ohai](http://github.com/chef/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/customink/fauxhai). See the [PLATFORMS.md file](https://github.com/customink/fauxhai/blob/master/PLATFORMS.md) in the Fauxhai repo for a complete list of platforms and versions for use with ChefSpec.
+**NOTE** You do not _need_ to specify a platform and version to use ChefSpec. However, some cookbooks may rely on [Ohai](http://github.com/chef/ohai) data that ChefSpec cannot not automatically generate. Specifying the `platform` and `version` keys instructs ChefSpec to load stubbed Ohai attributes from another platform using [fauxhai](https://github.com/chefspec/fauxhai). See the [PLATFORMS.md file](https://github.com/chefspec/fauxhai/blob/master/PLATFORMS.md) in the Fauxhai repo for a complete list of platforms and versions for use with ChefSpec.
 
 ### ChefZero Server
 
@@ -276,9 +275,9 @@ end
 
 This test is asserting that the Chef run will have a _group_ resource with the name _docker_, an action of _modify_, and an attributes hash including `{ members: ['vagrant'] }`.
 
-ChefSpec includes matchers for all of Chef's core resources using the above schema. Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding cucumber test from the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).
+ChefSpec includes matchers for all of Chef's core resources using the above schema. Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/chefspec/chefspec) and has a corresponding cucumber test from the [examples directory](https://github.com/chefspec/chefspec/tree/master/examples).
 
-Additionally, ChefSpec includes the following helpful matchers. They are also [documented in Yard](http://rubydoc.info/github/sethvargo/chefspec), but they are included here because they do not follow the "general pattern".
+Additionally, ChefSpec includes the following helpful matchers. They are also [documented in Yard](http://rubydoc.info/github/chefspec/chefspec), but they are included here because they do not follow the "general pattern".
 
 ### include_recipe
 
@@ -373,7 +372,7 @@ resource = chef_run.execute('install')
 expect(resource).to do_nothing
 ```
 
-**For more complex examples, please see the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples) or the [Yard documentation](http://rubydoc.info/github/sethvargo/chefspec).**
+**For more complex examples, please see the [examples directory](https://github.com/chefspec/chefspec/tree/master/examples) or the [Yard documentation](http://rubydoc.info/github/chefspec/chefspec).**
 
 ## Specifying Node Information
 
@@ -393,7 +392,6 @@ describe 'example::default' do
 end
 ```
 
-
 ### Setting Node Attributes
 
 Node attributes can also be set inside the initializer block:
@@ -410,7 +408,7 @@ end
 
 ### Automatic attributes
 
-ChefSpec provides mocked automatic Ohai data using [fauxhai](https://github.com/customink/fauxhai). To mock out `automatic` attributes, you must use the `automatic` key:
+ChefSpec provides mocked automatic Ohai data using [fauxhai](https://github.com/chefspec/fauxhai). To mock out `automatic` attributes, you must use the `automatic` key:
 
 ```ruby
 describe 'example::default' do
@@ -723,10 +721,7 @@ end
 
 ### Ruby libraries (File, FileUtils, etc)
 
-When stubbing core ruby libraries, users must be aware that there is no differentiation between your cookbook code that calls `File.exist?` and core chef
-code (e.g. the cookbook loader) that calls `File.exist?`.  If you stub or setup an expectation without qualifying the arguments then you will stub that
-method for all core chef code as well.  Also note that if you setup an expectation on a particular argument that invoking the method with any other
-argument will throw an unexpected argument error out of rspec, so you must setup an allowance using `.and_call_original` to avoid breaking core chef.
+When stubbing core ruby libraries, users must be aware that there is no differentiation between your cookbook code that calls `File.exist?` and core chef code (e.g. the cookbook loader) that calls `File.exist?`. If you stub or setup an expectation without qualifying the arguments then you will stub that method for all core chef code as well. Also note that if you setup an expectation on a particular argument that invoking the method with any other argument will throw an unexpected argument error out of rspec, so you must setup an allowance using `.and_call_original` to avoid breaking core chef.
 
 ```ruby
 describe 'example::default' do
@@ -745,9 +740,7 @@ describe 'example::default' do
 end
 ```
 
-This is basic usage of rspec and not specific to chefspec.  It applies to any class method in `File`, `Dir`, `FileUtils`, `IO` or any other ruby library.  In
-general any time you `expect(Some::Symbol).to receive(:a_method).and_return(value)` you run the risk of breaking other code unless you isolate your mocking
-or expectation down to only the arguments which your code uses.
+This is basic usage of rspec and not specific to chefspec. It applies to any class method in `File`, `Dir`, `FileUtils`, `IO` or any other ruby library. In general any time you `expect(Some::Symbol).to receive(:a_method).and_return(value)` you run the risk of breaking other code unless you isolate your mocking or expectation down to only the arguments which your code uses.
 
 ## Reporting
 
@@ -854,8 +847,7 @@ ChefSpec::Coverage.start! do
 end
 ```
 
-If you would like to add alternative reporting for the Coverage.report! ouput, you can supply your own by calling add_output in the `ChefSepc::Coverage` block:
-Note the reportOutput has the following items in it: total, touched, coverage and collections of untouched_resources and all_resources
+If you would like to add alternative reporting for the Coverage.report! ouput, you can supply your own by calling add_output in the `ChefSepc::Coverage` block: Note the reportOutput has the following items in it: total, touched, coverage and collections of untouched_resources and all_resources
 
 ```ruby
 ChefSpec::Coverage.start! do
@@ -870,6 +862,7 @@ ChefSpec::Coverage.start! do
   end
 end
 ```
+
 Note the above example outputs the raw data without applying formatting.
 
 ## Mocking Out Environments
@@ -936,13 +929,11 @@ end
 
 As of ChefSpec 7.1.0 there are "custom" matchers generated for all internal core-chef resources, along with any LWRPs/HWRPs/Custom Resources that are user-defined in cookbooks.
 
-The matchers follow the standard custom of `<action>_<resource_name>` with the exception of the `create_if_missing` action which *also* gets a `create_<resource_name>_if_missing`
-matcher.
+The matchers follow the standard custom of `<action>_<resource_name>` with the exception of the `create_if_missing` action which _also_ gets a `create_<resource_name>_if_missing` matcher.
 
 Matchers should be wired up for the `resource_name` of the resource along with all define `provides` lines synonyms and any `action` methods or `allowed_actions`.
 
-There should be little reason to package custom matchers in cookbooks any more, but the approach below still works if there are special matchers which cookbooks wish to expose which do
-not follow the automatically generated pattern.
+There should be little reason to package custom matchers in cookbooks any more, but the approach below still works if there are special matchers which cookbooks wish to expose which do not follow the automatically generated pattern.
 
 ## Packaging Custom Matchers
 
@@ -1234,7 +1225,7 @@ let(:chef_run) { ChefSpec::SoloRunner.new }
 cached(:chef_run) { ChefSpec::SoloRunner.new }
 ```
 
-Everything else should work the same. Be advised, as the method name suggests, this will cache the results of your Chef Client Run for the **entire RSpec example**. This makes stubbing more of a challenge, since the node is already converged. For more information, please see [Juri Timošin's blog post on faster specs](http://dracoater.blogspot.com/2013/12/testing-chef-cookbooks-part-25-speeding.html) as well as the discussion in [#275](https://github.com/sethvargo/chefspec/issues/275).
+Everything else should work the same. Be advised, as the method name suggests, this will cache the results of your Chef Client Run for the **entire RSpec example**. This makes stubbing more of a challenge, since the node is already converged. For more information, please see [Juri Timošin's blog post on faster specs](http://dracoater.blogspot.com/2013/12/testing-chef-cookbooks-part-25-speeding.html) as well as the discussion in [#275](https://github.com/chefspec/chefspec/issues/275).
 
 ## Media & Third-party Tutorials
 
@@ -1274,8 +1265,8 @@ Everything else should work the same. Be advised, as the method name suggests, t
 
 ChefSpec is on [Travis CI][travis] which tests against multiple Chef and Ruby versions.
 
-If you are contributing, please see the [Contributing Guidelines](https://github.com/sethvargo/chefspec/blob/master/CONTRIBUTING.md) for more information.
+If you are contributing, please see the [Contributing Guidelines](https://github.com/chefspec/chefspec/blob/master/CONTRIBUTING.md) for more information.
 
 ## License
 
-MIT - see the accompanying [LICENSE](https://github.com/sethvargo/chefspec/blob/master/LICENSE) file for details.
+MIT - see the accompanying [LICENSE](https://github.com/chefspec/chefspec/blob/master/LICENSE) file for details.
