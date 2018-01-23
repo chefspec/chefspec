@@ -1,6 +1,6 @@
 # ChefSpec
 
-[![Gem Version](https://badge.fury.io/rb/chefspec.svg)](https://badge.fury.io/rb/chefspec) [![Build Status](https://travis-ci.org/sethvargo/chefspec.svg?branch=master)](https://travis-ci.org/sethvargo/chefspec)
+[![Gem Version](https://badge.fury.io/rb/chefspec.svg)](https://badge.fury.io/rb/chefspec) [![Build Status](https://travis-ci.org/chefspec/chefspec.svg?branch=master)](https://travis-ci.org/chefspec/chefspec)
 
 ChefSpec is a unit testing framework for testing Chef cookbooks. ChefSpec makes it easy to write examples and get fast feedback on cookbook changes without the need for virtual machines or cloud servers.
 
@@ -13,7 +13,7 @@ ChefSpec runs your cookbook(s) locally with Chef Solo without actually convergin
 
 - **ChefSpec requires Ruby 2.2 or later and Chef 12.14.89 or later!**
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version's documentation!**
-- **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/sethvargo/chefspec) and has a corresponding test recipe in the [examples directory](https://github.com/sethvargo/chefspec/tree/master/examples).**
+- **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/chefspec/chefspec) and has a corresponding test recipe in the [examples directory](https://github.com/chefspec/chefspec/tree/master/examples).**
 
 ## Notes on Compatibility with Chef Versions
 
@@ -50,7 +50,7 @@ Let's step through this file to see what is happening:
 
 1. At the top of the spec file we require the chefspec gem. This is required so that our custom matchers are loaded. In larger projects, it is common practice to create a file named "spec_helper.rb" and include ChefSpec and perform other setup tasks in that file.
 2. The `describe` keyword is part of RSpec and indicates that everything nested beneath is describing the `example::default` recipe. The convention is to have a separate spec for each recipe in your cookbook.
-3. The `let` block on creates the `ChefSpec:SoloRunner` with mocked Ohai data for Ubuntu 16.04 from [Fauxhai](https://github.com/customink/fauxhai). It then does a fake Chef run with the run_list of `example::default`. Any subsequent examples can then refer to `chef_run` in order to make assertions about the resources that were created during the mock converge.
+3. The `let` block on creates the `ChefSpec:SoloRunner` with mocked Ohai data for Ubuntu 16.04 from [Fauxhai](https://github.com/chefspec/fauxhai). It then does a fake Chef run with the run_list of `example::default`. Any subsequent examples can then refer to `chef_run` in order to make assertions about the resources that were created during the mock converge.
 4. The `described_recipe` macro is a ChefSpec helper method that infers the recipe from the `describe` block. Alternatively you could specify the recipe directly.
 5. The `it` block is an example specifying that the `foo` package is installed. Normally you will have multiple `it` blocks per recipe, each making a single assertion.
 
