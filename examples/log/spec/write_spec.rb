@@ -8,10 +8,9 @@ describe 'log::write' do
     expect(chef_run).to_not write_log('not_default_action')
   end
 
-  # CHEF-4561
-  # it 'writes a log with an explicit action' do
-  #   expect(chef_run).to write_log('explicit_action')
-  # end
+  it 'writes a log with an explicit action' do
+    expect(chef_run).to write_log('explicit_action')
+  end
 
   it 'writes a log with attributes' do
     expect(chef_run).to write_log('with_attributes').with(level: :debug)
