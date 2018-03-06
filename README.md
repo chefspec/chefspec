@@ -744,6 +744,8 @@ This is basic usage of rspec and not specific to chefspec. It applies to any cla
 
 ## Reporting
 
+**NOTE: The coverage reporting feature is deprecated and will be removed in a future version. This documentation exists only for reference purposes.**
+
 ChefSpec can generate a report of resources read over resources tested.
 
 To generate the coverage report, add the following to your `spec_helper.rb` before you require any "Chef" code:
