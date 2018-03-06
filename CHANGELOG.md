@@ -1,5 +1,9 @@
 # CHANGELOG for ChefSpec
 
+## 7.1.2 (March, 6, 2018)
+
+This release deprecated the spec coverage feature, which will be removed in a future release. In general this feature leads to users writing unnecessary and generally useless specs in an attempt to reach 100% spec coverage. ChefSpec is useful for testing the parts of your cookbook that include logic, but if a particular resource has no logic behind it, then there's little value in testing. We shouldn't provide a mechanism that encourages writing unnecessary specs that give a false assurance test coverage.
+
 ## 7.1.1 (November 28, 2017)
 
 - Better support for matching action :nothing in resources
