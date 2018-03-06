@@ -45,6 +45,7 @@ module ChefSpec
     # +at_exit+ handler for printing the coverage report.
     #
     def start!(&block)
+      warn("ChefSpec's coverage reporting is deprecated and will be removed in a future version")
       instance_eval(&block) if block
       at_exit { ChefSpec::Coverage.report! }
     end
