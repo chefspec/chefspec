@@ -1,5 +1,9 @@
 # CHANGELOG for ChefSpec
 
+## 7.2.0 (April, 10, 2018)
+
+- The fauxhai dependency is no longer constrained. This removes the need to release a new version of Chefspec each time a major release of Fauxhai is released. Previously Fauxhai was constraine to < 6. The current release is 6.1.0, which includes significant new platform data and dumps that are updated for Chef 14.
+
 ## 7.1.2 (March, 6, 2018)
 
 This release deprecated the spec coverage feature, which will be removed in a future release. In general this feature leads to users writing unnecessary and generally useless specs in an attempt to reach 100% spec coverage. ChefSpec is useful for testing the parts of your cookbook that include logic, but if a particular resource has no logic behind it, then there's little value in testing. We shouldn't provide a mechanism that encourages writing unnecessary specs that give a false assurance test coverage.
