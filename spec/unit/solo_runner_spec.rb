@@ -98,7 +98,7 @@ describe ChefSpec::SoloRunner do
       it 'sets the attributes from fauxhai' do
         expect(hash['os']).to eq('linux')
         expect(hash['languages']['ruby']['ruby_bin']).to eq('/usr/local/bin/ruby')
-        expect(hash['os_version']).to match(/4.4.0-.*-generic/) # avoid failing when fauxhai data changes
+        expect(hash['os_version']).to match(/4.4.0-.*-.*/) # avoid failing when fauxhai data changes
         expect(hash['fqdn']).to eq('fauxhai.local')
         expect(hash['domain']).to eq('local')
         expect(hash['ipaddress']).to eq('10.0.0.2')
