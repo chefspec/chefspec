@@ -1,8 +1,12 @@
 # CHANGELOG for ChefSpec
 
+## 7.2.1 (May, 8, 2018)
+
+- Updated an example and test for that example
+
 ## 7.2.0 (April, 10, 2018)
 
-- The fauxhai dependency is no longer constrained. This removes the need to release a new version of Chefspec each time a major release of Fauxhai is released. Previously Fauxhai was constraine to < 6. The current release is 6.1.0, which includes significant new platform data and dumps that are updated for Chef 14.
+- The fauxhai dependency is no longer constrained. This removes the need to release a new version of Chefspec each time a major release of Fauxhai is released. Previously Fauxhai was constraine to < 6\. The current release is 6.1.0, which includes significant new platform data and dumps that are updated for Chef 14.
 
 ## 7.1.2 (March, 6, 2018)
 
@@ -15,11 +19,14 @@ This release deprecated the spec coverage feature, which will be removed in a fu
 ## 7.1.0 (May 9, 2017)
 
 - Resource matchers are now generated automatically. What does this mean for you? A lot:
+
   1. You won't have to worry about older releases of ChefSpec not knowing about new resources in chef-client.
   2. You won't have to define the matchers in your cookbook code, which also means you won't have issues if a community cookbook lacks matchers
 
 - Removed the usage of Cucumber for testing
+
 - Removed all test deps from the Gemspec
+
 - Added a warning about stubbing core Ruby methods and the issues that can cause
 
 ## 7.0.0 (April 18, 2017)
