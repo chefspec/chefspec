@@ -27,7 +27,7 @@ module ChefSpec
         raise InvalidBerkshelfOptions(value: opts.inspect)
       end
 
-      berksfile = ::Berkshelf::Berksfile.from_file('Berksfile', opts)
+      berksfile = ::Berkshelf::Berksfile.from_options(opts)
 
       # Grab a handle to tmpdir, since Berkshelf 2 modifies it a bit
       tmpdir = File.join(@tmpdir, 'cookbooks')
