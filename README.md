@@ -343,6 +343,23 @@ You can use any RSpec content matcher inside of the `with_content` predicate:
 expect(chef_run).to render_file('/etc/foo').with_content(start_with('# First line'))
 ```
 
+You can chain `with_content` predicates together:
+
+```ruby
+expect(chef_run).to render_file('/etc/foo').with_content('This').with_content('content')
+```
+
+Prefer using a block to chaining `with_content` predicates, e.g. replace the above with:
+
+```ruby
+expect(chef_run).to render_file('/etc/foo').with_content { |content |
+  expect(content).to include('This')
+  expect(content).to include('content')
+}
+```
+
+#### execution phase
+
 It is possible to assert which [Chef phase of execution](https://docs.chef.io/chef_client.html#the-chef-client-title-run) a resource is created. Given a resource that is installed at compile time using `run_action`:
 
 ```ruby

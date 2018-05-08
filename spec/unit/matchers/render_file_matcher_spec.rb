@@ -12,7 +12,7 @@ describe ChefSpec::Matchers::RenderFileMatcher do
       expect(
         subject.with_content do |content|
           'Does not raise ArgumentError'
-        end.expected_content.call
+        end.expected_content.first.call
       ).to eq('Does not raise ArgumentError')
     end
   end
@@ -37,6 +37,13 @@ describe ChefSpec::Matchers::RenderFileMatcher do
     it 'has the right value' do
       subject.matches?(chef_run)
       expect(subject.description).to eq(%Q(render file "#{path}"))
+    end
+
+    it 'has the right value when with_content is chained' do
+      subject.matches?(chef_run)
+      expect(
+        subject.with_content('foo').with_content('bar').description
+      ).to eq(%Q(render file "#{path}" with content "foo" with content "bar"))
     end
   end
 

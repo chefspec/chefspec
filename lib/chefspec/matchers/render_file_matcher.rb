@@ -3,6 +3,7 @@ module ChefSpec::Matchers
     attr_reader :expected_content
     def initialize(path)
       @path = path
+      @expected_content = []
     end
 
     def matches?(runner)
@@ -20,9 +21,9 @@ module ChefSpec::Matchers
       if expected_content && block
         raise ArgumentError, "Cannot specify expected content and a block!"
       elsif expected_content
-        @expected_content = expected_content
+        @expected_content << expected_content
       elsif block_given?
-        @expected_content = block
+        @expected_content << block
       else
         raise ArgumentError, "Must specify expected content or a block!"
       end
@@ -32,11 +33,11 @@ module ChefSpec::Matchers
 
     def description
       message = %Q{render file "#{@path}"}
-      if @expected_content
-        if @expected_content.to_s.include?("\n")
+      @expected_content.each do |expected|
+        if expected.to_s.include?("\n")
           message << " with content <suppressed>"
         else
-          message << " with content #{@expected_content.inspect}"
+          message << " with content #{expected.inspect}"
         end
       end
       message
@@ -44,7 +45,7 @@ module ChefSpec::Matchers
 
     def failure_message
       message = %Q{expected Chef run to render "#{@path}"}
-      if @expected_content
+      unless @expected_content.empty?
         message << " matching:"
         message << "\n\n"
         message << expected_content_message
@@ -59,7 +60,7 @@ module ChefSpec::Matchers
 
     def failure_message_when_negated
       message = %Q{expected file "#{@path}"}
-      if @expected_content
+      unless @expected_content.empty?
         message << " matching:"
         message << "\n\n"
         message << expected_content_message
@@ -72,13 +73,16 @@ module ChefSpec::Matchers
     private
 
     def expected_content_message
-      if RSpec::Matchers.is_a_matcher?(@expected_content) && @expected_content.respond_to?(:description)
-        @expected_content.description
-      elsif @expected_content.is_a?(Proc)
-        "(the result of a proc)"
-      else
-        @expected_content.to_s
+      messages = @expected_content.collect do |expected|
+        if RSpec::Matchers.is_a_matcher?(expected) && expected.respond_to?(:description)
+          expected.description
+        elsif expected.is_a?(Proc)
+          "(the result of a proc)"
+        else
+          expected.to_s
+        end
       end
+      messages.join("\n\n")
     end
 
     def resource
@@ -106,25 +110,31 @@ module ChefSpec::Matchers
     # @return [true, false]
     #
     def matches_content?
-      return true if @expected_content.nil?
+      return true if @expected_content.empty?
 
       @actual_content = ChefSpec::Renderer.new(@runner, resource).content
 
       return false if @actual_content.nil?
 
-      if @expected_content.is_a?(Regexp)
-        @actual_content =~ @expected_content
-      elsif RSpec::Matchers.is_a_matcher?(@expected_content)
-        @expected_content.matches?(@actual_content)
-      elsif @expected_content.is_a?(Proc)
-        @expected_content.call(@actual_content)
-        # Weird RSpecish, but that block will return false for a negated check,
-        # so we always return true. The block will raise an exception if the
-        # assertion fails.
-        true
-      else
-        @actual_content.include?(@expected_content)
+      # Knock out matches that pass. When we're done, we pass if the list is
+      # empty. Otherwise, @expected_content is the list of matchers that
+      # failed
+      @expected_content.delete_if do |expected|
+        if expected.is_a?(Regexp)
+          @actual_content =~ expected
+        elsif RSpec::Matchers.is_a_matcher?(expected)
+          expected.matches?(@actual_content)
+        elsif expected.is_a?(Proc)
+          expected.call(@actual_content)
+          # Weird RSpecish, but that block will return false for a negated check,
+          # so we always return true. The block will raise an exception if the
+          # assertion fails.
+          true
+        else
+          @actual_content.include?(expected)
+        end
       end
+      @expected_content.empty?
     end
   end
 end
