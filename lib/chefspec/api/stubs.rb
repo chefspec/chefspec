@@ -24,7 +24,7 @@ module ChefSpec
       # @return [ChefSpec::CommandStub]
       #
       def stub_command(command, &block)
-        Stubs::CommandRegistry.register(Stubs::CommandStub.new(command, &block))
+        ChefSpec::Stubs::CommandRegistry.register(ChefSpec::Stubs::CommandStub.new(command, &block))
       end
 
       #
@@ -52,7 +52,7 @@ module ChefSpec
       # @return [ChefSpec::DataBagStub]
       #
       def stub_data_bag(bag, &block)
-        Stubs::DataBagRegistry.register(Stubs::DataBagStub.new(bag, &block))
+        ChefSpec::Stubs::DataBagRegistry.register(ChefSpec::Stubs::DataBagStub.new(bag, &block))
       end
 
       #
@@ -79,7 +79,7 @@ module ChefSpec
       # @return [ChefSpec::DataBagItemStub]
       #
       def stub_data_bag_item(bag, id, &block)
-        Stubs::DataBagItemRegistry.register(Stubs::DataBagItemStub.new(bag, id, &block))
+        ChefSpec::Stubs::DataBagItemRegistry.register(ChefSpec::Stubs::DataBagItemStub.new(bag, id, &block))
       end
 
       #
@@ -166,7 +166,7 @@ module ChefSpec
       # @return [ChefSpec::SearchStub]
       #
       def stub_search(type, query = '*:*', &block)
-        Stubs::SearchRegistry.register(Stubs::SearchStub.new(type, query, &block))
+        ChefSpec::Stubs::SearchRegistry.register(ChefSpec::Stubs::SearchStub.new(type, query, &block))
       end
 
       # Automatically clear all stubs after each test.
