@@ -16,4 +16,6 @@ group :development do
   gem 'rake'
   gem 'redcarpet'
   gem 'yard'
+  gem 'pry'
+  gem 'pry-byebug'
 end
