@@ -169,6 +169,15 @@ module ChefSpec
         Stubs::SearchRegistry.register(Stubs::SearchStub.new(type, query, &block))
       end
 
+      # Automatically clear all stubs after each test.
+      extend RSpec::SharedContext
+      after(:each) do
+        ChefSpec::Stubs::CommandRegistry.reset!
+        ChefSpec::Stubs::DataBagRegistry.reset!
+        ChefSpec::Stubs::DataBagItemRegistry.reset!
+        ChefSpec::Stubs::SearchRegistry.reset!
+      end
+
     end
   end
 end
