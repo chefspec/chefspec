@@ -133,6 +133,21 @@ module ChefSpec
     end
 
     #
+    # Execute a block of recipe code.
+    #
+    # @param [Proc] block
+    #   A block containing Chef recipe code
+    #
+    # @return [ChefSpec::SoloRunner]
+    #
+    def converge_block(&block)
+      converge do
+        recipe = Chef::Recipe.new('_test', '_test', run_context)
+        recipe.instance_exec(&block)
+      end
+    end
+
+    #
     # The +Chef::Node+ corresponding to this Runner.
     #
     # @return [Chef::Node]
