@@ -12,6 +12,7 @@ module ChefSpec::Extensions::Chef::Resource
 
   # mix of no-op and tracking concerns
   def run_action(action, notification_type = nil, notifying_resource = nil)
+    return super unless $CHEFSPEC_MODE
     resolve_notification_references
     validate_action(action)
 
