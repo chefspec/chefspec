@@ -38,17 +38,14 @@ module ChefSpec::Extensions::Chef::Resource
   # tracking
   #
 
-  def initialize(*args)
-    @performed_actions = {}
-    super
-  end
-
   def perform_action(action, options = {})
+    @performed_actions ||= {}
     @performed_actions[action.to_sym] ||= {}
     @performed_actions[action.to_sym].merge!(options)
   end
 
   def performed_action(action)
+    @performed_actions ||= {}
     @performed_actions[action.to_sym]
   end
 
@@ -61,6 +58,7 @@ module ChefSpec::Extensions::Chef::Resource
   end
 
   def performed_actions
+    @performed_actions ||= {}
     @performed_actions.keys
   end
 
