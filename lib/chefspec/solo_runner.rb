@@ -121,6 +121,12 @@ module ChefSpec
         raise Error::MayNeedToSpecifyPlatform.new(original_error: e.message)
       end
 
+      # Merge in provided node attributes.
+      node.attributes.default = Chef::Mixin::DeepMerge.merge(node.attributes.default, options[:default_attributes]) if options[:default_attributes]
+      node.attributes.normal = Chef::Mixin::DeepMerge.merge(node.attributes.normal, options[:normal_attributes]) if options[:normal_attributes]
+      node.attributes.override = Chef::Mixin::DeepMerge.merge(node.attributes.override, options[:override_attributes]) if options[:override_attributes]
+      node.attributes.automatic = Chef::Mixin::DeepMerge.merge(node.attributes.automatic, options[:automatic_attributes]) if options[:automatic_attributes]
+
       # Allow stubbing/mocking after the cookbook has been compiled but before the converge
       yield node if block_given?
 
