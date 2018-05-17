@@ -1,7 +1,6 @@
 RSpec.configure do |config|
   unless ENV['CHEFSPEC_NO_INCLUDE']
     config.include(ChefSpec::API)
-    config.include(ChefSpec::Macros)
   end
 
   config.after(:each) do
