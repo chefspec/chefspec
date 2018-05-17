@@ -119,6 +119,7 @@ module ChefSpec::Extensions::Chef::Resource
 
     def inject_actions(*actions)
       provides_names.each do |resource_name|
+        next unless resource_name
         ChefSpec.define_matcher(resource_name)
         actions.each do |action|
           inject_method(:"#{action}_#{resource_name}", resource_name, action)
