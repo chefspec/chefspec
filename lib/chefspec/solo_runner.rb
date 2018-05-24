@@ -1,5 +1,6 @@
 require 'fauxhai'
 require 'chef/client'
+require 'chef/cookbook/metadata'
 require 'chef/mash'
 require 'chef/providers'
 require 'chef/resources'
@@ -148,7 +149,15 @@ module ChefSpec
     #
     def converge_block(&block)
       converge do
-        recipe = Chef::Recipe.new('_test', '_test', run_context)
+        # Try to figure out the name of this cookbook, pretending this block
+        # is in the name context as the cookbook under test.
+        cookbook_name = begin
+          cookbook.name
+        rescue IOError
+          # Old cookbook, has no metadata, use the folder name I guess.
+          File.basename(options[:cookbook_root])
+        end
+        recipe = Chef::Recipe.new(cookbook_name, '_test', run_context)
         recipe.instance_exec(&block)
       end
     end
@@ -327,6 +336,7 @@ module ChefSpec
       config = RSpec.configuration
 
       {
+        cookbook_root: config.cookbook_root || calling_cookbook_root(caller),
         cookbook_path: config.cookbook_path || calling_cookbook_path(caller),
         role_path:     config.role_path || default_role_path,
         environment_path: config.environment_path || default_environment_path,
@@ -339,6 +349,24 @@ module ChefSpec
     end
 
     #
+    # The inferred cookbook root from the calling spec.
+    #
+    # @param [Array<String>] kaller
+    #   the calling trace
+    #
+    # @return [String]
+    #
+    def calling_cookbook_root(kaller)
+      calling_spec = kaller.find { |line| line =~ /\/spec/ }
+      raise Error::CookbookPathNotFound if calling_spec.nil?
+
+      bits = calling_spec.split(/:[0-9]/, 2).first.split(File::SEPARATOR)
+      spec_dir = bits.index('spec') || 0
+
+      File.join(bits.slice(0, spec_dir))
+    end
+
+    #
     # The inferred path from the calling spec.
     #
     # @param [Array<String>] kaller
@@ -347,13 +375,7 @@ module ChefSpec
     # @return [String]
     #
     def calling_cookbook_path(kaller)
-      calling_spec = kaller.find { |line| line =~ /\/spec/ }
-      raise Error::CookbookPathNotFound if calling_spec.nil?
-
-      bits = calling_spec.split(/:[0-9]/, 2).first.split(File::SEPARATOR)
-      spec_dir = bits.index('spec') || 0
-
-      File.expand_path(File.join(bits.slice(0, spec_dir), '..'))
+      File.expand_path(File.join(calling_cookbook_root(kaller), '..'))
     end
 
     #
@@ -427,5 +449,10 @@ module ChefSpec
         end
       end
     end
+
+    def cookbook
+      @cookbook ||= Chef::Cookbook::Metadata.new.tap {|m| m.from_file("#{options[:cookbook_root]}/metadata.rb") }
+    end
+
   end
 end
