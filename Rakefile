@@ -18,12 +18,14 @@ RSpec::Core::RakeTask.new(:unit) do |t|
 end
 
 failed = false
+start_time = nil
 
 namespace :acceptance do |ns|
   Dir.foreach("examples") do |dir|
     next if dir == '.' or dir == '..'
     desc "#{dir} acceptance tests"
     task dir.to_sym do
+      start_time ||= Time.now
       Dir.mktmpdir do |tmp|
         FileUtils.cp_r("examples/#{dir}", tmp)
 
@@ -60,6 +62,7 @@ end
 
 
 task acceptance: Rake.application.tasks.select { |t| t.name.start_with?("acceptance:") } do
+  puts "Acceptance tests took #{Time.now - start_time} seconds"
   raise "some tests failed" if failed
 end
 
