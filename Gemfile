@@ -1,15 +1,5 @@
 source 'https://rubygems.org'
 
-# env var for travis
-if ENV['CHEF_VERSION']
-  if ENV['CHEF_VERSION'] == "master"
-    gem 'chef', git: "https://github.com/chef/chef"
-    gem 'ohai', git: "https://github.com/chef/ohai"
-  else
-    gem 'chef', ENV['CHEF_VERSION']
-  end
-end
-
 gemspec
 
 group :development do
@@ -17,3 +7,15 @@ group :development do
   gem 'redcarpet'
   gem 'yard'
 end
+
+if ENV["GEMFILE_MOD"]
+  puts "GEMFILE_MOD: #{ENV['GEMFILE_MOD']}"
+  instance_eval(ENV["GEMFILE_MOD"])
+else
+  gem 'chef', git: "https://github.com/chef/chef"
+  gem 'ohai', git: "https://github.com/chef/ohai"
+end
+
+# If you want to load debugging tools into the bundle exec sandbox,
+# add these additional dependencies into Gemfile.local
+eval_gemfile(__FILE__ + ".local") if File.exist?(__FILE__ + ".local")
