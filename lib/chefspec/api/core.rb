@@ -53,9 +53,6 @@ module ChefSpec
         chef_runner.converge(described_recipe)
       end
 
-      # As a default, also make the subject be the Chef run.
-      subject { chef_run }
-
       # Helper method for some of the nestable test value methods like
       # {ClassMethods#default_attributes} and {ClassMethods#step_into}.
       #
@@ -181,7 +178,13 @@ module ChefSpec
         # @api private
         def included(klass)
           super
+          # Inject classmethods into the group.
           klass.extend(ClassMethods)
+          # If the describe block is aimed at string or resource/provider class
+          # then set the default subject to be the Chef run.
+          if klass.described_class.nil? || klass.described_class < Chef::Resource || klass.described_class < Chef::Provider
+            klass.subject { chef_run }
+          end
         end
       end
 
