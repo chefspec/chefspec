@@ -158,6 +158,8 @@ module ChefSpec
     end
 
     def preload!
+      # Flag to disable preloading for situations where it doesn't make sense.
+      return if ENV['CHEFSPEC_NO_PRELOAD']
       begin
         old_preload = $CHEFSPEC_PRELOAD
         $CHEFSPEC_PRELOAD = true
