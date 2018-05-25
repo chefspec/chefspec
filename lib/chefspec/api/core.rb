@@ -11,6 +11,10 @@ module ChefSpec
         old_chefspec_mode = $CHEFSPEC_MODE
         $CHEFSPEC_MODE = true
         begin
+          # Only run the preload if a platform is configured via the new system
+          # since otherwise it will spam warnings about the platform not being
+          # set.
+          chef_runner.preload! if chefspec_platform
           ex.run
         ensure
           $CHEFSPEC_MODE = old_chefspec_mode
@@ -48,8 +52,6 @@ module ChefSpec
       let(:chef_run) do
         chef_runner.converge(described_recipe)
       end
-
-      before { chef_runner.preload! if chefspec_platform  }
 
       # As a default, also make the subject be the Chef run.
       subject { chef_run }
