@@ -31,6 +31,7 @@ module ChefSpec
           normal_attributes: chefspec_attributes(:normal_attributes),
           override_attributes: chefspec_attributes(:override_attributes),
           automatic_attributes: chefspec_attributes(:automatic_attributes),
+          spec_declaration_locations: self.class.declaration_locations.last[0],
         }
         # Only specify these if set in the example so we don't override the
         # global settings.
@@ -47,6 +48,8 @@ module ChefSpec
       let(:chef_run) do
         chef_runner.converge(described_recipe)
       end
+
+      before { chef_runner.preload! if chefspec_platform  }
 
       # As a default, also make the subject be the Chef run.
       subject { chef_run }

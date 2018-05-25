@@ -106,6 +106,7 @@ module ChefSpec
     #   A reference to the calling Runner (for chaining purposes)
     #
     def converge(*recipe_names)
+      @converging = false
       node.run_list.reset!
       recipe_names.each { |recipe_name| node.run_list.add(recipe_name) }
 
@@ -151,16 +152,18 @@ module ChefSpec
     #
     def converge_block(&block)
       converge do
-        # Try to figure out the name of this cookbook, pretending this block
-        # is in the name context as the cookbook under test.
-        cookbook_name = begin
-          cookbook.name
-        rescue IOError
-          # Old cookbook, has no metadata, use the folder name I guess.
-          File.basename(options[:cookbook_root])
-        end
         recipe = Chef::Recipe.new(cookbook_name, '_test', run_context)
         recipe.instance_exec(&block)
+      end
+    end
+
+    def preload!
+      begin
+        old_preload = $CHEFSPEC_PRELOAD
+        $CHEFSPEC_PRELOAD = true
+        converge("recipe[#{cookbook_name}]")
+      ensure
+        $CHEFSPEC_PRELOAD = old_preload
       end
     end
 
@@ -338,8 +341,8 @@ module ChefSpec
       config = RSpec.configuration
 
       {
-        cookbook_root: config.cookbook_root || calling_cookbook_root(caller),
-        cookbook_path: config.cookbook_path || calling_cookbook_path(caller),
+        cookbook_root: config.cookbook_root || calling_cookbook_root(options, caller),
+        cookbook_path: config.cookbook_path || calling_cookbook_path(options, caller),
         role_path:     config.role_path || default_role_path,
         environment_path: config.environment_path || default_environment_path,
         file_cache_path: config.file_cache_path,
@@ -358,8 +361,8 @@ module ChefSpec
     #
     # @return [String]
     #
-    def calling_cookbook_root(kaller)
-      calling_spec = kaller.find { |line| line =~ /\/spec/ }
+    def calling_cookbook_root(options, kaller)
+      calling_spec = options[:spec_declaration_locations] || kaller.find { |line| line =~ /\/spec/ }
       raise Error::CookbookPathNotFound if calling_spec.nil?
 
       bits = calling_spec.split(/:[0-9]/, 2).first.split(File::SEPARATOR)
@@ -376,8 +379,8 @@ module ChefSpec
     #
     # @return [String]
     #
-    def calling_cookbook_path(kaller)
-      File.expand_path(File.join(calling_cookbook_root(kaller), '..'))
+    def calling_cookbook_path(options, kaller)
+      File.expand_path(File.join(calling_cookbook_root(options, kaller), '..'))
     end
 
     #
@@ -454,6 +457,17 @@ module ChefSpec
 
     def cookbook
       @cookbook ||= Chef::Cookbook::Metadata.new.tap {|m| m.from_file("#{options[:cookbook_root]}/metadata.rb") }
+    end
+
+    def cookbook_name
+      # Try to figure out the name of this cookbook, pretending this block
+      # is in the name context as the cookbook under test.
+      begin
+        cookbook.name
+      rescue IOError
+        # Old cookbook, has no metadata, use the folder name I guess.
+        File.basename(options[:cookbook_root])
+      end
     end
 
   end
