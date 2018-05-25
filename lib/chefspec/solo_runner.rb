@@ -164,6 +164,7 @@ module ChefSpec
         old_preload = $CHEFSPEC_PRELOAD
         $CHEFSPEC_PRELOAD = true
         converge("recipe[#{cookbook_name}]")
+        node.run_list.reset!
       ensure
         $CHEFSPEC_PRELOAD = old_preload
       end
