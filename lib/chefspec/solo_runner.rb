@@ -157,6 +157,12 @@ module ChefSpec
       end
     end
 
+    #
+    # Run a static preload of the cookbook under test. This will load libraries
+    # and resources, but not attributes or recipes.
+    #
+    # @return [void]
+    #
     def preload!
       # Flag to disable preloading for situations where it doesn't make sense.
       return if ENV['CHEFSPEC_NO_PRELOAD']
@@ -359,6 +365,8 @@ module ChefSpec
     #
     # The inferred cookbook root from the calling spec.
     #
+    # @param [Hash<Symbol, Object>] options
+    #   initial runner options
     # @param [Array<String>] kaller
     #   the calling trace
     #
@@ -377,6 +385,8 @@ module ChefSpec
     #
     # The inferred path from the calling spec.
     #
+    # @param [Hash<Symbol, Object>] options
+    #   initial runner options
     # @param [Array<String>] kaller
     #   the calling trace
     #
@@ -458,10 +468,20 @@ module ChefSpec
       end
     end
 
+    #
+    # Try to load the cookbook metadata for the cookbook under test.
+    #
+    # @return [Chef::Cookbook::Metadata]
+    #
     def cookbook
       @cookbook ||= Chef::Cookbook::Metadata.new.tap {|m| m.from_file("#{options[:cookbook_root]}/metadata.rb") }
     end
 
+    #
+    # Try to figure out the name for the cookbook under test.
+    #
+    # @return [String]
+    #
     def cookbook_name
       # Try to figure out the name of this cookbook, pretending this block
       # is in the name context as the cookbook under test.
