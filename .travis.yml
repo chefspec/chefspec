@@ -35,5 +35,3 @@ matrix:
       rvm: 2.4.2
     - env: "GEMFILE_MOD=\"gem 'chef', '= 13.0.118'\""
       rvm: 2.4.2
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 12.21.31'\""
-      rvm: 2.3.5
