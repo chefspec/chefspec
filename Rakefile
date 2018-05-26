@@ -42,6 +42,8 @@ namespace :acceptance do |ns|
 
           RSpec.configure do |config|
             config.color = true
+            config.run_all_when_everything_filtered = true
+            config.filter_run(:focus)
             config.before(:suite) do
               ChefSpec::ZeroServer.setup!
             end
