@@ -12,7 +12,7 @@ class Chef
       # @return [false]
       #
       def supports_pkgng?
-        false
+        true
       end
     end
   end
