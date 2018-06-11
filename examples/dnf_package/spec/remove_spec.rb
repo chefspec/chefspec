@@ -3,7 +3,7 @@ require 'chefspec'
 if defined?(Chef::Resource::DnfPackage)
   describe 'dnf_package::remove' do
     let(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'fedora', version: '25')
+      ChefSpec::ServerRunner.new(platform: 'fedora', version: '27')
         .converge(described_recipe)
     end
 
