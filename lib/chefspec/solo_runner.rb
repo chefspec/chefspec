@@ -182,12 +182,10 @@ module ChefSpec
     # @return [Chef::Node]
     #
     def node
-      return @node if @node
-
-      @node = client.build_node
-      @node.instance_variable_set(:@runner, self)
-      @node.class.send(:attr_reader, :runner)
-      @node
+      runner = self
+      @node ||= client.build_node.tap do |node|
+        node.define_singleton_method(:runner) { runner }
+      end
     end
 
     #
