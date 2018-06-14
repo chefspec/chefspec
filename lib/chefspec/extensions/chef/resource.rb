@@ -61,6 +61,14 @@ module ChefSpec::Extensions::Chef::Resource
   end
 
   #
+  # Defang shell_out and friends so it can never run.
+  #
+  def shell_out(*args)
+    return super unless $CHEFSPEC_MODE
+    raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: 'resource', resource: self)
+  end
+
+  #
   # tracking
   #
 

@@ -33,6 +33,7 @@ module ChefSpec
     class SearchNotStubbed < NotStubbed; end
     class DataBagNotStubbed < NotStubbed; end
     class DataBagItemNotStubbed < NotStubbed; end
+    class ShellOutNotStubbed < ChefSpecError; end
 
     class CookbookPathNotFound < ChefSpecError; end
     class GemLoadError < ChefSpecError; end
