@@ -78,7 +78,7 @@ module ChefSpec
         _chefspec_stubs_for_registry[:provider][target] << block
       end
 
-      def receive_shell_out(*cmd, stdout: nil, stderr: nil, exitstatus: 0, **opts)
+      def receive_shell_out(*cmd, stdout: '', stderr: '', exitstatus: 0, **opts)
         # Ruby does not allow constructing an actual exitstatus object from Ruby code. Really.
         fake_exitstatus = double(exitstatus: exitstatus)
         fake_cmd = Mixlib::ShellOut.new(*cmd, **opts)
