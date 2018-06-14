@@ -64,26 +64,7 @@ module ChefSpec
     #
     def initialize(options = {})
       @options = with_default_options(options)
-
-      Chef::Log.level = @options[:log_level]
-
-      Chef::Config.reset!
-      Chef::Config.formatters.clear
-      Chef::Config.add_formatter('chefspec')
-      Chef::Config[:cache_type]      = 'Memory'
-      Chef::Config[:client_key]      = nil
-      Chef::Config[:client_name]     = nil
-      Chef::Config[:node_name]       = nil
-      Chef::Config[:file_cache_path] = @options[:file_cache_path] || file_cache_path
-      Chef::Config[:cookbook_path]   = Array(@options[:cookbook_path])
-      Chef::Config[:no_lazy_load]    = true
-      Chef::Config[:role_path]       = Array(@options[:role_path])
-      Chef::Config[:force_logger]    = true
-      Chef::Config[:solo]            = true
-      Chef::Config[:solo_legacy_mode] = true
-      Chef::Config[:use_policyfile]  = false
-      Chef::Config[:environment_path] = @options[:environment_path]
-
+      apply_chef_config!
       yield node if block_given?
     end
 
@@ -106,6 +87,9 @@ module ChefSpec
     #   A reference to the calling Runner (for chaining purposes)
     #
     def converge(*recipe_names)
+      # Re-apply the Chef config before converging in case something else
+      # called Config.reset too.
+      apply_chef_config!
       @converging = false
       node.run_list.reset!
       recipe_names.each { |recipe_name| node.run_list.add(recipe_name) }
@@ -183,8 +167,11 @@ module ChefSpec
     #
     def node
       runner = self
-      @node ||= client.build_node.tap do |node|
-        node.define_singleton_method(:runner) { runner }
+      @node ||= begin
+        apply_chef_config!
+        client.build_node.tap do |node|
+          node.define_singleton_method(:runner) { runner }
+        end
       end
     end
 
@@ -489,6 +476,33 @@ module ChefSpec
         # Old cookbook, has no metadata, use the folder name I guess.
         File.basename(options[:cookbook_root])
       end
+    end
+
+    #
+    # Apply the required options to {Chef::Config}.
+    #
+    # @api private
+    # @return [void]
+    #
+    def apply_chef_config!
+      Chef::Log.level = @options[:log_level]
+
+      Chef::Config.reset!
+      Chef::Config.formatters.clear
+      Chef::Config.add_formatter('chefspec')
+      Chef::Config[:cache_type]      = 'Memory'
+      Chef::Config[:client_key]      = nil
+      Chef::Config[:client_name]     = nil
+      Chef::Config[:node_name]       = nil
+      Chef::Config[:file_cache_path] = @options[:file_cache_path] || file_cache_path
+      Chef::Config[:cookbook_path]   = Array(@options[:cookbook_path])
+      Chef::Config[:no_lazy_load]    = true
+      Chef::Config[:role_path]       = Array(@options[:role_path])
+      Chef::Config[:force_logger]    = true
+      Chef::Config[:solo]            = true
+      Chef::Config[:solo_legacy_mode] = true
+      Chef::Config[:use_policyfile]  = false
+      Chef::Config[:environment_path] = @options[:environment_path]
     end
 
   end
