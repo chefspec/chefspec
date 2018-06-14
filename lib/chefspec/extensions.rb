@@ -8,6 +8,7 @@ end
 # STOP! DO NOT ALPHABETIZE!
 require_relative 'extensions/chef/data_query' # must be before Chef::Resource loads
 require_relative 'extensions/chef/resource'  # must come before client extensions or anything that winds up loading resources
+require_relative 'extensions/chef/provider'
 require_relative 'extensions/chef/securable'
 require_relative 'extensions/chef/client'
 require_relative 'extensions/chef/conditional'

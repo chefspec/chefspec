@@ -10,6 +10,7 @@ module ChefSpec
     autoload :RenderFile, 'chefspec/api/render_file'
     autoload :StateAttrs, 'chefspec/api/state_attrs'
     autoload :Stubs, 'chefspec/api/stubs'
+    autoload :StubsFor, 'chefspec/api/stubs_for'
     autoload :Subscriptions, 'chefspec/api/subscriptions'
     autoload :User, 'chefspec/api/user'
 
@@ -24,6 +25,7 @@ module ChefSpec
       klass.include(ChefSpec::API::StateAttrs)
       klass.include(ChefSpec::API::Notifications)
       klass.include(ChefSpec::API::Stubs)
+      klass.include(ChefSpec::API::StubsFor)
       klass.include(ChefSpec::API::Subscriptions)
 
       # hacks and sugar for resources that don't follow the normal pattern

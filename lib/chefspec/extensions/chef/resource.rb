@@ -10,6 +10,32 @@ require 'chefspec/api'
 
 module ChefSpec::Extensions::Chef::Resource
 
+  #
+  # Hooks for the stubs_for system
+  #
+  def initialize(*args, &block)
+    super(*args, &block)
+    if $CHEFSPEC_MODE
+      # Here be dragons.
+      # If we're directly inside a `load_current_resource`, this is probably
+      # something like `new_resource.class.new` so we want to call this a current_resource,
+      # Otherwise it's probably a normal resource instantiation.
+      mode = caller[1].include?("`load_current_resource'") ? :current_resource : :resource
+      ChefSpec::API::StubsFor.setup_stubs_for(self, mode)
+    end
+  end
+
+  def dup
+    return super unless $CHEFSPEC_MODE
+    # Also here be dragons.
+    stack = caller
+    super.tap do |dup_resource|
+      # We're directly inside a load_current_resource, which is probably via
+      # the load_current_value DSL system, so call this a current resource.
+      ChefSpec::API::StubsFor.setup_stubs_for(dup_resource, :current_resource) if stack.first.include?("`load_current_resource'")
+    end
+  end
+
   # mix of no-op and tracking concerns
   def run_action(action, notification_type = nil, notifying_resource = nil)
     return super unless $CHEFSPEC_MODE
