@@ -18,22 +18,22 @@ describe 'stubs_for' do
 
     context 'running load' do
       default_attributes['test']['run_load'] = true
-      it { expect { subject }.to raise_error Errno::ENOENT }
+      it { expect { subject }.to raise_error ChefSpec::Error::ShellOutNotStubbed }
     end
 
     context 'running resource' do
       default_attributes['test']['run_resource'] = true
-      it { expect { subject }.to raise_error Errno::ENOENT }
+      it { expect { subject }.to raise_error ChefSpec::Error::ShellOutNotStubbed }
     end
 
     context 'running provider' do
       default_attributes['test']['run_provider'] = true
-      it { expect { subject }.to raise_error Errno::ENOENT }
+      it { expect { subject }.to raise_error ChefSpec::Error::ShellOutNotStubbed }
     end
 
     context 'running all three' do
       default_attributes['test'] = {run_load: true, run_resource: true, run_provider: true}
-      it { expect { subject }.to raise_error Errno::ENOENT }
+      it { expect { subject }.to raise_error ChefSpec::Error::ShellOutNotStubbed }
     end
   end
 
@@ -59,7 +59,7 @@ describe 'stubs_for' do
         stubs_for_resource('stubs_for_test[test]', current_resource: false) do |res|
           allow(res).to receive_shell_out('this_is_not_a_cmd', stdout: 'asdf')
         end
-        expect { subject }.to raise_error Errno::ENOENT
+        expect { subject }.to raise_error ChefSpec::Error::ShellOutNotStubbed
       end
 
       context 'with old-style load_current_resource' do
@@ -139,7 +139,7 @@ describe 'stubs_for' do
         stubs_for_resource('stubs_for_test[test]', current_resource: false) do |res|
           allow(res).to receive_shell_out('this_is_not_a_cmd', stdout: 'asdf')
         end
-        it { expect { subject }.to raise_error Errno::ENOENT }
+        it { expect { subject }.to raise_error ChefSpec::Error::ShellOutNotStubbed }
       end
     end
 
