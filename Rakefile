@@ -17,7 +17,7 @@ RSpec::Core::RakeTask.new(:unit) do |t|
   end.join(' ')
 end
 
-failed = false
+failed = []
 start_time = nil
 
 namespace :acceptance do |ns|
@@ -55,7 +55,7 @@ namespace :acceptance do |ns|
           RSpec.clear_examples
           exitstatus = RSpec::Core::Runner.run(["spec"])
           RSpec.reset
-          failed = true unless exitstatus == 0
+          failed << dir unless exitstatus == 0
         end
       end
     end
@@ -65,7 +65,7 @@ end
 
 task acceptance: Rake.application.tasks.select { |t| t.name.start_with?("acceptance:") } do
   puts "Acceptance tests took #{Time.now - start_time} seconds"
-  raise "some tests failed" if failed
+  raise "some tests failed: #{failed.join(', ')}" unless failed.empty?
 end
 
 desc 'Run all tests'
