@@ -11,6 +11,6 @@ Chef::Resource::FreebsdPackage.prepend(Module.new do
   #
   def supports_pkgng?
     return super unless $CHEFSPEC_MODE
-    false
+    true
   end
 end)
