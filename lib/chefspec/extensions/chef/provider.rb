@@ -17,8 +17,20 @@ Chef::Provider.prepend(Module.new do
   end
 
   # Defang shell_out and friends so it can never run.
-  def shell_out(*args)
-    return super unless $CHEFSPEC_MODE
-    raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: 'provider', resource: new_resource)
+  if ChefSpec::API::StubsFor::HAS_SHELLOUT_COMPACTED.satisfied_by?(Gem::Version.create(Chef::VERSION))
+    def shell_out_compacted(*args)
+      return super unless $CHEFSPEC_MODE
+      raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: 'provider', resource: new_resource)
+    end
+
+    def shell_out_compacted!(*args)
+      return super unless $CHEFSPEC_MODE
+      shell_out_compacted(*args).tap {|c| c.error! }
+    end
+  else
+    def shell_out(*args)
+      return super unless $CHEFSPEC_MODE
+      raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: 'provider', resource: new_resource)
+    end
   end
 end)
