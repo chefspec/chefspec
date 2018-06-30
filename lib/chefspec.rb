@@ -68,6 +68,7 @@ require_relative 'chefspec/renderer'
 require_relative 'chefspec/rspec'
 require_relative 'chefspec/server_runner'
 require_relative 'chefspec/solo_runner'
+require_relative 'chefspec/runner'
 require_relative 'chefspec/util'
 require_relative 'chefspec/version'
 
