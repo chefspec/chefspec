@@ -4,22 +4,130 @@
 
 ChefSpec is a unit testing framework for testing Chef cookbooks. ChefSpec makes it easy to write examples and get fast feedback on cookbook changes without the need for virtual machines or cloud servers.
 
-ChefSpec runs your cookbook(s) locally with Chef Solo without actually converging a node. This has two primary benefits:
+ChefSpec runs your cookbooks locally while skipping making actual changes. This has two primary benefits:
 
 - It's really fast!
-- Your tests can vary node attributes, operating systems, and search results to assert behavior under varying conditions.
+- Your tests can vary node attributes, operating systems, and other system data to assert behavior under varying conditions.
 
 ## Important Notes
 
 - **ChefSpec requires Ruby 2.2 or later and Chef 12.14.89 or later!**
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version's documentation!**
-- **Each resource matcher is self-documented using [Yard](http://rubydoc.info/github/chefspec/chefspec) and has a corresponding test recipe in the [examples directory](https://github.com/chefspec/chefspec/tree/master/examples).**
 
-## Notes on Compatibility with Chef Versions
+**ChefSpec aims to maintain compatibility with at least the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
 
-**ChefSpec aims to maintain compatibility with the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
+As a general rule, if it is tested in the Travis CI matrix, it is a supported version.
 
-As a general rule, if it is tested in the Travis CI matrix, it is a supported version. The section below details any specific versions that are _not_ supported and why:
+## Quick Start
+
+There are two main ways to use ChefSpec: testing custom resources and testing recipes.
+
+### Testing a Custom Resource
+
+If you have have a cookbook with a custom resource `resources/greet.rb` like:
+
+```ruby
+resource_name :mycookbook_greet
+
+property :greeting, String, default: "Hello"
+
+action :run do
+  log "#{new_resource.greeting} world"
+end
+```
+
+You can test that resource by creating a spec file `spec/greet_spec.rb`:
+
+```ruby
+# Load ChefSpec and put our test into ChefSpec mode.
+require "chefspec"
+
+# Describing our custom resource.
+describe "mycookbook_greet" do
+  # Normally ChefSpec skips running resources, but for this test we want to
+  # actually run this one custom resource.
+  step_into :mycookbook_greet
+  # Nothing in this test is platform-specific, so use the latest Ubuntu for
+  # simulated data.
+  platform "ubuntu"
+
+  # Create an example group for testing the resource defaults.
+  context "with the default greeting" do
+    # Set the subject of this example group to a snippet of recipe code calling
+    # our custom resource.
+    recipe do
+      mycookbook_greet "test"
+    end
+
+    # Confirm that the resources created by our custom resource's action are
+    # correct. ChefSpec matchers all take the form `action_type(name)`.
+    it { is_expected.to write_log("Hello world") }
+  end
+
+  # Create a second example group to test a different block of recipe code.
+  context "with a custom greeting" do
+    # This time our test recipe code sets a property on the custom resource.
+    recipe do
+      mycookbook_greet "test" do
+        greeting "Bonjour"
+      end
+    end
+
+    # Use the same kind of matcher as before to confirm the action worked.
+    it { is_expected.to write_log("Bonjour world") }
+  end
+end
+```
+
+And then run your test using `chef exec rspec`.
+
+### Testing a Recipe
+
+As a general rule of thumb, only very complex recipes benefit from ChefSpec unit
+tests. If you find yourself writing a lot of recipe unit tests, consider converting
+the recipes to custom resources instead. For the sake of example we'll use a
+simple recipe, `recipes/farewell.rb`:
+
+```ruby
+log "#{node["mycookbook"]["farewell"]} world"
+```
+
+You can test that recipe by creating a spec file `spec/farewell_spec.rb`:
+
+```ruby
+# Load ChefSpec and put our test into ChefSpec mode.
+require "chefspec"
+
+# Describing our recipe. The group name should be the recipe string as you would
+# use it with include_recipe.
+describe "mycookbook::farewell" do
+  # Nothing in this test is platform-specific, so use the latest Ubuntu for
+  # simulated data.
+  platform "ubuntu"
+
+  # Create an example group for testing the recipe defaults.
+  context "with default attributes" do
+    # Since there was no `recipe do .. end` block here, the default subject is
+    # recipe we named in the `describe`. ChefSpec matchers all take the form
+    # `action_type(name)`.
+    it { is_expected.to write_log("Goodbye world") }
+  end
+
+  # Create a second example group to test with attributes.
+  context "with a custom farewell" do
+    # Set an override attribute for this group.
+    override_attributes["mycookbook"]["farewell"] = "Adios"
+
+    # Use the same kind of matcher as before to confirm the recipe worked.
+    it { is_expected.to write_log("Adios world") }
+  end
+end
+```
+
+
+
+[as far as I've gotten]
+
 
 ## Writing a Cookbook Example
 
