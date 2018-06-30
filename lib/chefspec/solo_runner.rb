@@ -368,6 +368,14 @@ module ChefSpec
     end
 
     #
+    # String subclass used to indicate we only want to try to load this one
+    # cookbook, not everything in the folder.
+    #
+    # @api internal
+    #
+    class SingleCookbookLoadPath < String; end
+
+    #
     # The inferred path from the calling spec.
     #
     # @param [Hash<Symbol, Object>] options
@@ -378,7 +386,15 @@ module ChefSpec
     # @return [String]
     #
     def calling_cookbook_path(options, kaller)
-      File.expand_path(File.join(calling_cookbook_root(options, kaller), '..'))
+      naive_path = File.expand_path(File.join(calling_cookbook_root(options, kaller), '..'))
+      # If the word cookbook is in the folder name, treat it as the path. Otherwise
+      # it's probably not a cookbook path and so we activate the gross hack mode.
+      if File.basename(naive_path) =~ /cookbook/
+        naive_path
+      else
+        # Yes this is a gross hack. Sorry, feel free to fix it.
+       SingleCookbookLoadPath.new(naive_path)
+      end
     end
 
     #
@@ -496,6 +512,7 @@ module ChefSpec
       Chef::Config[:node_name]       = nil
       Chef::Config[:file_cache_path] = @options[:file_cache_path] || file_cache_path
       Chef::Config[:cookbook_path]   = Array(@options[:cookbook_path])
+      Chef::Config[:chefspec_cookbook_root]   = @options[:cookbook_root] if @options[:cookbook_path].is_a?(SingleCookbookLoadPath)
       Chef::Config[:no_lazy_load]    = true
       Chef::Config[:role_path]       = Array(@options[:role_path])
       Chef::Config[:force_logger]    = true
