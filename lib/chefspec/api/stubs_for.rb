@@ -7,7 +7,7 @@ module ChefSpec
       extend RSpec::SharedContext
 
       # Which version to use the shell_out_compacted hook on.
-      HAS_SHELLOUT_COMPACTED = Gem::Requirement.create("> 13.2")
+      HAS_SHELLOUT_COMPACTED = Gem::Requirement.create("> 14.2")
 
       # Hook used in the monkey patches to set up a place to inject stubs when
       # needed for a resource or provider.
