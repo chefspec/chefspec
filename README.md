@@ -29,7 +29,7 @@ If you have have a cookbook with a custom resource `resources/greet.rb` like:
 ```ruby
 resource_name :mycookbook_greet
 
-property :greeting, String, default: "Hello"
+property :greeting, String, default: 'Hello'
 
 action :run do
   log "#{new_resource.greeting} world"
@@ -40,41 +40,41 @@ You can test that resource by creating a spec file `spec/greet_spec.rb`:
 
 ```ruby
 # Load ChefSpec and put our test into ChefSpec mode.
-require "chefspec"
+require 'chefspec'
 
 # Describing our custom resource.
-describe "mycookbook_greet" do
+describe 'mycookbook_greet' do
   # Normally ChefSpec skips running resources, but for this test we want to
   # actually run this one custom resource.
   step_into :mycookbook_greet
   # Nothing in this test is platform-specific, so use the latest Ubuntu for
   # simulated data.
-  platform "ubuntu"
+  platform 'ubuntu'
 
   # Create an example group for testing the resource defaults.
-  context "with the default greeting" do
+  context 'with the default greeting' do
     # Set the subject of this example group to a snippet of recipe code calling
     # our custom resource.
     recipe do
-      mycookbook_greet "test"
+      mycookbook_greet 'test'
     end
 
     # Confirm that the resources created by our custom resource's action are
     # correct. ChefSpec matchers all take the form `action_type(name)`.
-    it { is_expected.to write_log("Hello world") }
+    it { is_expected.to write_log('Hello world') }
   end
 
   # Create a second example group to test a different block of recipe code.
-  context "with a custom greeting" do
+  context 'with a custom greeting' do
     # This time our test recipe code sets a property on the custom resource.
     recipe do
-      mycookbook_greet "test" do
-        greeting "Bonjour"
+      mycookbook_greet 'test' do
+        greeting 'Bonjour'
       end
     end
 
     # Use the same kind of matcher as before to confirm the action worked.
-    it { is_expected.to write_log("Bonjour world") }
+    it { is_expected.to write_log('Bonjour world') }
   end
 end
 ```
@@ -96,30 +96,30 @@ You can test that recipe by creating a spec file `spec/farewell_spec.rb`:
 
 ```ruby
 # Load ChefSpec and put our test into ChefSpec mode.
-require "chefspec"
+require 'chefspec'
 
 # Describing our recipe. The group name should be the recipe string as you would
 # use it with include_recipe.
-describe "mycookbook::farewell" do
+describe 'mycookbook::farewell' do
   # Nothing in this test is platform-specific, so use the latest Ubuntu for
   # simulated data.
-  platform "ubuntu"
+  platform 'ubuntu'
 
   # Create an example group for testing the recipe defaults.
-  context "with default attributes" do
+  context 'with default attributes' do
     # Since there was no `recipe do .. end` block here, the default subject is
     # recipe we named in the `describe`. ChefSpec matchers all take the form
     # `action_type(name)`.
-    it { is_expected.to write_log("Goodbye world") }
+    it { is_expected.to write_log('Goodbye world') }
   end
 
   # Create a second example group to test with attributes.
-  context "with a custom farewell" do
+  context 'with a custom farewell' do
     # Set an override attribute for this group.
-    override_attributes["mycookbook"]["farewell"] = "Adios"
+    override_attributes['mycookbook']['farewell'] = 'Adios'
 
     # Use the same kind of matcher as before to confirm the recipe worked.
-    it { is_expected.to write_log("Adios world") }
+    it { is_expected.to write_log('Adios world') }
   end
 end
 ```
