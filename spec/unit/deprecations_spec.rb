@@ -27,31 +27,6 @@ describe ChefSpec::Runner do
     end
 
   end
-
-  describe '#new' do
-    before do
-      allow(ChefSpec::SoloRunner).to receive(:new)
-    end
-
-    it 'prints a deprecation' do
-      expect(ChefSpec::Runner).to receive(:deprecated)
-        .with("`ChefSpec::Runner' is deprecated. Please use" \
-        " `ChefSpec::SoloRunner' or `ChefSpec::ServerRunner' instead.")
-      ChefSpec::Runner.new
-    end
-
-    it 'calls SoloRunner#new with no args' do
-      expect(ChefSpec::SoloRunner).to receive(:new).with(no_args()).once
-      ChefSpec::Runner.new
-    end
-
-    it 'calls SoloRunner#new with args' do
-      args = [ 'args' ]
-      expect(ChefSpec::SoloRunner).to receive(:new).with(*args).once
-      ChefSpec::Runner.new(*args)
-    end
-
-  end
 end
 
 describe ChefSpec::Server do
