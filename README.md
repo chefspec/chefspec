@@ -124,6 +124,34 @@ describe 'mycookbook::farewell' do
 end
 ```
 
+## Cookbook Dependencies
+
+If you are using Berkshelf, `require 'chefspec/berkshelf'` in your spec file (or `spec_helper.rb`):
+
+```ruby
+require 'chefspec'
+require 'chefspec/berkshelf'
+```
+
+If you are using a Policyfile, `require 'chefspec/policyfile'` in you spec file (or `spec_helper.rb`):
+
+```ruby
+require 'chefspec'
+require 'chefspec/policyfile'
+```
+
+Your `Policyfile.rb` should look something like this:
+
+```ruby
+# The policy name is ignored but you need to specify one.
+name 'my_cookbook'
+# Pull dependent cookbooks from https://supermarket.chef.io/
+default_source :supermarket
+# The run list is also ignored by ChefSpec but you need to specify one.
+run_list 'my_cookbook::default'
+# The name here must match the name in metadata.rb.
+cookbook 'my_cookbook', path: '.'
+```
 
 
 [as far as I've gotten]
