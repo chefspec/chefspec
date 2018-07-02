@@ -20,7 +20,20 @@ As a general rule, if it is tested in the Travis CI matrix, it is a supported ve
 
 ## Quick Start
 
-There are two main ways to use ChefSpec: testing custom resources and testing recipes.
+## When To Use ChefSpec?
+
+As mentioned before, ChefSpec is built for speed. In order to run your tests as
+quickly as possible (and to allow running tests on your workstation), ChefSpec
+runs your recipe code with all the resource actions disabled. This means that
+ChefSpec excels at testing complex logic in a cookbook, but can't actually tell
+you if a cookbook is doing the right thing. Integration testing is provided by
+the [Test Kitchen](https://kitchen.ci/) project, and for most simple cookbooks
+without much logic in them we recommend you start off with integration tests and
+only return to ChefSpec and unit tests as your code gets more complicated.
+
+There are two common "units" of code in Chef cookbooks, custom resources and
+recipes. If you find yourself with a lot of recipes that are so complex they
+require unit tests, consider if they can be refactored as custom resources.
 
 ### Testing a Custom Resource
 
@@ -126,6 +139,10 @@ end
 
 ## Cookbook Dependencies
 
+If your cookbook depends on other cookbooks, you must ensure ChefSpec knows how
+to fetch those dependencies. If you use a monorepo-style layout with all your
+cookbooks in a single `cookbooks/` folder, you don't need to do anything.
+
 If you are using Berkshelf, `require 'chefspec/berkshelf'` in your spec file (or `spec_helper.rb`):
 
 ```ruby
@@ -153,8 +170,160 @@ run_list 'my_cookbook::default'
 cookbook 'my_cookbook', path: '.'
 ```
 
+## Writing Tests
 
-[as far as I've gotten]
+ChefSpec is an RSpec library, so if you're already familiar with RSpec you can
+use all the normal spec-y goodness to which you are accustomed. The usual structure
+of an RSpec test file is a file named like `spec/something_spec.rb` containing:
+
+```ruby
+require 'chefspec'
+
+describe 'resource name or recipe' do
+  # Some configuration for everything inside this `describe`.
+  platform 'redhat', '7'
+  default_attributes['value'] = 1
+
+  context 'when some condition' do
+    # Some configuration that only applies to this `context`.
+    default_attributes['value'] = 2
+
+    # `matcher` is some matcher function which we'll cover below.
+    it { expect(value).to matcher }
+    # There is a special value you can expect things on called `subject`, which
+    # is the main thing being tested.
+    it { expect(subject).to matcher }
+    # And if prefer it for readability, `expect(subject)` can be written as `is_expected`.
+    it { is_expected.to matcher }
+  end
+
+  context 'when some other condition' do
+    # Repeat as needed.
+  end
+end
+```
+
+### ChefSpec Matchers
+
+The primary matcher used with ChefSpec are resource matchers:
+
+```ruby
+it { expect(chef_run).to ACTION_RESOURCE('NAME') }
+# Or equivalently.
+it { is_expected.to ACTION_RESOURCE('NAME') }
+```
+
+This checks that a resource like `RESOURCE 'NAME'` would have run the specified
+action if the cookbook was executing normally. You can also test for specific
+property values:
+
+```ruby
+it { is_expected.to create_user('asmithee').with(uid: 512, gid: 45) }
+# You can also use other RSpec matchers to create a "compound matcher". Check
+# RSpec documentation for a full reference on the built-in matchers.
+it { is_expected.to install_package('myapp').with(version: starts_with("3.")) }
+```
+
+#### `render_file`
+
+For the common case of testing that a file is rendered to disk via either a
+`template`, `file`, or `cookbook_file` resource, you can use a `render_file`
+matcher:
+
+```ruby
+it { is_expected.to render_file('/etc/myapp.conf') }
+# You can check for specific content in the file.
+it { is_expected.to render_file('/etc/myapp.conf').with_content("debug = false\n") }
+# Or with a regexp.
+it { is_expected.to render_file('/etc/myapp.conf').with_content(/user = \d+/) }
+# Or with a compound matcher.
+it { is_expected.to render_file('/etc/myapp.conf').with_content(start_with('# This file managed by Chef')) }
+# Or with a Ruby block of arbitrary assertions.
+it do
+  is_expected.to render_file('/etc/myapp.conf').with_content { |content|
+    # Arbitrary RSpec code goes here.
+  }
+end
+```
+
+#### Notifications
+
+As actions do not normally run in ChefSpec, testing for notifications is a special
+case. Unlike the resource matchers which evaluate against the ChefSpec runner,
+the notification matchers evaluate against a resource object:
+
+```ruby
+# To match `notifies :run, 'execute[unpack]', :immediately
+it { expect(chef_run.remote_file('/download')).to notify('execute[unpack]') }
+# To check for a specific notification action.
+it { expect(chef_run.remote_file('/download')).to notify('execute[unpack]').to(:run) }
+# And to check for a specific timing.
+it { expect(chef_run.remote_file('/download')).to notify('execute[unpack]').to(:run).immediately }
+```
+
+And similarly for subscriptions:
+
+```ruby
+it { expect(chef_run.execute('unpack')).to subscribe_to('remote_file[/download]').on(:create) }
+```
+
+### Test Settings
+
+Most ChefSpec configuration is set in your example groups (`describe` or `context`
+blocks) using helper methods. These all follow the RSpec convention of inheriting
+from a parent group to the groups inside it. So a setting in your top-level `describe`
+will automatically be set in any `context` unless overridden:
+
+```ruby
+describe 'something' do
+  platform 'ubuntu'
+
+  # Platform is Ubuntu for any tests here.
+  it { is_expected.to ... }
+
+  context 'when something' do
+    # Platform is still Ubuntu for any tests here.
+  end
+
+  context 'when something else' do
+    platform 'fedora'
+    # But platform here will be Fedora.
+  end
+end
+```
+
+#### Platform Data
+
+To support simulating Chef runs on the same OS as you use your cookbooks on, ChefSpec
+loads pre-fabricated Ohai data from [Fauxhai](https://github.com/chefspec/fauxhai/).
+To configure which OS' data is set for your test, use the `platform` helper method:
+
+```ruby
+describe 'something' do
+  platform 'ubuntu', '18.04'
+  # ...
+end
+```
+
+You can specify a partial version number to get the latest version of that OS
+matching the provided prefix, or leave the version off entirely to get the latest
+version overall:
+
+```ruby
+# Will use the latest RedHat 7.x.
+platform 'redhat', '7'
+# Will use the latest version of Windows.
+platform 'windows'
+```
+
+**WARNING:** If you leave off the version or use a partial version prefix, the
+behavior of your tests may change between versions of ChefDK as new data is
+available in Fauxhai. Only use this feature if you're certain that your tests
+do not (or should not) depend on the specifics of OS version.
+
+#### Node Attributes
+
+# [as far as I've gotten]
 
 
 ## Writing a Cookbook Example
