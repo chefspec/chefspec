@@ -47,7 +47,7 @@ describe ChefSpec::SoloRunner do
     it 'defaults the cookbook_path to the calling spec when using windows paths' do
       runner = described_class.new
       windows_path = runner.instance_exec(windows_caller_stack) { |callstack|
-        calling_cookbook_path(callstack)
+        calling_cookbook_path({}, callstack)
       }
       # There's got to be a better way to do this the File.expand_path returns
       # something like /home/user/repos/chefspec/C:/cookbooks" which is less

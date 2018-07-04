@@ -19,7 +19,7 @@ module Kernel
 end
 
 module ChefSpec
-  class Runner
+  class SoloRunner
     # @deprecated {ChefSpec::Runner.define_runner_method} is deprecated. Please
     #   use {ChefSpec.define_matcher} instead.
     def self.define_runner_method(resource_name)
@@ -28,15 +28,6 @@ module ChefSpec
         " Please use `ChefSpec.define_matcher' instead."
 
       ChefSpec.define_matcher(resource_name)
-    end
-
-    # @deprecated {ChefSpec::Runner.new} is deprecated. Please use
-    #   {ChefSpec::SoloRunner} or {ChefSpec::ServerRunner} instead.
-    def self.new(*args, &block)
-      deprecated "`ChefSpec::Runner' is deprecated. Please use" \
-        " `ChefSpec::SoloRunner' or `ChefSpec::ServerRunner' instead."
-
-      ChefSpec::SoloRunner.new(*args, &block)
     end
   end
 

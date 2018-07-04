@@ -1,5 +1,6 @@
 require 'fauxhai'
 require 'chef/client'
+require 'chef/cookbook/metadata'
 require 'chef/mash'
 require 'chef/providers'
 require 'chef/resources'
@@ -63,26 +64,7 @@ module ChefSpec
     #
     def initialize(options = {})
       @options = with_default_options(options)
-
-      Chef::Log.level = @options[:log_level]
-
-      Chef::Config.reset!
-      Chef::Config.formatters.clear
-      Chef::Config.add_formatter('chefspec')
-      Chef::Config[:cache_type]      = 'Memory'
-      Chef::Config[:client_key]      = nil
-      Chef::Config[:client_name]     = nil
-      Chef::Config[:node_name]       = nil
-      Chef::Config[:file_cache_path] = @options[:file_cache_path] || file_cache_path
-      Chef::Config[:cookbook_path]   = Array(@options[:cookbook_path])
-      Chef::Config[:no_lazy_load]    = true
-      Chef::Config[:role_path]       = Array(@options[:role_path])
-      Chef::Config[:force_logger]    = true
-      Chef::Config[:solo]            = true
-      Chef::Config[:solo_legacy_mode] = true
-      Chef::Config[:use_policyfile]  = false
-      Chef::Config[:environment_path] = @options[:environment_path]
-
+      apply_chef_config!
       yield node if block_given?
     end
 
@@ -105,6 +87,10 @@ module ChefSpec
     #   A reference to the calling Runner (for chaining purposes)
     #
     def converge(*recipe_names)
+      # Re-apply the Chef config before converging in case something else
+      # called Config.reset too.
+      apply_chef_config!
+      @converging = false
       node.run_list.reset!
       recipe_names.each { |recipe_name| node.run_list.add(recipe_name) }
 
@@ -112,6 +98,14 @@ module ChefSpec
 
       # Expand the run_list
       expand_run_list!
+
+      # Merge in provided node attributes. Default and override use the role_
+      # levels so they win over the relevant bits from cookbooks since otherwise
+      # they would not and that would be confusing.
+      node.attributes.role_default = Chef::Mixin::DeepMerge.merge(node.attributes.role_default, options[:default_attributes]) if options[:default_attributes]
+      node.attributes.normal = Chef::Mixin::DeepMerge.merge(node.attributes.normal, options[:normal_attributes]) if options[:normal_attributes]
+      node.attributes.role_override = Chef::Mixin::DeepMerge.merge(node.attributes.role_override, options[:override_attributes]) if options[:override_attributes]
+      node.attributes.automatic = Chef::Mixin::DeepMerge.merge(node.attributes.automatic, options[:automatic_attributes]) if options[:automatic_attributes]
 
       # Setup the run_context, rescuing the exception that happens when a
       # resource is not defined on a particular platform
@@ -133,17 +127,52 @@ module ChefSpec
     end
 
     #
+    # Execute a block of recipe code.
+    #
+    # @param [Proc] block
+    #   A block containing Chef recipe code
+    #
+    # @return [ChefSpec::SoloRunner]
+    #
+    def converge_block(&block)
+      converge do
+        recipe = Chef::Recipe.new(cookbook_name, '_test', run_context)
+        recipe.instance_exec(&block)
+      end
+    end
+
+    #
+    # Run a static preload of the cookbook under test. This will load libraries
+    # and resources, but not attributes or recipes.
+    #
+    # @return [void]
+    #
+    def preload!
+      # Flag to disable preloading for situations where it doesn't make sense.
+      return if ENV['CHEFSPEC_NO_PRELOAD']
+      begin
+        old_preload = $CHEFSPEC_PRELOAD
+        $CHEFSPEC_PRELOAD = true
+        converge("recipe[#{cookbook_name}]")
+        node.run_list.reset!
+      ensure
+        $CHEFSPEC_PRELOAD = old_preload
+      end
+    end
+
+    #
     # The +Chef::Node+ corresponding to this Runner.
     #
     # @return [Chef::Node]
     #
     def node
-      return @node if @node
-
-      @node = client.build_node
-      @node.instance_variable_set(:@runner, self)
-      @node.class.send(:attr_reader, :runner)
-      @node
+      runner = self
+      @node ||= begin
+        apply_chef_config!
+        client.build_node.tap do |node|
+          node.define_singleton_method(:runner) { runner }
+        end
+      end
     end
 
     #
@@ -306,7 +335,8 @@ module ChefSpec
       config = RSpec.configuration
 
       {
-        cookbook_path: config.cookbook_path || calling_cookbook_path(caller),
+        cookbook_root: config.cookbook_root || calling_cookbook_root(options, caller),
+        cookbook_path: config.cookbook_path || calling_cookbook_path(options, caller),
         role_path:     config.role_path || default_role_path,
         environment_path: config.environment_path || default_environment_path,
         file_cache_path: config.file_cache_path,
@@ -318,21 +348,37 @@ module ChefSpec
     end
 
     #
-    # The inferred path from the calling spec.
+    # The inferred cookbook root from the calling spec.
     #
+    # @param [Hash<Symbol, Object>] options
+    #   initial runner options
     # @param [Array<String>] kaller
     #   the calling trace
     #
     # @return [String]
     #
-    def calling_cookbook_path(kaller)
-      calling_spec = kaller.find { |line| line =~ /\/spec/ }
+    def calling_cookbook_root(options, kaller)
+      calling_spec = options[:spec_declaration_locations] || kaller.find { |line| line =~ /\/spec/ }
       raise Error::CookbookPathNotFound if calling_spec.nil?
 
       bits = calling_spec.split(/:[0-9]/, 2).first.split(File::SEPARATOR)
       spec_dir = bits.index('spec') || 0
 
-      File.expand_path(File.join(bits.slice(0, spec_dir), '..'))
+      File.join(bits.slice(0, spec_dir))
+    end
+
+    #
+    # The inferred path from the calling spec.
+    #
+    # @param [Hash<Symbol, Object>] options
+    #   initial runner options
+    # @param [Array<String>] kaller
+    #   the calling trace
+    #
+    # @return [String]
+    #
+    def calling_cookbook_path(options, kaller)
+      File.expand_path(File.join(calling_cookbook_root(options, kaller), '..'))
     end
 
     #
@@ -406,5 +452,63 @@ module ChefSpec
         end
       end
     end
+
+    #
+    # Try to load the cookbook metadata for the cookbook under test.
+    #
+    # @return [Chef::Cookbook::Metadata]
+    #
+    def cookbook
+      @cookbook ||= Chef::Cookbook::Metadata.new.tap {|m| m.from_file("#{options[:cookbook_root]}/metadata.rb") }
+    end
+
+    #
+    # Try to figure out the name for the cookbook under test.
+    #
+    # @return [String]
+    #
+    def cookbook_name
+      # Try to figure out the name of this cookbook, pretending this block
+      # is in the name context as the cookbook under test.
+      begin
+        cookbook.name
+      rescue IOError
+        # Old cookbook, has no metadata, use the folder name I guess.
+        File.basename(options[:cookbook_root])
+      end
+    end
+
+    #
+    # Apply the required options to {Chef::Config}.
+    #
+    # @api private
+    # @return [void]
+    #
+    def apply_chef_config!
+      Chef::Log.level = @options[:log_level]
+
+      Chef::Config.reset!
+      Chef::Config.formatters.clear
+      Chef::Config.add_formatter('chefspec')
+      Chef::Config[:cache_type]      = 'Memory'
+      Chef::Config[:client_key]      = nil
+      Chef::Config[:client_name]     = nil
+      Chef::Config[:node_name]       = nil
+      Chef::Config[:file_cache_path] = @options[:file_cache_path] || file_cache_path
+      Chef::Config[:cookbook_path]   = Array(@options[:cookbook_path])
+      # If the word cookbook is in the folder name, treat it as the path. Otherwise
+      # it's probably not a cookbook path and so we activate the gross hack mode.
+      if Chef::Config[:cookbook_path].size == 1 && Chef::Config[:cookbook_path].first !~ /cookbook/
+        Chef::Config[:chefspec_cookbook_root] = @options[:cookbook_root]
+      end
+      Chef::Config[:no_lazy_load]    = true
+      Chef::Config[:role_path]       = Array(@options[:role_path])
+      Chef::Config[:force_logger]    = true
+      Chef::Config[:solo]            = true
+      Chef::Config[:solo_legacy_mode] = true
+      Chef::Config[:use_policyfile]  = false
+      Chef::Config[:environment_path] = @options[:environment_path]
+    end
+
   end
 end

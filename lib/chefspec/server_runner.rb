@@ -23,15 +23,6 @@ module ChefSpec
       # our yielding.
       super(options, &nil)
 
-      Chef::Config[:client_key]      = client_key
-      Chef::Config[:client_name]     = 'chefspec'
-      Chef::Config[:node_name]       = 'chefspec'
-      Chef::Config[:solo]            = false
-      Chef::Config[:solo_legacy_mode] = false
-
-      Chef::Config[:chef_server_url]  = server.url
-      Chef::Config[:http_retry_count] = 0
-
       # Unlike the SoloRunner, the node AND server object are yielded for
       # customization
       yield node, self if block_given?
@@ -67,6 +58,19 @@ module ChefSpec
       File.open(path, 'wb') { |f| f.write(ChefZero::PRIVATE_KEY) }
       at_exit { FileUtils.rm_rf(tmp) }
       path
+    end
+
+    # (see SoloRunner#apply_chef_config!)
+    def apply_chef_config!
+      super
+      Chef::Config[:client_key]       = client_key
+      Chef::Config[:client_name]      = 'chefspec'
+      Chef::Config[:node_name]        = 'chefspec'
+      Chef::Config[:solo]             = false
+      Chef::Config[:solo_legacy_mode] = false
+
+      Chef::Config[:chef_server_url]  = server.url
+      Chef::Config[:http_retry_count] = 0
     end
   end
 end

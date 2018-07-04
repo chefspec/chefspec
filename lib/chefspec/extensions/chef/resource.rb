@@ -1,4 +1,5 @@
 require 'chef/resource'
+require 'chef/version'
 require 'chefspec/api'
 
 #
@@ -10,8 +11,35 @@ require 'chefspec/api'
 
 module ChefSpec::Extensions::Chef::Resource
 
+  #
+  # Hooks for the stubs_for system
+  #
+  def initialize(*args, &block)
+    super(*args, &block)
+    if $CHEFSPEC_MODE
+      # Here be dragons.
+      # If we're directly inside a `load_current_resource`, this is probably
+      # something like `new_resource.class.new` so we want to call this a current_resource,
+      # Otherwise it's probably a normal resource instantiation.
+      mode = caller[1].include?("`load_current_resource'") ? :current_resource : :resource
+      ChefSpec::API::StubsFor.setup_stubs_for(self, mode)
+    end
+  end
+
+  def dup
+    return super unless $CHEFSPEC_MODE
+    # Also here be dragons.
+    stack = caller
+    super.tap do |dup_resource|
+      # We're directly inside a load_current_resource, which is probably via
+      # the load_current_value DSL system, so call this a current resource.
+      ChefSpec::API::StubsFor.setup_stubs_for(dup_resource, :current_resource) if stack.first.include?("`load_current_resource'")
+    end
+  end
+
   # mix of no-op and tracking concerns
   def run_action(action, notification_type = nil, notifying_resource = nil)
+    return super unless $CHEFSPEC_MODE
     resolve_notification_references
     validate_action(action)
 
@@ -34,20 +62,37 @@ module ChefSpec::Extensions::Chef::Resource
   end
 
   #
+  # Defang shell_out and friends so it can never run.
+  #
+  if ChefSpec::API::StubsFor::HAS_SHELLOUT_COMPACTED.satisfied_by?(Gem::Version.create(Chef::VERSION))
+    def shell_out_compacted(*args)
+      return super unless $CHEFSPEC_MODE
+      raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: 'resource', resource: self)
+    end
+
+    def shell_out_compacted!(*args)
+      return super unless $CHEFSPEC_MODE
+      shell_out_compacted(*args).tap {|c| c.error! }
+    end
+  else
+    def shell_out(*args)
+      return super unless $CHEFSPEC_MODE
+      raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: 'resource', resource: self)
+    end
+  end
+
+  #
   # tracking
   #
 
-  def initialize(*args)
-    @performed_actions = {}
-    super
-  end
-
   def perform_action(action, options = {})
+    @performed_actions ||= {}
     @performed_actions[action.to_sym] ||= {}
     @performed_actions[action.to_sym].merge!(options)
   end
 
   def performed_action(action)
+    @performed_actions ||= {}
     @performed_actions[action.to_sym]
   end
 
@@ -60,6 +105,7 @@ module ChefSpec::Extensions::Chef::Resource
   end
 
   def performed_actions
+    @performed_actions ||= {}
     @performed_actions.keys
   end
 
@@ -120,6 +166,7 @@ module ChefSpec::Extensions::Chef::Resource
 
     def inject_actions(*actions)
       provides_names.each do |resource_name|
+        next unless resource_name
         ChefSpec.define_matcher(resource_name)
         actions.each do |action|
           inject_method(:"#{action}_#{resource_name}", resource_name, action)

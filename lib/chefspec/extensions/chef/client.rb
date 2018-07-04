@@ -8,15 +8,14 @@ require 'chef/providers'
 require 'chef/client'
 
 # @private
-class Chef::Client
-  attr_reader :events
-
+Chef::Client.prepend(Module.new do
   #
   # Don't actually run ohai (we have fake data for that)
   #
   # @see Chef::Client#run_ohai
   #
   def run_ohai
+    return super unless $CHEFSPEC_MODE
     # noop
   end
-end
+end)

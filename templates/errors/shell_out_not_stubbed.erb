@@ -1,0 +1,10 @@
+Executing a real shell_out in <%= @resource %> is not allowed:
+
+    shell_out(<%= @args.inspect[1..-2] %>)
+
+You can stub this with:
+
+    stubs_for_<%= @type %>(<%= @resource.to_s.inspect %>) do |<%= @type %>|
+      allow(<%= @type %>).to receive_shell_out(<%= @args.inspect[1..-2] %>)
+    end
+

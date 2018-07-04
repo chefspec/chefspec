@@ -1,10 +1,9 @@
 require 'chef/dsl/data_query'
 
-module Chef::DSL::DataQuery
+Chef::DSL::DataQuery.prepend(Module.new do
   # @see Chef::DSL::DataQuery#search
-  alias_method :old_search, :search
   def search(*args, &block)
-    return old_search(*args, &block) unless Chef::Config[:solo]
+    return super unless Chef::Config[:solo] && $CHEFSPEC_MODE
 
     type  = args[0]
     query = args[1] || '*:*'
@@ -23,9 +22,8 @@ module Chef::DSL::DataQuery
   end
 
   # @see Chef::DSL::DataQuery#data_bag
-  alias_method :old_data_bag, :data_bag
   def data_bag(bag)
-    return old_data_bag(bag) unless Chef::Config[:solo]
+    return super unless Chef::Config[:solo] && $CHEFSPEC_MODE
 
     stub = ChefSpec::Stubs::DataBagRegistry.stub_for(bag)
 
@@ -37,9 +35,8 @@ module Chef::DSL::DataQuery
   end
 
   # @see Chef::DSL::DataQuery#data_bag_item
-  alias_method :old_data_bag_item, :data_bag_item
   def data_bag_item(bag, id, secret = nil)
-    return old_data_bag_item(bag, id, secret) unless Chef::Config[:solo]
+    return super unless Chef::Config[:solo] && $CHEFSPEC_MODE
 
     stub = ChefSpec::Stubs::DataBagItemRegistry.stub_for(bag, id)
 
@@ -49,4 +46,4 @@ module Chef::DSL::DataQuery
 
     stub.result
   end
-end
+end)

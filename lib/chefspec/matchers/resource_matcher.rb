@@ -39,7 +39,7 @@ module ChefSpec::Matchers
     end
 
     def description
-      %Q{#{@expected_actioe} #{@resource_name} "#{@expected_identity}"}
+      %Q{#{@expected_action} #{@resource_name} "#{@expected_identity}"}
     end
 
     def matches?(runner)

@@ -1,16 +1,11 @@
 RSpec.configure do |config|
-  config.include(ChefSpec::API)
-  config.include(ChefSpec::Macros)
-
-  config.after(:each) do
-    ChefSpec::Stubs::CommandRegistry.reset!
-    ChefSpec::Stubs::DataBagRegistry.reset!
-    ChefSpec::Stubs::DataBagItemRegistry.reset!
-    ChefSpec::Stubs::SearchRegistry.reset!
+  unless ENV['CHEFSPEC_NO_INCLUDE']
+    config.include(ChefSpec::API)
   end
 
   config.add_setting :berkshelf_options, default: {}
   config.add_setting :file_cache_path
+  config.add_setting :cookbook_root
   config.add_setting :cookbook_path
   config.add_setting :role_path
   config.add_setting :environment_path

@@ -4,29 +4,25 @@
 # sub-resource collections.
 
 if defined?(Chef::Provider::InlineResources)
-  class Chef
-    class Provider
-      module InlineResources # ~> 12.5
-        def initialize(resource, run_context)
-          super
-          @run_context = run_context
-          @resource_collection = run_context.resource_collection
-        end
+  Chef::Provider::InlineResources.prepend(Module.new do
+    def initialize(resource, run_context)
+      super
+      @run_context = run_context
+      @resource_collection = run_context.resource_collection
+    end
+  end)
 
-        module ClassMethods
-          def action(name, &block)
-            define_method("action_#{name}", &block)
-          end
-        end
-      end
+  Chef::Provider::InlineResources::ClassMethods.prepend(Module.new do
+    def action(name, &block)
+      # Note: This does not check $CHEFSPEC_MODE.
+      define_method("action_#{name}", &block)
     end
-  end
+  end)
 else # >= 13.0
-  class Chef
-    class Provider
-      def self.action(name, &block)
-        define_method("action_#{name}", &block)
-      end
+  Chef::Provider.prepend(Module.new do
+    def compile_and_converge_action(&block)
+      return super unless $CHEFSPEC_MODE
+      instance_eval(&block)
     end
-  end
+  end)
 end

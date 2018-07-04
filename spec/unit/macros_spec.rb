@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe ChefSpec::Macros do
+describe ChefSpec::API::Stubs do
   describe '#stub_command' do
     let(:command_stub) { double('command') }
 
     it 'adds the command to the command registry' do
       allow(ChefSpec::Stubs::CommandStub).to receive(:new).and_return(command_stub)
-      described_class.stub_command('echo "hello"')
+      stub_command('echo "hello"')
 
       expect(ChefSpec::Stubs::CommandRegistry.stubs).to include(command_stub)
     end
@@ -17,7 +17,7 @@ describe ChefSpec::Macros do
 
     it 'adds the query to the search registry' do
       allow(ChefSpec::Stubs::SearchStub).to receive(:new).and_return(search_stub)
-      described_class.stub_search(:node, '*:*')
+      stub_search(:node, '*:*')
 
       expect(ChefSpec::Stubs::SearchRegistry.stubs).to include(search_stub)
     end
@@ -28,7 +28,7 @@ describe ChefSpec::Macros do
 
     it 'adds the query to the data_bag registry' do
       allow(ChefSpec::Stubs::DataBagStub).to receive(:new).and_return(data_bag_stub)
-      described_class.stub_data_bag(:users)
+      stub_data_bag(:users)
 
       expect(ChefSpec::Stubs::DataBagRegistry.stubs).to include(data_bag_stub)
     end
@@ -39,7 +39,7 @@ describe ChefSpec::Macros do
 
     it 'adds the query to the data_bag_item registry' do
       allow(ChefSpec::Stubs::DataBagItemStub).to receive(:new).and_return(data_bag_item_stub)
-      described_class.stub_data_bag_item(:users, 'id')
+      stub_data_bag_item(:users, 'id')
 
       expect(ChefSpec::Stubs::DataBagItemRegistry.stubs).to include(data_bag_item_stub)
     end
@@ -47,43 +47,43 @@ describe ChefSpec::Macros do
 
   describe '#stub_node' do
     it 'returns a Chef::Node' do
-      expect(described_class.stub_node).to be_a(Chef::Node)
+      expect(stub_node).to be_a(Chef::Node)
     end
 
     it 'defaults the node name to `node.example`' do
-      node = described_class.stub_node
+      node = stub_node
       expect(node.name).to eq('node.example')
     end
 
     it 'sets the node name when given' do
-      node = described_class.stub_node('example.com')
+      node = stub_node('example.com')
       expect(node.name).to eq('example.com')
     end
 
     it 'sets the automatic attributes' do
-      node = described_class.stub_node
+      node = stub_node
       expect(node.automatic).to eq(Fauxhai.mock.data)
     end
 
     it 'sets the automatic attributes with ohai overrides' do
-      node = described_class.stub_node('node.example', ohai: { ipaddress: '1.2.3.4' })
+      node = stub_node('node.example', ohai: { ipaddress: '1.2.3.4' })
       expect(node['ipaddress']).to eq('1.2.3.4')
     end
 
     it 'sets the automatic attributes for a specific platform and version' do
-      node = described_class.stub_node('node.example', platform: 'ubuntu', version: '16.04')
+      node = stub_node('node.example', platform: 'ubuntu', version: '16.04')
       expect(node.automatic).to eq(Fauxhai.mock(platform: 'ubuntu', version: '16.04').data)
     end
 
     it 'sets the automatic attributes from a JSON data path' do
       allow(File).to receive(:exist?).with('/path/to/json').and_return(true)
       allow(File).to receive(:read).with('/path/to/json').and_return('{ "ipaddress": "1.2.3.4" }')
-      node = described_class.stub_node('node.example', path: '/path/to/json')
+      node = stub_node('node.example', path: '/path/to/json')
       expect(node['ipaddress']).to eq('1.2.3.4')
     end
 
     it 'yields a block' do
-      expect { |block| described_class.stub_node(&block) }.to yield_with_args(Chef::Node)
+      expect { |block| stub_node(&block) }.to yield_with_args(Chef::Node)
     end
   end
 end
