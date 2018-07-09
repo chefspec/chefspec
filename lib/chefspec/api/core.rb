@@ -182,7 +182,7 @@ module ChefSpec
           klass.extend(ClassMethods)
           # If the describe block is aimed at string or resource/provider class
           # then set the default subject to be the Chef run.
-          if klass.described_class.nil? || klass.described_class < Chef::Resource || klass.described_class < Chef::Provider
+          if klass.described_class.nil? || klass.described_class.is_a?(Class) && (klass.described_class < Chef::Resource || klass.described_class < Chef::Provider)
             klass.subject { chef_run }
           end
         end
