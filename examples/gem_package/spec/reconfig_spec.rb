@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'gem_package::reconfig' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'reconfigs a gem_package with an explicit action' do
     expect(chef_run).to reconfig_gem_package('explicit_action')

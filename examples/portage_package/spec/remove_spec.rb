@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'portage_package::remove' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'gentoo', version: '4.9.95-gentoo')
+    ChefSpec::SoloRunner.new(platform: 'gentoo', version: '4.9.95-gentoo')
                           .converge(described_recipe)
   end
 

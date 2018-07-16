@@ -37,7 +37,7 @@ describe ChefSpec::Server do
   it 'prints a deprecation for any method called' do
     expect(ChefSpec::Server).to receive(:deprecated)
       .with("`ChefSpec::Server.any_method' is deprecated. There is no longer" \
-        " a global Chef Server instance. Please use a ChefSpec::ServerRunner" \
+        " a global Chef Server instance. Please use a ChefSpec::SoloRunner" \
         " instead. More documentation can be found in the ChefSpec README."
       )
     expect {

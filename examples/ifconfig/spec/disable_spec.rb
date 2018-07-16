@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'ifconfig::disable' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'disables a ifconfig with an explicit action' do
     expect(chef_run).to disable_ifconfig('10.0.0.2')

@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'compile_time::default' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'matches without .at_compile_time' do
     expect(chef_run).to install_package('compile_time')

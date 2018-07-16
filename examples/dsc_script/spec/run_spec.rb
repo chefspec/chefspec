@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'dsc_script::run' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'windows', version: '2016')
+    ChefSpec::SoloRunner.new(platform: 'windows', version: '2016')
                           .converge(described_recipe)
   end
 

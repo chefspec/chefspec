@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'nothing_matcher::default' do
-  subject(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  subject(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   context 'a resource with action :run' do
     it { is_expected.to run_ruby_block('yes') }

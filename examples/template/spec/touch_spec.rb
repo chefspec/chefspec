@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'template::touch' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'touches a template with an explicit action' do
     expect(chef_run).to touch_template('/tmp/explicit_action')

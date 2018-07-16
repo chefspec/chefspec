@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'route::add' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'adds a route with the default action' do
     expect(chef_run).to add_route('10.0.0.1')

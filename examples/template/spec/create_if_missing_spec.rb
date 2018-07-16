@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'template::create_if_missing' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'creates a template with an explicit action' do
     expect(chef_run).to create_template_if_missing('/tmp/explicit_action')

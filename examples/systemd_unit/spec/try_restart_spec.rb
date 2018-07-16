@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'systemd_unit::try_restart' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'tries to restart a systemd_unit daemon with an explicit action' do
     expect(chef_run).to try_restart_systemd_unit('explicit_action')
