@@ -27,7 +27,7 @@ describe 'server::node' do
 
       node = chef_run.get_node('chefspec')
       expect(node['kernel']['name']).to eq('Linux')
-      expect(node['kernel']['release']).to match(/4.4.0-.*-.*/) # avoid failing when fauxhai data changes
+      expect(node['kernel']['release']).to match(/4.15.0-.*-.*/) # avoid failing when fauxhai data changes
       expect(node['kernel']['machine']).to eq('x86_64')
     end
   end
