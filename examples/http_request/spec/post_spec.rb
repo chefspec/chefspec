@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'http_request::post' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'posts a http_request with an explicit action' do
     expect(chef_run).to post_http_request('explicit_action')

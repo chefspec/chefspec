@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'smartos_package::upgrade' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'smartos', version: '5.11')
+    ChefSpec::SoloRunner.new(platform: 'smartos', version: '5.11')
                           .converge(described_recipe)
   end
 

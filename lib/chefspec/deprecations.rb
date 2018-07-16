@@ -34,7 +34,7 @@ module ChefSpec
   class Server
     def self.method_missing(m, *args, &block)
       deprecated "`ChefSpec::Server.#{m}' is deprecated. There is no longer" \
-        " a global Chef Server instance. Please use a ChefSpec::ServerRunner" \
+        " a global Chef Server instance. Please use a ChefSpec::SoloRunner" \
         " instead. More documentation can be found in the ChefSpec README."
       raise ChefSpec::Error::NoConversionError
     end

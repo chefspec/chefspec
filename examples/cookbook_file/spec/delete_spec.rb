@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'cookbook_file::delete' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'deletes a cookbook_file with an explicit action' do
     expect(chef_run).to delete_cookbook_file('/tmp/explicit_action')

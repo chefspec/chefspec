@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'user::modify' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04')
+    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04')
                           .converge(described_recipe)
   end
 

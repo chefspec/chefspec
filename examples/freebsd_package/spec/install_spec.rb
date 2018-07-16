@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'freebsd_package::install' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'freebsd', version: '11.2')
+    ChefSpec::SoloRunner.new(platform: 'freebsd', version: '11.2')
                           .converge(described_recipe)
   end
 

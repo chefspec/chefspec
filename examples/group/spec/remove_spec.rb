@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'group::remove' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'removes a group with an explicit action' do
     expect(chef_run).to remove_group('explicit_action')

@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'pacman_package::upgrade' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'arch', version: '4.10.13-1-ARCH')
+    ChefSpec::SoloRunner.new(platform: 'arch', version: '4.10.13-1-ARCH')
                           .converge(described_recipe)
   end
 

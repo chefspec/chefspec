@@ -3,7 +3,7 @@ require 'chefspec'
 if defined?(Chef::Resource::MsuPackage)
   describe 'msu_package::install' do
     let(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'windows', version: '2016')
+      ChefSpec::SoloRunner.new(platform: 'windows', version: '2016')
         .converge(described_recipe)
     end
 

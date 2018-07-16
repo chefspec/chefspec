@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'guards::default' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'includes resource that have guards that evalute to true' do
     expect(chef_run).to start_service('true_guard')
