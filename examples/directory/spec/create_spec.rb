@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'directory::create' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'creates a directory with the default action' do
     expect(chef_run).to create_directory('/tmp/default_action')

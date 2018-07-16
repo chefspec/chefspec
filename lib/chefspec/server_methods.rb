@@ -118,7 +118,7 @@ module ChefSpec
     #
     # @example Create a node from a +Chef::Node+ object
     #
-    #   node = stub_node('bacon', platform: 'ubuntu', version: '16.04')
+    #   node = stub_node('bacon', platform: 'ubuntu', version: '18.04')
     #   create_node(node)
     #
     # @param [String, Chef::Node] object

@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'osx_profile::install' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: '10.12').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: '10.13').converge(described_recipe) }
 
   it 'installs an osx_profile with an explicit action' do
     expect(chef_run).to install_osx_profile('explicit_action')

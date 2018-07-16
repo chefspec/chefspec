@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'package::purge' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'purges a package with an explicit action' do
     expect(chef_run).to purge_package('explicit_action')

@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'paludis_package::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'gentoo', version: '4.9.6-gentoo-r1').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'gentoo', version: '4.9.95-gentoo').converge(described_recipe) }
 
   it 'installs a paludis_package with the default action' do
     expect(chef_run).to install_paludis_package('default_action')

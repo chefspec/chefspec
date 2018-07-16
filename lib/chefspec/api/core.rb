@@ -89,7 +89,7 @@ module ChefSpec
         #
         # @example
         #   describe 'myrecipe' do
-        #     platform 'ubuntu', '16.04'
+        #     platform 'ubuntu', '18.04'
         # @param name [String] Platform name to set.
         # @param version [String, nil] Platform version to set.
         # @return [void]

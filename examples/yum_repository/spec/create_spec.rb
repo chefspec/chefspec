@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'yum_repository::create' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'centos', version: '7.3.1611')
+    ChefSpec::ServerRunner.new(platform: 'centos', version: '7.5.1804')
                           .converge(described_recipe)
   end
 

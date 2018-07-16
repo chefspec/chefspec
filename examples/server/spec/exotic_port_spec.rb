@@ -15,7 +15,7 @@ describe 'server::port' do
   end
 
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04')
+    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04')
   end
 
   it 'does not raise an exception' do

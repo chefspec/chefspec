@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'http_request::head' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'heads a http_request with an explicit action' do
     expect(chef_run).to head_http_request('explicit_action')

@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'chef_gem::install' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'installs a chef_gem with the default action' do
     expect(chef_run).to install_chef_gem('default_action')

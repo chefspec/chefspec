@@ -1,5 +1,5 @@
 describe 'spec_step_into' do
-  platform 'ubuntu', '16.04'
+  platform 'ubuntu', '18.04'
 
   context 'with no step_into' do
     it { is_expected.to_not write_log('one') }

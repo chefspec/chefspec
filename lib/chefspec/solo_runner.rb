@@ -35,7 +35,7 @@ module ChefSpec
     #   ChefSpec::SoloRunner.new
     #
     # @example Specifying the platform and version
-    #   ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04')
+    #   ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04')
     #
     # @example Specifying the cookbook path
     #   ChefSpec::SoloRunner.new(cookbook_path: ['/cookbooks'])

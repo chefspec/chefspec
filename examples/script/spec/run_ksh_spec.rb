@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'script::run_ksh' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'runs a ksh script with the default action' do
     expect(chef_run).to run_ksh('default_action')

@@ -33,7 +33,7 @@ describe 'server::search' do
   end
 
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04') do |node, server|
+    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04') do |node, server|
       node.normal['bar'] = true
       server.update_node(node)
 

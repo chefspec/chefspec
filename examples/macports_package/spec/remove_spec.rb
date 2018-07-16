@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'macports_package::remove' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: '10.12').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: '10.13').converge(described_recipe) }
 
   it 'removes a macports_package with an explicit action' do
     expect(chef_run).to remove_macports_package('explicit_action')

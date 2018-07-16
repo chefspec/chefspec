@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'group::manage' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'manages a group with an explicit action' do
     expect(chef_run).to manage_group('explicit_action')
