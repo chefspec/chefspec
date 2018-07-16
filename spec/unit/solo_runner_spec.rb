@@ -93,7 +93,7 @@ describe ChefSpec::SoloRunner do
     end
 
     context 'fauxhai attributes' do
-      let(:hash) { described_class.new(platform: 'ubuntu', version: '16.04').node.to_hash }
+      let(:hash) { described_class.new(platform: 'ubuntu', version: '18.04').node.to_hash }
 
       it 'sets the attributes from fauxhai' do
         expect(hash['os']).to eq('linux')

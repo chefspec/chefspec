@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'package::lock' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'locks a package with an explicit action' do
     expect(chef_run).to lock_package('explicit_action')

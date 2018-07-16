@@ -89,7 +89,7 @@ module ChefSpec
       #   stub_node('mynode.example')
       #
       # @example mocking a specific platform and version
-      #   stub_node('mynode.example', platform: 'ubuntu', version: '16.04')
+      #   stub_node('mynode.example', platform: 'ubuntu', version: '18.04')
       #
       # @example overriding a specific ohai attribute
       #   stub_node('mynode.example', ohai: { ipaddress: '1.2.3.4' })

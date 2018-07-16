@@ -7,7 +7,7 @@ describe 'spec_platform' do
   end
 
   context 'with an ubuntu platform' do
-    platform 'ubuntu', '16.04'
+    platform 'ubuntu', '18.04'
     it { is_expected.to write_log("test").with_message('Hello ubuntu 16.04') }
   end
 

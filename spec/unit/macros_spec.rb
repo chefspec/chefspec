@@ -71,8 +71,8 @@ describe ChefSpec::API::Stubs do
     end
 
     it 'sets the automatic attributes for a specific platform and version' do
-      node = stub_node('node.example', platform: 'ubuntu', version: '16.04')
-      expect(node.automatic).to eq(Fauxhai.mock(platform: 'ubuntu', version: '16.04').data)
+      node = stub_node('node.example', platform: 'ubuntu', version: '18.04')
+      expect(node.automatic).to eq(Fauxhai.mock(platform: 'ubuntu', version: '18.04').data)
     end
 
     it 'sets the automatic attributes from a JSON data path' do

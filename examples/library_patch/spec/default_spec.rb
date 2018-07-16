@@ -1,5 +1,5 @@
 describe 'library_patch' do
-  platform 'ubuntu', '16.04'
+  platform 'ubuntu', '18.04'
 
   context 'with no patch' do
     it { is_expected.to write_log('Hello 1') }

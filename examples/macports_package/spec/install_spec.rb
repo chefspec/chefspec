@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'macports_package::install' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: '10.12').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'mac_os_x', version: '10.13').converge(described_recipe) }
 
   it 'installs a macports_package with the default action' do
     expect(chef_run).to install_macports_package('default_action')

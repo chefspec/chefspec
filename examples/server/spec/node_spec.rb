@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'server::node' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04') do |_node, server|
+    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04') do |_node, server|
       server.create_node('bacon', name: 'bacon')
     end.converge(described_recipe)
   end
@@ -18,7 +18,7 @@ describe 'server::node' do
 
   context 'with custom Ohai data' do
     let(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04')
+      ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04')
                             .converge(described_recipe)
     end
 
@@ -34,7 +34,7 @@ describe 'server::node' do
 
   context 'with overridden node data' do
     let(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04') do |node, _server|
+      ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04') do |node, _server|
         node.normal['breakfast']['bacon'] = true
       end.converge(described_recipe)
     end

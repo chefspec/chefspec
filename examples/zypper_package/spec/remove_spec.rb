@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'zypper_package::remove' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'opensuse', version: '42.1').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'opensuse', version: '42.3').converge(described_recipe) }
 
   it 'removes a zypper_package with an explicit action' do
     expect(chef_run).to remove_zypper_package('explicit_action')

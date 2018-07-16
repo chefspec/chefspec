@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'env::create' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'windows', version: '2012R2')
+    ChefSpec::ServerRunner.new(platform: 'windows', version: '2016')
                           .converge(described_recipe)
   end
 

@@ -1,5 +1,5 @@
 describe 'custom_resource_block' do
-  platform 'ubuntu', '16.04'
+  platform 'ubuntu', '18.04'
   step_into :custom_resource_block
   recipe do
     custom_resource_block 'name'

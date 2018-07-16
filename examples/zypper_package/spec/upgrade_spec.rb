@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'zypper_package::upgrade' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'opensuse', version: '42.1').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'opensuse', version: '42.3').converge(described_recipe) }
 
   it 'upgrades a zypper_package with an explicit action' do
     expect(chef_run).to upgrade_zypper_package('explicit_action')

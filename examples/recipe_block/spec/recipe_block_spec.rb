@@ -1,5 +1,5 @@
 describe 'recipe block' do
-  platform 'ubuntu', '16.04'
+  platform 'ubuntu', '18.04'
   recipe do
     log 'this is a recipe block'
   end
@@ -10,7 +10,7 @@ describe 'recipe block' do
 end
 
 describe 'complex recipe block' do
-  platform 'ubuntu', '16.04'
+  platform 'ubuntu', '18.04'
   recipe do
     package 'apache2' do
       version '1.2.3'

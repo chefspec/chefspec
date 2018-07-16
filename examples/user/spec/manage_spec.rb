@@ -2,7 +2,7 @@ require 'chefspec'
 
 describe 'user::manage' do
   let(:chef_run) do
-    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04')
+    ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04')
                           .converge(described_recipe)
   end
 

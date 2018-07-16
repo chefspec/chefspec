@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'remote_directory::delete' do
-  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '16.04').converge(described_recipe) }
+  let(:chef_run) { ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
   it 'deletes a remote_directory with an explicit action' do
     expect(chef_run).to delete_remote_directory('/tmp/explicit_action')
