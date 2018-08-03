@@ -1,0 +1,8 @@
+title: ChefSpec
+description: Write RSpec examples and generate coverage reports for Chef recipes!
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-minimal
+
+gems:
+  - jekyll-mentions
