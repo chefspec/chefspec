@@ -14,27 +14,33 @@ module ChefSpec
           # Only run the preload if a platform is configured via the new system
           # since otherwise it will spam warnings about the platform not being
           # set.
-          chef_runner.preload! if chefspec_platform
+          chef_runner_instance.preload! if chefspec_platform
           ex.run
         ensure
           $CHEFSPEC_MODE = old_chefspec_mode
         end
       end
 
-      # Let variables to set the platform in a scoped way. Used below by
+      # Let variables to set data in a scoped way. Used below by
       # {ClassMethods#platform}.
+      let(:chefspec_default_attributes) { chefspec_attributes(:default_attributes) }
+      let(:chefspec_normal_attributes) { chefspec_attributes(:normal_attributes) }
+      let(:chefspec_override_attributes) { chefspec_attributes(:override_attributes) }
+      let(:chefspec_automatic_attributes) { chefspec_attributes(:automatic_attributes) }
       let(:chefspec_platform) { nil }
       let(:chefspec_platform_version) { nil }
 
-      # Set up the runner object but don't actually run anything yet. This can
-      # be overridden if needed to set up very custom things.
-      let(:chef_runner) do
+      # Compute the options for the runner.
+      #
+      # @abstract
+      # @return [Hash<Symbol, Object>]
+      def chef_runner_options
         options = {
           step_into: chefspec_ancestor_gather([], :step_into) {|memo, val| memo | val },
-          default_attributes: chefspec_attributes(:default_attributes),
-          normal_attributes: chefspec_attributes(:normal_attributes),
-          override_attributes: chefspec_attributes(:override_attributes),
-          automatic_attributes: chefspec_attributes(:automatic_attributes),
+          default_attributes: chefspec_default_attributes,
+          normal_attributes: chefspec_normal_attributes,
+          override_attributes: chefspec_override_attributes,
+          automatic_attributes: chefspec_automatic_attributes,
           spec_declaration_locations: self.class.declaration_locations.last[0],
         }
         # Only specify these if set in the example so we don't override the
@@ -43,15 +49,31 @@ module ChefSpec
         options[:version] = chefspec_platform_version if chefspec_platform_version
         # Merge in any final overrides.
         options.update(chefspec_attributes(:chefspec_options).symbolize_keys)
-        # At some point this is probably going to need a flag for ServerRunner
-        # because someone will complain.
-        ChefSpec::SoloRunner.new(options)
+        options
       end
 
-      # By default, run the recipe in the base `describe` block.
-      let(:chef_run) do
-        chef_runner.converge(described_recipe)
+      # Class of runner to use.
+      #
+      # @abstract
+      # @return [Class]
+      def chef_runner_class
+        ChefSpec::SoloRunner
       end
+
+      # Create an instance of the runner.
+      #
+      # This should only be used in cases where the `let()` cache would be a problem.
+      #
+      # @return [ChefSpec::SoloRunner]
+      def chef_runner_instance
+        chef_runner_class.new(chef_runner_options)
+      end
+
+      # Set up the runner object but don't actually run anything yet.
+      let(:chef_runner) { chef_runner_instance }
+
+      # By default, run the recipe in the base `describe` block.
+      let(:chef_run) { chef_runner.converge(described_recipe) }
 
       # Helper method for some of the nestable test value methods like
       # {ClassMethods#default_attributes} and {ClassMethods#step_into}.
