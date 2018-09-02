@@ -51,4 +51,13 @@ describe 'spec_attributes' do
       it { is_expected.to write_log('thing1=un thing2=two version=3.0') }
     end
   end
+
+  context 'before attributes' do
+    before do
+      chefspec_default_attributes['myapp'] ||= {}
+      chefspec_default_attributes['myapp']['version'] = '4.0'
+    end
+
+    it { is_expected.to write_log('version=4.0') }
+  end
 end
