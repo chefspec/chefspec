@@ -1,5 +1,9 @@
 # CHANGELOG for ChefSpec
 
+## 7.3.1 (September 1, 2018)
+
+- Add additional hooks for customizing the runner creation process.
+
 ## 7.3.0 (August 30, 2018)
 
 - Major syntax overhaul and update. Check out the [README](/README.md) for examples of the updated syntax. The older syntax is still present and will be supported at least until ChefSpec 8.0, but documentation has been moved to [README_old](/README_old.md).
