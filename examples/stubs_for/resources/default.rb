@@ -5,6 +5,7 @@ property :value
 property :run_resource, [true, false], default: false
 property :run_load, [true, false], default: false
 property :run_provider, [true, false], default: false
+property :user, default: nil
 
 def foo
   shell_out(cmd).stdout
@@ -16,5 +17,11 @@ end
 
 action :run do
   new_resource.foo if new_resource.run_resource
-  shell_out!(new_resource.cmd) if new_resource.run_provider
+  if new_resource.run_provider
+    if new_resource.user
+      shell_out!(new_resource.cmd, user: new_resource.user)
+    else
+      shell_out!(new_resource.cmd)
+    end
+  end
 end

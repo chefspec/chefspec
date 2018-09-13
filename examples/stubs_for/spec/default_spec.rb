@@ -1,13 +1,14 @@
 describe 'stubs_for' do
   platform 'ubuntu'
   step_into :stubs_for_test, :stubs_for_old
-  default_attributes['test'] = {run_load: false, run_resource: false, run_provider: false}
+  default_attributes['test'] = {run_load: false, run_resource: false, run_provider: false, user: nil}
   recipe do
     stubs_for_test 'test' do
       cmd 'this_is_not_a_cmd'
       run_load node['test']['run_load']
       run_resource node['test']['run_resource']
       run_provider node['test']['run_provider']
+      user node['test']['user']
     end
   end
 
@@ -112,6 +113,28 @@ describe 'stubs_for' do
         allow(prov).to receive_shell_out('this_is_not_a_cmd', stdout: 'asdf')
       end
       subject
+    end
+
+    context 'with a user' do
+      default_attributes['test']['user'] = 'foo'
+
+      it do
+        stubs_for_provider('stubs_for_test[test]') do |prov|
+          allow(prov).to receive_shell_out('this_is_not_a_cmd', stdout: 'asdf', user: 'foo')
+        end
+        subject
+      end
+    end
+
+    context 'with a user and a generic stub' do
+      default_attributes['test']['user'] = 'foo'
+
+      it do
+        stubs_for_provider('stubs_for_test[test]') do |prov|
+          allow(prov).to receive_shell_out('this_is_not_a_cmd', stdout: 'asdf')
+        end
+        subject
+      end
     end
   end
 
