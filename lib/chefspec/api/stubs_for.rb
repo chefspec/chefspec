@@ -86,7 +86,7 @@ module ChefSpec
       def receive_shell_out(*cmd, stdout: '', stderr: '', exitstatus: 0, **opts)
         # Ruby does not allow constructing an actual exitstatus object from Ruby code. Really.
         fake_exitstatus = double(exitstatus: exitstatus)
-        fake_cmd = Mixlib::ShellOut.new(*cmd, **opts)
+        fake_cmd = Mixlib::ShellOut.new(*cmd)
         fake_cmd.define_singleton_method(:run_command) { } # Do nothing, just in case.
         # Inject our canned data.
         fake_cmd.instance_exec do
@@ -100,7 +100,8 @@ module ChefSpec
         else
           :shell_out
         end
-        receive(shell_out_method).with(*cmd).and_return(fake_cmd)
+        with_args = cmd + (opts.empty? ? [any_args] : [hash_including(opts)])
+        receive(shell_out_method).with(*with_args).and_return(fake_cmd)
       end
 
       module ClassMethods
