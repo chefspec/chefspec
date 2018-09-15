@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
                     'ChefSpec makes it easy to write examples and get fast ' \
                     'feedback on cookbook changes without the need for ' \
                     'virtual machines or cloud servers.'
-  s.homepage      = 'https://sethvargo.github.io/chefspec/'
+  s.homepage      = 'https://github.com/chefspec/chefspec'
   s.license       = 'MIT'
 
   # Packaging
