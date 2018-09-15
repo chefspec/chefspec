@@ -1,5 +1,10 @@
 # CHANGELOG for ChefSpec
 
+## 7.3.2 (September 14, 2018)
+
+- Improve runner construction code
+- Make options to receive_shell_out work a bit better.
+
 ## 7.3.1 (September 1, 2018)
 
 - Add additional hooks for customizing the runner creation process.
