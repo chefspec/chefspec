@@ -540,6 +540,9 @@ before do
 end
 ```
 
+All the ruby methods off of the File, Dir and FileUtils classes along with any other global class methods that the
+client might use, should follow a similar pattern for stubbing.
+
 Check out the [RSpec Mocks documentation](https://relishapp.com/rspec/rspec-mocks/docs)
 for more information about setting up Ruby method stubs.
 
