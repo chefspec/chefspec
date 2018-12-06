@@ -18,9 +18,7 @@ Gem::Specification.new do |s|
   s.license       = 'MIT'
 
   # Packaging
-  s.files         = `git ls-files`.split($/)
-  s.executables   = s.files.grep(%r{^bin/}) { |f| File.basename(f) }
-  s.test_files    = s.files.grep(%r{^(test|spec|features)/})
+  s.files         = %w{LICENSE} + Dir.glob("{lib,templates}/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
   s.require_paths = ['lib']
 
   s.required_ruby_version = '>= 2.2'
