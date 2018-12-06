@@ -16,6 +16,12 @@ bundler_args: --jobs 7 --retry 3
 
 matrix:
   include:
+    - env: "GEMFILE_MOD=\"gem 'chef', '= 14.7.17'\""
+      rvm: 2.5.3
+    - env: "GEMFILE_MOD=\"gem 'chef', '= 14.6.47'\""
+      rvm: 2.5.1
+    - env: "GEMFILE_MOD=\"gem 'chef', '= 14.5.33'\""
+      rvm: 2.5.1
     - env: "GEMFILE_MOD=\"gem 'chef', '= 14.4.56'\""
       rvm: 2.5.1
     - env: "GEMFILE_MOD=\"gem 'chef', '= 14.3.37'\""
@@ -26,6 +32,10 @@ matrix:
       rvm: 2.5.1
     - env: "GEMFILE_MOD=\"gem 'chef', '= 14.0.202'\""
       rvm: 2.5.1
+    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.12.3'\""
+      rvm: 2.4.5
+    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.11.3'\""
+      rvm: 2.4.4
     - env: "GEMFILE_MOD=\"gem 'chef', '= 13.10.0'\""
       rvm: 2.4.4
     - env: "GEMFILE_MOD=\"gem 'chef', '= 13.9.4'\""
