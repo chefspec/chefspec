@@ -525,7 +525,13 @@ You can also manually set stubs for only the `current_resource` using `stubs_for
 #### Ruby Code
 
 For more complex Ruby code, in recipes, libraries, or custom resources, you have
-the full power of RSpec and RSpec Mocks available to you:
+the full power of RSpec and RSpec Mocks available to you.
+
+One issue that comes up often is stubbing filesystem checks such as `File.exist?`.  Since those are global class methods
+by stubbing them they will be stubbed throughout the entire chef-client codebase that chefspec relies upon.  There are
+many calls to `File.exist?` in any chefspec test that are not immediately visible to the user.  In order to
+make the client behave correctly the pattern that should be followed is to allow all the chef-client calls to operate
+normally using `and_call_original` and then to stub the exact path the test needs:
 
 ```ruby
 before do
@@ -533,6 +539,9 @@ before do
   allow(File).to receive(:exist?).with('/test/path').and_return(true)
 end
 ```
+
+All the ruby methods off of the File, Dir and FileUtils classes along with any other global class methods that the
+client might use, should follow a similar pattern for stubbing.
 
 Check out the [RSpec Mocks documentation](https://relishapp.com/rspec/rspec-mocks/docs)
 for more information about setting up Ruby method stubs.
