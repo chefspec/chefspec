@@ -40,6 +40,17 @@ namespace :acceptance do |ns|
           #
           load "#{pwd}/lib/chefspec/rspec.rb"
 
+          # load policyfile for each cookbook so that setup/teardown are triggered
+          if dir.start_with?('policy_file')
+            begin
+              load "#{pwd}/lib/chefspec/policyfile.rb"
+            rescue LoadError, ChefSpec::Error::GemLoadError
+              # skip if we don't have ChefDK gem installed
+              puts "Skipping #{dir}. No ChefDK Gem installed", nil
+              next
+            end
+          end
+
           RSpec.configure do |config|
             config.color = true
             config.run_all_when_everything_filtered = true
@@ -48,6 +59,8 @@ namespace :acceptance do |ns|
               ChefSpec::ZeroServer.setup!
             end
             config.after(:each) do
+              # reset so policy file cookbooks can be found
+              Chef::Config[:chefspec_cookbook_root] = nil
               ChefSpec::ZeroServer.reset!
             end
           end
@@ -61,7 +74,6 @@ namespace :acceptance do |ns|
     end
   end
 end
-
 
 task acceptance: Rake.application.tasks.select { |t| t.name.start_with?("acceptance:") } do
   puts "Acceptance tests took #{Time.now - start_time} seconds"

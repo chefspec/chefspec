@@ -16,6 +16,9 @@ bundler_args: --jobs 7 --retry 3
 
 matrix:
   include:
+    # special case to test ChefSpec with Policyfile
+    - env: "GEMFILE_MOD=\"gem 'chef', '= 14.7.17'; gem 'chef-dk', '~> 3'\""
+      rvm: 2.5.3
     - env: "GEMFILE_MOD=\"gem 'chef', '= 14.7.17'\""
       rvm: 2.5.3
     - env: "GEMFILE_MOD=\"gem 'chef', '= 14.6.47'\""
