@@ -1,6 +1,7 @@
 begin
   require 'chef-dk/policyfile_services/export_repo'
   require 'chef-dk/policyfile_services/install'
+  require 'chef-dk/configurable'
 rescue LoadError
   raise ChefSpec::Error::GemLoadError.new(gem: 'chef-dk', name: 'ChefDK')
 end
@@ -13,6 +14,7 @@ module ChefSpec
     end
 
     include Singleton
+    include ChefDK::Configurable
 
     def initialize
       @tmpdir = Dir.mktmpdir
@@ -26,7 +28,8 @@ module ChefSpec
 
       installer = ChefDK::PolicyfileServices::Install.new(
         policyfile: policyfile_path,
-        ui: ChefDK::UI.null
+        ui: ChefDK::UI.null,
+        config: chef_config
       )
 
       installer.run
@@ -52,6 +55,16 @@ module ChefSpec
     #
     def teardown!
       FileUtils.rm_rf(@tmpdir) if File.exist?(@tmpdir)
+    end
+
+    private
+
+    # chef_config calls this method to retrieve the path to the config file
+    # See ChefDK::Configurable#config_loader
+    def config
+      {
+        config_file: Chef::WorkstationConfigLoader.new(nil).config_location,
+      }
     end
   end
 end
