@@ -18,7 +18,8 @@ Gem::Specification.new do |s|
   s.license       = 'MIT'
 
   # Packaging
-  s.files         = %w{LICENSE} + Dir.glob("{lib,templates}/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
+  s.files         = %w{LICENSE Rakefile Gemfile chefspec.gemspec} +
+    Dir.glob("{lib,templates}/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
   s.require_paths = ['lib']
 
   s.required_ruby_version = '>= 2.2'
