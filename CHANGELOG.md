@@ -1,5 +1,9 @@
 # CHANGELOG for ChefSpec
 
+## 7.3.4 (December 26, 2018)
+
+- Add back the spec files to the gem package for testing within Chef-DK
+
 ## 7.3.3 (December 10, 2018)
 
 - Slimmed the size of the gem install down by not shipping test / development or example files in the gem artifact. These will remain in the repo for reference and testing.
