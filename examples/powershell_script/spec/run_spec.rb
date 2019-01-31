@@ -16,7 +16,7 @@ describe 'powershell_script::run' do
   end
 
   it 'runs a powershell_script with attributes' do
-    expect(chef_run).to run_powershell_script('with_attributes').with(flags: '--flags')
+    expect(chef_run).to run_powershell_script('with_attributes').with(flags: anything)
     expect(chef_run).to_not run_powershell_script('with_attributes').with(flags: '--not-flags')
   end
 end
