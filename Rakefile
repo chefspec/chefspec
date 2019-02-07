@@ -23,7 +23,7 @@ start_time = nil
 namespace :acceptance do |ns|
   begin
     Dir.foreach("examples") do |dir|
-      next if dir == '.' or dir == '..'
+      next if %w(. .. .DS_Store).include?(dir)
       desc "#{dir} acceptance tests"
       task dir.to_sym do
         start_time ||= Time.now
