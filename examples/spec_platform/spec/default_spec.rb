@@ -31,6 +31,6 @@ describe 'spec_platform' do
 
   context 'with a partial version' do
     platform 'centos', '6'
-    it { is_expected.to write_log("test").with_message('Hello centos 6.9') }
+    it { is_expected.to write_log("test").with_message('Hello centos 6.10') }
   end
 end
