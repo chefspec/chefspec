@@ -1,4 +1,5 @@
 require "chef/version"
+require "mixlib/shellout"
 
 module ChefSpec
   module API
