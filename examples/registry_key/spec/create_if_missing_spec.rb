@@ -3,7 +3,7 @@ require 'chefspec'
 describe 'registry_key::create_if_missing' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'windows', version: '2016')
-                          .converge(described_recipe)
+                        .converge(described_recipe)
   end
 
   it 'creates a registry_key with an explicit action' do

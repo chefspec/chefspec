@@ -1,1 +1,1 @@
-log "worked"
+log 'worked'

@@ -1,7 +1,7 @@
 describe 'stubs_for' do
   platform 'ubuntu'
   step_into :stubs_for_test, :stubs_for_old
-  default_attributes['test'] = {run_load: false, run_resource: false, run_provider: false, user: nil}
+  default_attributes['test'] = { run_load: false, run_resource: false, run_provider: false, user: nil }
   recipe do
     stubs_for_test 'test' do
       cmd 'this_is_not_a_cmd'
@@ -33,7 +33,7 @@ describe 'stubs_for' do
     end
 
     context 'running all three' do
-      default_attributes['test'] = {run_load: true, run_resource: true, run_provider: true}
+      default_attributes['test'] = { run_load: true, run_resource: true, run_provider: true }
       it { expect { subject }.to raise_error ChefSpec::Error::ShellOutNotStubbed }
     end
   end

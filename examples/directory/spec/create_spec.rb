@@ -14,13 +14,13 @@ describe 'directory::create' do
 
   it 'creates a directory with attributes' do
     expect(chef_run).to create_directory('/tmp/with_attributes').with(
-      user:   'user',
-      group:  'group'
+      user: 'user',
+      group: 'group'
     )
 
     expect(chef_run).to_not create_directory('/tmp/with_attributes').with(
-      user:   'bacon',
-      group:  'fat'
+      user: 'bacon',
+      group: 'fat'
     )
   end
 

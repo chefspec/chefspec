@@ -14,14 +14,14 @@ describe 'cookbook_file::create' do
 
   it 'creates a cookbook_file with attributes' do
     expect(chef_run).to create_cookbook_file('/tmp/with_attributes').with(
-      user:   'user',
-      group:  'group',
+      user: 'user',
+      group: 'group',
       backup: false
     )
 
     expect(chef_run).to_not create_cookbook_file_if_missing('/tmp/with_attributes').with(
-      user:   'bacon',
-      group:  'fat',
+      user: 'bacon',
+      group: 'fat',
       backup: true
     )
   end
