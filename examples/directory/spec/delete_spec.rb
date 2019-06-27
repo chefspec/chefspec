@@ -1,26 +1,30 @@
 require 'chefspec'
 
 describe 'directory::delete' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'deletes a directory with an explicit action' do
-    expect(chef_run).to delete_directory('/tmp/explicit_action')
-    expect(chef_run).to_not delete_directory('/tmp/not_explicit_action')
+  describe 'deletes a directory with an explicit action' do
+    it { is_expected.to delete_directory('/tmp/explicit_action') }
+    it { is_expected.to_not delete_directory('/tmp/not_explicit_action') }
   end
 
-  it 'deletes a directory with attributes' do
-    expect(chef_run).to delete_directory('/tmp/with_attributes').with(
-      user: 'user',
-      group: 'group'
-    )
+  describe 'deletes a directory with attributes' do
+    it {
+      is_expected.to delete_directory('/tmp/with_attributes').with(
+        user: 'user',
+        group: 'group'
+      )
+    }
 
-    expect(chef_run).to_not delete_directory('/tmp/with_attributes').with(
-      user: 'bacon',
-      group: 'fat'
-    )
+    it {
+      is_expected.to_not delete_directory('/tmp/with_attributes').with(
+        user: 'bacon',
+        group: 'fat'
+      )
+    }
   end
 
-  it 'deletes a directory when specifying the identity attribute' do
-    expect(chef_run).to delete_directory('/tmp/identity_attribute')
+  describe 'deletes a directory when specifying the identity attribute' do
+    it { is_expected.to delete_directory('/tmp/identity_attribute') }
   end
 end

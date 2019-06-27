@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'bff_package::purge' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'aix', version: '7.1').converge(described_recipe) }
+  platform 'aix'
 
   describe 'purges a bff_package with an explicit action' do
     it { is_expected.to purge_bff_package('explicit_action') }

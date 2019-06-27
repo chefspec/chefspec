@@ -1,22 +1,18 @@
 require 'chefspec'
 
 describe 'env::modify' do
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'windows', version: '2016')
-                        .converge(described_recipe)
+  platform 'windows'
+  describe 'modifies a env with an explicit action' do
+    it { is_expected.to modify_env('explicit_action') }
+    it { is_expected.to_not modify_env('not_explicit_action') }
   end
 
-  it 'modifies a env with an explicit action' do
-    expect(chef_run).to modify_env('explicit_action')
-    expect(chef_run).to_not modify_env('not_explicit_action')
+  describe 'modifies a env with attributes' do
+    it { is_expected.to modify_env('with_attributes').with(value: 'value') }
+    it { is_expected.to_not modify_env('with_attributes').with(value: 'not_value') }
   end
 
-  it 'modifies a env with attributes' do
-    expect(chef_run).to modify_env('with_attributes').with(value: 'value')
-    expect(chef_run).to_not modify_env('with_attributes').with(value: 'not_value')
-  end
-
-  it 'modifies a env when specifying the identity attribute' do
-    expect(chef_run).to modify_env('identity_attribute')
+  describe 'modifies a env when specifying the identity attribute' do
+    it { is_expected.to modify_env('identity_attribute') }
   end
 end

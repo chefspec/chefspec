@@ -1,23 +1,23 @@
 require 'chefspec'
 
 describe 'execute::run' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'runs a execute with the default action' do
-    expect(chef_run).to run_execute('default_action')
-    expect(chef_run).to_not run_execute('not_default_action')
+  describe 'runs a execute with the default action' do
+    it { is_expected.to run_execute('default_action') }
+    it { is_expected.to_not run_execute('not_default_action') }
   end
 
-  it 'runs a execute with an explicit action' do
-    expect(chef_run).to run_execute('explicit_action')
+  describe 'runs a execute with an explicit action' do
+    it { is_expected.to run_execute('explicit_action') }
   end
 
-  it 'runs a execute with attributes' do
-    expect(chef_run).to run_execute('with_attributes').with(user: 'user')
-    expect(chef_run).to_not run_execute('with_attributes').with(user: 'not_user')
+  describe 'runs a execute with attributes' do
+    it { is_expected.to run_execute('with_attributes').with(user: 'user') }
+    it { is_expected.to_not run_execute('with_attributes').with(user: 'not_user') }
   end
 
-  it 'runs a execute when specifying the identity attribute' do
-    expect(chef_run).to run_execute('identity_attribute')
+  describe 'runs a execute when specifying the identity attribute' do
+    it { is_expected.to run_execute('identity_attribute') }
   end
 end
