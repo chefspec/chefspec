@@ -1,19 +1,19 @@
 require 'chefspec'
 
 describe 'zypper_package::unlock' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'opensuse', version: '42.3').converge(described_recipe) }
+  platform 'opensuse'
 
-  it 'unlocks a zypper_package with an explicit action' do
-    expect(chef_run).to unlock_zypper_package('explicit_action')
-    expect(chef_run).to_not unlock_zypper_package('not_explicit_action')
+  describe 'unlocks a zypper_package with an explicit action' do
+    it { is_expected.to unlock_zypper_package('explicit_action') }
+    it { is_expected.to_not unlock_zypper_package('not_explicit_action') }
   end
 
-  it 'unlocks a zypper_package with attributes' do
-    expect(chef_run).to unlock_zypper_package('with_attributes').with(version: '1.0.0')
-    expect(chef_run).to_not unlock_zypper_package('with_attributes').with(version: '1.2.3')
+  describe 'unlocks a zypper_package with attributes' do
+    it { is_expected.to unlock_zypper_package('with_attributes').with(version: '1.0.0') }
+    it { is_expected.to_not unlock_zypper_package('with_attributes').with(version: '1.2.3') }
   end
 
-  it 'unlocks a zypper_package when specifying the identity attribute' do
-    expect(chef_run).to unlock_zypper_package('identity_attribute')
+  describe 'unlocks a zypper_package when specifying the identity attribute' do
+    it { is_expected.to unlock_zypper_package('identity_attribute') }
   end
 end
