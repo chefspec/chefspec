@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'smartos_package::upgrade' do
-  plaform 'solaris2'
+  platform 'solaris2'
 
   describe 'upgrades a smartos_package with an explicit action' do
     it { is_expected.to upgrade_smartos_package('explicit_action') }

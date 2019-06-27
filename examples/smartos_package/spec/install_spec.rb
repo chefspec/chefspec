@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'smartos_package::install' do
-  plaform 'solaris2'
+  platform 'solaris2'
 
   describe 'installs a smartos_package with the default action' do
     it { is_expected.to install_smartos_package('default_action') }

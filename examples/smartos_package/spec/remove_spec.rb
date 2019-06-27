@@ -1,7 +1,7 @@
 require 'chefspec'
 
 describe 'smartos_package::remove' do
-  plaform 'solaris2'
+  platform 'solaris2'
 
   describe 'removes a smartos_package with an explicit action' do
     it { is_expected.to remove_smartos_package('explicit_action') }
