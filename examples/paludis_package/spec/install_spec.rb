@@ -1,23 +1,23 @@
 require 'chefspec'
 
 describe 'paludis_package::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'gentoo', version: '4.9.95-gentoo').converge(described_recipe) }
+  platform 'gentoo'
 
-  it 'installs a paludis_package with the default action' do
-    expect(chef_run).to install_paludis_package('default_action')
-    expect(chef_run).to_not install_paludis_package('not_default_action')
+  describe 'installs a paludis_package with the default action' do
+    it { is_expected.to install_paludis_package('default_action') }
+    it { is_expected.to_not install_paludis_package('not_default_action') }
   end
 
-  it 'installs a paludis_package with an explicit action' do
-    expect(chef_run).to install_paludis_package('explicit_action')
+  describe 'installs a paludis_package with an explicit action' do
+    it { is_expected.to install_paludis_package('explicit_action') }
   end
 
-  it 'installs a paludis_package with attributes' do
-    expect(chef_run).to install_paludis_package('with_attributes').with(version: '1.0.0')
-    expect(chef_run).to_not install_paludis_package('with_attributes').with(version: '1.2.3')
+  describe 'installs a paludis_package with attributes' do
+    it { is_expected.to install_paludis_package('with_attributes').with(version: '1.0.0') }
+    it { is_expected.to_not install_paludis_package('with_attributes').with(version: '1.2.3') }
   end
 
-  it 'installs a paludis_package when specifying the identity attribute' do
-    expect(chef_run).to install_paludis_package('identity_attribute')
+  describe 'installs a paludis_package when specifying the identity attribute' do
+    it { is_expected.to install_paludis_package('identity_attribute') }
   end
 end

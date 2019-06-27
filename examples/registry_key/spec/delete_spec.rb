@@ -1,22 +1,19 @@
 require 'chefspec'
 
 describe 'registry_key::delete' do
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'windows', version: '2016')
-                        .converge(described_recipe)
+  platform 'windows'
+
+  describe 'deletes a registry_key with an explicit action' do
+    it { is_expected.to delete_registry_key('HKEY_LOCAL_MACHINE\explicit_action') }
+    it { is_expected.to_not delete_registry_key('HKEY_LOCAL_MACHINE\not_explicit_action') }
   end
 
-  it 'deletes a registry_key with an explicit action' do
-    expect(chef_run).to delete_registry_key('HKEY_LOCAL_MACHINE\explicit_action')
-    expect(chef_run).to_not delete_registry_key('HKEY_LOCAL_MACHINE\not_explicit_action')
+  describe 'deletes a registry_key with attributes' do
+    it { is_expected.to delete_registry_key('HKEY_LOCAL_MACHINE\with_attributes').with(recursive: true) }
+    it { is_expected.to_not delete_registry_key('HKEY_LOCAL_MACHINE\with_attributes').with(recursive: false) }
   end
 
-  it 'deletes a registry_key with attributes' do
-    expect(chef_run).to delete_registry_key('HKEY_LOCAL_MACHINE\with_attributes').with(recursive: true)
-    expect(chef_run).to_not delete_registry_key('HKEY_LOCAL_MACHINE\with_attributes').with(recursive: false)
-  end
-
-  it 'deletes a registry_key when specifying the identity attribute' do
-    expect(chef_run).to delete_registry_key('HKEY_LOCAL_MACHINE\identity_attribute')
+  describe 'deletes a registry_key when specifying the identity attribute' do
+    it { is_expected.to delete_registry_key('HKEY_LOCAL_MACHINE\identity_attribute') }
   end
 end
