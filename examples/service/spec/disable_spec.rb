@@ -1,19 +1,19 @@
 require 'chefspec'
 
 describe 'service::disable' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'disables a service with an explicit action' do
-    expect(chef_run).to disable_service('explicit_action')
-    expect(chef_run).to_not disable_service('not_explicit_action')
+  describe 'disables a service with an explicit action' do
+    it { is_expected.to disable_service('explicit_action') }
+    it { is_expected.to_not disable_service('not_explicit_action') }
   end
 
-  it 'disables a service with attributes' do
-    expect(chef_run).to disable_service('with_attributes').with(pattern: 'pattern')
-    expect(chef_run).to_not disable_service('with_attributes').with(pattern: 'bacon')
+  describe 'disables a service with attributes' do
+    it { is_expected.to disable_service('with_attributes').with(pattern: 'pattern') }
+    it { is_expected.to_not disable_service('with_attributes').with(pattern: 'bacon') }
   end
 
-  it 'disables a service when specifying the identity attribute' do
-    expect(chef_run).to disable_service('identity_attribute')
+  describe 'disables a service when specifying the identity attribute' do
+    it { is_expected.to disable_service('identity_attribute') }
   end
 end

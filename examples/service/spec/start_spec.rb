@@ -1,19 +1,19 @@
 require 'chefspec'
 
 describe 'service::start' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'starts a service with an explicit action' do
-    expect(chef_run).to start_service('explicit_action')
-    expect(chef_run).to_not start_service('not_explicit_action')
+  describe 'starts a service with an explicit action' do
+    it { is_expected.to start_service('explicit_action') }
+    it { is_expected.to_not start_service('not_explicit_action') }
   end
 
-  it 'starts a service with attributes' do
-    expect(chef_run).to start_service('with_attributes').with(pattern: 'pattern')
-    expect(chef_run).to_not start_service('with_attributes').with(pattern: 'bacon')
+  describe 'starts a service with attributes' do
+    it { is_expected.to start_service('with_attributes').with(pattern: 'pattern') }
+    it { is_expected.to_not start_service('with_attributes').with(pattern: 'bacon') }
   end
 
-  it 'starts a service when specifying the identity attribute' do
-    expect(chef_run).to start_service('identity_attribute')
+  describe 'starts a service when specifying the identity attribute' do
+    it { is_expected.to start_service('identity_attribute') }
   end
 end

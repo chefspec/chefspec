@@ -1,22 +1,19 @@
 require 'chefspec'
 
 describe 'user::unlock' do
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04')
-                          .converge(described_recipe)
+  platform 'ubuntu'
+
+  describe 'unlocks a user with an explicit action' do
+    it { is_expected.to unlock_user('explicit_action') }
+    it { is_expected.to_not unlock_user('not_explicit_action') }
   end
 
-  it 'unlocks a user with an explicit action' do
-    expect(chef_run).to unlock_user('explicit_action')
-    expect(chef_run).to_not unlock_user('not_explicit_action')
+  describe 'unlocks a user with attributes' do
+    it { is_expected.to unlock_user('with_attributes').with(uid: '1234') }
+    it { is_expected.to_not unlock_user('with_attributes').with(uid: '5678') }
   end
 
-  it 'unlocks a user with attributes' do
-    expect(chef_run).to unlock_user('with_attributes').with(uid: '1234')
-    expect(chef_run).to_not unlock_user('with_attributes').with(uid: '5678')
-  end
-
-  it 'unlocks a user when specifying the identity attribute' do
-    expect(chef_run).to unlock_user('identity_attribute')
+  describe 'unlocks a user when specifying the identity attribute' do
+    it { is_expected.to unlock_user('identity_attribute') }
   end
 end

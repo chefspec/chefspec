@@ -1,23 +1,23 @@
 require 'chefspec'
 
 describe 'subversion::sync' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'syncs a subversion with the default action' do
-    expect(chef_run).to sync_subversion('/tmp/default_action')
-    expect(chef_run).to_not sync_subversion('/tmp/not_default_action')
+  describe 'syncs a subversion with the default action' do
+    it { is_expected.to sync_subversion('/tmp/default_action') }
+    it { is_expected.to_not sync_subversion('/tmp/not_default_action') }
   end
 
-  it 'syncs a subversion with an explicit action' do
-    expect(chef_run).to sync_subversion('/tmp/explicit_action')
+  describe 'syncs a subversion with an explicit action' do
+    it { is_expected.to sync_subversion('/tmp/explicit_action') }
   end
 
-  it 'syncs a subversion with attributes' do
-    expect(chef_run).to sync_subversion('/tmp/with_attributes').with(repository: 'ssh://subversion.path')
-    expect(chef_run).to_not sync_subversion('/tmp/with_attributes').with(repository: 'ssh://subversion.other_path')
+  describe 'syncs a subversion with attributes' do
+    it { is_expected.to sync_subversion('/tmp/with_attributes').with(repository: 'ssh://subversion.path') }
+    it { is_expected.to_not sync_subversion('/tmp/with_attributes').with(repository: 'ssh://subversion.other_path') }
   end
 
-  it 'syncs a subversion when specifying the identity attribute' do
-    expect(chef_run).to sync_subversion('/tmp/identity_attribute')
+  describe 'syncs a subversion when specifying the identity attribute' do
+    it { is_expected.to sync_subversion('/tmp/identity_attribute') }
   end
 end

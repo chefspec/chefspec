@@ -1,23 +1,23 @@
 require 'chefspec'
 
 describe 'package::lock' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'locks a package with an explicit action' do
-    expect(chef_run).to lock_package('explicit_action')
-    expect(chef_run).to_not lock_package('not_explicit_action')
+  describe 'locks a package with an explicit action' do
+    it { is_expected.to lock_package('explicit_action') }
+    it { is_expected.to_not lock_package('not_explicit_action') }
   end
 
-  it 'locks a package with attributes' do
-    expect(chef_run).to lock_package('with_attributes').with(version: '1.0.0')
-    expect(chef_run).to_not lock_package('with_attributes').with(version: '1.2.3')
+  describe 'locks a package with attributes' do
+    it { is_expected.to lock_package('with_attributes').with(version: '1.0.0') }
+    it { is_expected.to_not lock_package('with_attributes').with(version: '1.2.3') }
   end
 
-  it 'locks a package when specifying the identity attribute' do
-    expect(chef_run).to lock_package('identity_attribute')
+  describe 'locks a package when specifying the identity attribute' do
+    it { is_expected.to lock_package('identity_attribute') }
   end
 
-  it 'locks all packages when given an array of names' do
-    expect(chef_run).to lock_package(%w(with array))
+  describe 'locks all packages when given an array of names' do
+    it { is_expected.to lock_package(%w(with array)) }
   end
 end
