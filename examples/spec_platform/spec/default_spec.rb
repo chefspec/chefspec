@@ -17,9 +17,9 @@ describe 'spec_platform' do
   end
 
   context 'with a nested platform' do
-    platform 'centos', '7.4.1708'
+    platform 'centos', '7.4'
     context 'inner' do
-      platform 'redhat', '7.3'
+      platform 'redhat', '7.4'
       it { is_expected.to write_log('test').with_message('Hello redhat 7.3') }
     end
   end
