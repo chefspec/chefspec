@@ -1,5 +1,12 @@
 # CHANGELOG for ChefSpec
 
+## 7.4.0 (June 27, 2019)
+
+- Require Ruby 2.3+, Chef 13+, and Fauxhai 6.11+
+- The majority of examples have been updated for the new ChefSpec 7.3+ format
+- Properly loaded mixlib/shellout before trying to stub commands to prevent some failures
+- Added a new `policyfile_path` configuration option for specifying the path to the PolicyFile
+
 ## 7.3.4 (December 26, 2018)
 
 - Add back the spec files to the gem package for testing within Chef-DK
