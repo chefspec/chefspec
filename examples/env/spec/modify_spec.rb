@@ -3,7 +3,7 @@ require 'chefspec'
 describe 'env::modify' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'windows', version: '2016')
-                          .converge(described_recipe)
+                        .converge(described_recipe)
   end
 
   it 'modifies a env with an explicit action' do

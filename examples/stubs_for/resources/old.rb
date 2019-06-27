@@ -19,7 +19,6 @@ action_class do
   end
 end
 
-
 action :run do
   new_resource.foo if new_resource.run_resource
   shell_out!(new_resource.cmd) if new_resource.run_provider

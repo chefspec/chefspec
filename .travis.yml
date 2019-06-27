@@ -38,29 +38,5 @@ matrix:
       rvm: 2.5.1
     - env: "GEMFILE_MOD=\"gem 'chef', '= 14.0.202'\""
       rvm: 2.5.1
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.12.3'\""
+    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.12.14'\""
       rvm: 2.4.5
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.11.3'\""
-      rvm: 2.4.4
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.10.0'\""
-      rvm: 2.4.4
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.9.4'\""
-      rvm: 2.4.4
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.8.5'\""
-      rvm: 2.4.3
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.7.16'\""
-      rvm: 2.4.3
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.6.4'\""
-      rvm: 2.4.2
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.5.3'\""
-      rvm: 2.4.2
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.4.24'\""
-      rvm: 2.4.2
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.3.42'\""
-      rvm: 2.4.2
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.2.20'\""
-      rvm: 2.4.2
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.1.31'\""
-      rvm: 2.4.2
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.0.118'\""
-      rvm: 2.4.2

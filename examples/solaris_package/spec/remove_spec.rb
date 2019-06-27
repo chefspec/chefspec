@@ -3,7 +3,7 @@ require 'chefspec'
 describe 'solaris_package::remove' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'solaris2', version: '5.11')
-                          .converge(described_recipe)
+                        .converge(described_recipe)
   end
 
   it 'removes a solaris_package with an explicit action' do

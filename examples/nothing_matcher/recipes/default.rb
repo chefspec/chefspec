@@ -1,13 +1,13 @@
 ruby_block 'yes' do
-  block { }
+  block {}
 end
 
 ruby_block 'no' do
   action :nothing
-  block { }
+  block {}
 end
 
 ruby_block 'both' do
   action [:run, :nothing]
-  block { }
+  block {}
 end

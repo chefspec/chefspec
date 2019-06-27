@@ -45,7 +45,7 @@ describe 'spec_attributes' do
     end
 
     context 'with setting via a hash' do
-      default_attributes['myapp'] = {thing1: 'un'}
+      default_attributes['myapp'] = { thing1: 'un' }
 
       it { is_expected.to install_package('myapp').with_version('3.0') }
       it { is_expected.to write_log('thing1=un thing2=two version=3.0') }
