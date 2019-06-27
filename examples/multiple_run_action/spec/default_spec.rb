@@ -12,7 +12,7 @@ describe 'multiple_run_action::default' do
   end
 
   describe 'does not include something random' do
-    template = subject.template('/tmp/resource') }
+    template = subject.template('/tmp/resource')
     expect(template.performed_actions).to_not include(:bacon)
   end
 end

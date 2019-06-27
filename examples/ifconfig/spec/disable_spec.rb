@@ -1,15 +1,15 @@
 require 'chefspec'
 
 describe 'ifconfig::disable' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'disables a ifconfig with an explicit action' do
-    expect(chef_run).to disable_ifconfig('10.0.0.2')
-    expect(chef_run).to_not disable_ifconfig('10.0.0.10')
+  describe 'disables a ifconfig with an explicit action' do
+    it { is_expected.to disable_ifconfig('10.0.0.2') }
+    it { is_expected.to_not disable_ifconfig('10.0.0.10') }
   end
 
-  it 'disables a ifconfig with attributes' do
-    expect(chef_run).to disable_ifconfig('10.0.0.3').with(device: 'en0')
-    expect(chef_run).to_not disable_ifconfig('10.0.0.3').with(device: 'en1')
+  describe 'disables a ifconfig with attributes' do
+    it { is_expected.to disable_ifconfig('10.0.0.3').with(device: 'en0') }
+    it { is_expected.to_not disable_ifconfig('10.0.0.3').with(device: 'en1') }
   end
 end

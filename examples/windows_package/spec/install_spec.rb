@@ -9,7 +9,7 @@ describe 'windows_package::install' do
   end
 
   describe 'installs a windows_package with attributes' do
-    it { is_expected.to install_windows_package('with_attributes').with(installer_type: :msi)
+    it { is_expected.to install_windows_package('with_attributes').with(installer_type: :msi) }
     it { is_expected.to_not install_windows_package('with_attributes').with(installer_type: 'bacon') }
   end
 

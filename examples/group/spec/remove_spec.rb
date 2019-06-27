@@ -1,18 +1,18 @@
 require 'chefspec'
 
 describe 'group::remove' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'removes a group with an explicit action' do
-    expect(chef_run).to remove_group('explicit_action')
-    expect(chef_run).to_not remove_group('not_explicit_action')
+  describe 'removes a group with an explicit action' do
+    it { is_expected.to remove_group('explicit_action') }
+    it { is_expected.to_not remove_group('not_explicit_action') }
   end
 
-  it 'removes a group with attributes' do
-    expect(chef_run).to_not remove_group('with_attributes').with(gid: 5678)
+  describe 'removes a group with attributes' do
+    it { is_expected.to_not remove_group('with_attributes').with(gid: 5678) }
   end
 
-  it 'removes a group when specifying the identity attribute' do
-    expect(chef_run).to remove_group('identity_attribute')
+  describe 'removes a group when specifying the identity attribute' do
+    it { is_expected.to remove_group('identity_attribute') }
   end
 end

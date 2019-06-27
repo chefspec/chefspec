@@ -1,17 +1,17 @@
 require 'chefspec'
 
 describe 'guards::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'includes resource that have guards that evalute to true' do
-    expect(chef_run).to start_service('true_guard')
+  describe 'includes resource that have guards that evalute to true' do
+    it { is_expected.to start_service('true_guard') }
   end
 
-  it 'excludes resources that have guards evaluated to false' do
-    expect(chef_run).to_not start_service('false_guard')
+  describe 'excludes resources that have guards evaluated to false' do
+    it { is_expected.to_not start_service('false_guard') }
   end
 
-  it 'excludes resource that have action :nothing' do
-    expect(chef_run).to_not start_service('action_nothing_guard')
+  describe 'excludes resource that have action :nothing' do
+    it { is_expected.to_not start_service('action_nothing_guard') }
   end
 end
