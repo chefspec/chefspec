@@ -1,19 +1,19 @@
 require 'chefspec'
 
 describe 'script::run_bash' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'runs a bash script with the default action' do
-    expect(chef_run).to run_bash('default_action')
-    expect(chef_run).to_not run_bash('not_default_action')
+  describe 'runs a bash script with the default action' do
+    it { is_expected.to run_bash('default_action') }
+    it { is_expected.to_not run_bash('not_default_action') }
   end
 
-  it 'runs a bash script with an explicit action' do
-    expect(chef_run).to run_bash('explicit_action')
+  describe 'runs a bash script with an explicit action' do
+    it { is_expected.to run_bash('explicit_action') }
   end
 
-  it 'runs a bash script with attributes' do
-    expect(chef_run).to run_bash('with_attributes').with(creates: 'creates')
-    expect(chef_run).to_not run_bash('with_attributes').with(creates: 'bacon')
+  describe 'runs a bash script with attributes' do
+    it { is_expected.to run_bash('with_attributes').with(creates: 'creates') }
+    it { is_expected.to_not run_bash('with_attributes').with(creates: 'bacon') }
   end
 end

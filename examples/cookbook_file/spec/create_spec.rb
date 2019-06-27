@@ -1,32 +1,36 @@
 require 'chefspec'
 
 describe 'cookbook_file::create' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'creates a cookbook_file with the default action' do
-    expect(chef_run).to create_cookbook_file('/tmp/default_action')
-    expect(chef_run).to_not create_cookbook_file('/tmp/not_default_action')
+  describe 'creates a cookbook_file with the default action' do
+    it { is_expected.to create_cookbook_file('/tmp/default_action') }
+    it { is_expected.to_not create_cookbook_file('/tmp/not_default_action') }
   end
 
-  it 'creates a cookbook_file with an explicit action' do
-    expect(chef_run).to create_cookbook_file('/tmp/explicit_action')
+  describe 'creates a cookbook_file with an explicit action' do
+    it { is_expected.to create_cookbook_file('/tmp/explicit_action') }
   end
 
-  it 'creates a cookbook_file with attributes' do
-    expect(chef_run).to create_cookbook_file('/tmp/with_attributes').with(
-      user: 'user',
-      group: 'group',
-      backup: false
-    )
+  describe 'creates a cookbook_file with attributes' do
+    it {
+      is_expected.to create_cookbook_file('/tmp/with_attributes').with(
+        user: 'user',
+        group: 'group',
+        backup: false
+      )
+    }
 
-    expect(chef_run).to_not create_cookbook_file_if_missing('/tmp/with_attributes').with(
-      user: 'bacon',
-      group: 'fat',
-      backup: true
-    )
+    it {
+      is_expected.to_not create_cookbook_file_if_missing('/tmp/with_attributes').with(
+        user: 'bacon',
+        group: 'fat',
+        backup: true
+      )
+    }
   end
 
-  it 'creates a cookbook_file when specifying the identity attribute' do
-    expect(chef_run).to create_cookbook_file('/tmp/identity_attribute')
+  describe 'creates a cookbook_file when specifying the identity attribute' do
+    it { is_expected.to create_cookbook_file('/tmp/identity_attribute') }
   end
 end

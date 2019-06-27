@@ -1,22 +1,19 @@
 require 'chefspec'
 
 describe 'user::manage' do
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04')
-                          .converge(described_recipe)
+  platform 'ubuntu'
+
+  describe 'manages a user with an explicit action' do
+    it { is_expected.to manage_user('explicit_action') }
+    it { is_expected.to_not manage_user('not_explicit_action') }
   end
 
-  it 'manages a user with an explicit action' do
-    expect(chef_run).to manage_user('explicit_action')
-    expect(chef_run).to_not manage_user('not_explicit_action')
+  describe 'manages a user with attributes' do
+    it { is_expected.to manage_user('with_attributes').with(uid: '1234') }
+    it { is_expected.to_not manage_user('with_attributes').with(uid: '5678') }
   end
 
-  it 'manages a user with attributes' do
-    expect(chef_run).to manage_user('with_attributes').with(uid: '1234')
-    expect(chef_run).to_not manage_user('with_attributes').with(uid: '5678')
-  end
-
-  it 'manages a user when specifying the identity attribute' do
-    expect(chef_run).to manage_user('identity_attribute')
+  describe 'manages a user when specifying the identity attribute' do
+    it { is_expected.to manage_user('identity_attribute') }
   end
 end

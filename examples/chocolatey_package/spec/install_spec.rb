@@ -1,19 +1,18 @@
 require 'chefspec'
 
 describe 'chocolatey_package::install' do
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'windows', version: '2016')
-                          .converge(described_recipe)
+  platform 'windows'
+
+  describe 'installs a package' do
+    it { is_expected.to install_chocolatey_package('7zip') }
   end
 
-  it 'installs a package' do
-    expect(chef_run).to install_chocolatey_package('7zip')
-  end
-
-  it 'installs a specific version of a package with options' do
-    expect(chef_run).to install_chocolatey_package('git').with(
-      version: %w(2.7.1),
-      options: '--params /GitAndUnixToolsOnPath'
-    )
+  describe 'installs a specific version of a package with options' do
+    it {
+      is_expected.to install_chocolatey_package('git').with(
+        version: %w(2.7.1),
+        options: '--params /GitAndUnixToolsOnPath'
+      )
+    }
   end
 end

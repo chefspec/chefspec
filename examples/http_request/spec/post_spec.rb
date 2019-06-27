@@ -1,19 +1,19 @@
 require 'chefspec'
 
 describe 'http_request::post' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'posts a http_request with an explicit action' do
-    expect(chef_run).to post_http_request('explicit_action')
-    expect(chef_run).to_not post_http_request('not_explicit_action')
+  describe 'posts a http_request with an explicit action' do
+    it { is_expected.to post_http_request('explicit_action') }
+    it { is_expected.to_not post_http_request('not_explicit_action') }
   end
 
-  it 'posts a http_request with attributes' do
-    expect(chef_run).to post_http_request('with_attributes').with(url: 'http://my.url')
-    expect(chef_run).to_not post_http_request('with_attributes').with(url: 'http://my.other.url')
+  describe 'posts a http_request with attributes' do
+    it { is_expected.to post_http_request('with_attributes').with(url: 'http://my.url') }
+    it { is_expected.to_not post_http_request('with_attributes').with(url: 'http://my.other.url') }
   end
 
-  it 'posts a http_request when specifying the identity attribute' do
-    expect(chef_run).to post_http_request('identity_attribute')
+  describe 'posts a http_request when specifying the identity attribute' do
+    it { is_expected.to post_http_request('identity_attribute') }
   end
 end

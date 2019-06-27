@@ -1,10 +1,10 @@
 require 'chefspec'
 
 describe 'systemd_unit::create' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'creates a systemd unit with an explicit action' do
-    expect(chef_run).to create_systemd_unit('explicit_action')
-    expect(chef_run).to_not create_systemd_unit('not_explicit_action')
+  describe 'creates a systemd unit with an explicit action' do
+    it { is_expected.to create_systemd_unit('explicit_action') }
+    it { is_expected.to_not create_systemd_unit('not_explicit_action') }
   end
 end

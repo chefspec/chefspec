@@ -1,17 +1,14 @@
 require 'chefspec'
 
 describe 'apt_update::periodic' do
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04')
-                          .converge(described_recipe)
+  platform 'ubuntu'
+
+  describe 'updates apt with default action' do
+    it { is_expected.to periodic_apt_update('default_action') }
+    it { is_expected.to_not periodic_apt_update('not_default_action') }
   end
 
-  it 'updates apt with default action' do
-    expect(chef_run).to periodic_apt_update('default_action')
-    expect(chef_run).to_not periodic_apt_update('not_default_action')
-  end
-
-  it 'installs an apt_repository with an explicit action' do
-    expect(chef_run).to periodic_apt_update('explicit_action')
+  describe 'installs an apt_repository with an explicit action' do
+    it { is_expected.to periodic_apt_update('explicit_action') }
   end
 end

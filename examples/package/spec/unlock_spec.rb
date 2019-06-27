@@ -1,23 +1,23 @@
 require 'chefspec'
 
 describe 'package::unlock' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'unlocks a package with an explicit action' do
-    expect(chef_run).to unlock_package('explicit_action')
-    expect(chef_run).to_not unlock_package('not_explicit_action')
+  describe 'unlocks a package with an explicit action' do
+    it { is_expected.to unlock_package('explicit_action') }
+    it { is_expected.to_not unlock_package('not_explicit_action') }
   end
 
-  it 'unlocks a package with attributes' do
-    expect(chef_run).to unlock_package('with_attributes').with(version: '1.0.0')
-    expect(chef_run).to_not unlock_package('with_attributes').with(version: '1.2.3')
+  describe 'unlocks a package with attributes' do
+    it { is_expected.to unlock_package('with_attributes').with(version: '1.0.0') }
+    it { is_expected.to_not unlock_package('with_attributes').with(version: '1.2.3') }
   end
 
-  it 'unlocks a package when specifying the identity attribute' do
-    expect(chef_run).to unlock_package('identity_attribute')
+  describe 'unlocks a package when specifying the identity attribute' do
+    it { is_expected.to unlock_package('identity_attribute') }
   end
 
-  it 'unlocks all packages when given an array of names' do
-    expect(chef_run).to unlock_package(%w(with array))
+  describe 'unlocks all packages when given an array of names' do
+    it { is_expected.to unlock_package(%w(with array)) }
   end
 end

@@ -1,19 +1,19 @@
 require 'chefspec'
 
 describe 'mdadm::stop' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'stops a mdadm with an explicit action' do
-    expect(chef_run).to stop_mdadm('explicit_action')
-    expect(chef_run).to_not stop_mdadm('not_explicit_action')
+  describe 'stops a mdadm with an explicit action' do
+    it { is_expected.to stop_mdadm('explicit_action') }
+    it { is_expected.to_not stop_mdadm('not_explicit_action') }
   end
 
-  it 'stops a mdadm with attributes' do
-    expect(chef_run).to stop_mdadm('with_attributes').with(chunk: 8)
-    expect(chef_run).to_not stop_mdadm('with_attributes').with(chunk: 3)
+  describe 'stops a mdadm with attributes' do
+    it { is_expected.to stop_mdadm('with_attributes').with(chunk: 8) }
+    it { is_expected.to_not stop_mdadm('with_attributes').with(chunk: 3) }
   end
 
-  it 'stops a mdadm when specifying the identity attribute' do
-    expect(chef_run).to stop_mdadm('identity_attribute')
+  describe 'stops a mdadm when specifying the identity attribute' do
+    it { is_expected.to stop_mdadm('identity_attribute') }
   end
 end

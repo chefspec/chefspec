@@ -1,19 +1,19 @@
 require 'chefspec'
 
 describe 'mdadm::assemble' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'assembles a mdadm with an explicit action' do
-    expect(chef_run).to assemble_mdadm('explicit_action')
-    expect(chef_run).to_not assemble_mdadm('not_explicit_action')
+  describe 'assembles a mdadm with an explicit action' do
+    it { is_expected.to assemble_mdadm('explicit_action') }
+    it { is_expected.to_not assemble_mdadm('not_explicit_action') }
   end
 
-  it 'assembles a mdadm with attributes' do
-    expect(chef_run).to assemble_mdadm('with_attributes').with(chunk: 8)
-    expect(chef_run).to_not assemble_mdadm('with_attributes').with(chunk: 3)
+  describe 'assembles a mdadm with attributes' do
+    it { is_expected.to assemble_mdadm('with_attributes').with(chunk: 8) }
+    it { is_expected.to_not assemble_mdadm('with_attributes').with(chunk: 3) }
   end
 
-  it 'assembles a mdadm when specifying the identity attribute' do
-    expect(chef_run).to assemble_mdadm('identity_attribute')
+  describe 'assembles a mdadm when specifying the identity attribute' do
+    it { is_expected.to assemble_mdadm('identity_attribute') }
   end
 end

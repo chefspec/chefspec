@@ -1,19 +1,19 @@
 require 'chefspec'
 
 describe 'chef_gem::purge' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'purges a chef_gem with an explicit action' do
-    expect(chef_run).to purge_chef_gem('explicit_action')
-    expect(chef_run).to_not purge_chef_gem('not_explicit_action')
+  describe 'purges a chef_gem with an explicit action' do
+    it { is_expected.to purge_chef_gem('explicit_action') }
+    it { is_expected.to_not purge_chef_gem('not_explicit_action') }
   end
 
-  it 'purges a chef_gem with attributes' do
-    expect(chef_run).to purge_chef_gem('with_attributes').with(version: '1.0.0')
-    expect(chef_run).to_not purge_chef_gem('with_attributes').with(version: '1.2.3')
+  describe 'purges a chef_gem with attributes' do
+    it { is_expected.to purge_chef_gem('with_attributes').with(version: '1.0.0') }
+    it { is_expected.to_not purge_chef_gem('with_attributes').with(version: '1.2.3') }
   end
 
-  it 'purges a chef_gem when specifying the identity attribute' do
-    expect(chef_run).to purge_chef_gem('identity_attribute')
+  describe 'purges a chef_gem when specifying the identity attribute' do
+    it { is_expected.to purge_chef_gem('identity_attribute') }
   end
 end

@@ -1,5 +1,5 @@
 describe 'spec_attributes' do
-  platform 'centos', '7.4.1708'
+  platform 'centos'
 
   context 'with no attribute changes' do
     it { is_expected.to install_package('myapp').with_version('1.0') }

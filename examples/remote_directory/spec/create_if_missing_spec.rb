@@ -1,19 +1,19 @@
 require 'chefspec'
 
 describe 'remote_directory::create_if_missing' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'creates a remote_directory with an explicit action' do
-    expect(chef_run).to create_remote_directory_if_missing('/tmp/explicit_action')
-    expect(chef_run).to_not create_remote_directory_if_missing('/tmp/not_explicit_action')
+  describe 'creates a remote_directory with an explicit action' do
+    it { is_expected.to create_remote_directory_if_missing('/tmp/explicit_action') }
+    it { is_expected.to_not create_remote_directory_if_missing('/tmp/not_explicit_action') }
   end
 
-  it 'creates a remote_directory with attributes' do
-    expect(chef_run).to create_remote_directory_if_missing('/tmp/with_attributes').with(owner: 'owner')
-    expect(chef_run).to_not create_remote_directory_if_missing('/tmp/with_attributes').with(owner: 'bacon')
+  describe 'creates a remote_directory with attributes' do
+    it { is_expected.to create_remote_directory_if_missing('/tmp/with_attributes').with(owner: 'owner') }
+    it { is_expected.to_not create_remote_directory_if_missing('/tmp/with_attributes').with(owner: 'bacon') }
   end
 
-  it 'creates a remote_directory when specifying the identity attribute' do
-    expect(chef_run).to create_remote_directory_if_missing('/tmp/identity_attribute')
+  describe 'creates a remote_directory when specifying the identity attribute' do
+    it { is_expected.to create_remote_directory_if_missing('/tmp/identity_attribute') }
   end
 end

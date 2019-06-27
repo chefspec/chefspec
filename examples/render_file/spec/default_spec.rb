@@ -1,89 +1,109 @@
 require 'chefspec'
 
 describe 'render_file::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
   context 'file' do
-    it 'renders the file' do
-      expect(chef_run).to render_file('/tmp/file')
-      expect(chef_run).to_not render_file('/tmp/not_file')
+    describe 'renders the file' do
+      it { is_expected.to render_file('/tmp/file') }
+      it { is_expected.to_not render_file('/tmp/not_file') }
     end
 
-    it 'renders the file with content' do
-      expect(chef_run).to render_file('/tmp/file').with_content('This is content!')
-      expect(chef_run).to_not render_file('/tmp/file').with_content('This is not content!')
+    describe 'renders the file with content' do
+      it { is_expected.to render_file('/tmp/file').with_content('This is content!') }
+      it { is_expected.to_not render_file('/tmp/file').with_content('This is not content!') }
     end
 
-    it 'renders the file with matching content' do
-      expect(chef_run).to render_file('/tmp/file').with_content(/^This(.+)$/)
-      expect(chef_run).to_not render_file('/tmp/file').with_content(/^Not(.+)$/)
+    describe 'renders the file with matching content' do
+      it { is_expected.to render_file('/tmp/file').with_content(/^This(.+)$/) }
+      it { is_expected.to_not render_file('/tmp/file').with_content(/^Not(.+)$/) }
     end
 
-    it 'renders the file when given a block' do
-      expect(chef_run).to render_file('/tmp/file').with_content { |content|
-        expect(content).to include('This is content!')
+    describe 'renders the file when given a block' do
+      it {
+        is_expected.to render_file('/tmp/file').with_content { |content|
+                         expect(content).to include('This is content!')
+                       }
       }
 
-      expect(chef_run).to render_file('/tmp/file').with_content { |content|
-        expect(content).to_not include('This is not content!')
+      it {
+        is_expected.to render_file('/tmp/file').with_content { |content|
+                         expect(content).to_not include('This is not content!')
+                       }
       }
     end
 
-    it 'renders the file with content matching arbitrary matcher' do
-      expect(chef_run).to render_file('/tmp/file').with_content(
-        start_with('This')
-      )
-      expect(chef_run).to_not render_file('/tmp/file').with_content(
-        end_with('not')
-      )
+    describe 'renders the file with content matching arbitrary matcher' do
+      it {
+        is_expected.to render_file('/tmp/file').with_content(
+          start_with('This')
+        )
+      }
+      it {
+        is_expected.to_not render_file('/tmp/file').with_content(
+          end_with('not')
+        )
+      }
     end
   end
 
   context 'cookbook_file' do
     shared_examples 'renders file' do
-      it 'renders the file' do
-        expect(chef_run).to render_file('/tmp/cookbook_file')
-        expect(chef_run).to_not render_file('/tmp/not_cookbook_file')
+      describe 'renders the file' do
+        it { is_expected.to render_file('/tmp/cookbook_file') }
+        it { is_expected.to_not render_file('/tmp/not_cookbook_file') }
       end
 
-      it 'renders the file with content' do
-        expect(chef_run).to render_file('/tmp/cookbook_file').with_content('This is content!')
-        expect(chef_run).to_not render_file('/tmp/cookbook_file').with_content('This is not content!')
+      describe 'renders the file with content' do
+        it { is_expected.to render_file('/tmp/cookbook_file').with_content('This is content!') }
+        it { is_expected.to_not render_file('/tmp/cookbook_file').with_content('This is not content!') }
       end
 
-      it 'renders the file with matching content' do
-        expect(chef_run).to render_file('/tmp/cookbook_file').with_content(/^This(.+)$/)
-        expect(chef_run).to_not render_file('/tmp/cookbook_file').with_content(/^Not(.+)$/)
+      describe 'renders the file with matching content' do
+        it { is_expected.to render_file('/tmp/cookbook_file').with_content(/^This(.+)$/) }
+        it { is_expected.to_not render_file('/tmp/cookbook_file').with_content(/^Not(.+)$/) }
       end
 
-      it 'renders the file when given a block' do
-        expect(chef_run).to render_file('/tmp/cookbook_file').with_content { |content|
-          expect(content).to include('This is content!')
+      describe 'renders the file when given a block' do
+        it {
+          is_expected.to render_file('/tmp/cookbook_file').with_content { |content|
+                           expect(content).to include('This is content!')
+                         }
         }
 
-        expect(chef_run).to render_file('/tmp/cookbook_file').with_content { |content|
-          expect(content).to_not include('This is not content!')
+        it {
+          is_expected.to render_file('/tmp/cookbook_file').with_content { |content|
+                           expect(content).to_not include('This is not content!')
+                         }
         }
       end
 
-      it 'renders the file with content matching arbitrary matcher' do
-        expect(chef_run).to render_file('/tmp/cookbook_file').with_content(
-          start_with('This')
-        )
-        expect(chef_run).to_not render_file('/tmp/cookbook_file').with_content(
-          end_with('not')
-        )
+      describe 'renders the file with content matching arbitrary matcher' do
+        it {
+          is_expected.to render_file('/tmp/cookbook_file').with_content(
+            start_with('This')
+          )
+        }
+        it {
+          is_expected.to_not render_file('/tmp/cookbook_file').with_content(
+            end_with('not')
+          )
+        }
       end
 
-      it 'renders the file with chained content matchers' do
-        expect(chef_run).to render_file('/tmp/cookbook_file')
-          .with_content('This')
-          .with_content('is')
-          .with_content('content!')
-        expect(chef_run).to_not render_file('/tmp/cookbook_file')
-          .with_content('Sparta!')
-          .with_content('is')
-          .with_content('This')
+      describe 'renders the file with chained content matchers' do
+        it {
+          is_expected.to render_file('/tmp/cookbook_file')
+            .with_content('This')
+            .with_content('is')
+            .with_content('content!')
+        }
+        it {
+          is_expected.to_not render_file('/tmp/cookbook_file')
+            .with_content('Sparta!')
+            .with_content('is')
+            .with_content('This')
+        }
       end
     end
 
@@ -102,65 +122,77 @@ describe 'render_file::default' do
   end
 
   context 'template' do
-    it 'renders the file' do
-      expect(chef_run).to render_file('/tmp/template')
-      expect(chef_run).to_not render_file('/tmp/not_template')
+    describe 'renders the file' do
+      it { is_expected.to render_file('/tmp/template') }
+      it { is_expected.to_not render_file('/tmp/not_template') }
     end
 
-    it 'renders the file with content' do
-      expect(chef_run).to render_file('/tmp/template').with_content('This is content!')
-      expect(chef_run).to_not render_file('/tmp/template').with_content('This is not content!')
+    describe 'renders the file with content' do
+      it { is_expected.to render_file('/tmp/template').with_content('This is content!') }
+      it { is_expected.to_not render_file('/tmp/template').with_content('This is not content!') }
     end
 
-    it 'renders the file with matching content' do
-      expect(chef_run).to render_file('/tmp/template').with_content(/^This(.+)$/)
-      expect(chef_run).to_not render_file('/tmp/template').with_content(/^Not(.+)$/)
+    describe 'renders the file with matching content' do
+      it { is_expected.to render_file('/tmp/template').with_content(/^This(.+)$/) }
+      it { is_expected.to_not render_file('/tmp/template').with_content(/^Not(.+)$/) }
     end
 
-    it 'renders the file when given a block' do
-      expect(chef_run).to render_file('/tmp/template').with_content { |content|
-        expect(content).to include('This is content!')
+    describe 'renders the file when given a block' do
+      it {
+        is_expected.to render_file('/tmp/template').with_content { |content|
+                         expect(content).to include('This is content!')
+                       }
       }
 
-      expect(chef_run).to render_file('/tmp/template').with_content { |content|
-        expect(content).to_not include('This is not content!')
+      it {
+        is_expected.to render_file('/tmp/template').with_content { |content|
+                         expect(content).to_not include('This is not content!')
+                       }
       }
     end
 
-    it 'renders the file with content matching arbitrary matcher' do
-      expect(chef_run).to render_file('/tmp/template').with_content(
-        start_with('This')
-      )
-      expect(chef_run).to_not render_file('/tmp/template').with_content(
-        end_with('not')
-      )
+    describe 'renders the file with content matching arbitrary matcher' do
+      it {
+        is_expected.to render_file('/tmp/template').with_content(
+          start_with('This')
+        )
+      }
+      it {
+        is_expected.to_not render_file('/tmp/template').with_content(
+          end_with('not')
+        )
+      }
     end
   end
 
   context 'template with render' do
-    it 'renders the file' do
-      expect(chef_run).to render_file('/tmp/partial')
-      expect(chef_run).to_not render_file('/tmp/not_partial')
+    describe 'renders the file' do
+      it { is_expected.to render_file('/tmp/partial') }
+      it { is_expected.to_not render_file('/tmp/not_partial') }
     end
 
-    it 'renders the file with content' do
-      expect(chef_run).to render_file('/tmp/partial').with_content('This template has a partial: This is a template partial!')
-      expect(chef_run).to_not render_file('/tmp/partial').with_content('This template has a partial: This is not a template partial!')
+    describe 'renders the file with content' do
+      it { is_expected.to render_file('/tmp/partial').with_content('This template has a partial: This is a template partial!') }
+      it { is_expected.to_not render_file('/tmp/partial').with_content('This template has a partial: This is not a template partial!') }
     end
 
-    it 'renders the file when given a block' do
-      expect(chef_run).to render_file('/tmp/partial').with_content { |content|
-        expect(content).to include('has a partial')
+    describe 'renders the file when given a block' do
+      it {
+        is_expected.to render_file('/tmp/partial').with_content { |content|
+                         expect(content).to include('has a partial')
+                       }
       }
 
-      expect(chef_run).to render_file('/tmp/partial').with_content { |content|
-        expect(content).to_not include('not a template partial')
+      it {
+        is_expected.to render_file('/tmp/partial').with_content { |content|
+                         expect(content).to_not include('not a template partial')
+                       }
       }
     end
 
-    it 'renders the file with matching content' do
-      expect(chef_run).to render_file('/tmp/partial').with_content(/^This(.+)$/)
-      expect(chef_run).to_not render_file('/tmp/partial').with_content(/^Not(.+)$/)
+    describe 'renders the file with matching content' do
+      it { is_expected.to render_file('/tmp/partial').with_content(/^This(.+)$/) }
+      it { is_expected.to_not render_file('/tmp/partial').with_content(/^Not(.+)$/) }
     end
   end
 end

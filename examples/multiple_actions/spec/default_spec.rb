@@ -1,14 +1,14 @@
 require 'chefspec'
 
 describe 'multiple_actions::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'executes both actions' do
-    expect(chef_run).to enable_service('resource')
-    expect(chef_run).to start_service('resource')
+  describe 'executes both actions' do
+    it { is_expected.to enable_service('resource') }
+    it { is_expected.to start_service('resource') }
   end
 
-  it 'does not match other actions' do
-    expect(chef_run).to_not disable_service('resource')
+  describe 'does not match other actions' do
+    it { is_expected.to_not disable_service('resource') }
   end
 end

@@ -1,23 +1,23 @@
 require 'chefspec'
 
 describe 'package::upgrade' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'upgrades a package with an explicit action' do
-    expect(chef_run).to upgrade_package('explicit_action')
-    expect(chef_run).to_not upgrade_package('not_explicit_action')
+  describe 'upgrades a package with an explicit action' do
+    it { is_expected.to upgrade_package('explicit_action') }
+    it { is_expected.to_not upgrade_package('not_explicit_action') }
   end
 
-  it 'upgrades a package with attributes' do
-    expect(chef_run).to upgrade_package('with_attributes').with(version: '1.0.0')
-    expect(chef_run).to_not upgrade_package('with_attributes').with(version: '1.2.3')
+  describe 'upgrades a package with attributes' do
+    it { is_expected.to upgrade_package('with_attributes').with(version: '1.0.0') }
+    it { is_expected.to_not upgrade_package('with_attributes').with(version: '1.2.3') }
   end
 
-  it 'upgrades a package when specifying the identity attribute' do
-    expect(chef_run).to upgrade_package('identity_attribute')
+  describe 'upgrades a package when specifying the identity attribute' do
+    it { is_expected.to upgrade_package('identity_attribute') }
   end
 
-  it 'upgrades all packages when given an array of names' do
-    expect(chef_run).to upgrade_package(%w(with array))
+  describe 'upgrades all packages when given an array of names' do
+    it { is_expected.to upgrade_package(%w(with array)) }
   end
 end

@@ -1,23 +1,23 @@
 require 'chefspec'
 
 describe 'group::create' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'creates a group with the default action' do
-    expect(chef_run).to create_group('default_action')
-    expect(chef_run).to_not create_group('not_default_action')
+  describe 'creates a group with the default action' do
+    it { is_expected.to create_group('default_action') }
+    it { is_expected.to_not create_group('not_default_action') }
   end
 
-  it 'creates a group with an explicit action' do
-    expect(chef_run).to create_group('explicit_action')
+  describe 'creates a group with an explicit action' do
+    it { is_expected.to create_group('explicit_action') }
   end
 
-  it 'creates a group with attributes' do
-    expect(chef_run).to create_group('with_attributes').with(gid: 1234)
-    expect(chef_run).to_not create_group('with_attributes').with(gid: 5678)
+  describe 'creates a group with attributes' do
+    it { is_expected.to create_group('with_attributes').with(gid: 1234) }
+    it { is_expected.to_not create_group('with_attributes').with(gid: 5678) }
   end
 
-  it 'creates a group when specifying the identity attribute' do
-    expect(chef_run).to create_group('identity_attribute')
+  describe 'creates a group when specifying the identity attribute' do
+    it { is_expected.to create_group('identity_attribute') }
   end
 end

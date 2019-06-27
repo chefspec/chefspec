@@ -1,28 +1,32 @@
 require 'chefspec'
 
 describe 'file::create_if_missing' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'creates a file with an explicit action' do
-    expect(chef_run).to create_file_if_missing('/tmp/explicit_action')
-    expect(chef_run).to_not create_file_if_missing('/tmp/not_explicit_action')
+  describe 'creates a file with an explicit action' do
+    it { is_expected.to create_file_if_missing('/tmp/explicit_action') }
+    it { is_expected.to_not create_file_if_missing('/tmp/not_explicit_action') }
   end
 
-  it 'creates a file with attributes' do
-    expect(chef_run).to create_file_if_missing('/tmp/with_attributes').with(
-      user: 'user',
-      group: 'group',
-      backup: false
-    )
+  describe 'creates a file with attributes' do
+    it {
+      is_expected.to create_file_if_missing('/tmp/with_attributes').with(
+        user: 'user',
+        group: 'group',
+        backup: false
+      )
+    }
 
-    expect(chef_run).to_not create_file_if_missing('/tmp/with_attributes').with(
-      user: 'bacon',
-      group: 'fat',
-      backup: true
-    )
+    it {
+      is_expected.to_not create_file_if_missing('/tmp/with_attributes').with(
+        user: 'bacon',
+        group: 'fat',
+        backup: true
+      )
+    }
   end
 
-  it 'creates a file when specifying the identity attribute' do
-    expect(chef_run).to create_file_if_missing('/tmp/identity_attribute')
+  describe 'creates a file when specifying the identity attribute' do
+    it { is_expected.to create_file_if_missing('/tmp/identity_attribute') }
   end
 end

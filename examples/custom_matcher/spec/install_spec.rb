@@ -1,27 +1,27 @@
 require 'chefspec'
 
 describe 'custom_matcher::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'installs a custom_matcher with the default action' do
-    expect(chef_run).to install_custom_matcher_thing('default_action')
-    expect(chef_run).to_not install_custom_matcher_thing('not_default_action')
+  describe 'installs a custom_matcher with the default action' do
+    it { is_expected.to install_custom_matcher_thing('default_action') }
+    it { is_expected.to_not install_custom_matcher_thing('not_default_action') }
   end
 
-  it 'installs a custom_matcher with an explicit action' do
-    expect(chef_run).to install_custom_matcher_thing('explicit_action')
+  describe 'installs a custom_matcher with an explicit action' do
+    it { is_expected.to install_custom_matcher_thing('explicit_action') }
   end
 
-  it 'installs a custom_matcher with attributes' do
-    expect(chef_run).to install_custom_matcher_thing('with_attributes').with(config: true)
-    expect(chef_run).to_not install_custom_matcher_thing('with_attributes').with(config: false)
+  describe 'installs a custom_matcher with attributes' do
+    it { is_expected.to install_custom_matcher_thing('with_attributes').with(config: true) }
+    it { is_expected.to_not install_custom_matcher_thing('with_attributes').with(config: false) }
   end
 
-  it 'installs a custom_matcher when specifying the identity attribute' do
-    expect(chef_run).to install_custom_matcher_thing('identity_attribute')
+  describe 'installs a custom_matcher when specifying the identity attribute' do
+    it { is_expected.to install_custom_matcher_thing('identity_attribute') }
   end
 
-  it 'defines a runner method' do
-    expect(chef_run).to respond_to(:custom_matcher_thing)
+  describe 'defines a runner method' do
+    it { is_expected.to respond_to(:custom_matcher_thing) }
   end
 end

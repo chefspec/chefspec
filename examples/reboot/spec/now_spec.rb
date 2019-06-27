@@ -1,9 +1,9 @@
 require 'chefspec'
 
 describe 'reboot::now' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'runs a reboot_now when specifying action' do
-    expect(chef_run).to now_reboot('explicit_action')
+  describe 'runs a reboot_now when specifying action' do
+    it { is_expected.to now_reboot('explicit_action') }
   end
 end
