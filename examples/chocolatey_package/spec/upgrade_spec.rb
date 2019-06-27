@@ -1,18 +1,17 @@
 require 'chefspec'
 
 describe 'chocolatey_package::upgrade' do
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'windows', version: '2016')
-                          .converge(described_recipe)
+  platform 'windows'
+
+  describe 'upgrades a package' do
+    it { is_expected.to upgrade_chocolatey_package('7zip') }
   end
 
-  it 'upgrades a package' do
-    expect(chef_run).to upgrade_chocolatey_package('7zip')
-  end
-
-  it 'upgrades a specific version of a package with options' do
-    expect(chef_run).to upgrade_chocolatey_package('git').with(
-      version: %w(2.7.1)
-    )
+  describe 'upgrades a specific version of a package with options' do
+    it {
+      is_expected.to upgrade_chocolatey_package('git').with(
+        version: %w(2.7.1)
+      )
+    }
   end
 end

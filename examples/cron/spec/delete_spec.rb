@@ -1,15 +1,15 @@
 require 'chefspec'
 
 describe 'cron::delete' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'deletes a cron with an explicit action' do
-    expect(chef_run).to delete_cron('explicit_action')
-    expect(chef_run).to_not delete_cron('not_explicit_action')
+  describe 'deletes a cron with an explicit action' do
+    it { is_expected.to delete_cron('explicit_action') }
+    it { is_expected.to_not delete_cron('not_explicit_action') }
   end
 
-  it 'deletes a cron with attributes' do
-    expect(chef_run).to delete_cron('with_attributes').with(minute: '0', hour: '20')
-    expect(chef_run).to_not delete_cron('with_attributes').with(minute: '10', hour: '30')
+  describe 'deletes a cron with attributes' do
+    it { is_expected.to delete_cron('with_attributes').with(minute: '0', hour: '20') }
+    it { is_expected.to_not delete_cron('with_attributes').with(minute: '10', hour: '30') }
   end
 end
