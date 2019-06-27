@@ -1,23 +1,23 @@
 require 'chefspec'
 
 describe 'ohai::reload' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'reloads a ohai with the default action' do
-    expect(chef_run).to reload_ohai('default_action')
-    expect(chef_run).to_not reload_ohai('not_default_action')
+  describe 'reloads a ohai with the default action' do
+    it { is_expected.to reload_ohai('default_action') }
+    it { is_expected.to_not reload_ohai('not_default_action') }
   end
 
-  it 'reloads a ohai with an explicit action' do
-    expect(chef_run).to reload_ohai('explicit_action')
+  describe 'reloads a ohai with an explicit action' do
+    it { is_expected.to reload_ohai('explicit_action') }
   end
 
-  it 'reloads a ohai with attributes' do
-    expect(chef_run).to reload_ohai('with_attributes').with(plugin: 'plugin')
-    expect(chef_run).to_not reload_ohai('with_attributes').with(plugin: 'not_plugin')
+  describe 'reloads a ohai with attributes' do
+    it { is_expected.to reload_ohai('with_attributes').with(plugin: 'plugin') }
+    it { is_expected.to_not reload_ohai('with_attributes').with(plugin: 'not_plugin') }
   end
 
-  it 'reloads a ohai when specifying the identity attribute' do
-    expect(chef_run).to reload_ohai('identity_attribute')
+  describe 'reloads a ohai when specifying the identity attribute' do
+    it { is_expected.to reload_ohai('identity_attribute') }
   end
 end

@@ -1,10 +1,10 @@
 require 'chefspec'
 
 describe 'launchd::delete' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'mac_os_x', version: '10.13').converge(described_recipe) }
+  platform 'mac_os_x'
 
-  it 'deletes a launchd with an explicit action' do
-    expect(chef_run).to delete_launchd('explicit_action')
-    expect(chef_run).to_not delete_launchd('not_explicit_action')
+  describe 'deletes a launchd with an explicit action' do
+    it { is_expected.to delete_launchd('explicit_action') }
+    it { is_expected.to_not delete_launchd('not_explicit_action') }
   end
 end

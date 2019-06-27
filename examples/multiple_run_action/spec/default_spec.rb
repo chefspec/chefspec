@@ -1,18 +1,18 @@
 require 'chefspec'
 
 describe 'multiple_run_action::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'includes the action explicitly given to the resource' do
-    expect(chef_run).to create_template('/tmp/resource')
+  describe 'includes the action explicitly given to the resource' do
+    it { is_expected.to create_template('/tmp/resource') }
   end
 
-  it 'includes an action specific called in #run_action' do
-    expect(chef_run).to touch_template('/tmp/resource')
+  describe 'includes an action specific called in #run_action' do
+    it { is_expected.to touch_template('/tmp/resource') }
   end
 
-  it 'does not include something random' do
-    template = chef_run.template('/tmp/resource')
+  describe 'does not include something random' do
+    template = subject.template('/tmp/resource') }
     expect(template.performed_actions).to_not include(:bacon)
   end
 end

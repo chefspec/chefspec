@@ -1,15 +1,15 @@
 require 'chefspec'
 
 describe 'osx_profile::install' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'mac_os_x', version: '10.13').converge(described_recipe) }
+  platform 'mac_os_x'
 
-  it 'installs an osx_profile with an explicit action' do
-    expect(chef_run).to install_osx_profile('explicit_action')
-    expect(chef_run).to_not install_osx_profile('not_explicit_action')
+  describe 'installs an osx_profile with an explicit action' do
+    it { is_expected.to install_osx_profile('explicit_action') }
+    it { is_expected.to_not install_osx_profile('not_explicit_action') }
   end
 
-  it 'starts an osx_profile with an implicit_action action' do
-    expect(chef_run).to install_osx_profile('implicit_action')
-    expect(chef_run).to_not install_osx_profile('other_profile')
+  describe 'starts an osx_profile with an implicit_action action' do
+    it { is_expected.to install_osx_profile('implicit_action') }
+    it { is_expected.to_not install_osx_profile('other_profile') }
   end
 end

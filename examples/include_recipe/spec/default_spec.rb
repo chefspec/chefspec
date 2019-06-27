@@ -1,13 +1,13 @@
 require 'chefspec'
 
 describe 'include_recipe::default' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
+  platform 'ubuntu'
 
-  it 'includes the `other` recipe' do
-    expect(chef_run).to include_recipe('include_recipe::other')
+  describe 'includes the `other` recipe' do
+    it { is_expected.to include_recipe('include_recipe::other') }
   end
 
-  it 'does not include the `not` recipe' do
-    expect(chef_run).to_not include_recipe('include_recipe::not')
+  describe 'does not include the `not` recipe' do
+    it { is_expected.to_not include_recipe('include_recipe::not') }
   end
 end
