@@ -1,12 +1,9 @@
 require 'chefspec'
 
 describe 'apt_update::update' do
-  let(:chef_run) do
-    ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04')
-                          .converge(described_recipe)
-  end
+  platform 'ubuntu'
 
-  it 'updates apt repo' do
-    expect(chef_run).to update_apt_update('update_repo')
+  describe 'updates apt repo' do
+    it { is_expected.to update_apt_update('update_repo') }
   end
 end
