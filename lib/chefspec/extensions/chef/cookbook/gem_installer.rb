@@ -25,7 +25,7 @@ Chef::Cookbook::GemInstaller.prepend(Module.new do
     gem_cmd = "gem install #{gem_name} --version '#{gem_requirements.join(', ')}'"
     gemfile_line = "gem '#{[gem_name, *gem_requirements].join('\', \'')}'"
     warn "No matching version found for '#{gem_name}' in your gem environment.\n" \
-         " - if you are using ChefDK, run the following command: \"chef #{gem_cmd}\"\n" \
+         " - if you are using Chef Workstation, run the following command: \"chef #{gem_cmd}\"\n" \
          " - if you are using bundler, append \"#{gemfile_line}\" to your Gemfile and run \"bundle install\"\n" \
          " - otherwise run: \"#{gem_cmd}\""
   end
