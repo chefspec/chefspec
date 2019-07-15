@@ -351,7 +351,7 @@ platform 'windows'
 ```
 
 **WARNING:** If you leave off the version or use a partial version prefix, the
-behavior of your tests may change between versions of ChefDK as new data is
+behavior of your tests may change between versions of Chef Workstation as new data is
 available in Fauxhai. Only use this feature if you're certain that your tests
 do not (or should not) depend on the specifics of OS version.
 
