@@ -1,5 +1,10 @@
 # CHANGELOG for ChefSpec
 
+## 8.0.0 (July 16, 2019)
+
+- ChefSpec now requires Ruby 2.4+ and Chef 14+. Keep in mind that you can still test cookbooks designed for older versions of Chef Infra Client, but you'll need a somewhat modern chef gem to run ChefSpec.
+- ChefSpec now depends on the new chef-cli gem, which provides Chef Policyfiles functionality. This means you can now use ChefSpec to test Policyfiles without needing to run those tests from within ChefDK or Chef Workstation. Gem install chefspec!
+
 ## 7.4.0 (June 27, 2019)
 
 - Require Ruby 2.3+, Chef 13+, and Fauxhai 6.11+
