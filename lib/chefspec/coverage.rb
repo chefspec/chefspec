@@ -91,26 +91,6 @@ module ChefSpec
     end
 
     #
-    # Change the template for reporting of converage analysis.
-    #
-    # @param [string] path
-    #   The template file to use for the output of the report
-    #
-    # @return [true]
-    #
-    def set_template(file = 'human.erb')
-      [
-        ChefSpec.root.join('templates', 'coverage', file),
-        File.expand_path(file, Dir.pwd)
-      ].each do |temp|
-        if File.exist?(temp)
-          @template = temp
-          return
-        end
-      end
-      raise Error::TemplateNotFound.new(path: file)
-    end
-    #
     # Add a resource to the resource collection. Only new resources are added
     # and only resources that match the given filter are covered (which is *
     # by default).
