@@ -1,6 +1,5 @@
 language: ruby
 cache: bundler
-sudo: false
 
 before_install:
   - gem install bundler
@@ -16,6 +15,8 @@ bundler_args: --jobs 7 --retry 3
 
 matrix:
   include:
+    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.1.36'\""
+      rvm: 2.6.3
     - env: "GEMFILE_MOD=\"gem 'chef', '= 15.0.300'\""
       rvm: 2.6.3
     - env: "GEMFILE_MOD=\"gem 'chef', '= 14.13.11'\""
@@ -46,5 +47,3 @@ matrix:
       rvm: 2.5.1
     - env: "GEMFILE_MOD=\"gem 'chef', '= 14.0.202'\""
       rvm: 2.5.1
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 13.12.14'\""
-      rvm: 2.4.5
