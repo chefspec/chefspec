@@ -23,8 +23,8 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.4'
 
-  s.add_dependency 'chef',    '>= 14'
+  s.add_dependency 'chef',       '>= 14'
   s.add_dependency 'chef-cli'
-  s.add_dependency 'fauxhai', '>= 6.11'
-  s.add_dependency 'rspec',   '~> 3.0'
+  s.add_dependency 'fauxhai-ng', '>= 6.11'
+  s.add_dependency 'rspec',      '~> 3.0'
 end
