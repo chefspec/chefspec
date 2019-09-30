@@ -1,5 +1,9 @@
 # CHANGELOG for ChefSpec
 
+## 8.0.1 (September 30, 2019)
+
+- Added back the ChefSpec report templates until the time that we fully remove the report feature.
+
 ## 8.0.0 (July 16, 2019)
 
 - ChefSpec now requires Ruby 2.4+ and Chef 14+. Keep in mind that you can still test cookbooks designed for older versions of Chef Infra Client, but you'll need a somewhat modern chef gem to run ChefSpec.
