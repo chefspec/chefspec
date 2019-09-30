@@ -1,0 +1,8 @@
+{ "resources":[
+  <%= @all_resources.map { |resource| resource.to_json }.join(",\n") %>
+  ],
+  "resource_count": <%= @total %>,
+  "resources_touched": <%= @touched %>,
+  "resource_coverage":    <%= @coverage %>
+
+}

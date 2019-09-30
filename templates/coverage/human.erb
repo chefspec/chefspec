@@ -1,0 +1,22 @@
+
+<% if @total == 0 %>
+  No Chef resources found, skipping coverage calculation...
+<% else %>
+ChefSpec Coverage report generated...
+
+  Total Resources:   <%= @total %>
+  Touched Resources: <%= @touched %>
+  Touch Coverage:    <%= @coverage %>%
+
+<% if @untouched_resources.empty? %>
+You are awesome and so is your test coverage! Have a fantastic day!
+
+<% else %>
+Untouched Resources:
+
+<% @untouched_resources.each do |resource| %>
+  <%= resource.to_s.ljust(32) %>   <%= resource.source_file %>:<%= resource.source_line %>
+<% end %>
+
+<% end %>
+<% end %>
