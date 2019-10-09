@@ -1,5 +1,9 @@
 # CHANGELOG for ChefSpec
 
+## 9.0.0 (October 8, 2019)
+
+- The fauxhai dependency has been switched to the fauxhai-ng. Fauxhai-ng is the original source of the fauxhai project in the chefspec GitHub org, but with a new name. This is considered a major update as it forces users to upgrade to use fauxhai-ng >= 7.5 where as the previous ChefSpec release allowed for fauxhai >= 6.11.
+
 ## 8.0.1 (September 30, 2019)
 
 - Added back the ChefSpec report templates until the time that we fully remove the report feature.
