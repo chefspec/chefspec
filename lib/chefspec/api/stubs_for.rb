@@ -35,7 +35,7 @@ module ChefSpec
       before do
         allow(StubsFor).to receive(:setup_stubs_for) do |object, type|
           type_stubs = _chefspec_stubs_for_registry[type]
-          resource_object = object.is_a?(Chef::Provider) ? object.new_resource : object
+          resource_object = object.respond_to?(:new_resource) ? object.new_resource : object
           stubs = type_stubs[nil] + type_stubs[resource_object.resource_name.to_s] + type_stubs[resource_object.to_s]
           stubs.each do |stub|
             instance_exec(object, &stub)
