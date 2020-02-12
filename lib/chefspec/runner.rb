@@ -1,4 +1,4 @@
-require "chefspec/solo_runner"
+require_relative "solo_runner"
 
 module ChefSpec
   # As we start to migrate back to only SoloRunner, include this alias for now.
