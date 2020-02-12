@@ -1,6 +1,6 @@
 require 'chef/resource'
 require 'chef/version'
-require 'chefspec/api'
+require_relative '../../api'
 
 #
 # Three concerns:

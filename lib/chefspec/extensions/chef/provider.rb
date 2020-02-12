@@ -1,5 +1,5 @@
 require 'chef/provider'
-require 'chefspec/api'
+require_relative '../../api'
 
 Chef::Provider.prepend(Module.new do
   def self.name
