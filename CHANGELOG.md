@@ -1,5 +1,11 @@
 # CHANGELOG for ChefSpec
 
+## 9.1.0 (February 12, 2020)
+
+- Added a new `include_any_recipe` matcher which allows you to write ChefSpecs that ensure a cookbook does not include recipes. Thanks @jasonwbarnett
+- Fixed stubbing of Chef::Provider when using Poise's resource_provider_mixin. Thanks @Annih
+- Switched require statements to require_relative to speed up requiring libraries in ChefSpec
+
 ## 9.0.0 (October 8, 2019)
 
 - The fauxhai dependency has been switched to the fauxhai-ng. Fauxhai-ng is the original source of the fauxhai project in the chefspec GitHub org, but with a new name. This is considered a major update as it forces users to upgrade to use fauxhai-ng >= 7.5 where as the previous ChefSpec release allowed for fauxhai >= 6.11.
