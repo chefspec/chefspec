@@ -3,6 +3,7 @@ module ChefSpec
     autoload :Core, 'chefspec/api/core'
     autoload :Described, 'chefspec/api/described'
     autoload :DoNothing, 'chefspec/api/do_nothing'
+    autoload :IncludeAnyRecipe, 'chefspec/api/include_any_recipe'
     autoload :IncludeRecipe, 'chefspec/api/include_recipe'
     autoload :Link, 'chefspec/api/link'
     autoload :Notifications, 'chefspec/api/notifications'
@@ -19,6 +20,7 @@ module ChefSpec
       klass.include(ChefSpec::API::Core)
       klass.include(ChefSpec::API::Described)
       klass.include(ChefSpec::API::DoNothing)
+      klass.include(ChefSpec::API::IncludeAnyRecipe)
       klass.include(ChefSpec::API::IncludeRecipe)
       klass.include(ChefSpec::API::DoNothing)
       klass.include(ChefSpec::API::RenderFile)
