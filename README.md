@@ -518,9 +518,10 @@ describe 'something' do
 end
 ```
 
-By default, stubs for the resource will also be set up on the `current_resource`
-object. This can be disabled by using `stubs_for_resource('my_custom_resource[something]', current_resource: false)`.
-You can also manually set stubs for only the `current_resource` using `stubs_for_current_resource`.
+By default, stubs for the resource will also be set up on the `current_resource` and `after_resource` objects that are
+created via `load_current_value`.  This can be disabled by using `stubs_for_resource('my_custom_resource[something]',
+current_value: false)`.  You can also manually set stubs for only the `current_resource` and `after_resource` objects using
+`stubs_for_current_value`.
 
 #### Ruby Code
 
