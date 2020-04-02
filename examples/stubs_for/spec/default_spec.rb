@@ -50,20 +50,20 @@ describe 'stubs_for' do
       end
 
       it do
-        stubs_for_current_resource('stubs_for_test[test]') do |res|
+        stubs_for_current_value('stubs_for_test[test]') do |res|
           allow(res).to receive_shell_out('this_is_not_a_cmd', stdout: 'asdf')
         end
         subject
       end
 
       it do
-        stubs_for_resource('stubs_for_test[test]', current_resource: false) do |res|
+        stubs_for_resource('stubs_for_test[test]', current_value: false) do |res|
           allow(res).to receive_shell_out('this_is_not_a_cmd', stdout: 'asdf')
         end
         expect { subject }.to raise_error ChefSpec::Error::ShellOutNotStubbed
       end
 
-      context 'with old-style load_current_resource' do
+      context 'with old-style load_current_value' do
         recipe do
           stubs_for_old 'test' do
             cmd 'this_is_not_a_cmd'
@@ -72,7 +72,7 @@ describe 'stubs_for' do
         end
 
         it do
-          stubs_for_current_resource('stubs_for_old[test]') do |res|
+          stubs_for_current_value('stubs_for_old[test]') do |res|
             allow(res).to receive_shell_out('this_is_not_a_cmd', stdout: 'asdf')
           end
           subject
@@ -150,16 +150,16 @@ describe 'stubs_for' do
         it { subject }
       end
 
-      context 'with stubs_for_current_resource' do
-        stubs_for_current_resource('stubs_for_test[test]') do |res|
+      context 'with stubs_for_current_value' do
+        stubs_for_current_value('stubs_for_test[test]') do |res|
           allow(res).to receive_shell_out('this_is_not_a_cmd', stdout: 'asdf')
         end
 
         it { subject }
       end
 
-      context 'with current_resource: false' do
-        stubs_for_resource('stubs_for_test[test]', current_resource: false) do |res|
+      context 'with current_value: false' do
+        stubs_for_resource('stubs_for_test[test]', current_value: false) do |res|
           allow(res).to receive_shell_out('this_is_not_a_cmd', stdout: 'asdf')
         end
         it { expect { subject }.to raise_error ChefSpec::Error::ShellOutNotStubbed }

@@ -21,7 +21,8 @@ module ChefSpec::Extensions::Chef::Resource
       # If we're directly inside a `load_current_resource`, this is probably
       # something like `new_resource.class.new` so we want to call this a current_resource,
       # Otherwise it's probably a normal resource instantiation.
-      mode = caller[1].include?("`load_current_resource'") ? :current_resource : :resource
+      mode = :resource
+      mode = :current_value if caller.any? { |x| x.include?("`load_current_resource'") || x.include?("`load_after_resource'") }
       ChefSpec::API::StubsFor.setup_stubs_for(self, mode)
     end
   end
@@ -33,7 +34,7 @@ module ChefSpec::Extensions::Chef::Resource
     super.tap do |dup_resource|
       # We're directly inside a load_current_resource, which is probably via
       # the load_current_value DSL system, so call this a current resource.
-      ChefSpec::API::StubsFor.setup_stubs_for(dup_resource, :current_resource) if stack.first.include?("`load_current_resource'")
+      ChefSpec::API::StubsFor.setup_stubs_for(dup_resource, :current_value) if caller.any? { |x| x.include?("`load_current_resource'") || x.include?("`load_after_resource'") }
     end
   end
 

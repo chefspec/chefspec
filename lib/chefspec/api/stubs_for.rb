@@ -56,23 +56,25 @@ module ChefSpec
       #     expect(subject.some_method).to eq "asdf"
       #   end
       # @param target [String, nil] Resource name to inject, or nil for all resources.
-      # @param current_resource [Boolean] If true, also register stubs for current_resource objects on the same target.
+      # @param current_value [Boolean] If true, also register stubs for current_value objects on the same target.
       # @param block [Proc] A block taking the resource object as a parameter.
       # @return [void]
-      def stubs_for_resource(target=nil, current_resource: true, &block)
+      def stubs_for_resource(target=nil, current_value: true, current_resource: true, &block)
+        current_value = false if !current_resource
         _chefspec_stubs_for_registry[:resource][target] << block
-        stubs_for_current_resource(target, &block) if current_resource
+        stubs_for_current_value(target, &block) if current_value
       end
 
-      # Register stubs for current_resource objects.
+      # Register stubs for current_value objects.
       #
       # @see #stubs_for_resource
       # @param target [String, nil] Resource name to inject, or nil for all resources.
       # @param block [Proc] A block taking the resource object as a parameter.
       # @return [void]
-      def stubs_for_current_resource(target=nil, &block)
-        _chefspec_stubs_for_registry[:current_resource][target] << block
+      def stubs_for_current_value(target=nil, &block)
+        _chefspec_stubs_for_registry[:current_value][target] << block
       end
+      alias_method :stubs_for_current_resource, :stubs_for_current_value
 
       # Register stubs for provider objects.
       #
@@ -111,10 +113,11 @@ module ChefSpec
           before { stubs_for_resource(*args, &block) }
         end
 
-        # (see StubsFor#stubs_for_current_resource)
-        def stubs_for_current_resource(*args, &block)
-          before { stubs_for_current_resource(*args, &block) }
+        # (see StubsFor#stubs_for_current_value)
+        def stubs_for_current_value(*args, &block)
+          before { stubs_for_current_value(*args, &block) }
         end
+        alias_method :stubs_for_current_resource, :stubs_for_current_value
 
         # (see StubsFor#stubs_for_provider)
         def stubs_for_provider(*args, &block)
