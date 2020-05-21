@@ -1,4 +1,5 @@
 resource_name :stubs_for_old
+provides :stubs_for_old
 
 property :cmd
 property :value
