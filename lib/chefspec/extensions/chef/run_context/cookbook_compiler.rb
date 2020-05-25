@@ -22,6 +22,15 @@ Chef::RunContext::CookbookCompiler.prepend(Module.new do
     super
   end
 
+  def load_ohai_plugins_from_cookbook(cookbook)
+    return super unless $CHEFSPEC_MODE
+    $CHEFSPEC_OHAI_PRELOAD ||= {}
+    # Already loaded this once.
+    return if $CHEFSPEC_OHAI_PRELOAD[cookbook]
+    $CHEFSPEC_OHAI_PRELOAD[cookbook] = true
+    super
+  end
+
   def load_lwrps_from_cookbook(cookbook)
     return super unless $CHEFSPEC_MODE
     $CHEFSPEC_LWRP_PRELOAD ||= {}
