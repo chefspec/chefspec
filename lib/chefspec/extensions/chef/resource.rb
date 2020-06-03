@@ -134,12 +134,11 @@ module ChefSpec::Extensions::Chef::Resource
       super
     end
 
-    def provides(name, *args, &block)
+    def provides(name, **options, &block)
       provides_names << name unless provides_names.include?(name)
       inject_actions(*allowed_actions)
       super
     end
-    ruby2_keywords(:provides) if respond_to?(:ruby2_keywords, true) 
 
     def action(sym, &block)
       inject_actions(sym)
