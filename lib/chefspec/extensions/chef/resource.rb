@@ -134,7 +134,7 @@ module ChefSpec::Extensions::Chef::Resource
       super
     end
 
-    def provides(name, *args, &block)
+    def provides(name, **options, &block)
       provides_names << name unless provides_names.include?(name)
       inject_actions(*allowed_actions)
       super
