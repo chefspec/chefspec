@@ -1,5 +1,11 @@
 # CHANGELOG for ChefSpec
 
+## 9.2.0 (June 10, 2020)
+
+- Updated `stubs_for_resource` stubbing for the new `after_resource` state in Chef Infra Client 16.
+- Added support for Ohai segments in cookbooks
+- Resolved warnings when running on Ruby 2.7+
+
 ## 9.1.0 (February 12, 2020)
 
 - Added a new `include_any_recipe` matcher which allows you to write ChefSpecs that ensure a cookbook does not include recipes. Thanks @jasonwbarnett
