@@ -1,5 +1,5 @@
-require 'rspec/matchers/expecteds_for_multiple_diffs'
-require 'rspec/expectations/fail_with'
+require "rspec/matchers/expecteds_for_multiple_diffs"
+require "rspec/expectations/fail_with"
 
 module ChefSpec::Matchers
   class ResourceMatcher
@@ -15,13 +15,15 @@ module ChefSpec::Matchers
     end
 
     def at_compile_time
-      raise ArgumentError, 'Cannot specify both .at_converge_time and .at_compile_time!' if @converge_time
+      raise ArgumentError, "Cannot specify both .at_converge_time and .at_compile_time!" if @converge_time
+
       @compile_time = true
       self
     end
 
     def at_converge_time
-      raise ArgumentError, 'Cannot specify both .at_compile_time and .at_converge_time!' if @compile_time
+      raise ArgumentError, "Cannot specify both .at_compile_time and .at_converge_time!" if @compile_time
+
       @converge_time = true
       self
     end
@@ -63,12 +65,12 @@ module ChefSpec::Matchers
           message = %Q{expected "#{resource.to_s}" to have parameters:} \
             "\n\n" \
             "  " + unmatched_parameters.collect { |parameter, h|
-            msg = "#{parameter} #{h[:expected].inspect}, was #{h[:actual].inspect}"
-            diff = ::RSpec::Matchers::ExpectedsForMultipleDiffs.from(h[:expected]) \
-              .message_with_diff(message, ::RSpec::Expectations::differ, h[:actual])
-            msg += diff if diff
-            msg
-          }.join("\n  ")
+              msg = "#{parameter} #{h[:expected].inspect}, was #{h[:actual].inspect}"
+              diff = ::RSpec::Matchers::ExpectedsForMultipleDiffs.from(h[:expected]) \
+                .message_with_diff(message, ::RSpec::Expectations.differ, h[:actual])
+              msg += diff if diff
+              msg
+            }.join("\n  ")
         end
       else
         %Q{expected "#{@resource_name}[#{@expected_identity}]"} \
@@ -115,7 +117,7 @@ module ChefSpec::Matchers
       if parameter == :source
         # Chef 11+ stores the source parameter internally as an Array
         Array(expected) == Array(value)
-      elsif expected.kind_of?(Class)
+      elsif expected.is_a?(Class)
         # Ruby can't compare classes with ===
         expected == value
       else

@@ -1,4 +1,4 @@
-require 'chef_zero/server'
+require "chef_zero/server"
 
 module ChefSpec
   # Rather than create a ChefZero instance per test case, simply create one
@@ -56,7 +56,7 @@ module ChefSpec
         port: RSpec.configuration.server_runner_port,
 
         # Set the data store
-        data_store: data_store(RSpec.configuration.server_runner_data_store),
+        data_store: data_store(RSpec.configuration.server_runner_data_store)
       )
       @cookbooks_uploaded = false
       @data_loaded = {}
@@ -74,6 +74,7 @@ module ChefSpec
     #
     def upload_cookbooks!
       return if @cookbooks_uploaded
+
       loader = Chef::CookbookLoader.new(Chef::Config[:cookbook_path])
       loader.load_cookbooks
       cookbook_uploader_for(loader).upload_cookbooks

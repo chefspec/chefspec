@@ -1,9 +1,8 @@
-require 'chefspec'
-require 'support/hash'
-
+require "chefspec"
+require "support/hash"
 
 ChefSpec::Coverage.start! do
-  set_template 'table.erb'
+  set_template "table.erb"
 end
 
 RSpec.configure do |config|

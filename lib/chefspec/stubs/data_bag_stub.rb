@@ -1,4 +1,4 @@
-require_relative 'stub'
+require_relative "stub"
 
 module ChefSpec
   module Stubs

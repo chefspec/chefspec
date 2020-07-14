@@ -1,4 +1,4 @@
-require 'chef/mixin/securable'
+require "chef/mixin/securable"
 
 class Chef
   module Mixin

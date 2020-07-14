@@ -1,6 +1,6 @@
 begin
-  require 'chef/mixin/template'
-  require 'chef/provider/template_finder'
+  require "chef/mixin/template"
+  require "chef/provider/template_finder"
 rescue LoadError
 end
 
@@ -67,8 +67,8 @@ module ChefSpec
       if Chef::Mixin::Template.const_defined?(:TemplateContext) # Chef 11+
         template_context = Chef::Mixin::Template::TemplateContext.new([])
         template_context.update({
-          :node => chef_run.node,
-          :template_finder => template_finder(chef_run, cookbook_name),
+          node: chef_run.node,
+          template_finder: template_finder(chef_run, cookbook_name),
         }.merge(template.variables))
         if template.respond_to?(:helper_modules) # Chef 11.4+
           template_context._extend_modules(template.helper_modules)

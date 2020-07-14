@@ -1,10 +1,11 @@
 begin
-  require 'librarian/chef/environment'
-  require 'librarian/action/resolve'
-  require 'librarian/action/install'
+  require "librarian/chef/environment"
+  require "librarian/action/resolve"
+  require "librarian/action/install"
 rescue LoadError
   raise ChefSpec::Error::GemLoadError.new(
-    gem: 'librarian-chef', name: 'Librarian')
+    gem: "librarian-chef", name: "Librarian"
+  )
 end
 
 module ChefSpec
@@ -25,7 +26,7 @@ module ChefSpec
     #
     def setup!
       env = ::Librarian::Chef::Environment.new(project_path: Dir.pwd)
-      @originalpath, env.config_db.local['path'] = env.config_db.local['path'], @tmpdir
+      @originalpath, env.config_db.local["path"] = env.config_db.local["path"], @tmpdir
       ::Librarian::Action::Resolve.new(env).run
       ::Librarian::Action::Install.new(env).run
 
@@ -37,7 +38,7 @@ module ChefSpec
     #
     def teardown!
       env = ::Librarian::Chef::Environment.new(project_path: Dir.pwd)
-      env.config_db.local['path'] = @originalpath
+      env.config_db.local["path"] = @originalpath
 
       FileUtils.rm_rf(@tmpdir) if File.exist?(@tmpdir)
     end

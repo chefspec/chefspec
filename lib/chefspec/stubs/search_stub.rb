@@ -1,4 +1,4 @@
-require_relative 'stub'
+require_relative "stub"
 
 module ChefSpec
   module Stubs
@@ -7,7 +7,7 @@ module ChefSpec
       attr_reader :query
       attr_reader :type
 
-      def initialize(type, query = '*:*', &block)
+      def initialize(type, query = "*:*", &block)
         @type  = type.to_s
         @query = query
         @block = block

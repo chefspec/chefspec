@@ -1,6 +1,6 @@
-require 'chef/resource'
-require 'chef/version'
-require_relative '../../api'
+require "chef/resource"
+require "chef/version"
+require_relative "../../api"
 
 #
 # Three concerns:
@@ -29,6 +29,7 @@ module ChefSpec::Extensions::Chef::Resource
 
   def dup
     return super unless $CHEFSPEC_MODE
+
     # Also here be dragons.
     stack = caller
     super.tap do |dup_resource|
@@ -41,6 +42,7 @@ module ChefSpec::Extensions::Chef::Resource
   # mix of no-op and tracking concerns
   def run_action(action, notification_type = nil, notifying_resource = nil)
     return super unless $CHEFSPEC_MODE
+
     resolve_notification_references
     validate_action(action)
 
@@ -68,17 +70,20 @@ module ChefSpec::Extensions::Chef::Resource
   if ChefSpec::API::StubsFor::HAS_SHELLOUT_COMPACTED.satisfied_by?(Gem::Version.create(Chef::VERSION))
     def shell_out_compacted(*args)
       return super unless $CHEFSPEC_MODE
-      raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: 'resource', resource: self)
+
+      raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: "resource", resource: self)
     end
 
     def shell_out_compacted!(*args)
       return super unless $CHEFSPEC_MODE
-      shell_out_compacted(*args).tap {|c| c.error! }
+
+      shell_out_compacted(*args).tap(&:error!)
     end
   else
     def shell_out(*args)
       return super unless $CHEFSPEC_MODE
-      raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: 'resource', resource: self)
+
+      raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: "resource", resource: self)
     end
   end
 
@@ -168,6 +173,7 @@ module ChefSpec::Extensions::Chef::Resource
     def inject_actions(*actions)
       provides_names.each do |resource_name|
         next unless resource_name
+
         ChefSpec.define_matcher(resource_name)
         actions.each do |action|
           inject_method(:"#{action}_#{resource_name}", resource_name, action)

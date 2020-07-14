@@ -1,10 +1,10 @@
-require 'chef/cookbook_loader'
-require 'chef/cookbook_uploader'
+require "chef/cookbook_loader"
+require "chef/cookbook_uploader"
 
-require_relative 'zero_server'
-require_relative 'file_cache_path_proxy'
-require_relative 'server_methods'
-require_relative 'solo_runner'
+require_relative "zero_server"
+require_relative "file_cache_path_proxy"
+require_relative "server_methods"
+require_relative "solo_runner"
 
 module ChefSpec
   class ServerRunner < SoloRunner
@@ -54,8 +54,8 @@ module ChefSpec
     #
     def client_key
       tmp = Dir.mktmpdir
-      path = File.join(tmp, 'client.pem')
-      File.open(path, 'wb') { |f| f.write(ChefZero::PRIVATE_KEY) }
+      path = File.join(tmp, "client.pem")
+      File.open(path, "wb") { |f| f.write(ChefZero::PRIVATE_KEY) }
       at_exit { FileUtils.rm_rf(tmp) }
       path
     end
@@ -64,8 +64,8 @@ module ChefSpec
     def apply_chef_config!
       super
       Chef::Config[:client_key]       = client_key
-      Chef::Config[:client_name]      = 'chefspec'
-      Chef::Config[:node_name]        = 'chefspec'
+      Chef::Config[:client_name]      = "chefspec"
+      Chef::Config[:node_name]        = "chefspec"
       Chef::Config[:solo]             = false
       Chef::Config[:solo_legacy_mode] = false
 

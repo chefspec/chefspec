@@ -1,20 +1,20 @@
-require 'bundler/gem_tasks'
-require 'rspec/core'
-require 'rspec/core/rake_task'
-require 'yard/rake/yardoc_task'
-require 'tmpdir'
-require 'rspec'
-require 'chefspec'
+require "bundler/gem_tasks"
+require "rspec/core"
+require "rspec/core/rake_task"
+require "yard/rake/yardoc_task"
+require "tmpdir"
+require "rspec"
+require "chefspec"
 
-require 'chef/version'
+require "chef/version"
 
 YARD::Rake::YardocTask.new
 
 RSpec::Core::RakeTask.new(:unit) do |t|
   t.rspec_opts = [].tap do |a|
-    a.push('--color')
-    a.push('--format progress')
-  end.join(' ')
+    a.push("--color")
+    a.push("--format progress")
+  end.join(" ")
 end
 
 failed = []
@@ -23,7 +23,8 @@ start_time = nil
 namespace :acceptance do |ns|
   begin
     Dir.foreach("examples") do |dir|
-      next if %w(. .. .DS_Store).include?(dir)
+      next if %w{. .. .DS_Store}.include?(dir)
+
       desc "#{dir} acceptance tests"
       task dir.to_sym do
         start_time ||= Time.now
@@ -68,10 +69,10 @@ end
 
 task acceptance: Rake.application.tasks.select { |t| t.name.start_with?("acceptance:") } do
   puts "Acceptance tests took #{Time.now - start_time} seconds"
-  raise "some tests failed: #{failed.join(', ')}" unless failed.empty?
+  raise "some tests failed: #{failed.join(", ")}" unless failed.empty?
 end
 
-desc 'Run all tests'
-task :test => [:unit, :acceptance]
+desc "Run all tests"
+task test: %i{unit acceptance}
 
-task :default => [:test]
+task default: [:test]

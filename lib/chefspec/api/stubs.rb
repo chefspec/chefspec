@@ -121,7 +121,7 @@ module ChefSpec
       #
       def stub_node(*args, &block)
         options = args.last.is_a?(Hash) ? args.pop : {}
-        name    = args.first || 'node.example'
+        name    = args.first || "node.example"
 
         fauxhai = Fauxhai.mock(options).data
         fauxhai = fauxhai.merge(options[:ohai] || {})
@@ -165,7 +165,7 @@ module ChefSpec
       #
       # @return [ChefSpec::SearchStub]
       #
-      def stub_search(type, query = '*:*', &block)
+      def stub_search(type, query = "*:*", &block)
         ChefSpec::Stubs::SearchRegistry.register(ChefSpec::Stubs::SearchStub.new(type, query, &block))
       end
 

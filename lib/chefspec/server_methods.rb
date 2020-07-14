@@ -88,11 +88,11 @@ module ChefSpec
       EOH
     end
 
-    entity :client,      Chef::Client, 'clients'
-    entity :data_bag,    Chef::DataBag, 'data'
-    entity :environment, Chef::Environment, 'environments'
-    entity :node,        Chef::Node, 'nodes'
-    entity :role,        Chef::Role, 'roles'
+    entity :client,      Chef::Client, "clients"
+    entity :data_bag,    Chef::DataBag, "data"
+    entity :environment, Chef::Environment, "environments"
+    entity :node,        Chef::Node, "nodes"
+    entity :role,        Chef::Role, "roles"
 
     #
     # Create a new data_bag on the Chef Server. This overrides the method
@@ -104,7 +104,7 @@ module ChefSpec
     #   the data to load into the data bag
     #
     def create_data_bag(name, data = {})
-      load_data(name, 'data', data)
+      load_data(name, "data", data)
     end
 
     #
@@ -138,7 +138,7 @@ module ChefSpec
         data = JSON.fast_generate(data)
       end
 
-      load_data(name, 'nodes', data)
+      load_data(name, "nodes", data)
     end
     alias_method :update_node, :create_node
 
@@ -161,7 +161,7 @@ module ChefSpec
     # Get the path to an item in the data store.
     #
     def get(*args)
-      args.unshift('organizations', 'chef')
+      args.unshift("organizations", "chef")
 
       if args.size == 3
         server.data_store.list(args)

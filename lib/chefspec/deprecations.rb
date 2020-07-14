@@ -7,9 +7,9 @@ module Kernel
   # @param [Array<String>] messages
   def deprecated(*messages)
     messages.each do |message|
-      calling_spec = caller.find { |line| line =~ /(\/spec)|(_spec\.rb)/ }
+      calling_spec = caller.find { |line| line =~ %r{(/spec)|(_spec\.rb)} }
       if calling_spec
-        calling_spec = 'spec/' + calling_spec.split('/spec/').last
+        calling_spec = "spec/" + calling_spec.split("/spec/").last
         warn "[DEPRECATION] #{message} (called from #{calling_spec})"
       else
         warn "[DEPRECATION] #{message}"
@@ -42,5 +42,5 @@ module ChefSpec
 end
 
 module ChefSpec::Error
-  class NoConversionError < ChefSpecError;  end
+  class NoConversionError < ChefSpecError; end
 end
