@@ -122,7 +122,7 @@ module ChefSpec
                 require "chef_zero/data_store/memory_store_v2"
                 ChefZero::DataStore::MemoryStoreV2.new
               when :on_disk
-                require "tmpdir"
+                require "tmpdir" unless defined?(Dir.mktmpdir)
                 require "chef_zero/data_store/raw_file_store"
                 tmpdir = Dir.mktmpdir
                 ChefZero::DataStore::RawFileStore.new(Dir.mktmpdir)
