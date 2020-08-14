@@ -1,5 +1,10 @@
 # CHANGELOG for ChefSpec
 
+## 9.2.1 (August 13, 2020)
+
+- Improve performance by only requiring external libraries if they are not already loaded
+- Expand testing to additional releases of Chef Infra Client
+
 ## 9.2.0 (June 10, 2020)
 
 - Updated `stubs_for_resource` stubbing for the new `after_resource` state in Chef Infra Client 16.
