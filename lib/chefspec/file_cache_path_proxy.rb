@@ -1,5 +1,5 @@
-require 'fileutils'
-require 'singleton'
+require 'fileutils' unless defined?(FileUtils)
+require 'singleton' unless defined?(Singleton)
 
 module ChefSpec
   class FileCachePathProxy

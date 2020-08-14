@@ -1,5 +1,5 @@
 require "chef/version"
-require "mixlib/shellout"
+require "mixlib/shellout" unless defined?(Mixlib::ShellOut)
 
 module ChefSpec
   module API
