@@ -7,8 +7,8 @@ describe 'spec_platform' do
   end
 
   context 'with an ubuntu platform' do
-    platform 'ubuntu', '18.04'
-    it { is_expected.to write_log('test').with_message('Hello ubuntu 18.04') }
+    platform 'ubuntu', '20.04'
+    it { is_expected.to write_log('test').with_message('Hello ubuntu 20.04') }
   end
 
   context 'with a freebsd platform' do
@@ -17,7 +17,7 @@ describe 'spec_platform' do
   end
 
   context 'with a nested platform' do
-    platform 'ubuntu', '18.04'
+    platform 'ubuntu', '20.04'
     context 'inner' do
       platform 'redhat', '8'
       it { is_expected.to write_log('test').with_message('Hello redhat 8') }
@@ -31,6 +31,6 @@ describe 'spec_platform' do
 
   context 'with a partial version' do
     platform 'centos', '6'
-    it { is_expected.to write_log('test').with_message('Hello centos 6.10') }
+    it { is_expected.to write_log('test').with_message('Hello centos 6') }
   end
 end
