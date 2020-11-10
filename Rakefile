@@ -5,8 +5,14 @@ require 'yard/rake/yardoc_task'
 require 'tmpdir'
 require 'rspec'
 require 'chefspec'
+require 'chefstyle'
 
 require 'chef/version'
+
+require "rubocop/rake_task"
+RuboCop::RakeTask.new(:style) do |task|
+  task.options << "--display-cop-names"
+end
 
 YARD::Rake::YardocTask.new
 
