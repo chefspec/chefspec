@@ -462,6 +462,42 @@ describe 'something' do
 end
 ```
 
+#### Searches in libraries
+
+When testing code in a library that uses `Chef::Search::Query.new.search()`, we have
+to stub out the results that would normally come from the Chef Server:
+
+```ruby
+describe 'something' do
+  recipe do
+    results = Chef::Query::Search.new.search(:node, "tags:mytag AND chef_environment:my_env"))
+  end
+
+  before do
+    query = double
+    allow(query).to receive(:search) do |_, arg2|
+    case arg2.downcase
+    when /tags\:mytag AND chef_environment\:my_env/
+        [
+            [
+                stub_node("server01", ohai: { hostname: "server01", ipaddress: '169.0.0.1' }, platform: 'windows', version: '2016'),
+                stub_node("server02", ohai: { hostname: "server02", ipaddress: '169.0.0.2' }, platform: 'windows', version: '2016'),
+            ],
+            0,
+            2,
+        ]
+    else
+        [
+            [],
+            0,
+            0
+        ]
+    end
+    allow(Chef::Search::Query).to receive(:new).and_return(query)
+  end
+end
+```
+
 #### Data Bags
 
 Similar to the Search API, the `data_bag()` and `data_bag_item()` APIs normally
