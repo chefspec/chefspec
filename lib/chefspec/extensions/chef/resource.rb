@@ -140,7 +140,7 @@ module ChefSpec::Extensions::Chef::Resource
       super
     end
 
-    def action(sym, &block)
+    def action(sym, description: nil, &block)
       inject_actions(sym)
       super
     end
