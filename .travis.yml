@@ -15,6 +15,12 @@ bundler_args: --jobs 7 --retry 3
 
 matrix:
   include:
+    - env: "GEMFILE_MOD=\"gem 'chef', '= 16.9.32'\""
+      rvm: 2.7.2
+    - env: "GEMFILE_MOD=\"gem 'chef', '= 16.8.14'\""
+      rvm: 2.7.2
+    - env: "GEMFILE_MOD=\"gem 'chef', '= 16.7.61'\""
+      rvm: 2.7.2
     - env: "GEMFILE_MOD=\"gem 'chef', '= 16.6.14'\""
       rvm: 2.7.2
     - env: "GEMFILE_MOD=\"gem 'chef', '= 16.5.77'\""
@@ -29,35 +35,7 @@ matrix:
       rvm: 2.7.1
     - env: "GEMFILE_MOD=\"gem 'chef', '= 16.0.287'\""
       rvm: 2.7.1
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.14.0'\""
+    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.15.0'\""
       rvm: 2.6.6
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.13.8'\""
-      rvm: 2.6.5
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.12.22'\""
-      rvm: 2.6.5
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.11.8'\""
-      rvm: 2.6.5
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.10.12'\""
-      rvm: 2.6.5
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.9.17'\""
-      rvm: 2.6.5
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.8.23'\""
-      rvm: 2.6.4
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.7.30'\""
-      rvm: 2.6.4
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.6.10'\""
-      rvm: 2.6.4
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.5.17'\""
-      rvm: 2.6.4
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.4.45'\""
-      rvm: 2.6.4
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.3.14'\""
-      rvm: 2.6.4
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.2.20'\""
-      rvm: 2.6.4
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 15.1.36'\""
-      rvm: 2.6.3
     - env: "GEMFILE_MOD=\"gem 'chef', '= 15.0.300'\""
       rvm: 2.6.3
-    - env: "GEMFILE_MOD=\"gem 'chef', '= 14.14.14'\""
-      rvm: 2.5.7
