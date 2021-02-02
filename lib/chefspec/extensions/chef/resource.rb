@@ -142,7 +142,7 @@ module ChefSpec::Extensions::Chef::Resource
 
     def action(sym, description: nil, &block)
       inject_actions(sym)
-      super
+      super(sym, &block)
     end
 
     def allowed_actions(*actions)
