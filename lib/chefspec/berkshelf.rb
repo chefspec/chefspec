@@ -1,7 +1,7 @@
 begin
-  require 'berkshelf'
+  require "berkshelf"
 rescue LoadError
-  raise ChefSpec::Error::GemLoadError.new(gem: 'berkshelf', name: 'Berkshelf')
+  raise ChefSpec::Error::GemLoadError.new(gem: "berkshelf", name: "Berkshelf")
 end
 
 module ChefSpec
@@ -23,14 +23,14 @@ module ChefSpec
     def setup!
       # Get the list of Berkshelf options
       opts = RSpec.configuration.berkshelf_options
-      if !opts.is_a?(Hash)
+      unless opts.is_a?(Hash)
         raise InvalidBerkshelfOptions(value: opts.inspect)
       end
 
       berksfile = ::Berkshelf::Berksfile.from_options(opts)
 
       # Grab a handle to tmpdir, since Berkshelf 2 modifies it a bit
-      tmpdir = File.join(@tmpdir, 'cookbooks')
+      tmpdir = File.join(@tmpdir, "cookbooks")
 
       ::Berkshelf.ui.mute do
         if ::Berkshelf::Berksfile.method_defined?(:vendor)

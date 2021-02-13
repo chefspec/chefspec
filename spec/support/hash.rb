@@ -11,9 +11,9 @@ class Hash
   # Monkey-patch to allow mash-style look ups for tests
   #
   def method_missing(m, *args, &block)
-    if has_key?(m.to_sym)
+    if key?(m.to_sym)
       self[m.to_sym]
-    elsif has_key?(m.to_s)
+    elsif key?(m.to_s)
       self[m.to_s]
     else
       super
@@ -26,7 +26,7 @@ class Hash
   # @see Hash#respond_to?
   #
   def respond_to?(m, include_private = false)
-    if has_key?(m.to_sym) || has_key?(m.to_s)
+    if key?(m.to_sym) || key?(m.to_s)
       true
     else
       super

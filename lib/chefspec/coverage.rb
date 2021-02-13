@@ -1,4 +1,4 @@
-require_relative 'coverage/filters'
+require_relative "coverage/filters"
 
 module ChefSpec
   class Coverage
@@ -37,7 +37,7 @@ module ChefSpec
           raise Error::ErbTemplateParseError.new(original_error: e.message)
         end
       end
-      @template = ChefSpec.root.join('templates', 'coverage', 'human.erb')
+      @template = ChefSpec.root.join("templates", "coverage", "human.erb")
     end
 
     #
@@ -63,17 +63,17 @@ module ChefSpec
     def add_filter(filter = nil, &block)
       id = "#{filter.inspect}/#{block.inspect}".hash
 
-      @filters[id] = if filter.kind_of?(Filter)
+      @filters[id] = if filter.is_a?(Filter)
                        filter
-                     elsif filter.kind_of?(String)
+                     elsif filter.is_a?(String)
                        StringFilter.new(filter)
-                     elsif filter.kind_of?(Regexp)
+                     elsif filter.is_a?(Regexp)
                        RegexpFilter.new(filter)
                      elsif block
                        BlockFilter.new(block)
                      else
-                       raise ArgumentError, 'Please specify either a string, ' \
-                         'filter, or block to filter source files with!'
+                       raise ArgumentError, "Please specify either a string, " \
+                         "filter, or block to filter source files with!"
                      end
 
       true
@@ -98,18 +98,14 @@ module ChefSpec
     #
     # @return [true]
     #
-    def set_template(file = 'human.erb')
-      [
-        ChefSpec.root.join('templates', 'coverage', file),
-        File.expand_path(file, Dir.pwd)
-      ].each do |temp|
-        if File.exist?(temp)
-          @template = temp
-          return
-        end
-      end
-      raise Error::TemplateNotFound.new(path: file)
+    def set_template(file = "human.erb")
+      @template = [
+        ChefSpec.root.join("templates", "coverage", file),
+        File.expand_path(file, Dir.pwd),
+      ].find { |f| File.exist?(f) }
+      raise Error::TemplateNotFound.new(path: file) unless @template
     end
+
     #
     # Add a resource to the resource collection. Only new resources are added
     # and only resources that match the given filter are covered (which is *
@@ -129,9 +125,8 @@ module ChefSpec
     # @param [Chef::Resource] resource
     #
     def cover!(resource)
-      if wrapper = find(resource)
-        wrapper.touch!
-      end
+      wrapper = find(resource)
+      wrapper.touch! if wrapper
     end
 
     #
@@ -166,7 +161,7 @@ module ChefSpec
       report = {}.tap do |h|
         h[:total]     = @collection.size
         h[:touched]   = @collection.count { |_, resource| resource.touched? }
-        h[:coverage]  = ((h[:touched]/h[:total].to_f)*100).round(2)
+        h[:coverage]  = ((h[:touched] / h[:total].to_f) * 100).round(2)
       end
 
       report[:untouched_resources] = @collection.collect do |_, resource|
@@ -175,7 +170,7 @@ module ChefSpec
       report[:all_resources] = @collection.values
 
       @outputs.each do |block|
-        self.instance_exec(report, &block)
+        instance_exec(report, &block)
       end
 
       # Ensure we exit correctly (#351)
@@ -208,24 +203,24 @@ module ChefSpec
           "source_file" => source_file,
           "source_line" => source_line,
           "touched" => touched?,
-          "resource" => to_s
+          "resource" => to_s,
         }.to_json
       end
 
       def source_file
         @source_file ||= if @resource.source_line
-          shortname(@resource.source_line.split(':').first)
-        else
-          'Unknown'
-        end
+                           shortname(@resource.source_line.split(":").first)
+                         else
+                           "Unknown"
+                         end
       end
 
       def source_line
         @source_line ||= if @resource.source_line
-          @resource.source_line.split(':', 2).last.to_i
-        else
-          'Unknown'
-        end
+                           @resource.source_line.split(":", 2).last.to_i
+                         else
+                           "Unknown"
+                         end
       end
 
       def touch!
@@ -241,8 +236,8 @@ module ChefSpec
       def shortname(file)
         if file.include?(Dir.pwd)
           file.split(Dir.pwd, 2).last
-        elsif file.include?('cookbooks')
-          file.split('cookbooks/', 2).last
+        elsif file.include?("cookbooks")
+          file.split("cookbooks/", 2).last
         else
           file
         end

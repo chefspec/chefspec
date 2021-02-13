@@ -31,7 +31,7 @@ module ChefSpec::Matchers
     # @return [String]
     #
     def with_default(name)
-      name.include?('::') ? name : "#{name}::default"
+      name.include?("::") ? name : "#{name}::default"
     end
 
     #

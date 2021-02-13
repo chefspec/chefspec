@@ -1,4 +1,4 @@
-require 'ohai/system'
+require "ohai/system"
 
 Ohai::System.prepend(Module.new do
   # If an Ohai segment exists, don't actually pull data in for ohai.

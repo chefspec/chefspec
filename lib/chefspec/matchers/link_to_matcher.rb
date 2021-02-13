@@ -11,8 +11,8 @@ module ChefSpec::Matchers
         ChefSpec::Coverage.cover!(@link)
 
         @link.is_a?(Chef::Resource::Link) &&
-        @link.performed_action?(:create) &&
-        @path === @link.to
+          @link.performed_action?(:create) &&
+          @path === @link.to
       else
         false
       end

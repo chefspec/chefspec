@@ -6,7 +6,7 @@ module ChefSpec
       end
 
       def matches?
-        raise RuntimeError, "Must override Filter#matches?"
+        raise "Must override Filter#matches?"
       end
     end
 
@@ -17,6 +17,7 @@ module ChefSpec
     class RegexpFilter < Filter
       def matches?(resource)
         return true if resource.source_line.nil?
+
         @filter =~ resource.source_line
       end
     end
@@ -41,6 +42,7 @@ module ChefSpec
     class BlockFilter < Filter
       def matches?(resource)
         return true if resource.source_line.nil?
+
         @filter.call(resource)
       end
     end
@@ -54,25 +56,26 @@ module ChefSpec
         @berksfile = berksfile
 
         @metadatas = if berksfile.respond_to?(:dependencies)
-          berksfile.dependencies
-            .select(&:metadata?)
-            .map(&:name)
-        else
-          berksfile.sources.collect do |source|
-            location = source.location
-            if location.respond_to?(:metadata?) && location.metadata?
-              source
-            else
-              nil
-            end
-          end.compact.map(&:name)
-        end
+                       berksfile.dependencies
+                         .select(&:metadata?)
+                         .map(&:name)
+                     else
+                       berksfile.sources.collect do |source|
+                         location = source.location
+                         if location.respond_to?(:metadata?) && location.metadata?
+                           source
+                         else
+                           nil
+                         end
+                       end.compact.map(&:name)
+                     end
       end
 
       def matches?(resource)
         return true if resource.source_line.nil?
+
         normalized_source_line = resource.source_line.gsub("\\", "/")
-        normalized_source_line=~ /cookbooks\/(?!#{@metadatas.join('|')})/
+        normalized_source_line =~ %r{cookbooks/(?!#{@metadatas.join('|')})}
       end
     end
   end

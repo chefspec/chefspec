@@ -1,9 +1,9 @@
-require 'fauxhai'
-require 'chef/client'
-require 'chef/cookbook/metadata'
-require 'chef/mash'
-require 'chef/providers'
-require 'chef/resources'
+require "fauxhai"
+require "chef/client"
+require "chef/cookbook/metadata"
+require "chef/mash"
+require "chef/providers"
+require "chef/resources"
 
 module ChefSpec
   class SoloRunner
@@ -123,6 +123,7 @@ module ChefSpec
       if converge_val.is_a?(Exception)
         raise converge_val
       end
+
       self
     end
 
@@ -136,7 +137,7 @@ module ChefSpec
     #
     def converge_block(&block)
       converge do
-        recipe = Chef::Recipe.new(cookbook_name, '_test', run_context)
+        recipe = Chef::Recipe.new(cookbook_name, "_test", run_context)
         recipe.instance_exec(&block)
       end
     end
@@ -149,7 +150,8 @@ module ChefSpec
     #
     def preload!
       # Flag to disable preloading for situations where it doesn't make sense.
-      return if ENV['CHEFSPEC_NO_PRELOAD']
+      return if ENV["CHEFSPEC_NO_PRELOAD"]
+
       begin
         old_preload = $CHEFSPEC_PRELOAD
         $CHEFSPEC_PRELOAD = true
@@ -292,7 +294,8 @@ module ChefSpec
     # Respond to custom matchers defined by the user.
     #
     def method_missing(m, *args, &block)
-      if block = ChefSpec.matchers[resource_name(m.to_sym)]
+      block = ChefSpec.matchers[resource_name(m.to_sym)]
+      if block
         instance_exec(args.first, &block)
       else
         super
@@ -358,11 +361,11 @@ module ChefSpec
     # @return [String]
     #
     def calling_cookbook_root(options, kaller)
-      calling_spec = options[:spec_declaration_locations] || kaller.find { |line| line =~ /\/spec/ }
+      calling_spec = options[:spec_declaration_locations] || kaller.find { |line| line =~ %r{/spec} }
       raise Error::CookbookPathNotFound if calling_spec.nil?
 
       bits = calling_spec.split(/:[0-9]/, 2).first.split(File::SEPARATOR)
-      spec_dir = bits.index('spec') || 0
+      spec_dir = bits.index("spec") || 0
 
       File.join(bits.slice(0, spec_dir))
     end
@@ -378,7 +381,7 @@ module ChefSpec
     # @return [String]
     #
     def calling_cookbook_path(options, kaller)
-      File.expand_path(File.join(calling_cookbook_root(options, kaller), '..'))
+      File.expand_path(File.join(calling_cookbook_root(options, kaller), ".."))
     end
 
     #
@@ -388,7 +391,7 @@ module ChefSpec
     #
     def default_role_path
       Pathname.new(Dir.pwd).ascend do |path|
-        possible = File.join(path, 'roles')
+        possible = File.join(path, "roles")
         return possible if File.exist?(possible)
       end
 
@@ -402,7 +405,7 @@ module ChefSpec
     #
     def default_environment_path
       Pathname.new(Dir.pwd).ascend do |path|
-        possible = File.join(path, 'environments')
+        possible = File.join(path, "environments")
         return possible if File.exist?(possible)
       end
 
@@ -459,7 +462,7 @@ module ChefSpec
     # @return [Chef::Cookbook::Metadata]
     #
     def cookbook
-      @cookbook ||= Chef::Cookbook::Metadata.new.tap {|m| m.from_file("#{options[:cookbook_root]}/metadata.rb") }
+      @cookbook ||= Chef::Cookbook::Metadata.new.tap { |m| m.from_file("#{options[:cookbook_root]}/metadata.rb") }
     end
 
     #
@@ -470,12 +473,11 @@ module ChefSpec
     def cookbook_name
       # Try to figure out the name of this cookbook, pretending this block
       # is in the name context as the cookbook under test.
-      begin
-        cookbook.name
-      rescue IOError
-        # Old cookbook, has no metadata, use the folder name I guess.
-        File.basename(options[:cookbook_root])
-      end
+
+      cookbook.name
+    rescue IOError
+      # Old cookbook, has no metadata, use the folder name I guess.
+      File.basename(options[:cookbook_root])
     end
 
     #
@@ -489,8 +491,8 @@ module ChefSpec
 
       Chef::Config.reset!
       Chef::Config.formatters.clear
-      Chef::Config.add_formatter('chefspec')
-      Chef::Config[:cache_type]      = 'Memory'
+      Chef::Config.add_formatter("chefspec")
+      Chef::Config[:cache_type]      = "Memory"
       Chef::Config[:client_key]      = nil
       Chef::Config[:client_name]     = nil
       Chef::Config[:node_name]       = nil
@@ -506,7 +508,7 @@ module ChefSpec
       Chef::Config[:force_logger]    = true
       Chef::Config[:solo]            = true
       Chef::Config[:solo_legacy_mode] = true
-      Chef::Config[:use_policyfile]  = false
+      Chef::Config[:use_policyfile] = false
       Chef::Config[:environment_path] = @options[:environment_path]
     end
 

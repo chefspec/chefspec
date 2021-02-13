@@ -1,3 +1,3 @@
-service 'resource' do
+service "resource" do
   action :start
 end

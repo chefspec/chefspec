@@ -1,4 +1,4 @@
-require 'chef/cookbook_uploader'
+require "chef/cookbook_uploader"
 
 Chef::CookbookUploader.prepend(Module.new do |variable|
   #

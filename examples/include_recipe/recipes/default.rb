@@ -1,1 +1,1 @@
-include_recipe 'include_recipe::other'
+include_recipe "include_recipe::other"

@@ -1,5 +1,5 @@
-require 'chef/formatters/base'
-require 'chef/formatters/error_mapper'
+require "chef/formatters/base"
+require "chef/formatters/error_mapper"
 
 module ChefSpec
   class ChefFormatter < Chef::Formatters::Base
@@ -202,7 +202,7 @@ module ChefSpec
     def converge_complete; end
 
     # Called before action is executed on a resource.
-    def resource_action_start(resource, action, notification_type=nil, notifier=nil); end
+    def resource_action_start(resource, action, notification_type = nil, notifier = nil); end
 
     # Called when a resource fails, but will retry.
     def resource_failed_retriable(resource, action, retry_count, exception); end

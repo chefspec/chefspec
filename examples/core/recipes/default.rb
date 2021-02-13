@@ -1,1 +1,1 @@
-log 'Hello'
+log "Hello"

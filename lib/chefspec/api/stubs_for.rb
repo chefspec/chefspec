@@ -59,8 +59,8 @@ module ChefSpec
       # @param current_value [Boolean] If true, also register stubs for current_value objects on the same target.
       # @param block [Proc] A block taking the resource object as a parameter.
       # @return [void]
-      def stubs_for_resource(target=nil, current_value: true, current_resource: true, &block)
-        current_value = false if !current_resource
+      def stubs_for_resource(target = nil, current_value: true, current_resource: true, &block)
+        current_value = false unless current_resource
         _chefspec_stubs_for_registry[:resource][target] << block
         stubs_for_current_value(target, &block) if current_value
       end
@@ -71,7 +71,7 @@ module ChefSpec
       # @param target [String, nil] Resource name to inject, or nil for all resources.
       # @param block [Proc] A block taking the resource object as a parameter.
       # @return [void]
-      def stubs_for_current_value(target=nil, &block)
+      def stubs_for_current_value(target = nil, &block)
         _chefspec_stubs_for_registry[:current_value][target] << block
       end
       alias_method :stubs_for_current_resource, :stubs_for_current_value
@@ -82,15 +82,15 @@ module ChefSpec
       # @param target [String, nil] Resource name to inject, or nil for all providers.
       # @param block [Proc] A block taking the resource object as a parameter.
       # @return [void]
-      def stubs_for_provider(target=nil, &block)
+      def stubs_for_provider(target = nil, &block)
         _chefspec_stubs_for_registry[:provider][target] << block
       end
 
-      def receive_shell_out(*cmd, stdout: '', stderr: '', exitstatus: 0, **opts)
+      def receive_shell_out(*cmd, stdout: "", stderr: "", exitstatus: 0, **opts)
         # Ruby does not allow constructing an actual exitstatus object from Ruby code. Really.
         fake_exitstatus = double(exitstatus: exitstatus)
         fake_cmd = Mixlib::ShellOut.new(*cmd)
-        fake_cmd.define_singleton_method(:run_command) { } # Do nothing, just in case.
+        fake_cmd.define_singleton_method(:run_command) {} # Do nothing, just in case.
         # Inject our canned data.
         fake_cmd.instance_exec do
           @stdout = stdout
@@ -99,10 +99,10 @@ module ChefSpec
         end
         # On newer Chef, we can intercept using the new, better shell_out_compact hook point.
         shell_out_method ||= if HAS_SHELLOUT_COMPACTED.satisfied_by?(Gem::Version.create(Chef::VERSION))
-          :shell_out_compacted
-        else
-          :shell_out
-        end
+                               :shell_out_compacted
+                             else
+                               :shell_out
+                             end
         with_args = cmd + (opts.empty? ? [any_args] : [hash_including(opts)])
         receive(shell_out_method).with(*with_args).and_return(fake_cmd)
       end

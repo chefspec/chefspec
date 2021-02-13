@@ -1,4 +1,4 @@
-require 'chef/resource/freebsd_package'
+require "chef/resource/freebsd_package"
 
 Chef::Resource::FreebsdPackage.prepend(Module.new do
   #
@@ -11,6 +11,7 @@ Chef::Resource::FreebsdPackage.prepend(Module.new do
   #
   def supports_pkgng?
     return super unless $CHEFSPEC_MODE
+
     true
   end
 end)

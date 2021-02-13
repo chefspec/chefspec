@@ -6,15 +6,15 @@ module ChefSpec::Matchers
     end
 
     def description
-      'include any recipe'
+      "include any recipe"
     end
 
     def failure_message
-      'expected to include any recipe'
+      "expected to include any recipe"
     end
 
     def failure_message_when_negated
-      'expected not to include any recipes'
+      "expected not to include any recipes"
     end
 
     private
@@ -36,7 +36,7 @@ module ChefSpec::Matchers
     # @return [String]
     #
     def with_default(name)
-      name.include?('::') ? name : "#{name}::default"
+      name.include?("::") ? name : "#{name}::default"
     end
 
     #

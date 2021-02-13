@@ -1,5 +1,5 @@
-launchd 'explicit_action' do
+launchd "explicit_action" do
   action :create
 end
 
-launchd 'default_action'
+launchd "default_action"

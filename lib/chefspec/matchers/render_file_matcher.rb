@@ -87,8 +87,8 @@ module ChefSpec::Matchers
 
     def resource
       @resource ||= @runner.find_resource(:cookbook_file, @path) ||
-                    @runner.find_resource(:file, @path) ||
-                    @runner.find_resource(:template, @path)
+        @runner.find_resource(:file, @path) ||
+        @runner.find_resource(:template, @path)
     end
 
     #
@@ -99,7 +99,7 @@ module ChefSpec::Matchers
     # @return [true, false]
     #
     def has_create_action?
-      [:create, :create_if_missing].any? { |action| resource.performed_action?(action) }
+      %i{create create_if_missing}.any? { |action| resource.performed_action?(action) }
     end
 
     #
