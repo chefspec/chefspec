@@ -1,3 +1,3 @@
 action :something do
-  log "message"
+  log 'message'
 end

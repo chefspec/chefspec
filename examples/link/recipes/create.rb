@@ -1,13 +1,13 @@
-link "/tmp/default_action"
+link '/tmp/default_action'
 
-link "/tmp/explicit_action" do
+link '/tmp/explicit_action' do
   action :create
 end
 
-link "/tmp/with_attributes" do
-  to "destination"
+link '/tmp/with_attributes' do
+  to 'destination'
 end
 
-link "specifying the identity attribute" do
-  target_file "/tmp/identity_attribute"
+link 'specifying the identity attribute' do
+  target_file '/tmp/identity_attribute'
 end

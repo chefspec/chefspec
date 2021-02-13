@@ -1,1 +1,1 @@
-name "recipe_block"
+name 'recipe_block'

@@ -1,13 +1,13 @@
-git "/tmp/default_action"
+git '/tmp/default_action'
 
-git "/tmp/explicit_action" do
+git '/tmp/explicit_action' do
   action :sync
 end
 
-git "/tmp/with_attributes" do
-  repository "ssh://git.path"
+git '/tmp/with_attributes' do
+  repository 'ssh://git.path'
 end
 
-git "specifying the identity attribute" do
-  destination "/tmp/identity_attribute"
+git 'specifying the identity attribute' do
+  destination '/tmp/identity_attribute'
 end
