@@ -26,6 +26,7 @@ module ChefSpec
 
     def expected?
       return false if @matcher.nil?
+
       exception_matched? && message_matched?
     end
 
@@ -33,7 +34,7 @@ module ChefSpec
 
     def exception_matched?
       @formatter_exception == @matcher.last_error_for_chefspec ||
-      @matcher.last_error_for_chefspec === @formatter_exception
+        @matcher.last_error_for_chefspec === @formatter_exception
     end
 
     def message_matched?

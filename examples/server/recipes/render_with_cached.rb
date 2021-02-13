@@ -1,3 +1,3 @@
-file '/tmp/file' do
-  content 'This is content!'
+file "/tmp/file" do
+  content "This is content!"
 end

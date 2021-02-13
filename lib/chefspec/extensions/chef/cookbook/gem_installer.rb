@@ -1,9 +1,10 @@
-require 'chef/cookbook/gem_installer'
+require "chef/cookbook/gem_installer"
 
 Chef::Cookbook::GemInstaller.prepend(Module.new do
   # Installs the gems into the omnibus gemset.
   def install
     return super unless $CHEFSPEC_MODE
+
     cookbook_gems = Hash.new { |h, k| h[k] = [] }
 
     cookbook_collection.each do |cookbook_name, cookbook_version|
@@ -20,10 +21,10 @@ Chef::Cookbook::GemInstaller.prepend(Module.new do
   private
 
   def locate_gem(gem_name, gem_requirements)
-    ::Gem::Specification::find_by_name(gem_name, gem_requirements)
+    ::Gem::Specification.find_by_name(gem_name, gem_requirements)
   rescue ::Gem::MissingSpecError
-    gem_cmd = "gem install #{gem_name} --version '#{gem_requirements.join(', ')}'"
-    gemfile_line = "gem '#{[gem_name, *gem_requirements].join('\', \'')}'"
+    gem_cmd = "gem install #{gem_name} --version '#{gem_requirements.join(", ")}'"
+    gemfile_line = "gem '#{[gem_name, *gem_requirements].join("', '")}'"
     warn "No matching version found for '#{gem_name}' in your gem environment.\n" \
          " - if you are using Chef Workstation, run the following command: \"chef #{gem_cmd}\"\n" \
          " - if you are using bundler, append \"#{gemfile_line}\" to your Gemfile and run \"bundle install\"\n" \

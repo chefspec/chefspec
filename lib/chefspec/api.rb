@@ -1,19 +1,19 @@
 module ChefSpec
   module API
-    autoload :Core, 'chefspec/api/core'
-    autoload :Described, 'chefspec/api/described'
-    autoload :DoNothing, 'chefspec/api/do_nothing'
-    autoload :IncludeAnyRecipe, 'chefspec/api/include_any_recipe'
-    autoload :IncludeRecipe, 'chefspec/api/include_recipe'
-    autoload :Link, 'chefspec/api/link'
-    autoload :Notifications, 'chefspec/api/notifications'
-    autoload :Reboot, 'chefspec/api/reboot'
-    autoload :RenderFile, 'chefspec/api/render_file'
-    autoload :StateAttrs, 'chefspec/api/state_attrs'
-    autoload :Stubs, 'chefspec/api/stubs'
-    autoload :StubsFor, 'chefspec/api/stubs_for'
-    autoload :Subscriptions, 'chefspec/api/subscriptions'
-    autoload :User, 'chefspec/api/user'
+    autoload :Core, "chefspec/api/core"
+    autoload :Described, "chefspec/api/described"
+    autoload :DoNothing, "chefspec/api/do_nothing"
+    autoload :IncludeAnyRecipe, "chefspec/api/include_any_recipe"
+    autoload :IncludeRecipe, "chefspec/api/include_recipe"
+    autoload :Link, "chefspec/api/link"
+    autoload :Notifications, "chefspec/api/notifications"
+    autoload :Reboot, "chefspec/api/reboot"
+    autoload :RenderFile, "chefspec/api/render_file"
+    autoload :StateAttrs, "chefspec/api/state_attrs"
+    autoload :Stubs, "chefspec/api/stubs"
+    autoload :StubsFor, "chefspec/api/stubs_for"
+    autoload :Subscriptions, "chefspec/api/subscriptions"
+    autoload :User, "chefspec/api/user"
 
     def self.included(klass)
       # non-resources

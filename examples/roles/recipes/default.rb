@@ -1,1 +1,1 @@
-package 'resource'
+package "resource"

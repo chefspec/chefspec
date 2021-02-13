@@ -1,3 +1,3 @@
-link '/tmp/path' do
-  to 'destination'
+link "/tmp/path" do
+  to "destination"
 end

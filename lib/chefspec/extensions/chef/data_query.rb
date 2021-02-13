@@ -1,4 +1,4 @@
-require 'chef/dsl/data_query'
+require "chef/dsl/data_query"
 
 Chef::DSL::DataQuery.prepend(Module.new do
   # @see Chef::DSL::DataQuery#search
@@ -6,7 +6,7 @@ Chef::DSL::DataQuery.prepend(Module.new do
     return super unless Chef::Config[:solo] && $CHEFSPEC_MODE
 
     type  = args[0]
-    query = args[1] || '*:*'
+    query = args[1] || "*:*"
     stub = ChefSpec::Stubs::SearchRegistry.stub_for(type, query)
 
     if stub.nil?
@@ -14,7 +14,7 @@ Chef::DSL::DataQuery.prepend(Module.new do
     end
 
     if block
-      Array(stub.result).each {|r| block.call(r) }
+      Array(stub.result).each { |r| block.call(r) }
       true
     else
       stub.result

@@ -16,7 +16,7 @@ module ChefSpec
       else
         name = thing
       end
-      name.to_s.gsub('-', '_').to_sym
+      name.to_s.gsub("-", "_").to_sym
     end
   end
 end

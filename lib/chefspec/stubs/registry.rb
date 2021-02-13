@@ -25,7 +25,7 @@ module ChefSpec
       end
 
       def stub_for(*args)
-        raise ArgumentError, '#stub_for is an abstract function'
+        raise ArgumentError, "#stub_for is an abstract function"
       end
     end
   end

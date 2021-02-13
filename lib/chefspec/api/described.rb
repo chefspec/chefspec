@@ -20,7 +20,7 @@ module ChefSpec
       # @return [String]
       #
       def described_cookbook
-        described_recipe.split('::').first
+        described_recipe.split("::").first
       end
 
       #
@@ -40,12 +40,10 @@ module ChefSpec
       # @return [String]
       #
       def described_recipe
-        scope = self.is_a?(Class) ? self : self.class
+        scope = is_a?(Class) ? self : self.class
 
         metahash = scope.metadata
-        while metahash.has_key?(:parent_example_group)
-          metahash = metahash[:parent_example_group]
-        end
+        metahash = metahash[:parent_example_group] while metahash.key?(:parent_example_group)
 
         metahash[:description].to_s
       end

@@ -1,5 +1,5 @@
 RSpec.configure do |config|
-  unless ENV['CHEFSPEC_NO_INCLUDE']
+  unless ENV["CHEFSPEC_NO_INCLUDE"]
     config.include(ChefSpec::API)
   end
 

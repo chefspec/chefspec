@@ -14,8 +14,8 @@ module ChefSpec::Matchers
       if @resource
         block = Proc.new do |notified|
           resource_name(notified.resource).to_s == @expected_resource_type &&
-          (@expected_resource_name === notified.resource.identity.to_s || @expected_resource_name === notified.resource.name.to_s) &&
-          matches_action?(notified)
+            (@expected_resource_name === notified.resource.identity.to_s || @expected_resource_name === notified.resource.name.to_s) &&
+            matches_action?(notified)
         end
 
         if @immediately
@@ -115,6 +115,7 @@ module ChefSpec::Matchers
 
     def matches_action?(notification)
       return true if @action.nil?
+
       @action == notification.action.to_sym
     end
 
@@ -130,12 +131,12 @@ module ChefSpec::Matchers
         type = :delayed
       end
 
-      %Q{  "#{notifying_resource.to_s}" notifies "#{resource_name(resource)}[#{resource.name}]" to :#{notification.action}, :#{type}}
+      %Q{  "#{notifying_resource}" notifies "#{resource_name(resource)}[#{resource.name}]" to :#{notification.action}, :#{type}}
     end
 
     def format_notifications
       all_notifications.map do |notification|
-        '  ' + format_notification(notification)
+        "  " + format_notification(notification)
       end.join("\n")
     end
   end

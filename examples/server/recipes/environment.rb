@@ -1,6 +1,6 @@
-environments = search(:environment, '*:*')
-environments = environments.map(&:to_s).sort.join(', ')
+environments = search(:environment, "*:*")
+environments = environments.map(&:to_s).sort.join(", ")
 
-log 'environments' do
+log "environments" do
   message environments
 end

@@ -1,9 +1,9 @@
-perl 'default_action'
+perl "default_action"
 
-perl 'explicit_action' do
+perl "explicit_action" do
   action :run
 end
 
-perl 'with_attributes' do
-  creates 'creates'
+perl "with_attributes" do
+  creates "creates"
 end

@@ -1,4 +1,4 @@
-require_relative 'registry'
+require_relative "registry"
 
 module ChefSpec
   module Stubs

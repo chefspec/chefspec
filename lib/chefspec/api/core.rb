@@ -36,7 +36,7 @@ module ChefSpec
       # @return [Hash<Symbol, Object>]
       def chef_runner_options
         options = {
-          step_into: chefspec_ancestor_gather([], :step_into) {|memo, val| memo | val },
+          step_into: chefspec_ancestor_gather([], :step_into) { |memo, val| memo | val },
           default_attributes: chefspec_default_attributes,
           normal_attributes: chefspec_normal_attributes,
           override_attributes: chefspec_override_attributes,
@@ -85,7 +85,7 @@ module ChefSpec
       # @param block [Proc] Reducer callable.
       # @return [Object]
       def chefspec_ancestor_gather(start, method, &block)
-        candidate_ancestors = self.class.ancestors.select {|cls| cls.respond_to?(method) && cls != ChefSpec::API::Core }
+        candidate_ancestors = self.class.ancestors.select { |cls| cls.respond_to?(method) && cls != ChefSpec::API::Core }
         candidate_ancestors.reverse.inject(start) do |memo, cls|
           block.call(memo, cls.send(method))
         end
@@ -115,7 +115,7 @@ module ChefSpec
         # @param name [String] Platform name to set.
         # @param version [String, nil] Platform version to set.
         # @return [void]
-        def platform(name, version=nil)
+        def platform(name, version = nil)
           let(:chefspec_platform) { name }
           let(:chefspec_platform_version) { version }
         end
