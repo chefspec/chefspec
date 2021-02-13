@@ -1,5 +1,5 @@
 Ohai.plugin(:test) do
-  provides "test"
+  provides 'test'
   collect_data(:linux) do
     Mash.new
   end

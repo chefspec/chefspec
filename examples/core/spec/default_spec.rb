@@ -1,7 +1,7 @@
-require "chefspec"
+require 'chefspec'
 
-describe "core" do
-  platform "ubuntu"
+describe 'core' do
+  platform 'ubuntu'
 
-  it { is_expected.to write_log("Hello") }
+  it { is_expected.to write_log('Hello') }
 end

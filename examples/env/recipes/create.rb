@@ -1,13 +1,13 @@
-env "default_action"
+env 'default_action'
 
-env "explicit_action" do
+env 'explicit_action' do
   action :create
 end
 
-env "with_attributes" do
-  value "value"
+env 'with_attributes' do
+  value 'value'
 end
 
-env "specifying the identity attribute" do
-  key_name "identity_attribute"
+env 'specifying the identity attribute' do
+  key_name 'identity_attribute'
 end

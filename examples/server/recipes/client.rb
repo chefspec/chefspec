@@ -1,6 +1,6 @@
-clients = search(:client, "*:*")
-clients = clients.map(&:to_s).sort.join(", ")
+clients = search(:client, '*:*')
+clients = clients.map(&:to_s).sort.join(', ')
 
-log "clients" do
+log 'clients' do
   message clients
 end

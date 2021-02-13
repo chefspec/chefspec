@@ -1,3 +1,3 @@
-step_into_lwrp "thing"
+step_into_lwrp 'thing'
 
-provides_this "custom"
+provides_this 'custom'
