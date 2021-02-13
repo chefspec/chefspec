@@ -19,6 +19,12 @@ else
   gem 'ohai', git: "https://github.com/chef/ohai"
 end
 
+# TODO: remove when we drop ruby 2.5
+if Gem.ruby_version < Gem::Version.new("2.6")
+  # 16.7.23 required ruby 2.6+
+  gem "chef-utils", "< 16.7.23"
+end
+
 # If you want to load debugging tools into the bundle exec sandbox,
 # add these additional dependencies into Gemfile.local
 eval_gemfile(__FILE__ + ".local") if File.exist?(__FILE__ + ".local")

@@ -11,7 +11,7 @@ ChefSpec runs your cookbooks locally while skipping making actual changes. This 
 
 ## Important Notes
 
-- **ChefSpec requires Ruby 2.2 or later and Chef 12.14.89 or later!**
+- **ChefSpec requires Ruby 2.5 or later and Chef 15 or later!**
 - **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version's documentation!**
 
 **ChefSpec aims to maintain compatibility with at least the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
