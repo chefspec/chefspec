@@ -1,6 +1,8 @@
 # ChefSpec
 
-[![Gem Version](https://badge.fury.io/rb/chefspec.svg)](https://badge.fury.io/rb/chefspec) [![Build Status](https://travis-ci.org/chefspec/chefspec.svg?branch=master)](https://travis-ci.org/chefspec/chefspec)
+[![Gem Version](https://badge.fury.io/rb/chefspec.svg)](https://badge.fury.io/rb/chefspec)
+[![Build Status](https://travis-ci.org/chefspec/chefspec.svg?branch=master)](https://travis-ci.org/chefspec/chefspec) 
+[![CI](https://github.com/chefspec/chefspec/actions/workflows/ci.yml/badge.svg)](https://github.com/chefspec/chefspec/actions/workflows/ci.yml)
 
 ChefSpec is a unit testing framework for testing Chef cookbooks. ChefSpec makes it easy to write examples and get fast feedback on cookbook changes without the need for virtual machines or cloud servers.
 
