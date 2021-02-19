@@ -6,13 +6,10 @@ class ::Chef
       provides :heavy_provider_light_resource_service
 
       attr_accessor :root
-      resource_name :mixed_resource
-      provides :mixed_resource
-
-      default_action :configure
-
       def initialize(service_name, run_context = nil)
         super
+        @resource_name = :mixed_resource
+        @action = :configure
         @allowed_actions += [:configure]
       end
     end
