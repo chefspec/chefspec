@@ -109,8 +109,8 @@ module ChefSpec
 
       module ClassMethods
         # (see StubsFor#stubs_for_resource)
-        def stubs_for_resource(*args, &block)
-          before { stubs_for_resource(*args, &block) }
+        def stubs_for_resource(*args, **kwargs, &block)
+          before { stubs_for_resource(*args, **kwargs, &block) }
         end
 
         # (see StubsFor#stubs_for_current_value)
