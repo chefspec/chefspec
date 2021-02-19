@@ -30,12 +30,12 @@ module ChefSpec
       @filters    = {}
       @outputs    = []
       add_output do |report|
-        begin
-          erb = Erubis::Eruby.new(File.read(@template))
-          puts erb.evaluate(report)
-        rescue NameError => e
-          raise Error::ErbTemplateParseError.new(original_error: e.message)
-        end
+
+        erb = Erubis::Eruby.new(File.read(@template))
+        puts erb.evaluate(report)
+      rescue NameError => e
+        raise Error::ErbTemplateParseError.new(original_error: e.message)
+
       end
       @template = ChefSpec.root.join("templates", "coverage", "human.erb")
     end

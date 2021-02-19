@@ -27,50 +27,51 @@ failed = []
 start_time = nil
 
 namespace :acceptance do |ns|
-  begin
-    Dir.foreach("examples") do |dir|
-      next if %w{. .. .DS_Store}.include?(dir)
 
-      desc "#{dir} acceptance tests"
-      task dir.to_sym do
-        start_time ||= Time.now
-        Dir.mktmpdir do |tmp|
-          FileUtils.cp_r("examples/#{dir}", tmp)
+  Dir.foreach("examples") do |dir|
+    next if %w{. .. .DS_Store}.include?(dir)
 
-          pwd = Dir.pwd
+    desc "#{dir} acceptance tests"
+    task dir.to_sym do
+      start_time ||= Time.now
+      Dir.mktmpdir do |tmp|
+        FileUtils.cp_r("examples/#{dir}", tmp)
 
-          Dir.chdir "#{tmp}/#{dir}" do
-            puts "rspec examples/#{dir}"
+        pwd = Dir.pwd
 
-            #
-            # This bit of mildly awful magic below is to load each file into an in-memory
-            # RSpec runner while keeping a persistent ChefZero server alive.
-            #
-            load "#{pwd}/lib/chefspec/rspec.rb"
+        Dir.chdir "#{tmp}/#{dir}" do
+          puts "rspec examples/#{dir}"
 
-            RSpec.configure do |config|
-              config.color = true
-              config.run_all_when_everything_filtered = true
-              config.filter_run(:focus)
-              config.before(:suite) do
-                ChefSpec::ZeroServer.setup!
-              end
-              config.after(:each) do
-                ChefSpec::ZeroServer.reset!
-              end
+          #
+          # This bit of mildly awful magic below is to load each file into an in-memory
+          # RSpec runner while keeping a persistent ChefZero server alive.
+          #
+          load "#{pwd}/lib/chefspec/rspec.rb"
+
+          RSpec.configure do |config|
+            config.full_backtrace = true
+            config.color = true
+            config.run_all_when_everything_filtered = true
+            config.filter_run(:focus)
+            config.before(:suite) do
+              ChefSpec::ZeroServer.setup!
             end
-
-            RSpec.clear_examples
-            exitstatus = RSpec::Core::Runner.run(["spec"])
-            RSpec.reset
-            failed << dir unless exitstatus == 0
+            config.after(:each) do
+              ChefSpec::ZeroServer.reset!
+            end
           end
+
+          RSpec.clear_examples
+          exitstatus = RSpec::Core::Runner.run(["spec"])
+          RSpec.reset
+          failed << dir unless exitstatus == 0
         end
       end
     end
-  rescue Errno::ENOENT # examples dir is probably missing
-    puts "The rake acceptance tests require a full git checkout of chefspec including all examples files!"
   end
+rescue Errno::ENOENT # examples dir is probably missing
+  puts "The rake acceptance tests require a full git checkout of chefspec including all examples files!"
+
 end
 
 task acceptance: Rake.application.tasks.select { |t| t.name.start_with?("acceptance:") } do

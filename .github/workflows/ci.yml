@@ -1,27 +1,44 @@
 name: CI
+
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
     branches:
-    - master
+      - master
+  schedule:
+    - cron:  '42 4 * * *'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        ruby: [ '2.5', '2.6', '2.7' ]
+        ruby: [ '2.5', '2.6', '2.7', '3.0' ]
     name: Lint & Test with Ruby ${{ matrix.ruby }}
     steps:
+      - run: |
+          if [ "${{ matrix.ruby }}" = "2.5" ]; then
+            echo "GEMFILE_MOD=gem 'chef', '= 15.15.0'" >> $GITHUB_ENV
+          elif [ "${{ matrix.ruby }}" = "2.6" ]; then
+            echo "GEMFILE_MOD=gem 'chef', '= 15.15.0'" >> $GITHUB_ENV
+          elif [ "${{ matrix.ruby }}" = "2.7" ]; then
+            echo "GEMFILE_MOD=gem 'chef', '= 16.9.32'" >> $GITHUB_ENV
+          fi
       - uses: actions/checkout@v2
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
       - name: Setup Ruby environment
         run: |
           gem install bundler
           bundle install --jobs 4 --retry 3
-      - name: Testing & Linting
-        run: bundle exec rake
+      - run: bundle exec rake unit
+        if: always()
+      - run: bundle exec rake acceptance
+        if: always()
+      - run: bundle exec rake style
+        if: always()
