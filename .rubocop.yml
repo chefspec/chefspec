@@ -1,0 +1,4 @@
+AllCops:
+  TargetRubyVersion: 2.5
+  Exclude:
+    - "examples/**/*"
