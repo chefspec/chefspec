@@ -1,3 +1,3 @@
-reboot "explicit cancel" do
+reboot 'explicit cancel' do
   action :cancel
 end

@@ -1,9 +1,9 @@
 default_attributes(
-  "roles" => {
-    "attribute" => "new_value",
+  'roles' => {
+    'attribute' => 'new_value',
   }
 )
 run_list([
-           "recipe[roles::default]",
-           "recipe[roles::another]",
+           'recipe[roles::default]',
+           'recipe[roles::another]',
          ])

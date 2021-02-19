@@ -1,3 +1,3 @@
-launchd "explicit_action" do
+launchd 'explicit_action' do
   action :disable
 end

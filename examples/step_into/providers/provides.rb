@@ -1,5 +1,5 @@
 provides :provides_this
 
 action :something do
-  log "custom message"
+  log 'custom message'
 end

@@ -1,4 +1,4 @@
-resource = template("/tmp/resource") do
+resource = template('/tmp/resource') do
   action :create
 end
 
