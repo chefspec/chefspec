@@ -1,12 +1,12 @@
-template 'template' do
-  notifies :restart, 'service[service]'
+template "template" do
+  notifies :restart, "service[service]"
 end
 
-service 'service' do
+service "service" do
   action :nothing
-  notifies :write, 'log[log]'
+  notifies :write, "log[log]"
 end
 
-log 'log' do
+log "log" do
   action :nothing
 end

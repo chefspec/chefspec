@@ -1,9 +1,9 @@
-script 'default_action'
+script "default_action"
 
-script 'explicit_action' do
+script "explicit_action" do
   action :run
 end
 
-script 'with_attributes' do
-  creates 'creates'
+script "with_attributes" do
+  creates "creates"
 end

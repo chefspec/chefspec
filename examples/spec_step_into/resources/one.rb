@@ -1,3 +1,3 @@
 action :run do
-  log 'one'
+  log "one"
 end

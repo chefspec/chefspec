@@ -1,1 +1,1 @@
-default['attributes']['message'] = 'This is the default message'
+default["attributes"]["message"] = "This is the default message"

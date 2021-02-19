@@ -1,4 +1,4 @@
-log node['attributes']['message']
+log node["attributes"]["message"]
 
 # Ohai-automatic attribute
-log node['ipaddress']
+log node["ipaddress"]

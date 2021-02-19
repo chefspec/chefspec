@@ -1,9 +1,9 @@
-powershell_script 'default_action'
+powershell_script "default_action"
 
-powershell_script 'explicit_action' do
+powershell_script "explicit_action" do
   action :run
 end
 
-powershell_script 'with_attributes' do
-  flags '--flags'
+powershell_script "with_attributes" do
+  flags "--flags"
 end

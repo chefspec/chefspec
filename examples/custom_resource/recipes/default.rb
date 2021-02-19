@@ -1,1 +1,1 @@
-custom_resource 'resource'
+custom_resource "resource"

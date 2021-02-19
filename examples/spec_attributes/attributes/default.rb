@@ -1,1 +1,1 @@
-default['myapp']['version'] = '1.0'
+default["myapp"]["version"] = "1.0"

@@ -1,3 +1,3 @@
-execute 'install' do
+execute "install" do
   action :nothing
 end
