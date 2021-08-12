@@ -208,7 +208,7 @@ module ChefSpec
     #
     def find_resource(type, name, action = nil)
       resource_collection.all_resources.reverse_each.find do |resource|
-        resource.declared_type == type.to_sym && (name === resource.identity || name === resource.name) && (action.nil? || resource.performed_action?(action))
+        resource.declared_type == type.to_sym && (name === resource.name || name === resource.identity) && (action.nil? || resource.performed_action?(action))
       end
     end
 
