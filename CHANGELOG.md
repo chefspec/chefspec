@@ -1,5 +1,9 @@
 # CHANGELOG for ChefSpec
 
+## 9.3.1 (Aug 23, 2021)
+
+- Resolved an error that could cause failures with some resources
+
 ## 9.3.0 (May 4, 2021)
 
 - Add support for resources that include a `description` value in the action
