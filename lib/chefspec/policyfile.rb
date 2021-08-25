@@ -27,9 +27,12 @@ module ChefSpec
         policyfile_path = File.join(Dir.pwd, "Policyfile.rb")
       end
 
+      Chef::WorkstationConfigLoader.new(nil).load
+
       installer = ChefCLI::PolicyfileServices::Install.new(
         policyfile: policyfile_path,
-        ui: ChefCLI::UI.null
+        ui: ChefCLI::UI.null,
+        config: Chef::Config
       )
 
       installer.run
