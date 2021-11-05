@@ -20,7 +20,7 @@ describe 'spec_platform' do
     platform 'ubuntu', '20.04'
     context 'inner' do
       platform 'redhat', '8'
-      it { is_expected.to write_log('test').with_message('Hello redhat 8.2') }
+      it { is_expected.to write_log('test').with_message(/Hello redhat 8/) }
     end
   end
 
