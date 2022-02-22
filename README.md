@@ -13,7 +13,7 @@ ChefSpec runs your cookbooks locally while skipping making actual changes. This 
 ## Important Notes
 
 - **ChefSpec requires Ruby 2.5 or later and Chef 15 or later!**
-- **This documentation corresponds to the master branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version's documentation!**
+- **This documentation corresponds to the main branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version's documentation!**
 
 **ChefSpec aims to maintain compatibility with at least the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
 
@@ -611,8 +611,8 @@ for more information about setting up Ruby method stubs.
 
 ChefSpec is on [Travis CI][travis] which tests against multiple Chef and Ruby versions.
 
-If you are contributing, please see the [Contributing Guidelines](https://github.com/chefspec/chefspec/blob/master/CONTRIBUTING.md) for more information.
+If you are contributing, please see the [Contributing Guidelines](https://github.com/chefspec/chefspec/blob/main/CONTRIBUTING.md) for more information.
 
 ## License
 
-MIT - see the accompanying [LICENSE](https://github.com/chefspec/chefspec/blob/master/LICENSE) file for details.
+MIT - see the accompanying [LICENSE](https://github.com/chefspec/chefspec/blob/main/LICENSE) file for details.
