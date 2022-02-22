@@ -5,7 +5,7 @@
 #
 class Hash
   # Like, seriously Windows?
-  undef_method(:timeout)
+  undef_method(:timeout) if method_defined?(:timeout)
 
   #
   # Monkey-patch to allow mash-style look ups for tests
