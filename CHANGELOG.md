@@ -1,5 +1,11 @@
 # CHANGELOG for ChefSpec
 
+## 9.3.2 (Feb 21, 2022)
+
+- Remove a hack in the Hash class that worked around issues in Windows previously
+- Fix ChefSpec does not automatically install cookbooks from chef server when using Policyfile.rb
+- Remove Travis CI config
+
 ## 9.3.1 (Aug 23, 2021)
 
 - Resolved an error that could cause failures with some resources
