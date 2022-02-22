@@ -1,5 +1,9 @@
 # CHANGELOG for ChefSpec
 
+## 9.3.3 (Feb 22, 2022)
+
+- Fix a failure running chefspec with Policyfiles
+
 ## 9.3.2 (Feb 21, 2022)
 
 - Remove a hack in the Hash class that worked around issues in Windows previously
