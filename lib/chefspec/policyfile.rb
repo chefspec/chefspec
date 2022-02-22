@@ -1,6 +1,7 @@
 begin
   require "chef-cli/policyfile_services/export_repo"
   require "chef-cli/policyfile_services/install"
+  require "chef/workstation_config_loader"
 rescue LoadError
   raise ChefSpec::Error::GemLoadError.new(gem: "chef-cli", name: "ChefCLI")
 end
