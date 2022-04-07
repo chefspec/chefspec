@@ -9,19 +9,25 @@ module ChefSpec::Extensions::Chef::ShellOut
   #
   if ChefSpec::API::StubsFor::HAS_SHELLOUT_COMPACTED.satisfied_by?(Gem::Version.create(Chef::VERSION))
     def shell_out_compacted(*args)
+      puts "#shell_out_compacted"
       return super unless $CHEFSPEC_MODE
+      puts "made it past return"
 
       raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: "resource", resource: self)
     end
 
     def shell_out_compacted!(*args)
+      puts "#shell_out_compacted!"
       return super unless $CHEFSPEC_MODE
+      puts "made it past return"
 
       shell_out_compacted(*args).tap(&:error!)
     end
   else
     def shell_out(*args)
+      puts "#shell_out"
       return super unless $CHEFSPEC_MODE
+      puts "made it past return"
 
       raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: "resource", resource: self)
     end
