@@ -1,0 +1,7 @@
+Executing a real shell_out in <%= @object.class %> is not allowed:
+
+    shell_out(<%= @args.inspect[1..-2] %>)
+
+You can stub this with:
+
+    allow(<%= @object.class %>).to receive(:shell_out).with(<%= @args.inspect[1..-2] %>)
