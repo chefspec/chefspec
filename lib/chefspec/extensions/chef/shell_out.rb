@@ -3,6 +3,8 @@ require "chef/version"
 require_relative "../../api/stubs_for"
 require_relative "../../errors"
 
+puts "being included!"
+
 module ChefSpec::Extensions::Chef::ShellOut
   #
   # Defang shell_out and friends so it can never run.
