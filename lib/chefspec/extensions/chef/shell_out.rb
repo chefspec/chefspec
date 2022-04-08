@@ -1,11 +1,8 @@
 require "chef/mixin/shell_out"
 require "chef/resource"
-require "mixlib/shellout"
 require "chef/version"
 require_relative "../../api/stubs_for"
 require_relative "../../errors"
-
-puts "being included!"
 
 module ::ChefSpec::Extensions::Chef::ResourceShellOut
   #
