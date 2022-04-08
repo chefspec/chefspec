@@ -34,7 +34,6 @@ module ChefSpec
     class DataBagNotStubbed < NotStubbed; end
     class DataBagItemNotStubbed < NotStubbed; end
     class ShellOutNotStubbed < ChefSpecError; end
-    class MixlibShellOutNotStubbed < ChefSpecError; end
     class MixinShellOutNotStubbed < ChefSpecError; end
 
     class CookbookPathNotFound < ChefSpecError; end
