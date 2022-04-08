@@ -36,5 +36,13 @@ module ChefSpec::Extensions::Chef::ShellOut
   end
 end
 
-Chef::Mixin::ShellOut.prepend(ChefSpec::Extensions::Chef::ShellOut)
-Chef::Resource.prepend(ChefSpec::Extensions::Chef::ShellOut)
+
+module ChefSpec::Extensions::Chef::ShellOutOther
+  def run_command(*args)
+    raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: "resource", resource: self)
+  end
+end
+
+::Mixlib::ShellOut.prepend(ChefSpec::Extensions::Chef::ShellOutOther)
+::Chef::Mixin::ShellOut.prepend(ChefSpec::Extensions::Chef::ShellOut)
+::Chef::Resource.prepend(ChefSpec::Extensions::Chef::ShellOut)
