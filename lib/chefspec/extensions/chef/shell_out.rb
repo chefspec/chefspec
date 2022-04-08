@@ -71,7 +71,7 @@ end
 
 module ::ChefSpec::Extensions::Chef::Other
   def run_command(*args)
-    raise ChefSpec::Error::MixlibShellOutNotStubbed.new(args: args)
+    raise ChefSpec::Error::MixlibShellOutNotStubbed.new(command: self.command, args: args)
   end
 end
 

@@ -1,8 +1,8 @@
 Executing a real Mixlib::ShellOut:
 
-    Mixlib::ShellOut(<%= @args.inspect %>).run_command
+    Mixlib::ShellOut(<%= @command.inspect %>).run_command
 
 You can stub this with:
 
     so_double = instance_double("Mixlib::ShellOut", run_command: nil, stdout: nil. stderr: nil)
-    allow(Mixlib::ShellOut).to receive(:new).with(<%= @args.inspect %>).and_return(so_double)
+    allow(Mixlib::ShellOut).to receive(:new).with(<%= @command.inspect %>, any_args).and_return(so_double)
