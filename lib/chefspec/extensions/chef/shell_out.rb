@@ -7,7 +7,7 @@ require_relative "../../errors"
 
 puts "being included!"
 
-module ChefSpec::Extensions::Chef::ShellOut
+module ::ChefSpec::Extensions::Chef::ShellOut
   #
   # Defang shell_out and friends so it can never run.
   #
@@ -38,7 +38,7 @@ module ChefSpec::Extensions::Chef::ShellOut
   end
 end
 
-module ChefSpec::Extensions::Chef::MixinShellOut
+module ::ChefSpec::Extensions::Chef::MixinShellOut
   #
   # Defang shell_out and friends so it can never run.
   #
@@ -69,7 +69,7 @@ module ChefSpec::Extensions::Chef::MixinShellOut
   end
 end
 
-module ChefSpec::Extensions::Chef::MixlibShellOut
+module ::ChefSpec::Extensions::Chef::MixlibShellOut
   def run_command(*args)
     raise ChefSpec::Error::MixlibShellOutNotStubbed.new(args: args)
   end
