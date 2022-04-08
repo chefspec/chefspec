@@ -7,7 +7,7 @@ require_relative "../../errors"
 
 puts "being included!"
 
-module ::ChefSpec::Extensions::Chef::ShellOut
+module ::ChefSpec::Extensions::Chef::ResourceShellOut
   #
   # Defang shell_out and friends so it can never run.
   #
@@ -64,7 +64,7 @@ module ::ChefSpec::Extensions::Chef::MixinShellOut
       return super unless $CHEFSPEC_MODE
       puts "made it past return"
 
-      raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, object: self)
+      raise ChefSpec::Error::LibraryShellOutNotStubbed.new(args: args, object: self)
     end
   end
 end
@@ -75,6 +75,6 @@ module ::ChefSpec::Extensions::Chef::MixlibShellOut
   end
 end
 
-::Mixlib::ShellOut.prepend(ChefSpec::Extensions::Chef::MixlibShellout)
-::Chef::Mixin::ShellOut.prepend(ChefSpec::Extensions::Chef::MixinShellOut)
-::Chef::Resource.prepend(ChefSpec::Extensions::Chef::ShellOut)
+::Mixlib::ShellOut.prepend(::ChefSpec::Extensions::Chef::MixlibShellout)
+::Chef::Mixin::ShellOut.prepend(::ChefSpec::Extensions::Chef::MixinShellOut)
+::Chef::Resource.prepend(::ChefSpec::Extensions::Chef::ResourceShellOut)
