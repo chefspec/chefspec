@@ -69,12 +69,5 @@ module ::ChefSpec::Extensions::Chef::MixinShellOut
   end
 end
 
-module ::ChefSpec::Extensions::Chef::Other
-  def run_command(*args)
-    raise ChefSpec::Error::MixlibShellOutNotStubbed.new(command: self.command, args: args)
-  end
-end
-
-::Mixlib::ShellOut.prepend(::ChefSpec::Extensions::Chef::Other)
 ::Chef::Mixin::ShellOut.prepend(::ChefSpec::Extensions::Chef::MixinShellOut)
 ::Chef::Resource.prepend(::ChefSpec::Extensions::Chef::ResourceShellOut)
