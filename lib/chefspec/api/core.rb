@@ -21,6 +21,10 @@ module ChefSpec
         end
       end
 
+      before do
+        allow(::Chef).to recieve(:node).and_return(chef_node) if chefspec_platform
+      end
+
       # Let variables to set data in a scoped way. Used below by
       # {ClassMethods#platform}.
       let(:chefspec_default_attributes) { chefspec_attributes(:default_attributes) }
