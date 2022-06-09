@@ -1,8 +1,13 @@
-# CHANGELOG for ChefSpec
+<!-- latest_release -->
+<!-- latest_release -->
 
+<!-- release_rollup -->
+<!-- release_rollup -->
+<!-- latest_stable_release -->
 ## 9.3.3 (Feb 22, 2022)
 
 - Fix a failure running chefspec with Policyfiles
+<!-- latest_stable_release -->
 
 ## 9.3.2 (Feb 21, 2022)
 
