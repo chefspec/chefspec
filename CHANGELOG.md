@@ -1,7 +1,15 @@
-<!-- latest_release -->
+<!-- latest_release 9.3.4 -->
+## [v9.3.4](https://github.com/chef/chefspec/tree/v9.3.4) (2022-06-14)
+
+#### Merged Pull Requests
+- Remove space from EOF [#2](https://github.com/chef/chefspec/pull/2) ([sanjain-progress](https://github.com/sanjain-progress))
 <!-- latest_release -->
 
 <!-- release_rollup -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Remove space from EOF [#2](https://github.com/chef/chefspec/pull/2) ([sanjain-progress](https://github.com/sanjain-progress)) <!-- 9.3.4 -->
 <!-- release_rollup -->
 <!-- latest_stable_release -->
 ## 9.3.3 (Feb 22, 2022)
