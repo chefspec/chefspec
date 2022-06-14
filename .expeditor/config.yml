@@ -49,4 +49,3 @@ pipelines:
   - verify:
       description: Pull Request validation tests
       public: true
-
