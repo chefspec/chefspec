@@ -14,6 +14,7 @@ describe 'file::delete' do
   end
 
   describe 'deletes a file when specifying the identity attribute' do
-    it { is_expected.to delete_file('/tmp/identity_attribute') }
+    it { is_expected.to delete_file('specifying the identity attribute').with(path: '/tmp/identity_attribute') }
+    it { is_expected.to_not delete_file('specifying the identity attribute').with(path: '/tmp/not_identity_attribute') }
   end
 end
