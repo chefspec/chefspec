@@ -66,10 +66,11 @@ module ChefSpec
 
       if Chef::Mixin::Template.const_defined?(:TemplateContext) # Chef 11+
         template_context = Chef::Mixin::Template::TemplateContext.new([])
+        variables = template_variables(template)
         template_context.update({
           node: chef_run.node,
           template_finder: template_finder(chef_run, cookbook_name),
-        }.merge(template.variables))
+        }.merge(variables))
         if template.respond_to?(:helper_modules) # Chef 11.4+
           template_context._extend_modules(template.helper_modules)
         end
@@ -140,6 +141,22 @@ module ChefSpec
       else
         nil
       end
+    end
+
+    # Return a hash of template variables. Evaulates any lazy variables.
+    #
+    # @param [Chef::Provider::Template] template
+    #   the template resource
+    #
+    # @return [Hash]
+    def template_variables(template)
+      vars = template.variables.dup
+
+      vars.each do |key, value|
+        vars[key] = value.call if value.is_a?(Proc)
+      end
+
+      vars
     end
   end
 end
