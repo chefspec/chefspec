@@ -3,7 +3,7 @@ $:.unshift lib unless $:.include?(lib)
 require "chefspec/version"
 
 Gem::Specification.new do |s|
-  s.name          = "chefspec-chef"
+  s.name          = "chefspec"
   s.version       = ChefSpec::VERSION
   s.authors       = ["Andrew Crump", "Seth Vargo"]
   s.email         = ["andrew.crump@ieee.org", "sethvargo@gmail.com"]
@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.license       = "MIT"
 
   # Packaging
-  s.files         = %w{LICENSE Rakefile Gemfile chefspec-chef.gemspec} + Dir.glob("{lib,templates,spec}/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
+  s.files         = %w{LICENSE Rakefile Gemfile chefspec.gemspec} + Dir.glob("{lib,templates,spec}/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
   s.require_paths = ["lib"]
 
   s.required_ruby_version = ">= 2.5"
