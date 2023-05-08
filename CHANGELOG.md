@@ -1,20 +1,17 @@
-<!-- latest_release 9.3.6 -->
+<!-- latest_release -->
+<!-- latest_release -->
+
+<!-- release_rollup -->
+<!-- release_rollup -->
+<!-- latest_stable_release -->
 ## [v9.3.6](https://github.com/chef/chefspec/tree/v9.3.6) (2023-05-08)
 
 #### Merged Pull Requests
+- Restore rubygem reference  [#3](https://github.com/chef/chefspec/pull/3) ([vkarve-chef](https://github.com/vkarve-chef))
 - Restore gemspec file name [#4](https://github.com/chef/chefspec/pull/4) ([vkarve-chef](https://github.com/vkarve-chef))
-<!-- latest_release -->
-
-<!-- release_rollup since=9.3.4 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Restore gemspec file name [#4](https://github.com/chef/chefspec/pull/4) ([vkarve-chef](https://github.com/vkarve-chef)) <!-- 9.3.6 -->
-- Restore rubygem reference  [#3](https://github.com/chef/chefspec/pull/3) ([vkarve-chef](https://github.com/vkarve-chef)) <!-- 9.3.5 -->
-<!-- release_rollup -->
 <!-- latest_stable_release -->
+
 ## [v9.3.4](https://github.com/chef/chefspec/tree/v9.3.4) (2023-03-02)
-<!-- latest_stable_release -->
 
 ## [v9.3.4](https://github.com/chef/chefspec/tree/v9.3.4) (2022-06-14)
 
