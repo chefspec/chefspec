@@ -9,8 +9,8 @@ module ChefSpec::Matchers
     def matches?(runner)
       @runner = runner
 
-      if resource
-        ChefSpec::Coverage.cover!(resource)
+      unless resources.empty?
+        resources.each { |r| ChefSpec::Coverage.cover!(r) }
         has_create_action? && matches_content?
       else
         false
@@ -85,53 +85,57 @@ module ChefSpec::Matchers
       messages.join("\n\n")
     end
 
-    def resource
-      @resource ||= @runner.find_resource(:cookbook_file, @path) ||
-        @runner.find_resource(:file, @path) ||
-        @runner.find_resource(:template, @path)
+    def resources
+      @resources ||= [
+        @runner.find_resource(:cookbook_file, @path),
+        @runner.find_resource(:file, @path),
+        @runner.find_resource(:template, @path),
+      ].compact.uniq
     end
 
     #
-    # Determines if the given resource has a create-like action.
-    #
-    # @param [Chef::Resource] resource
+    # Determines if any of the given resources have a create-like action.
     #
     # @return [true, false]
     #
     def has_create_action?
-      %i{create create_if_missing}.any? { |action| resource.performed_action?(action) }
+      %i{create create_if_missing}.any? do |action|
+        resources.any? do |resource|
+          resource.performed_action?(action)
+        end
+      end
     end
 
     #
-    # Determines if the resources content matches the expected content.
-    #
-    # @param [Chef::Resource] resource
+    # Determines if any of the resources' content matches the expected content.
     #
     # @return [true, false]
     #
     def matches_content?
       return true if @expected_content.empty?
 
-      @actual_content = ChefSpec::Renderer.new(@runner, resource).content
-
-      return false if @actual_content.nil?
-
       # Knock out matches that pass. When we're done, we pass if the list is
       # empty. Otherwise, @expected_content is the list of matchers that
       # failed
       @expected_content.delete_if do |expected|
-        if expected.is_a?(Regexp)
-          @actual_content =~ expected
-        elsif RSpec::Matchers.is_a_matcher?(expected)
-          expected.matches?(@actual_content)
-        elsif expected.is_a?(Proc)
-          expected.call(@actual_content)
-          # Weird RSpecish, but that block will return false for a negated check,
-          # so we always return true. The block will raise an exception if the
-          # assertion fails.
-          true
-        else
-          @actual_content.include?(expected)
+        resources.each do |resource|
+          @actual_content = ChefSpec::Renderer.new(@runner, resource).content
+
+          next if @actual_content.nil?
+
+          if expected.is_a?(Regexp)
+            @actual_content =~ expected
+          elsif RSpec::Matchers.is_a_matcher?(expected)
+            expected.matches?(@actual_content)
+          elsif expected.is_a?(Proc)
+            expected.call(@actual_content)
+            # Weird RSpecish, but that block will return false for a negated check,
+            # so we always return true. The block will raise an exception if the
+            # assertion fails.
+            true
+          else
+            @actual_content.include?(expected)
+          end
         end
       end
       @expected_content.empty?
