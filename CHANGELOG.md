@@ -1,7 +1,15 @@
-<!-- latest_release -->
+<!-- latest_release 9.3.7 -->
+## [v9.3.7](https://github.com/chef/chefspec/tree/v9.3.7) (2024-02-07)
+
+#### Merged Pull Requests
+- Pin rspec-expectations due to private API change [#6](https://github.com/chef/chefspec/pull/6) ([joshuariojas](https://github.com/joshuariojas))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=9.3.6 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Pin rspec-expectations due to private API change [#6](https://github.com/chef/chefspec/pull/6) ([joshuariojas](https://github.com/joshuariojas)) <!-- 9.3.7 -->
 <!-- release_rollup -->
 <!-- latest_stable_release -->
 ## [v9.3.6](https://github.com/chef/chefspec/tree/v9.3.6) (2023-05-08)
