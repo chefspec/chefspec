@@ -27,4 +27,8 @@ Gem::Specification.new do |s|
   s.add_dependency "chef-cli"
   s.add_dependency "fauxhai-chef", ">= 9.3"
   s.add_dependency "rspec",   "~> 3.0"
+
+  # temporary restriction to a version of rspec-expectations that includes the 
+  # `RSpec::Matchers::ExpectedsForMultipleDiffs` class (renamed in 3.12.4)
+  s.add_dependency "rspec-expectations", "<= 3.12.3"
 end
