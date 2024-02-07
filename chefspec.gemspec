@@ -27,4 +27,5 @@ Gem::Specification.new do |s|
   s.add_dependency "chef-cli"
   s.add_dependency "fauxhai-chef", ">= 9.3"
   s.add_dependency "rspec",   "~> 3.0"
+  s.add_dependency "rspec-expectations", "3.12.3"
 end
