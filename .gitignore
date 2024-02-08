@@ -14,3 +14,4 @@ bin
 binstubs
 vendor
 .rspec
+.DS_Store

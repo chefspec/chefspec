@@ -1,4 +1,27 @@
-# CHANGELOG for ChefSpec
+<!-- latest_release -->
+<!-- latest_release -->
+
+<!-- release_rollup -->
+<!-- release_rollup -->
+<!-- latest_stable_release -->
+## [v9.3.7](https://github.com/chef/chefspec/tree/v9.3.7) (2024-02-07)
+
+#### Merged Pull Requests
+- Pin rspec-expectations due to private API change [#6](https://github.com/chef/chefspec/pull/6) ([joshuariojas](https://github.com/joshuariojas))
+<!-- latest_stable_release -->
+
+## [v9.3.6](https://github.com/chef/chefspec/tree/v9.3.6) (2023-05-08)
+
+#### Merged Pull Requests
+- Restore rubygem reference  [#3](https://github.com/chef/chefspec/pull/3) ([vkarve-chef](https://github.com/vkarve-chef))
+- Restore gemspec file name [#4](https://github.com/chef/chefspec/pull/4) ([vkarve-chef](https://github.com/vkarve-chef))
+
+## [v9.3.4](https://github.com/chef/chefspec/tree/v9.3.4) (2023-03-02)
+
+## [v9.3.4](https://github.com/chef/chefspec/tree/v9.3.4) (2022-06-14)
+
+#### Merged Pull Requests
+- Remove space from EOF [#2](https://github.com/chef/chefspec/pull/2) ([sanjain-progress](https://github.com/sanjain-progress))
 
 ## 9.3.3 (Feb 22, 2022)
 

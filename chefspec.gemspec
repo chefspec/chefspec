@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
                     "ChefSpec makes it easy to write examples and get fast " \
                     "feedback on cookbook changes without the need for " \
                     "virtual machines or cloud servers."
-  s.homepage      = "https://github.com/chefspec/chefspec"
+  s.homepage      = "https://github.com/chef/chefspec"
   s.license       = "MIT"
 
   # Packaging
@@ -25,6 +25,10 @@ Gem::Specification.new do |s|
 
   s.add_dependency "chef", ">= 15"
   s.add_dependency "chef-cli"
-  s.add_dependency "fauxhai-ng", ">= 7.5"
+  s.add_dependency "fauxhai-chef", ">= 9.3"
   s.add_dependency "rspec",   "~> 3.0"
+
+  # temporary restriction to a version of rspec-expectations that includes the 
+  # `RSpec::Matchers::ExpectedsForMultipleDiffs` class (renamed in 3.12.4)
+  s.add_dependency "rspec-expectations", "<= 3.12.3"
 end
