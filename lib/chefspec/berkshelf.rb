@@ -5,6 +5,13 @@ rescue LoadError
 end
 
 module ChefSpec
+  #
+  # Resolves cookbook dependencies with Berkshelf before the Chef run.
+  #
+  # Enabled by requiring +chefspec/berkshelf+. Vendors the Berksfile into a
+  # temporary directory and points +cookbook_path+ at it for the duration of
+  # the suite.
+  #
   class Berkshelf
     class << self
       extend Forwardable

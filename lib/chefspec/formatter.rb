@@ -2,12 +2,27 @@ require "chef/formatters/base"
 require "chef/formatters/error_mapper"
 
 module ChefSpec
+  #
+  # A Chef output formatter that stays silent.
+  #
+  # ChefSpec reports through RSpec, so nearly every formatter callback here is
+  # a deliberate no-op. The exception is error reporting, which is forwarded so
+  # that a failed converge still produces a useful message.
+  #
   class ChefFormatter < Chef::Formatters::Base
     cli_name :chefspec
 
     # Called at the very start of a Chef Run
     def run_start(version); end
 
+    #
+    # Called when the Chef run starts.
+    #
+    # @param [Chef::RunStatus] run_status
+    #   the status object for this run
+    #
+    # @return [void]
+    #
     def run_started(run_status); end
 
     # Called at the end a successful Chef run.
@@ -25,6 +40,11 @@ module ChefSpec
     # About to attempt to register as +node_name+
     def registration_start(node_name, config); end
 
+    #
+    # Called once the node has registered with the Chef Infra Server.
+    #
+    # @return [void]
+    #
     def registration_completed; end
 
     # Failed to register this client with the server.
@@ -170,7 +190,7 @@ module ChefSpec
       file_load_failed(path, exception)
     end
 
-    # Called when resource defintions are done loading
+    # Called when resource definitions are done loading
     def definition_load_complete; end
 
     # Called before recipes are loaded

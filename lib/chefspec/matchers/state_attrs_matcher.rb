@@ -1,4 +1,13 @@
 module ChefSpec::Matchers
+  #
+  # Asserts that a resource declares an exact set of state attributes.
+  #
+  # Built by {ChefSpec::API::StateAttrs#have_state_attrs}. The comparison is
+  # order-sensitive and exact, not a subset check.
+  #
+  # @example
+  #   expect(chef_run.my_resource("thing")).to have_state_attrs(:owner, :mode)
+  #
   class StateAttrsMatcher
     #
     # Create a new state_attrs matcher.
@@ -9,15 +18,35 @@ module ChefSpec::Matchers
       @expected_attrs = state_attrs.map(&:to_sym)
     end
 
+    #
+    # Determine whether the resource declares exactly the expected state
+    # attributes.
+    #
+    # @param [Chef::Resource] resource
+    #   the resource to inspect
+    #
+    # @return [true, false]
+    #
     def matches?(resource)
       @resource = resource
       @resource && matches_state_attrs?
     end
 
+    #
+    # The RSpec description for this matcher, used when an example has no
+    # explicit doc string.
+    #
+    # @return [String]
+    #
     def description
       %Q{have state attributes #{@expected_attrs.inspect}}
     end
 
+    #
+    # The message shown when the matcher was expected to match but did not.
+    #
+    # @return [String]
+    #
     def failure_message
       if @resource
         "expected #{state_attrs.inspect} to equal #{@expected_attrs.inspect}"
@@ -32,6 +61,11 @@ module ChefSpec::Matchers
       end
     end
 
+    #
+    # The message shown when the matcher was expected not to match but did.
+    #
+    # @return [String]
+    #
     def failure_message_when_negated
       if @resource
         "expected #{state_attrs.inspect} to not equal " \

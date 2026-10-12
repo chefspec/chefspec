@@ -1,3 +1,5 @@
+require 'chefspec'
+
 describe 'stubs_for' do
   platform 'ubuntu'
   step_into :stubs_for_test, :stubs_for_old

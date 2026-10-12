@@ -5,16 +5,17 @@ require "yard/rake/yardoc_task"
 require "tmpdir"
 require "rspec"
 require "chefspec"
-require "chefstyle"
-
+require "cookstyle/chefstyle"
 require "chef/version"
 
-require "rubocop/rake_task"
-RuboCop::RakeTask.new(:style) do |task|
-  task.options << "--display-cop-names"
-end
-
 YARD::Rake::YardocTask.new
+
+namespace :yard do
+  desc "Verify that every public object in lib/ has YARD documentation."
+  task :coverage do
+    ruby File.join(__dir__, "tasks", "yard_coverage.rb")
+  end
+end
 
 RSpec::Core::RakeTask.new(:unit) do |t|
   t.rspec_opts = [].tap do |a|
@@ -44,7 +45,10 @@ namespace :acceptance do |ns|
 
           #
           # This bit of mildly awful magic below is to load each file into an in-memory
-          # RSpec runner while keeping a persistent ChefZero server alive.
+          # RSpec runner. RSpec.reset drops the configuration between example
+          # directories, which takes ChefSpec's own hooks with it, so the hooks
+          # below re-register them for every directory and have to mirror the set
+          # in lib/chefspec/zero_server.rb.
           #
           load "#{pwd}/lib/chefspec/rspec.rb"
 
@@ -53,11 +57,13 @@ namespace :acceptance do |ns|
             config.color = true
             config.run_all_when_everything_filtered = true
             config.filter_run(:focus)
-            config.before(:suite) do
-              ChefSpec::ZeroServer.setup!
-            end
+            # No before(:suite) hook: the server starts on demand, so a directory
+            # that only uses the SoloRunner never starts one.
             config.after(:each) do
               ChefSpec::ZeroServer.reset!
+            end
+            config.after(:suite) do
+              ChefSpec::ZeroServer.teardown!
             end
           end
 
@@ -83,3 +89,19 @@ desc "Run all tests"
 task test: %i{unit acceptance}
 
 task default: [:test]
+
+desc "Check Linting and code style."
+task :style do
+  require "rubocop/rake_task"
+  require "cookstyle/chefstyle"
+
+  if RbConfig::CONFIG["host_os"] =~ /mswin|mingw|cygwin/
+    # Windows-specific command, rubocop erroneously reports the CRLF in each file which is removed when your PR is uploaded to GitHub.
+    # This is a workaround to ignore the CRLF from the files before running cookstyle.
+    sh "cookstyle --chefstyle -c .rubocop.yml --except Layout/EndOfLine"
+  else
+    sh "cookstyle --chefstyle -c .rubocop.yml"
+  end
+rescue LoadError
+  puts "Rubocop or Cookstyle gems are not installed. bundle install first to make sure all dependencies are installed."
+end

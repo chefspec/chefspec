@@ -1,5 +1,10 @@
 module ChefSpec
   module API
+    #
+    # Helpers for deriving the cookbook and recipe under test from the enclosing +describe+ block.
+    #
+    # Mixed into every example group by {ChefSpec::API.included}.
+    #
     module Described
       #
       # The name of the currently running cookbook spec. Given the top-level

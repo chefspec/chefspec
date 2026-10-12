@@ -7,6 +7,19 @@ require_relative "server_methods"
 require_relative "solo_runner"
 
 module ChefSpec
+  #
+  # Converges a recipe against an in-memory Chef Infra Server.
+  #
+  # Use this instead of {ChefSpec::SoloRunner} when the cookbook searches,
+  # reads data bags, or otherwise talks to a server. The server is backed by
+  # chef-zero and is populated through {ChefSpec::ServerMethods}.
+  #
+  # @example
+  #   describe "example::default" do
+  #     platform "ubuntu"
+  #     let(:chef_run) { ChefSpec::ServerRunner.converge(described_recipe) }
+  #   end
+  #
   class ServerRunner < SoloRunner
     include ChefSpec::ServerMethods
 

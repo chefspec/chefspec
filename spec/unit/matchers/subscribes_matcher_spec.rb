@@ -27,6 +27,7 @@ describe ChefSpec::Matchers::SubscribesMatcher do
       double("execute",
         name: "execute",
         to_s: "execute[install]",
+        performed_actions: [:run],
         immediate_notifications: [],
         delayed_notifications: [],
         before_notifications: [])

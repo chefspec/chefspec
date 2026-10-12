@@ -29,6 +29,10 @@ module ChefSpec
     # Remove all the data we just loaded from the ChefZero server
     #
     def reset!
+      # Nothing to reset when the server was never started, which is the case
+      # for any suite that only uses the SoloRunner.
+      return unless @server.running?
+
       if RSpec.configuration.server_runner_clear_cookbooks
         @server.clear_data
         @cookbooks_uploaded = false
@@ -75,6 +79,8 @@ module ChefSpec
     def upload_cookbooks!
       return if @cookbooks_uploaded
 
+      setup!
+
       loader = Chef::CookbookLoader.new(Chef::Config[:cookbook_path])
       loader.load_cookbooks
       cookbook_uploader_for(loader).upload_cookbooks
@@ -93,6 +99,8 @@ module ChefSpec
     #   to the server
     #
     def load_data(name, key, data)
+      setup!
+
       @data_loaded[key] ||= []
       @data_loaded[key] << name
       @server.load_data({ key => { name => data } })
@@ -136,7 +144,9 @@ module ChefSpec
 end
 
 RSpec.configure do |config|
-  config.before(:suite) { ChefSpec::ZeroServer.setup! }
+  # The server is started on demand rather than for every suite, so that suites
+  # which only use the SoloRunner do not occupy a port from the configured
+  # range. See the ZeroServer.setup! callers.
   config.after(:each) { ChefSpec::ZeroServer.reset! }
   config.after(:suite)  { ChefSpec::ZeroServer.teardown! }
 end

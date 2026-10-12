@@ -1,4 +1,76 @@
-# CHANGELOG for ChefSpec
+<!-- latest_release 9.5.2 -->
+## [v9.5.2](https://github.com/chef/chefspec/tree/v9.5.2) (2026-10-12)
+
+#### Merged Pull Requests
+- Remove extracted BFF acceptance examples [#60](https://github.com/chef/chefspec/pull/60) ([tpowell-progress](https://github.com/tpowell-progress))
+<!-- latest_release -->
+
+<!-- release_rollup since=9.3.8 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Remove extracted BFF acceptance examples [#60](https://github.com/chef/chefspec/pull/60) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 9.5.2 -->
+- Add DCO check workflow with pinned actions [#61](https://github.com/chef/chefspec/pull/61) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 9.5.1 -->
+- Add feature request issue template [#59](https://github.com/chef/chefspec/pull/59) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 9.5.0 -->
+- Honor the globally configured platform in example groups [#53](https://github.com/chef/chefspec/pull/53) ([tas50](https://github.com/tas50)) <!-- 9.4.26 -->
+- Ignore gem options when resolving cookbook gem metadata [#52](https://github.com/chef/chefspec/pull/52) ([tas50](https://github.com/tas50)) <!-- 9.4.25 -->
+- Expose Chef&#39;s template helper variables when rendering [#51](https://github.com/chef/chefspec/pull/51) ([tas50](https://github.com/tas50)) <!-- 9.4.24 -->
+- Render the creating resource when a path has several resources [#49](https://github.com/chef/chefspec/pull/49) ([tas50](https://github.com/tas50)) <!-- 9.4.23 -->
+- Do not report notifications from guard skipped resources [#55](https://github.com/chef/chefspec/pull/55) ([tas50](https://github.com/tas50)) <!-- 9.4.22 -->
+- Exclude the Windows gemspec from the chef git source [#56](https://github.com/chef/chefspec/pull/56) ([tas50](https://github.com/tas50)) <!-- 9.4.21 -->
+- Support matchers and regexps for the source property (#980) [#47](https://github.com/chef/chefspec/pull/47) ([tas50](https://github.com/tas50)) <!-- 9.4.20 -->
+- Fix NaN coverage percentage when no resources are collected [#46](https://github.com/chef/chefspec/pull/46) ([tas50](https://github.com/tas50)) <!-- 9.4.19 -->
+- Drop the logger &lt; 1.6 dependency pin [#45](https://github.com/chef/chefspec/pull/45) ([tas50](https://github.com/tas50)) <!-- 9.4.18 -->
+- Expand unit test coverage [#44](https://github.com/chef/chefspec/pull/44) ([tas50](https://github.com/tas50)) <!-- 9.4.17 -->
+- Use explicit MatchData captures instead of regex globals [#43](https://github.com/chef/chefspec/pull/43) ([tas50](https://github.com/tas50)) <!-- 9.4.16 -->
+- Add respond_to_missing? to ResourceMatcher [#42](https://github.com/chef/chefspec/pull/42) ([tas50](https://github.com/tas50)) <!-- 9.4.15 -->
+- Remove dead pre-Chef-15 branches from the monkey patches [#41](https://github.com/chef/chefspec/pull/41) ([tas50](https://github.com/tas50)) <!-- 9.4.14 -->
+- Add metadata links to the gemspec [#40](https://github.com/chef/chefspec/pull/40) ([tas50](https://github.com/tas50)) <!-- 9.4.13 -->
+- Pin GitHub Actions to commit SHAs and let Dependabot update them [#38](https://github.com/chef/chefspec/pull/38) ([tas50](https://github.com/tas50)) <!-- 9.4.12 -->
+- Test the full supported Ruby range in CI [#37](https://github.com/chef/chefspec/pull/37) ([tas50](https://github.com/tas50)) <!-- 9.4.11 -->
+- Replace Proc.new with proc [#36](https://github.com/chef/chefspec/pull/36) ([tas50](https://github.com/tas50)) <!-- 9.4.10 -->
+- Refresh README: fix stale versions, links, and Travis references [#35](https://github.com/chef/chefspec/pull/35) ([tas50](https://github.com/tas50)) <!-- 9.4.9 -->
+- Refresh CONTRIBUTING guide [#33](https://github.com/chef/chefspec/pull/33) ([tas50](https://github.com/tas50)) <!-- 9.4.8 -->
+- Fix NameError from removed rspec-expectations diff class (#13) [#31](https://github.com/chef/chefspec/pull/31) ([tas50](https://github.com/tas50)) <!-- 9.4.7 -->
+- Convert ISSUES.md into a GitHub issue form [#32](https://github.com/chef/chefspec/pull/32) ([tas50](https://github.com/tas50)) <!-- 9.4.6 -->
+- Remove obsolete README_old.md [#39](https://github.com/chef/chefspec/pull/39) ([tas50](https://github.com/tas50)) <!-- 9.4.5 -->
+- Fix Style/MapJoin rubocop offense in resource_matcher [#48](https://github.com/chef/chefspec/pull/48) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 9.4.4 -->
+- CHEF-27645 Update and standardize copyright notices to Progress Software Corporation - copyright_update [#30](https://github.com/chef/chefspec/pull/30) ([clintoncwolfe](https://github.com/clintoncwolfe)) <!-- 9.4.3 -->
+- Update to actions/checkout@v6 [#28](https://github.com/chef/chefspec/pull/28) ([dafyddcrosby](https://github.com/dafyddcrosby)) <!-- 9.4.2 -->
+- Remove osx_profile references. [#26](https://github.com/chef/chefspec/pull/26) ([williamtheaker](https://github.com/williamtheaker)) <!-- 9.4.1 -->
+- Ruby 3.4 Updates and Test fixes [#19](https://github.com/chef/chefspec/pull/19) ([johnmccrae](https://github.com/johnmccrae)) <!-- 9.4.0 -->
+- Misspelling of &#39;receive&#39; broke downstream [#17](https://github.com/chef/chefspec/pull/17) ([tpowell-progress](https://github.com/tpowell-progress)) <!-- 9.3.15 -->
+- Adding chef/chef&#39;s CODEOWNERS to chefspec [#16](https://github.com/chef/chefspec/pull/16) ([jaymzh](https://github.com/jaymzh)) <!-- 9.3.14 -->
+- add support for Chef::Mixin::shellout [#8](https://github.com/chef/chefspec/pull/8) ([jasonwbarnett](https://github.com/jasonwbarnett)) <!-- 9.3.13 -->
+- add stub for Chef.node [#9](https://github.com/chef/chefspec/pull/9) ([jasonwbarnett](https://github.com/jasonwbarnett)) <!-- 9.3.12 -->
+- Migrate from Chefstyle to Cookstyle [#12](https://github.com/chef/chefspec/pull/12) ([dafyddcrosby](https://github.com/dafyddcrosby)) <!-- 9.3.11 -->
+- [CI] Drop EOL Rubies [#15](https://github.com/chef/chefspec/pull/15) ([dafyddcrosby](https://github.com/dafyddcrosby)) <!-- 9.3.10 -->
+- add support for DelayedEvaluator/lazy templates [#14](https://github.com/chef/chefspec/pull/14) ([mattp-](https://github.com/mattp-)) <!-- 9.3.9 -->
+<!-- release_rollup -->
+<!-- latest_stable_release -->
+## [v9.3.8](https://github.com/chef/chefspec/tree/v9.3.8) (2024-07-16)
+
+#### Merged Pull Requests
+- Prevent logger 1.6 from being used. [#11](https://github.com/chef/chefspec/pull/11) ([tpowell-progress](https://github.com/tpowell-progress))
+<!-- latest_stable_release -->
+
+## [v9.3.7](https://github.com/chef/chefspec/tree/v9.3.7) (2024-02-07)
+
+#### Merged Pull Requests
+- Pin rspec-expectations due to private API change [#6](https://github.com/chef/chefspec/pull/6) ([joshuariojas](https://github.com/joshuariojas))
+
+## [v9.3.6](https://github.com/chef/chefspec/tree/v9.3.6) (2023-05-08)
+
+#### Merged Pull Requests
+- Restore rubygem reference  [#3](https://github.com/chef/chefspec/pull/3) ([vkarve-chef](https://github.com/vkarve-chef))
+- Restore gemspec file name [#4](https://github.com/chef/chefspec/pull/4) ([vkarve-chef](https://github.com/vkarve-chef))
+
+## [v9.3.4](https://github.com/chef/chefspec/tree/v9.3.4) (2023-03-02)
+
+## [v9.3.4](https://github.com/chef/chefspec/tree/v9.3.4) (2022-06-14)
+
+#### Merged Pull Requests
+- Remove space from EOF [#2](https://github.com/chef/chefspec/pull/2) ([sanjain-progress](https://github.com/sanjain-progress))
 
 ## 9.3.3 (Feb 22, 2022)
 
@@ -581,7 +653,7 @@ Breaking:
 
 - `Runner#resources` converted from an Array to a Hash. This is to ensure that all resource actions are added (when multiple calls to run_action exist (#201)). This also drastically improves resource lookup times.
 
-- `Resource#actions` is no longer maniuplated. Instead, a new method `Resource#performed_actions` now keeps track of the actions taken on a resource (as well as the phase in which they were taken), preserving the original state of the resource.
+- `Resource#actions` is no longer manipulated. Instead, a new method `Resource#performed_actions` now keeps track of the actions taken on a resource (as well as the phase in which they were taken), preserving the original state of the resource.
 
 FEATURES:
 
@@ -650,7 +722,7 @@ BUG FIXES:
 - Better failure message for `create_remote_file` ([@tmatilai])
 - Add `cookbook_file` as an accepted type to the `create_file` matchers ([@dafyddcrosby])
 - Ensure formatter is only registered once ([@student])
-- Signifant README updates ([@phoolish])
+- Significant README updates ([@phoolish])
 - Fix `described_recipe` helper (S.R.Garcia)
 - Refactor Chef 10/11 template rendering ([@sethvargo])
 - Fix CI ([@sethvargo])

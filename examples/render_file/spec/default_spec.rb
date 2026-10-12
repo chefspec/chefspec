@@ -195,4 +195,11 @@ describe 'render_file::default' do
       it { is_expected.to_not render_file('/tmp/partial').with_content(/^Not(.+)$/) }
     end
   end
+
+  context 'a path with both a template and a file resource' do
+    describe 'renders the template rather than matching the delete' do
+      it { is_expected.to render_file('/tmp/template_or_delete') }
+      it { is_expected.to render_file('/tmp/template_or_delete').with_content('This is content!') }
+    end
+  end
 end

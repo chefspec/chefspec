@@ -1,4 +1,7 @@
 module ChefSpec
+  #
+  # Small string helpers shared across ChefSpec.
+  #
   module Util
     extend self
 
@@ -14,7 +17,7 @@ module ChefSpec
     def underscore(string)
       string
         .to_s
-        .gsub(/::/, "/")
+        .gsub(/::/, "/") # rubocop: disable Style/RedundantRegexpArgument
         .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
         .gsub(/([a-z\d])([A-Z])/, '\1_\2')
         .tr("-", "_")

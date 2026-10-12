@@ -1,5 +1,10 @@
 module ChefSpec
   module API
+    #
+    # Provides the +do_nothing+ matcher for asserting a resource took no action.
+    #
+    # Mixed into every example group by {ChefSpec::API.included}.
+    #
     module DoNothing
       #
       # Assert that a resource in the Chef run does not perform any actions. Given

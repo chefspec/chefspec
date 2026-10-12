@@ -8,6 +8,7 @@ describe ChefSpec::Matchers::NotificationsMatcher do
       to_s: "package[foo]",
       is_a?: true,
       performed_action?: true,
+      performed_actions: [:install],
       immediate_notifications: [],
       delayed_notifications: [],
       before_notifications: [])

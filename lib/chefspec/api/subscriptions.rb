@@ -1,5 +1,10 @@
 module ChefSpec
   module API
+    #
+    # Provides the +subscribe_to+ matcher for asserting on resource subscriptions.
+    #
+    # Mixed into every example group by {ChefSpec::API.included}.
+    #
     module Subscriptions
       #
       # Assert that a resource subscribes to another. Given a Chef Recipe that

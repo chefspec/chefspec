@@ -15,7 +15,7 @@ Chef::Client.prepend(Module.new do
   # @see Chef::Client#run_ohai
   #
   def run_ohai
-    return super unless $CHEFSPEC_MODE
+    super unless $CHEFSPEC_MODE
     # noop
   end
 end)

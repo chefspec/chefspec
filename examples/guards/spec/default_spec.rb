@@ -3,7 +3,7 @@ require 'chefspec'
 describe 'guards::default' do
   platform 'ubuntu'
 
-  describe 'includes resource that have guards that evalute to true' do
+  describe 'includes resource that have guards that evaluate to true' do
     it { is_expected.to start_service('true_guard') }
   end
 

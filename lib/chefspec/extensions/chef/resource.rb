@@ -22,11 +22,17 @@ module ChefSpec::Extensions::Chef::Resource
       # something like `new_resource.class.new` so we want to call this a current_resource,
       # Otherwise it's probably a normal resource instantiation.
       mode = :resource
-      mode = :current_value if caller.any? { |x| x.include?("`load_current_resource'") || x.include?("`load_after_resource'") }
+      mode = :current_value if caller.any? { |x| x.include?("`load_current_resource'") || x.include?("`load_after_resource'") || x.include?("`load_current_value'") || x.include?("load_current_value") || x.include?("load_current_resource") }
       ChefSpec::API::StubsFor.setup_stubs_for(self, mode)
     end
   end
 
+  #
+  # Duplicate the resource, re-registering +stubs_for+ hooks when the copy is
+  # being made on behalf of +load_current_value+.
+  #
+  # @return [Chef::Resource]
+  #
   def dup
     return super unless $CHEFSPEC_MODE
 
@@ -49,7 +55,13 @@ module ChefSpec::Extensions::Chef::Resource
 
     ChefSpec::Coverage.add(self)
 
-    unless should_skip?(action)
+    if should_skip?(action)
+      # should_skip? is also true for `action :nothing`, via Chef's
+      # ConditionalActionNotNothing, which is not a guard refusing to run the
+      # resource. Only record real guard skips so that matchers can tell the
+      # two apart.
+      perform_skipped_action(action) unless action.to_sym == :nothing
+    else
       if node.runner.step_into?(self)
         instance_eval { @not_if = []; @only_if = [] }
         super
@@ -64,29 +76,6 @@ module ChefSpec::Extensions::Chef::Resource
   end
 
   #
-  # Defang shell_out and friends so it can never run.
-  #
-  if ChefSpec::API::StubsFor::HAS_SHELLOUT_COMPACTED.satisfied_by?(Gem::Version.create(Chef::VERSION))
-    def shell_out_compacted(*args)
-      return super unless $CHEFSPEC_MODE
-
-      raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: "resource", resource: self)
-    end
-
-    def shell_out_compacted!(*args)
-      return super unless $CHEFSPEC_MODE
-
-      shell_out_compacted(*args).tap(&:error!)
-    end
-  else
-    def shell_out(*args)
-      return super unless $CHEFSPEC_MODE
-
-      raise ChefSpec::Error::ShellOutNotStubbed.new(args: args, type: "resource", resource: self)
-    end
-  end
-
-  #
   # tracking
   #
 
@@ -96,6 +85,15 @@ module ChefSpec::Extensions::Chef::Resource
     @performed_actions[action.to_sym].merge!(options)
   end
 
+  #
+  # The options recorded when the resource performed the given action.
+  #
+  # @param [Symbol, String] action
+  #   the action to look up
+  #
+  # @return [Hash, nil]
+  #   the recorded options, or +nil+ if the action was never performed
+  #
   def performed_action(action)
     @performed_actions ||= {}
     @performed_actions[action.to_sym]
@@ -109,9 +107,38 @@ module ChefSpec::Extensions::Chef::Resource
     end
   end
 
+  #
+  # Every action the resource performed during the Chef run.
+  #
+  # @return [Array<Symbol>]
+  #
   def performed_actions
     @performed_actions ||= {}
     @performed_actions.keys
+  end
+
+  #
+  # Record that a guard refused the given action, so notifications from the
+  # skipped action are not reported as having fired.
+  #
+  # @param [Symbol, String] action
+  #   the action the guard refused
+  #
+  # @return [Array<Symbol>]
+  #   every action the guard has refused so far
+  #
+  def perform_skipped_action(action)
+    @skipped_actions ||= []
+    @skipped_actions |= [action.to_sym]
+  end
+
+  #
+  # The actions that did not run because a guard refused them.
+  #
+  # @return [Array<Symbol>]
+  #
+  def skipped_actions
+    @skipped_actions ||= []
   end
 
   #
@@ -124,12 +151,28 @@ module ChefSpec::Extensions::Chef::Resource
     end
   end
 
+  #
+  # Prepended onto every resource's singleton class so that declaring a
+  # resource name, provides line, or action automatically defines the
+  # matching ChefSpec matcher.
+  #
+  # This is what makes +create_my_resource("foo")+ work for a custom resource
+  # without any extra registration.
+  #
   module ClassMethods
     # XXX: kind of a crappy way to find all the names of a resource
     def provides_names
       @provides_names ||= []
     end
 
+    #
+    # Record the resource name and define matchers for its allowed actions.
+    #
+    # @param [Symbol] name
+    #   the resource name being declared
+    #
+    # @return [Symbol]
+    #
     def resource_name(name = ::Chef::NOT_PASSED)
       unless name == ::Chef::NOT_PASSED
         provides_names << name unless provides_names.include?(name)
@@ -138,22 +181,60 @@ module ChefSpec::Extensions::Chef::Resource
       super
     end
 
+    #
+    # Record the provided name and define matchers for its allowed actions.
+    #
+    # @param [Symbol] name
+    #   the resource name being provided
+    #
+    # @param [Hash] options
+    #   the platform filters passed through to Chef
+    #
+    # @return [void]
+    #
     def provides(name, **options, &block)
       provides_names << name unless provides_names.include?(name)
       inject_actions(*allowed_actions)
       super
     end
 
+    #
+    # Define an action and its corresponding ChefSpec matcher.
+    #
+    # @param [Symbol] sym
+    #   the action being defined
+    #
+    # @param [String, nil] description
+    #   the action description passed through to Chef
+    #
+    # @return [void]
+    #
     def action(sym, description: nil, &block)
       inject_actions(sym)
       super(sym, &block)
     end
 
+    #
+    # Declare allowed actions and define matchers for each of them.
+    #
+    # @param [Array<Symbol>] actions
+    #   the actions to allow
+    #
+    # @return [Array<Symbol>]
+    #
     def allowed_actions(*actions)
       inject_actions(*actions) unless actions.empty?
       super
     end
 
+    #
+    # Replace the allowed actions and define matchers for each of them.
+    #
+    # @param [Array<Symbol>, Symbol] value
+    #   the actions to allow
+    #
+    # @return [Array<Symbol>]
+    #
     def allowed_actions=(value)
       inject_actions(*Array(value))
       super

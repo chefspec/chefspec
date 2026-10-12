@@ -1,3 +1,6 @@
 module ChefSpec
-  VERSION = "9.3.3".freeze
+  #
+  # The version of the ChefSpec gem. Bumped automatically on merge.
+  #
+  VERSION = "9.5.2".freeze
 end

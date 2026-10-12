@@ -1,4 +1,10 @@
 module ChefSpec
+  #
+  # Namespace for the RSpec-facing ChefSpec DSL.
+  #
+  # Each module here contributes matchers or helpers to example groups. They are
+  # autoloaded, and {included} mixes the whole set in at once.
+  #
   module API
     autoload :Core, "chefspec/api/core"
     autoload :Described, "chefspec/api/described"
@@ -15,6 +21,14 @@ module ChefSpec
     autoload :Subscriptions, "chefspec/api/subscriptions"
     autoload :User, "chefspec/api/user"
 
+    #
+    # Mix every ChefSpec API module into the given example group.
+    #
+    # @param [Class] klass
+    #   the RSpec example group to extend
+    #
+    # @return [void]
+    #
     def self.included(klass)
       # non-resources
       klass.include(ChefSpec::API::Core)

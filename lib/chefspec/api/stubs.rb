@@ -1,5 +1,10 @@
 module ChefSpec
   module API
+    #
+    # Provides +stub_command+, +stub_search+, +stub_data_bag+, and +stub_data_bag_item+ for stubbing calls that would otherwise reach the outside world.
+    #
+    # Mixed into every example group by {ChefSpec::API.included}.
+    #
     module Stubs
       #
       # Stub a shell command to return a particular value without

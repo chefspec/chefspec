@@ -1,18 +1,53 @@
 module ChefSpec::Matchers
+  #
+  # Asserts that the Chef run included at least one recipe that was not
+  # already named in the node's run list.
+  #
+  # Built by {ChefSpec::API::IncludeAnyRecipe#include_any_recipe}. This is the
+  # matcher to reach for when you care that +include_recipe+ was called at all,
+  # but not which recipe it pulled in.
+  #
+  # @example
+  #   expect(chef_run).to include_any_recipe
+  #
   class IncludeAnyRecipeMatcher
+    #
+    # Determine whether any recipe was loaded beyond the run list itself.
+    #
+    # @param [ChefSpec::SoloRunner, ChefSpec::ServerRunner] runner
+    #   the converged runner to inspect
+    #
+    # @return [true, false]
+    #
     def matches?(runner)
       @runner = runner
       !(loaded_recipes - run_list_recipes).empty?
     end
 
+    #
+    # The RSpec description for this matcher, used when an example has no
+    # explicit doc string.
+    #
+    # @return [String]
+    #
     def description
       "include any recipe"
     end
 
+    #
+    # The message shown when the matcher was expected to match but did not.
+    #
+    # @return [String]
+    #
     def failure_message
       "expected to include any recipe"
     end
 
+    #
+    # The message shown when the matcher was expected not to match but did.
+    #
+    # @return [String]
+    #
     def failure_message_when_negated
       "expected not to include any recipes"
     end

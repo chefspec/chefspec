@@ -31,8 +31,30 @@ module ChefSpec
   #
   module Cacher
     @@cache = {}
+    #
+    # Drops a thread's cached results when that thread is garbage collected, so
+    # the cache does not grow without bound in threaded runs.
+    #
     FINALIZER = lambda { |id| @@cache.delete(id) }
 
+    #
+    # Define a memoized helper, like RSpec's +let+, whose value is cached across
+    # every example in the group rather than rebuilt per example.
+    #
+    # The cache key is derived from the example group's source location, so two
+    # groups declaring the same name do not collide.
+    #
+    # @example
+    #   cached(:chef_run) { ChefSpec::SoloRunner.converge("example::default") }
+    #
+    # @param [Symbol, String] name
+    #   the name of the helper method to define
+    #
+    # @yieldreturn [Object]
+    #   the value to cache
+    #
+    # @return [void]
+    #
     def cached(name, &block)
       location = ancestors.first.metadata[:location]
       unless location.nil?
@@ -51,6 +73,18 @@ module ChefSpec
       end
     end
 
+    #
+    # Like {#cached}, but eagerly evaluates the block in a +before+ hook instead
+    # of waiting for the first example to reference it.
+    #
+    # @param [Symbol, String] name
+    #   the name of the helper method to define
+    #
+    # @yieldreturn [Object]
+    #   the value to cache
+    #
+    # @return [void]
+    #
     def cached!(name, &block)
       cached(name, &block)
 

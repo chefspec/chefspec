@@ -1,5 +1,10 @@
 module ChefSpec
   module API
+    #
+    # Provides the +have_state_attrs+ matcher.
+    #
+    # Mixed into every example group by {ChefSpec::API.included}.
+    #
     module StateAttrs
       #
       # Assert that a Chef resource has certain state attributes (since Chef

@@ -8,22 +8,22 @@ group :development do
   gem "yard"
   gem "pry"
   gem "pry-byebug"
-  gem "chefstyle"
 end
 
 if ENV["GEMFILE_MOD"]
   puts "GEMFILE_MOD: #{ENV["GEMFILE_MOD"]}"
   instance_eval(ENV["GEMFILE_MOD"])
 else
-  gem "chef", git: "https://github.com/chef/chef"
-  gem "ohai", git: "https://github.com/chef/ohai"
+  # chef's repo also ships chef-universal-mingw-ucrt.gemspec, which declares
+  # itself as "chef" for the mingw platform and adds the Windows only
+  # dependencies. Bundler loads every gemspec it finds in a git source, so
+  # without this glob those Windows gems end up in the resolution on every
+  # platform and the bundle cannot be installed on Linux or macOS.
+  gem "chef", git: "https://github.com/chef/chef.git", glob: "{chef,chef-*/chef-*}.gemspec"
+  gem "ohai", git: "https://github.com/chef/ohai.git"
 end
 
-# TODO: remove when we drop ruby 2.5
-if Gem.ruby_version < Gem::Version.new("2.6")
-  # 16.7.23 required ruby 2.6+
-  gem "chef-utils", "< 16.7.23"
-end
+gem "syslog"
 
 # If you want to load debugging tools into the bundle exec sandbox,
 # add these additional dependencies into Gemfile.local

@@ -1,4 +1,10 @@
 module ChefSpec
+  #
+  # Normalizes resource names so that matchers can compare them reliably.
+  #
+  # Chef resources may be referred to by symbol or string, and with dashes or
+  # underscores; this smooths over the difference.
+  #
   module Normalize
     #
     # Calculate the name of a resource, replacing dashes with underscores

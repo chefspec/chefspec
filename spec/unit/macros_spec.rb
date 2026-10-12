@@ -110,7 +110,7 @@ describe "nginx::source" do
       end
 
       context "in a nested context" do
-        it "still retrns the cookbook::recipe" do
+        it "still returns the cookbook::recipe" do
           expect(described_recipe).to eq("nginx::source")
         end
       end

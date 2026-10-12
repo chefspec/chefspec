@@ -14,17 +14,26 @@ Gem::Specification.new do |s|
                     "ChefSpec makes it easy to write examples and get fast " \
                     "feedback on cookbook changes without the need for " \
                     "virtual machines or cloud servers."
-  s.homepage      = "https://github.com/chefspec/chefspec"
+  s.homepage      = "https://github.com/chef/chefspec"
   s.license       = "MIT"
+
+  s.metadata = {
+    "source_code_uri" => "https://github.com/chef/chefspec",
+    "changelog_uri" => "https://github.com/chef/chefspec/blob/main/CHANGELOG.md",
+    "bug_tracker_uri" => "https://github.com/chef/chefspec/issues",
+    "documentation_uri" => "https://github.com/chef/chefspec/blob/main/README.md",
+  }
 
   # Packaging
   s.files         = %w{LICENSE Rakefile Gemfile chefspec.gemspec} + Dir.glob("{lib,templates,spec}/**/*", File::FNM_DOTMATCH).reject { |f| File.directory?(f) }
   s.require_paths = ["lib"]
 
-  s.required_ruby_version = ">= 2.5"
+  s.required_ruby_version = ">= 3.1"
 
-  s.add_dependency "chef", ">= 15"
+  s.add_dependency "chef", ">= 17"
   s.add_dependency "chef-cli"
-  s.add_dependency "fauxhai-ng", ">= 7.5"
-  s.add_dependency "rspec",   "~> 3.0"
+  s.add_dependency "fauxhai-chef", ">= 9.3"
+  s.add_dependency "rspec", "~> 3.0"
+
+  s.add_development_dependency "cookstyle", "~> 8.4"
 end

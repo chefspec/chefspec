@@ -1,5 +1,13 @@
 require "rspec"
 
+#
+# ChefSpec is a unit testing framework for Chef cookbooks.
+#
+# It converges a recipe in memory, without provisioning a machine, and exposes
+# the resulting resource collection through a set of RSpec matchers. The two
+# entry points are {ChefSpec::SoloRunner} and {ChefSpec::ServerRunner}; nearly
+# everything else in this namespace supports those.
+#
 module ChefSpec
   #
   # Defines a new runner method on the Chef runner.
@@ -10,7 +18,7 @@ module ChefSpec
   # @return [self]
   #
   def define_matcher(resource_name)
-    matchers[resource_name.to_sym] = Proc.new do |identity|
+    matchers[resource_name.to_sym] = proc do |identity|
       find_resource(resource_name, identity)
     end
 

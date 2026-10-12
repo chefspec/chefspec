@@ -21,14 +21,18 @@ module ChefSpec
         end
       end
 
+      before do
+        allow(::Chef).to receive(:node).and_return(chef_node) if chefspec_platform
+      end
+
       # Let variables to set data in a scoped way. Used below by
       # {ClassMethods#platform}.
       let(:chefspec_default_attributes) { chefspec_attributes(:default_attributes) }
       let(:chefspec_normal_attributes) { chefspec_attributes(:normal_attributes) }
       let(:chefspec_override_attributes) { chefspec_attributes(:override_attributes) }
       let(:chefspec_automatic_attributes) { chefspec_attributes(:automatic_attributes) }
-      let(:chefspec_platform) { nil }
-      let(:chefspec_platform_version) { nil }
+      let(:chefspec_platform) { RSpec.configuration.platform }
+      let(:chefspec_platform_version) { RSpec.configuration.version }
 
       # Compute the options for the runner.
       #
@@ -74,6 +78,10 @@ module ChefSpec
 
       # By default, run the recipe in the base `describe` block.
       let(:chef_run) { chef_runner.converge(described_recipe) }
+
+      # Give a default accessor for stubbing things on the node object
+      # associated with the runner instance.
+      let(:chef_node) { chef_runner.node }
 
       # Helper method for some of the nestable test value methods like
       # {ClassMethods#default_attributes} and {ClassMethods#step_into}.
@@ -197,6 +205,14 @@ module ChefSpec
           @chefspec_step_into |= resources.flatten.map(&:to_s)
         end
 
+        # Extend the example group with {ClassMethods}, and default its subject
+        # to the Chef run when the describe block targets a recipe, resource, or
+        # provider.
+        #
+        # @param [Class] klass
+        #   the example group including this module
+        # @return [void]
+        #
         # @api private
         def included(klass)
           super

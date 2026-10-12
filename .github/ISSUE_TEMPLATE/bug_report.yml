@@ -1,0 +1,94 @@
+name: Bug Report
+description: Report a problem with ChefSpec
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue with ChefSpec! Filling out
+        the fields below helps us reproduce and resolve your issue quickly.
+
+        Before opening a new issue, please search the
+        [existing issues](https://github.com/chef/chefspec/issues) to see if it
+        has already been reported.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What are you trying to accomplish?
+      description: Describe what you were doing and what went wrong.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: >-
+        A minimal, self-contained example that reproduces the problem (see
+        [SSCCE](http://sscce.org/)). Include the spec and any relevant recipe or
+        cookbook code.
+      render: ruby
+    validations:
+      required: true
+  - type: input
+    id: command
+    attributes:
+      label: Command run
+      placeholder: bundle exec rspec spec/unit/recipes/default_spec.rb
+    validations:
+      required: false
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened?
+    validations:
+      required: true
+  - type: textarea
+    id: backtrace
+    attributes:
+      label: Exception and backtrace
+      description: Paste the full error message and backtrace, if any.
+      render: text
+    validations:
+      required: false
+  - type: input
+    id: os
+    attributes:
+      label: Operating system and version
+    validations:
+      required: true
+  - type: input
+    id: chefspec-version
+    attributes:
+      label: ChefSpec version
+      description: The version of the `chefspec` gem you are using.
+    validations:
+      required: true
+  - type: input
+    id: chef-version
+    attributes:
+      label: Chef version
+      description: Output of `chef --version`.
+    validations:
+      required: true
+  - type: input
+    id: ruby-version
+    attributes:
+      label: Ruby version
+      description: Output of `ruby -v`.
+    validations:
+      required: true
+  - type: input
+    id: rubygems-version
+    attributes:
+      label: RubyGems version
+      description: Output of `gem -v`.
+    validations:
+      required: false

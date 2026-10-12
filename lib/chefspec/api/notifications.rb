@@ -1,5 +1,10 @@
 module ChefSpec
   module API
+    #
+    # Provides the +notify+ matcher for asserting on resource notifications.
+    #
+    # Mixed into every example group by {ChefSpec::API.included}.
+    #
     module Notifications
       #
       # Assert that a resource notifies another. Given a Chef Recipe that

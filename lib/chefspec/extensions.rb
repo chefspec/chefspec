@@ -1,13 +1,24 @@
 require "rspec"
 
+#
+# Namespace for the monkey patches ChefSpec applies to Chef and Ohai.
+#
+# These are what stop a converge from touching the real system: shelling out,
+# uploading cookbooks, and running providers are all intercepted here. The
+# require order below is load-bearing.
+#
 module ChefSpec::Extensions
+  #
+  # Patches applied to Chef itself.
+  #
   module Chef
   end
 end
 
 # STOP! DO NOT ALPHABETIZE!
 require_relative "extensions/chef/data_query" # must be before Chef::Resource loads
-require_relative "extensions/chef/resource"  # must come before client extensions or anything that winds up loading resources
+require_relative "extensions/chef/shell_out"  # must come before client extensions or anything that winds up loading resources
+require_relative "extensions/chef/resource" # must come before client extensions or anything that winds up loading resources
 require_relative "extensions/chef/provider"
 require_relative "extensions/chef/securable"
 require_relative "extensions/chef/client"

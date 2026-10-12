@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe ChefSpec::Stubs::DataBagStub do
-  it "inherts from Stub" do
+  it "inherits from Stub" do
     expect(described_class.superclass).to be(ChefSpec::Stubs::Stub)
   end
 

@@ -10,9 +10,20 @@ module ChefSpec
     # @return [ChefZero::Server]
     #
     def server
+      ChefSpec::ZeroServer.setup!
       ChefSpec::ZeroServer.server
     end
 
+    #
+    # Define the +create_+, +get_+, and +has_+ helpers for a Chef Infra Server
+    # entity, such as nodes or data bags.
+    #
+    # @param [Symbol] method
+    #   the singular entity name used to build the method names
+    # @param [Class] klass
+    #   the Chef class the entity deserializes into
+    # @param [String] key
+    #   the chef-zero data store key for the entity
     #
     # @macro entity
     #   @method create_$1(name, data = {})

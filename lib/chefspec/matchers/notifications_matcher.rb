@@ -1,18 +1,53 @@
 module ChefSpec::Matchers
+  #
+  # Asserts that a resource notified another resource.
+  #
+  # Built by {ChefSpec::API::Notifications#notify}. By default any notification
+  # to the target resource matches; chain {#to}, {#immediately}, {#delayed}, or
+  # {#before} to narrow the assertion.
+  #
+  # @example
+  #   expect(chef_run.template("/etc/foo")).to notify("service[apache2]")
+  #     .to(:restart).delayed
+  #
   class NotificationsMatcher
     include ChefSpec::Normalize
 
+    #
+    # Create a new matcher for the given resource signature.
+    #
+    # @param [String] signature
+    #   the notified resource in +type[name]+ form, such as
+    #   +"service[apache2]"+
+    #
     def initialize(signature)
-      signature.match(/^([^\[]*)\[(.*)\]$/)
-      @expected_resource_type = $1
-      @expected_resource_name = $2
+      match = signature.match(/^([^\[]*)\[(.*)\]$/)
+      @expected_resource_type = match[1]
+      @expected_resource_name = match[2]
     end
 
+    #
+    # Determine whether the resource sent a matching notification.
+    #
+    # Only the notification timing selected by {#immediately}, {#delayed}, or
+    # {#before} is searched; with none of them set, all timings are searched.
+    #
+    # @param [Chef::Resource] resource
+    #   the notifying resource
+    #
+    # @return [true, false]
+    #
     def matches?(resource)
       @resource = resource
 
       if @resource
-        block = Proc.new do |notified|
+        # Notifications stay declared on a resource even when a guard stopped
+        # its action from running, but Chef only delivers them when the action
+        # actually runs. This deliberately does not cover `action :nothing`
+        # resources, which still notify when they are themselves notified.
+        return false if @resource.performed_actions.empty? && @resource.skipped_actions.any?
+
+        block = proc do |notified|
           resource_name(notified.resource).to_s == @expected_resource_type &&
             (@expected_resource_name === notified.resource.identity.to_s || @expected_resource_name === notified.resource.name.to_s) &&
             matches_action?(notified)
@@ -30,26 +65,55 @@ module ChefSpec::Matchers
       end
     end
 
+    #
+    # Restrict the match to notifications sending a specific action.
+    #
+    # @param [Symbol, String] action
+    #   the action the notification must send, such as +:restart+
+    #
+    # @return [self]
+    #
     def to(action)
       @action = action.to_sym
       self
     end
 
+    #
+    # Restrict the match to immediate notifications.
+    #
+    # @return [self]
+    #
     def immediately
       @immediately = true
       self
     end
 
+    #
+    # Restrict the match to delayed notifications.
+    #
+    # @return [self]
+    #
     def delayed
       @delayed = true
       self
     end
 
+    #
+    # Restrict the match to +before+ notifications.
+    #
+    # @return [self]
+    #
     def before
       @before = true
       self
     end
 
+    #
+    # The RSpec description for this matcher, used when an example has no
+    # explicit doc string.
+    #
+    # @return [String]
+    #
     def description
       message = %Q{notify "#{@expected_resource_type}[#{@expected_resource_name}]"}
       message << " with action :#{@action}" if @action
@@ -59,6 +123,14 @@ module ChefSpec::Matchers
       message
     end
 
+    #
+    # The message shown when the matcher was expected to match but did not.
+    #
+    # Lists every notification the resource actually sent, which is usually
+    # enough to spot a wrong action or timing.
+    #
+    # @return [String]
+    #
     def failure_message
       if @resource
         message = %Q{expected "#{@resource}" to notify "#{@expected_resource_type}[#{@expected_resource_name}]"}
@@ -87,6 +159,11 @@ module ChefSpec::Matchers
       end
     end
 
+    #
+    # The message shown when the matcher was expected not to match but did.
+    #
+    # @return [String]
+    #
     def failure_message_when_negated
       if @resource
         message = %Q{expected "#{@resource}" to not notify "#{@expected_resource_type}[#{@expected_resource_name}]"}

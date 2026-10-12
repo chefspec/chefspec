@@ -3,12 +3,18 @@ require "mixlib/shellout" unless defined?(Mixlib::ShellOut)
 
 module ChefSpec
   module API
+    #
+    # Injects RSpec stubs into resource, provider, and current_value objects that
+    # a converge builds internally.
+    #
+    # Those objects are created deep inside Chef, so an example cannot get a
+    # reference to them in time to stub them. Instead, blocks registered through
+    # {#stubs_for_resource} and friends are replayed against each object as Chef
+    # instantiates it.
+    #
     module StubsFor
       # Pull in the needed machinery to use `before` here.
       extend RSpec::SharedContext
-
-      # Which version to use the shell_out_compacted hook on.
-      HAS_SHELLOUT_COMPACTED = Gem::Requirement.create("> 14.2")
 
       # Hook used in the monkey patches to set up a place to inject stubs when
       # needed for a resource or provider.
@@ -86,6 +92,32 @@ module ChefSpec
         _chefspec_stubs_for_registry[:provider][target] << block
       end
 
+      #
+      # Build an RSpec message expectation for a +shell_out+ call, returning a
+      # canned +Mixlib::ShellOut+ result instead of running the command.
+      #
+      # @example
+      #   stubs_for_resource("my_resource[foo]") do |res|
+      #     expect(res).to receive_shell_out.with("my_command").and_return(stdout: "asdf")
+      #   end
+      #
+      # @param [Array<String>] cmd
+      #   the command the resource is expected to run
+      #
+      # @param [String] stdout
+      #   the standard output to return
+      #
+      # @param [String] stderr
+      #   the standard error to return
+      #
+      # @param [Integer] exitstatus
+      #   the exit status to return
+      #
+      # @param [Hash] opts
+      #   additional options the call must have been made with
+      #
+      # @return [RSpec::Mocks::Matchers::Receive]
+      #
       def receive_shell_out(*cmd, stdout: "", stderr: "", exitstatus: 0, **opts)
         # Ruby does not allow constructing an actual exitstatus object from Ruby code. Really.
         fake_exitstatus = double(exitstatus: exitstatus)
@@ -97,16 +129,16 @@ module ChefSpec
           @stderr = stderr
           @status = fake_exitstatus
         end
-        # On newer Chef, we can intercept using the new, better shell_out_compact hook point.
-        shell_out_method ||= if HAS_SHELLOUT_COMPACTED.satisfied_by?(Gem::Version.create(Chef::VERSION))
-                               :shell_out_compacted
-                             else
-                               :shell_out
-                             end
+        # Intercept using the shell_out_compacted hook point.
+        shell_out_method ||= :shell_out_compacted
         with_args = cmd + (opts.empty? ? [any_args] : [hash_including(opts)])
         receive(shell_out_method).with(*with_args).and_return(fake_cmd)
       end
 
+      #
+      # Group-level counterparts to the instance methods above, so that stubs can
+      # be declared once for a whole +describe+ block.
+      #
       module ClassMethods
         # (see StubsFor#stubs_for_resource)
         def stubs_for_resource(*args, **kwargs, &block)
@@ -124,6 +156,13 @@ module ChefSpec
           before { stubs_for_provider(*args, &block) }
         end
 
+        # Extend the example group with {ClassMethods} so that stubs can be
+        # declared at the group level.
+        #
+        # @param [Class] klass
+        #   the example group including this module
+        # @return [void]
+        #
         # @api private
         def included(klass)
           super

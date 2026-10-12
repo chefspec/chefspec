@@ -7,6 +7,13 @@ rescue LoadError
 end
 
 module ChefSpec
+  #
+  # Resolves cookbook dependencies with a Policyfile before the Chef run.
+  #
+  # Enabled by requiring +chefspec/policyfile+. Exports the Policyfile lock
+  # into a temporary directory and points +cookbook_path+ at it for the
+  # duration of the suite.
+  #
   class Policyfile
     class << self
       extend Forwardable

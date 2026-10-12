@@ -1,5 +1,10 @@
 module ChefSpec
   module API
+    #
+    # Provides the +include_recipe+ matcher.
+    #
+    # Mixed into every example group by {ChefSpec::API.included}.
+    #
     module IncludeRecipe
       #
       # Assert that a Chef run includes a certain recipe. Given a Chef Recipe

@@ -1,0 +1,6 @@
+--readme README.md
+--output-dir doc
+lib/**/*.rb
+-
+CONTRIBUTING.md
+LICENSE

@@ -14,7 +14,7 @@ describe 'notifications::chained' do
     expect(service).to notify('log[log]')
   end
 
-  it 'sends the specific notification to the serivce' do
+  it 'sends the specific notification to the service' do
     expect(template).to notify('service[service]').to(:restart)
     expect(template).to_not notify('service[service]').to(:stop)
   end

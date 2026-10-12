@@ -1,5 +1,11 @@
 module ChefSpec
   class Coverage
+    #
+    # Base class for filters that exclude resources from the coverage report.
+    #
+    # Subclasses must override {#matches?}. Filters are registered with
+    # +ChefSpec::Coverage.add_filter+.
+    #
     class Filter
       def initialize(filter)
         @filter = filter
@@ -75,7 +81,7 @@ module ChefSpec
         return true if resource.source_line.nil?
 
         normalized_source_line = resource.source_line.gsub("\\", "/")
-        normalized_source_line =~ %r{cookbooks/(?!#{@metadatas.join('|')})}
+        normalized_source_line =~ %r{cookbooks/(?!#{@metadatas.join("|")})}
       end
     end
   end

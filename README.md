@@ -1,7 +1,7 @@
 # ChefSpec
 
 [![Gem Version](https://badge.fury.io/rb/chefspec.svg)](https://badge.fury.io/rb/chefspec)
-[![CI](https://github.com/chefspec/chefspec/actions/workflows/ci.yml/badge.svg)](https://github.com/chefspec/chefspec/actions/workflows/ci.yml)
+[![CI](https://github.com/chef/chefspec/actions/workflows/ci.yml/badge.svg)](https://github.com/chef/chefspec/actions/workflows/ci.yml)
 
 ChefSpec is a unit testing framework for testing Chef cookbooks. ChefSpec makes it easy to write examples and get fast feedback on cookbook changes without the need for virtual machines or cloud servers.
 
@@ -12,14 +12,12 @@ ChefSpec runs your cookbooks locally while skipping making actual changes. This 
 
 ## Important Notes
 
-- **ChefSpec requires Ruby 2.5 or later and Chef 15 or later!**
+- **ChefSpec requires Ruby 3.1 or later and Chef 17 or later!**
 - **This documentation corresponds to the main branch, which may be unreleased. Please check the README of the latest git tag or the gem's source for your version's documentation!**
 
 **ChefSpec aims to maintain compatibility with at least the two most recent minor versions of Chef.** If you are running an older version of Chef it may work, or you will need to run an older version of ChefSpec.
 
-As a general rule, if it is tested in the Travis CI matrix, it is a supported version.
-
-## Quick Start
+As a general rule, if it is tested in the [GitHub Actions](https://github.com/chef/chefspec/actions) CI matrix, it is a supported version.
 
 ## When To Use ChefSpec?
 
@@ -581,7 +579,7 @@ end
 All the ruby methods off of the File, Dir and FileUtils classes along with any other global class methods that the
 client might use, should follow a similar pattern for stubbing.
 
-Check out the [RSpec Mocks documentation](https://relishapp.com/rspec/rspec-mocks/docs)
+Check out the [RSpec Mocks documentation](https://rspec.info/documentation/)
 for more information about setting up Ruby method stubs.
 
 ## Development
@@ -609,10 +607,36 @@ for more information about setting up Ruby method stubs.
 
 8. Open a Pull Request
 
-ChefSpec is on [Travis CI][travis] which tests against multiple Chef and Ruby versions.
+ChefSpec is tested via [GitHub Actions](https://github.com/chef/chefspec/actions) against multiple Ruby versions.
 
-If you are contributing, please see the [Contributing Guidelines](https://github.com/chefspec/chefspec/blob/main/CONTRIBUTING.md) for more information.
+If you are contributing, please see the [Contributing Guidelines](https://github.com/chef/chefspec/blob/main/CONTRIBUTING.md) for more information.
 
 ## License
 
-MIT - see the accompanying [LICENSE](https://github.com/chefspec/chefspec/blob/main/LICENSE) file for details.
+MIT - see the accompanying [LICENSE](https://github.com/chef/chefspec/blob/main/LICENSE) file for details.
+
+# Copyright
+See [COPYRIGHT.md](./COPYRIGHT.md).
+
+
+## Changes that will not be accepted
+
+This section details, specifically, Pull Requests or features that will _not_ be merged:
+
+1. Matchers for non-Chef core resources. ChefSpec provides a way for cookbook maintainers to ship [custom matchers](https://github.com/chef/chefspec#chefspec-matchers) _with_ their cookbooks at distribution time.
+2. New features without accompanying unit tests and documentation.
+
+
+## Testing
+
+Whether your pull request is a bug fix or introduces new classes or methods to the project, we kindly ask that you include tests for your changes. Even if it's just a small improvement, a test is necessary to ensure the bug is never re-introduced.
+
+ChefSpec has two test suites, both runnable with Rake:
+
+```sh
+bundle exec rake unit        # fast RSpec unit tests in spec/
+bundle exec rake acceptance  # end-to-end example cookbooks in examples/
+bundle exec rake test        # run both
+```
+
+We understand that not all users submitting pull requests will be proficient with RSpec. The maintainers and community as a whole are a helpful group and can help you with writing tests. The [Better Specs](https://www.betterspecs.org/) site provides some helpful resources to get you started.

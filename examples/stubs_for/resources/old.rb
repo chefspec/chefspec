@@ -14,7 +14,7 @@ end
 action_class do
   def load_current_resource
     @current_resource = new_resource.class.new(new_resource.name)
-    # current_resource.shell_out is weird but mostly doing it for completeness and parity checking with load_curent_value-style.
+    # current_resource.shell_out is weird but mostly doing it for completeness and parity checking with load_current_value-style.
     @current_resource.value @current_resource.shell_out(new_resource.cmd).stdout if new_resource.run_load
     @current_resource
   end

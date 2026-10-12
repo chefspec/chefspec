@@ -21,7 +21,16 @@ Chef::Cookbook::GemInstaller.prepend(Module.new do
   private
 
   def locate_gem(gem_name, gem_requirements)
-    ::Gem::Specification.find_by_name(gem_name, gem_requirements)
+    # A cookbook's gem metadata takes the same trailing options Hash a Gemfile
+    # does, for example:
+    #
+    #   gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw]
+    #
+    # Chef hands those straight to a generated Gemfile, but they are not
+    # version requirements, so drop them before asking Rubygems to resolve the
+    # gem or Gem::Requirement raises BadRequirementError.
+    gem_requirements = gem_requirements.grep_v(Hash)
+    ::Gem::Specification.find_by_name(gem_name, *gem_requirements)
   rescue ::Gem::MissingSpecError
     gem_cmd = "gem install #{gem_name} --version '#{gem_requirements.join(", ")}'"
     gemfile_line = "gem '#{[gem_name, *gem_requirements].join("', '")}'"

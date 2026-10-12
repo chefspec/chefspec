@@ -6,7 +6,7 @@ Chef::CookbookUploader.prepend(Module.new do |variable|
   # to complete. It's just not worth it...
   #
   def validate_cookbooks
-    return super unless $CHEFSPEC_MODE
+    super unless $CHEFSPEC_MODE
     # noop
   end
 end)

@@ -1,3 +1,9 @@
+#
+# Reopened to add {#deprecated}, so that deprecation notices can be emitted
+# from anywhere in ChefSpec without a receiver.
+#
+# @api private
+#
 module Kernel
   # Kernel extension to print deprecation notices.
   #
@@ -31,6 +37,10 @@ module ChefSpec
     end
   end
 
+  #
+  # @deprecated There is no longer a global Chef Server instance. Use
+  #   {ChefSpec::ServerRunner} instead.
+  #
   class Server
     def self.method_missing(m, *args, &block)
       deprecated "`ChefSpec::Server.#{m}' is deprecated. There is no longer" \
@@ -42,5 +52,8 @@ module ChefSpec
 end
 
 module ChefSpec::Error
+  #
+  # Raised when a deprecated method has no backwards compatible replacement.
+  #
   class NoConversionError < ChefSpecError; end
 end

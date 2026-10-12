@@ -1,4 +1,10 @@
 module ChefSpec
+  #
+  # Namespace for the RSpec matcher objects backing the ChefSpec DSL.
+  #
+  # Matchers here are not usually built directly; the {ChefSpec::API} modules
+  # and the generated +action_resource+ helpers construct them.
+  #
   module Matchers
     require_relative "matchers/do_nothing_matcher"
     require_relative "matchers/include_any_recipe_matcher"

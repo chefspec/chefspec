@@ -1,5 +1,10 @@
 module ChefSpec
   module API
+    #
+    # Matchers for the +user+ resource, whose actions do not follow the usual naming pattern.
+    #
+    # Mixed into every example group by {ChefSpec::API.included}.
+    #
     module User
       ChefSpec.define_matcher :user
 

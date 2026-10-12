@@ -9,6 +9,13 @@ rescue LoadError
 end
 
 module ChefSpec
+  #
+  # Resolves cookbook dependencies with Librarian-Chef before the Chef run.
+  #
+  # Enabled by requiring +chefspec/librarian+. Installs the Cheffile into a
+  # temporary directory and points +cookbook_path+ at it for the duration of
+  # the suite.
+  #
   class Librarian
     class << self
       extend Forwardable

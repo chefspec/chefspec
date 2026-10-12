@@ -1,5 +1,10 @@
 module ChefSpec
   module API
+    #
+    # Provides the +link_to+ matcher for asserting on symlink targets.
+    #
+    # Mixed into every example group by {ChefSpec::API.included}.
+    #
     module Link
       #
       # Assert that a symlink links to a specific path. This is really
